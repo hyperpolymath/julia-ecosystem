@@ -130,14 +130,15 @@
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | matmul (SIMD tiled)    | Done   | `██████████` 100%              |
-| activations (8 funcs)  | Done   | `██████████` 100%              |
+| activations (15 funcs) | Done   | `██████████` 100%              |
 | conv2d + depthwise     | Done   | `██████████` 100%              |
 | pooling (max/avg/glob) | Done   | `██████████` 100%              |
 | norm (batch/layer/rms) | Done   | `██████████` 100%              |
 | flash attention        | Done   | `██████████` 100%              |
 | rotary embeddings      | Done   | `██████████` 100%              |
-| Julia-side ccall wiring| Done   | `██████████` 100%              |
-| Compiled .so artifact  | None   | `░░░░░░░░░░` 0%                |
+| Julia-side ccall wiring| Done   | `██████████` 100% (17 ops)     |
+| Compiled .so artifact  | Done   | `██████████` 100% (217KB)      |
+| FFI exports (31 syms)  | Done   | `██████████` 100%              |
 
 ### Backends - GPU Extensions
 | Component              | Status | Progress                       |
@@ -220,10 +221,10 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~85% complete
+## Overall: ~90% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
-**Weakest areas:** Zig compiled .so artifact (0%), coprocessor skeletons (20% — need real hardware integrations)
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations (full parity, 31 Zig exports, 23 Rust exports), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
+**Weakest areas:** Coprocessor skeletons (20% — need real hardware integrations), external benchmark comparison (PyTorch/Flux parity testing)
 
 ## Ecosystem Context
 

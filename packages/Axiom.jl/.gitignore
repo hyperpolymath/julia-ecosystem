@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: PMPL-1.0-or-later
 # RSR-compliant .gitignore
 
 # OS & Editor
@@ -28,6 +28,10 @@ ffi/idris/build/exec/hello_app/*.dll
 
 # Rust
 # Cargo.lock  # Keep for binaries
+
+# Zig
+zig/.zig-cache/
+zig/zig-out/
 
 # Elixir
 /cover/

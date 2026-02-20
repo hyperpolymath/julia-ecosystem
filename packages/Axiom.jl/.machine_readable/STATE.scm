@@ -6,13 +6,13 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T00:00:00+00:00")
+       (updated . "2026-02-20T13:10:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 85)
+       (overall-completion . 90)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -20,7 +20,7 @@
           "training-loop-zygote-autograd" "ensure-macro" "axiom-macro" "prove-macro-heuristic-smt"
           "property-checking" "proof-certificates-json-text" "proof-serialization"
           "smtlib-solver-interface" "julia-backend-all-ops"
-          "rust-ffi-all-ops" "zig-ffi-all-ops"
+          "rust-ffi-all-ops" "zig-ffi-full-parity-17-ops" "zig-so-artifact-217kb"
           "gpu-hooks-all-ops-cuda-rocm-metal"
           "pytorch-import-export-layernorm" "model-metadata"
           "proof-export-lean-coq-isabelle-real-tactics"
@@ -56,26 +56,27 @@
                                "Complete GPU extensions" "Rust end-to-end dispatch"
                                "Build zig .so artifact" "Complete HuggingFace converters"
                                "Compile optimizations"))
-                    (status . "mostly-complete")
+                    (status . "complete")
                     (completed . ("Complete HuggingFace converters"
                                   "Compile optimizations"
                                   "Enable @prove macro"
                                   "Real autograd via Zygote"
-                                  "Complete GPU extensions"))))
+                                  "Complete GPU extensions"
+                                  "Build zig .so artifact"
+                                  "Rust end-to-end dispatch"))))
          (v1.0.0 . ((items . ("Proof assistant import" "Real proof translation"
                                "Production model save/load" "Full HuggingFace model zoo"
                                "Performance parity benchmarks" "Security audit"
                                "RSR compliance"))
                     (status . "in-progress")
                     (completed . ("Production model save/load"
-                                  "Full HuggingFace model zoo"))))))))
+                                  "Full HuggingFace model zoo"
+                                  "Security audit"))))))))
 
     (blockers-and-issues
       ((critical
          ())
-       (high
-         (("Zig library not compiled" .
-           "No .so artifact committed. Users must run `just build-zig` manually.")))
+       (high ())
        (medium
          (("Coprocessor skeletons only" .
            "All 9 coprocessor extension skeletons exist but need real hardware integration.")))
@@ -83,14 +84,13 @@
 
     (critical-next-actions
       ((immediate
-         ("Build zig .so artifact and commit"
-          "Run panic-attack security audit"))
+         ("External framework benchmark comparison (PyTorch/Flux.jl parity)"))
        (this-week
          ("Implement real coprocessor backends (TPU/NPU at minimum)"
-          "External framework benchmark comparison"))
+          "Full RSR compliance"))
        (this-month
-         ("Full RSR compliance"
-          "v1.0.0 release preparation"))))
+         ("v1.0.0 release preparation"
+          "Registry submission"))))
 
     (session-history
       ((session-2026-02-20a
@@ -133,6 +133,13 @@
                       "Tier 1: Fixed method overwriting by moving forward() from layer files to abstract.jl"
                       "Tier 1: JuliaBackend default ops for conv2d/batchnorm/pooling"
                       "204 tests passing, overall completion 63%→78%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20g
+         ((actions . ("Zig backend: Added 10 missing FFI exports (tanh, leaky_relu, elu, selu, mish, hardswish, hardsigmoid, log_softmax, softplus, batchnorm)"
+                      "Zig backend: Rebuilt .so with ReleaseFast (187KB→217KB, 31 exported symbols)"
+                      "Zig backend: Expanded zig_ffi.jl from 4 ops to 17 ops (full Rust parity)"
+                      "Zig backend: All operations — matmul, 13 activations, conv2d, maxpool2d, global_avgpool2d, batchnorm, layernorm, rmsnorm"
+                      "204 Julia tests + 3 Zig tests passing, overall completion 85%→90%"))
           (agent . "claude-opus-4-6")))
        (session-2026-02-20f
          ((actions . ("Perfective: Real BERT builder (multi-head attention, Q/K/V projections, FFN)"

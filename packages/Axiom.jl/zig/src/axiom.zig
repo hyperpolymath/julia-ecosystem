@@ -116,6 +116,51 @@ export fn axiom_swish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
     activations.swish(x_ptr[0..n], y_ptr[0..n]);
 }
 
+export fn axiom_tanh(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.tanh_activation(x_ptr[0..n], y_ptr[0..n]);
+}
+
+export fn axiom_leaky_relu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize, alpha: f32) void {
+    activations.leaky_relu(x_ptr[0..n], y_ptr[0..n], alpha);
+}
+
+export fn axiom_elu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize, alpha: f32) void {
+    activations.elu(x_ptr[0..n], y_ptr[0..n], alpha);
+}
+
+export fn axiom_selu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.selu(x_ptr[0..n], y_ptr[0..n]);
+}
+
+export fn axiom_mish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.mish(x_ptr[0..n], y_ptr[0..n]);
+}
+
+export fn axiom_hardswish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.hard_swish(x_ptr[0..n], y_ptr[0..n]);
+}
+
+export fn axiom_hardsigmoid(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.hard_sigmoid(x_ptr[0..n], y_ptr[0..n]);
+}
+
+export fn axiom_log_softmax(
+    x_ptr: [*]const f32,
+    y_ptr: [*]f32,
+    batch_size: usize,
+    num_classes: usize,
+) void {
+    var b: usize = 0;
+    while (b < batch_size) : (b += 1) {
+        const offset = b * num_classes;
+        activations.log_softmax(x_ptr[offset..][0..num_classes], y_ptr[offset..][0..num_classes]);
+    }
+}
+
+export fn axiom_softplus(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
+    activations.softplus(x_ptr[0..n], y_ptr[0..n]);
+}
+
 // ============================================================================
 // Convolution (FFI Exports)
 // ============================================================================
@@ -252,6 +297,24 @@ export fn axiom_rmsnorm(
     eps: f32,
 ) void {
     norm.rmsnorm(x_ptr, y_ptr, weight_ptr, batch_size, hidden_size, eps);
+}
+
+export fn axiom_batchnorm(
+    x_ptr: [*]const f32,
+    y_ptr: [*]f32,
+    gamma_ptr: [*]const f32,
+    beta_ptr: [*]const f32,
+    running_mean_ptr: [*]const f32,
+    running_var_ptr: [*]const f32,
+    n_elements: usize,
+    n_features: usize,
+    eps: f32,
+    training: i32,
+) void {
+    // Zig backend only supports inference mode
+    _ = training;
+    const batch_size = n_elements / n_features;
+    norm.batchnorm(x_ptr, y_ptr, gamma_ptr, beta_ptr, running_mean_ptr, running_var_ptr, batch_size, n_features, eps);
 }
 
 // ============================================================================

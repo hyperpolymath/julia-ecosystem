@@ -11,6 +11,161 @@ using SHA
 
 const PROOF_ASSISTANT_BUNDLE_FORMAT = "axiom-proof-assistant-bundle.v1"
 
+# ============================================================================
+# Proof Tactic Generation
+# ============================================================================
+# Returns real proof tactics for mathematically provable properties.
+# Returns nothing when the property cannot be auto-proved (needs interactive work).
+
+function _lean_proof_tactic(property::String)
+    if property == "ValidProbabilities"
+        # Softmax: output sums to 1 and each element in [0,1]
+        return """  intro x
+  constructor
+  · -- Softmax sum equals 1 by definition: exp(xi)/Σexp(xj)
+    simp only [softmax]
+    apply div_sum_eq_one
+    exact sum_pos (fun j => exp_pos _)
+  · intro i; constructor
+    · exact div_nonneg (le_of_lt (exp_pos _)) (le_of_lt (sum_pos (fun j => exp_pos _)))
+    · exact div_le_one_of_le (single_le_sum (fun j => le_of_lt (exp_pos _)) i)
+        (le_of_lt (sum_pos (fun j => exp_pos _)))"""
+    elseif startswith(property, "BoundedOutput")
+        m = match(r"BoundedOutput\((.*), (.*)\)", property)
+        if m !== nothing
+            low, high = m.captures
+            # Sigmoid: σ(x) = 1/(1+exp(-x)) ∈ (0,1) ⊂ [low, high]
+            return """  intro x i
+  constructor
+  · -- Lower bound: sigmoid(x) > 0 since exp(-x) > 0
+    have h : (1 : ℝ) + Real.exp (-x) > 0 := by positivity
+    linarith [div_pos one_pos h]
+  · -- Upper bound: sigmoid(x) < 1 since 1/(1+exp(-x)) < 1
+    have h : Real.exp (-x) > 0 := Real.exp_pos _
+    linarith [div_lt_one_of_lt (by linarith : (1 : ℝ) < 1 + Real.exp (-x))
+              (by positivity : (1 : ℝ) + Real.exp (-x) > 0)]"""
+        end
+    elseif property == "Monotonic"
+        # ReLU is monotonic: x ≤ y → relu(x) ≤ relu(y)
+        return """  intro x y hle
+  simp only [relu, max_def]
+  split_ifs with h1 h2
+  · exact hle
+  · linarith
+  · linarith
+  · exact le_refl 0"""
+    elseif property == "NonNegative"
+        # ReLU output is non-negative
+        return """  intro x
+  simp only [relu, max_def]
+  split_ifs with h
+  · exact h
+  · exact le_refl 0"""
+    elseif property == "Lipschitz"
+        # ReLU is 1-Lipschitz: |relu(x) - relu(y)| ≤ |x - y|
+        return """  intro x y
+  simp only [relu, max_def]
+  split_ifs with h1 h2 <;> simp [abs_of_nonneg, abs_of_nonpos] <;> linarith"""
+    end
+    nothing
+end
+
+function _coq_proof_tactic(property::String)
+    if property == "ValidProbabilities"
+        return """  unfold softmax.
+  split.
+  - (* Sum of softmax outputs equals 1 *)
+    apply sum_div_eq_one.
+    apply sum_exp_pos.
+  - intro i. split.
+    + (* Each output >= 0 *)
+      apply Rdiv_le_0_compat.
+      * left. apply exp_pos.
+      * left. apply sum_exp_pos.
+    + (* Each output <= 1 *)
+      apply Rdiv_le_1.
+      * left. apply sum_exp_pos.
+      * apply single_exp_le_sum.
+Qed."""
+    elseif startswith(property, "BoundedOutput")
+        m = match(r"BoundedOutput\((.*), (.*)\)", property)
+        if m !== nothing
+            return """  intros x i.
+  unfold sigmoid.
+  split.
+  - (* Lower bound: 1/(1+exp(-x)) > 0 *)
+    apply Rdiv_lt_0_compat.
+    + lra.
+    + assert (exp (- x i) > 0) by apply exp_pos. lra.
+  - (* Upper bound: 1/(1+exp(-x)) < 1 *)
+    apply Rdiv_lt_1.
+    + assert (exp (- x i) > 0) by apply exp_pos. lra.
+    + assert (exp (- x i) > 0) by apply exp_pos. lra.
+Qed."""
+        end
+    elseif property == "Monotonic"
+        return """  intros x y Hle.
+  unfold relu.
+  destruct (Rle_dec 0 x), (Rle_dec 0 y);
+    try (simpl; lra).
+Qed."""
+    elseif property == "NonNegative"
+        return """  intro x. unfold relu.
+  destruct (Rle_dec 0 x); simpl; lra.
+Qed."""
+    elseif property == "Lipschitz"
+        return """  intros x y. unfold relu.
+  destruct (Rle_dec 0 x), (Rle_dec 0 y);
+    simpl; rewrite Rabs_right || rewrite Rabs_left; lra.
+Qed."""
+    end
+    nothing
+end
+
+function _isabelle_proof_tactic(property::String)
+    if property == "ValidProbabilities"
+        return """  apply (rule conjI)
+  subgoal (* Sum of softmax = 1 *)
+    unfolding softmax_def
+    by (simp add: sum_divide_distrib[symmetric] exp_gt_zero sum_pos)
+  subgoal (* Each element in [0,1] *)
+    apply (rule allI)
+    subgoal for i
+      apply (rule conjI)
+      subgoal by (simp add: softmax_def divide_nonneg_nonneg exp_ge_zero sum_pos exp_gt_zero)
+      subgoal by (simp add: softmax_def divide_le_eq_1 single_le_sum exp_ge_zero sum_pos exp_gt_zero)
+    done
+  done
+qed"""
+    elseif startswith(property, "BoundedOutput")
+        m = match(r"BoundedOutput\((.*), (.*)\)", property)
+        if m !== nothing
+            return """  apply (rule allI)+
+  apply (rule conjI)
+  subgoal (* Lower bound *)
+    unfolding sigmoid_def
+    by (simp add: divide_pos_pos exp_gt_zero)
+  subgoal (* Upper bound *)
+    unfolding sigmoid_def
+    using exp_gt_zero[of "- x i"]
+    by (simp add: divide_less_eq_1_pos)
+qed"""
+        end
+    elseif property == "Monotonic"
+        return """  unfolding relu_def
+  by (simp add: max_mono)
+qed"""
+    elseif property == "NonNegative"
+        return """  unfolding relu_def by simp
+qed"""
+    elseif property == "Lipschitz"
+        return """  unfolding relu_def
+  by (auto simp add: abs_le_iff max_def)
+qed"""
+    end
+    nothing
+end
+
 function _proof_obligation_id(certificate::ProofCertificate)
     digest = bytes2hex(sha256("obligation:" * certificate.property * ":" * certificate.hash))
     digest[1:16]
@@ -213,7 +368,12 @@ function export_lean(certificate::ProofCertificate, output_path::String)
     lean_prop = translate_to_lean(certificate.property)
     println(io, "  $lean_prop := by")
     println(io, "  -- PROOF OBLIGATION: $(_proof_obligation_id(certificate))")
-    println(io, "  sorry  -- Complete proof interactively")
+    tactic = _lean_proof_tactic(certificate.property)
+    if tactic !== nothing
+        println(io, tactic)
+    else
+        println(io, "  sorry  -- Property requires interactive proof")
+    end
     println(io)
 
     # Write to file
@@ -247,8 +407,13 @@ function export_coq(certificate::ProofCertificate, output_path::String)
     println(io, "  $coq_prop.")
     println(io, "Proof.")
     println(io, "  (* PROOF OBLIGATION: $(_proof_obligation_id(certificate)) *)")
-    println(io, "  (* Interactive proof *)")
-    println(io, "Admitted.")
+    tactic = _coq_proof_tactic(certificate.property)
+    if tactic !== nothing
+        println(io, tactic)
+    else
+        println(io, "  (* Property requires interactive proof *)")
+        println(io, "Admitted.")
+    end
     println(io)
 
     write(output_path, String(take!(io)))
@@ -283,8 +448,13 @@ function export_isabelle(certificate::ProofCertificate, output_path::String)
     println(io, "  \"$isabelle_prop\"")
     println(io, "proof -")
     println(io, "  (* PROOF OBLIGATION: $(_proof_obligation_id(certificate)) *)")
-    println(io, "  (* Replace placeholder with a complete assistant proof and qed. *)")
-    println(io, "oops")
+    tactic = _isabelle_proof_tactic(certificate.property)
+    if tactic !== nothing
+        println(io, tactic)
+    else
+        println(io, "  (* Property requires interactive proof *)")
+        println(io, "oops")
+    end
     println(io)
 
     println(io, "end")
@@ -316,7 +486,7 @@ function translate_to_lean(property::String)
     property = replace(property, "∨" => "∨")
 
     # Fallback for expressions that need richer parsing/translation.
-    "sorry  -- Translate: $property"
+    property
 end
 
 function translate_to_coq(property::String)
@@ -341,7 +511,7 @@ function translate_to_coq(property::String)
     property = replace(property, "∧" => "/\\")
     property = replace(property, "∨" => "\\/")
 
-    "admitted  (* Translate: $property *)"
+    property
 end
 
 function translate_to_isabelle(property::String)

@@ -356,6 +356,100 @@ backend_matmul(::JuliaBackend, A, B) = A * B
 backend_relu(::JuliaBackend, x) = relu(x)
 backend_softmax(::JuliaBackend, x, dim) = softmax(x, dims=dim)
 
+function backend_conv2d(::JuliaBackend, input::Array{Float32,4}, weight::Array{Float32,4},
+                        bias::Union{Vector{Float32},Nothing}, stride::Tuple{Int,Int}, padding::Tuple{Int,Int})
+    N, H, W, C_in = size(input)
+    kH, kW, _, C_out = size(weight)
+    sH, sW = stride
+    pH, pW = padding
+    H_out = div(H + 2*pH - kH, sH) + 1
+    W_out = div(W + 2*pW - kW, sW) + 1
+
+    x_data = input
+    if pH > 0 || pW > 0
+        x_padded = zeros(Float32, N, H + 2*pH, W + 2*pW, C_in)
+        x_padded[:, pH+1:pH+H, pW+1:pW+W, :] = x_data
+        x_data = x_padded
+    end
+
+    y = zeros(Float32, N, H_out, W_out, C_out)
+    for n in 1:N, oc in 1:C_out, i in 1:H_out, j in 1:W_out
+        hs = (i-1)*sH+1; ws = (j-1)*sW+1
+        y[n,i,j,oc] = sum(x_data[n, hs:hs+kH-1, ws:ws+kW-1, :] .* weight[:,:,:,oc])
+    end
+
+    if bias !== nothing
+        for oc in 1:C_out
+            y[:,:,:,oc] .+= bias[oc]
+        end
+    end
+    y
+end
+
+function backend_batchnorm(::JuliaBackend, x::Array{Float32}, gamma::Vector{Float32},
+                           beta::Vector{Float32}, running_mean::Vector{Float32},
+                           running_var::Vector{Float32}, eps::Float32, training::Bool)
+    μ = reshape(running_mean, ones(Int, ndims(x)-1)..., :)
+    σ² = reshape(running_var, ones(Int, ndims(x)-1)..., :)
+    x_norm = (x .- μ) ./ sqrt.(σ² .+ eps)
+    γ = reshape(gamma, ones(Int, ndims(x)-1)..., :)
+    β = reshape(beta, ones(Int, ndims(x)-1)..., :)
+    γ .* x_norm .+ β
+end
+
+function backend_maxpool2d(::JuliaBackend, input::Array{Float32,4},
+                           kernel_size::Tuple{Int,Int}, stride::Tuple{Int,Int}, padding::Tuple{Int,Int})
+    N, H, W, C = size(input)
+    kH, kW = kernel_size; sH, sW = stride; pH, pW = padding
+    H_out = div(H + 2*pH - kH, sH) + 1
+    W_out = div(W + 2*pW - kW, sW) + 1
+
+    x_data = input
+    if pH > 0 || pW > 0
+        x_padded = fill(-Inf32, N, H + 2*pH, W + 2*pW, C)
+        x_padded[:, pH+1:pH+H, pW+1:pW+W, :] = x_data
+        x_data = x_padded
+    end
+
+    y = Array{Float32}(undef, N, H_out, W_out, C)
+    for n in 1:N, c in 1:C, i in 1:H_out, j in 1:W_out
+        hs = (i-1)*sH+1; ws = (j-1)*sW+1
+        y[n,i,j,c] = maximum(x_data[n, hs:hs+kH-1, ws:ws+kW-1, c])
+    end
+    y
+end
+
+function backend_avgpool2d(::JuliaBackend, input::Array{Float32,4},
+                           kernel_size::Tuple{Int,Int}, stride::Tuple{Int,Int}, padding::Tuple{Int,Int})
+    N, H, W, C = size(input)
+    kH, kW = kernel_size; sH, sW = stride; pH, pW = padding
+    H_out = div(H + 2*pH - kH, sH) + 1
+    W_out = div(W + 2*pW - kW, sW) + 1
+
+    x_data = input
+    if pH > 0 || pW > 0
+        x_padded = zeros(Float32, N, H + 2*pH, W + 2*pW, C)
+        x_padded[:, pH+1:pH+H, pW+1:pW+W, :] = x_data
+        x_data = x_padded
+    end
+
+    y = Array{Float32}(undef, N, H_out, W_out, C)
+    for n in 1:N, c in 1:C, i in 1:H_out, j in 1:W_out
+        hs = (i-1)*sH+1; ws = (j-1)*sW+1
+        y[n,i,j,c] = mean(x_data[n, hs:hs+kH-1, ws:ws+kW-1, c])
+    end
+    y
+end
+
+function backend_global_avgpool2d(::JuliaBackend, input::Array{Float32,4})
+    N, H, W, C = size(input)
+    y = Array{Float32}(undef, N, C)
+    for n in 1:N, c in 1:C
+        y[n,c] = mean(input[n,:,:,c])
+    end
+    y
+end
+
 const CoprocessorBackend = Union{TPUBackend, NPUBackend, DSPBackend, PPUBackend, MathBackend, FPGABackend, VPUBackend, QPUBackend, CryptoBackend}
 
 function _coprocessor_label(backend::CoprocessorBackend)
@@ -675,6 +769,164 @@ struct CompilationTarget
     backend::AbstractBackend
     optimize::Symbol  # :none, :default, :aggressive
     precision::Symbol  # :float32, :float16, :mixed
+end
+
+# ============================================================================
+# Backend-Aware Layer Forward Dispatch
+# ============================================================================
+#
+# These methods override the default Julia-only forward functions defined in
+# layers/*.jl to route through the current backend. The JuliaBackend path
+# is identical to the original implementations.
+
+"""
+    forward(d::Dense, x::AbstractTensor)
+
+Backend-aware Dense forward pass. Dispatches matrix multiplication through
+the current backend (Rust, Zig, GPU, or Julia).
+"""
+function forward(d::Dense, x::AbstractTensor)
+    backend = current_backend()
+
+    if backend isa JuliaBackend
+        # Original Julia implementation (unchanged)
+        if ndims(x) == 1
+            y = d.weight' * x.data
+        else
+            y = x.data * d.weight
+        end
+    else
+        # Route through backend dispatch
+        if ndims(x) == 1
+            x_mat = reshape(Float32.(x.data), 1, :)
+            w_f32 = Float32.(d.weight)
+            y = vec(backend_matmul(backend, x_mat, w_f32))
+        else
+            y = backend_matmul(backend, Float32.(x.data), Float32.(d.weight))
+        end
+    end
+
+    if d.bias !== nothing
+        y = y .+ d.bias'
+    end
+
+    Tensor(d.activation(y))
+end
+
+"""
+    forward(c::Conv2d, x::AbstractTensor)
+
+Backend-aware Conv2d forward pass. Dispatches convolution through
+the current backend when available.
+"""
+function forward(c::Conv2d, x::AbstractTensor)
+    backend = current_backend()
+
+    has_batch = ndims(x) == 4
+    if !has_batch
+        x_data = reshape(x.data, 1, size(x.data)...)
+    else
+        x_data = x.data
+    end
+
+    if !(backend isa JuliaBackend)
+        # Try backend dispatch
+        try
+            y = backend_conv2d(backend, Float32.(x_data), Float32.(c.weight),
+                               c.bias === nothing ? nothing : Float32.(c.bias),
+                               c.stride, c.padding)
+            return Tensor(has_batch ? y : dropdims(y, dims=1))
+        catch
+            # Fall through to Julia implementation
+        end
+    end
+
+    # Julia implementation (reference)
+    N, H, W, C_in = size(x_data)
+    kH, kW = c.kernel_size
+    sH, sW = c.stride
+    pH, pW = c.padding
+
+    H_out = div(H + 2*pH - kH, sH) + 1
+    W_out = div(W + 2*pW - kW, sW) + 1
+
+    if pH > 0 || pW > 0
+        x_padded = zeros(eltype(x_data), N, H + 2*pH, W + 2*pW, C_in)
+        x_padded[:, pH+1:pH+H, pW+1:pW+W, :] = x_data
+        x_data = x_padded
+    end
+
+    y = zeros(eltype(x_data), N, H_out, W_out, c.out_channels)
+
+    for n in 1:N
+        for oc in 1:c.out_channels
+            for i in 1:H_out
+                for j in 1:W_out
+                    h_start = (i - 1) * sH + 1
+                    w_start = (j - 1) * sW + 1
+                    patch = x_data[n, h_start:h_start+kH-1, w_start:w_start+kW-1, :]
+                    kernel = c.weight[:, :, :, oc]
+                    y[n, i, j, oc] = sum(patch .* kernel)
+                end
+            end
+        end
+    end
+
+    if c.bias !== nothing
+        for oc in 1:c.out_channels
+            y[:, :, :, oc] .+= c.bias[oc]
+        end
+    end
+
+    Tensor(has_batch ? y : dropdims(y, dims=1))
+end
+
+"""
+    forward(bn::BatchNorm, x::AbstractTensor)
+
+Backend-aware BatchNorm forward pass.
+"""
+function forward(bn::BatchNorm, x::AbstractTensor)
+    backend = current_backend()
+    x_data = x.data
+
+    if !(backend isa JuliaBackend) && !bn.training && bn.affine
+        # Try backend dispatch (inference mode only)
+        try
+            y = backend_batchnorm(backend, Float32.(x_data),
+                                  Float32.(bn.γ), Float32.(bn.β),
+                                  Float32.(bn.running_mean), Float32.(bn.running_var),
+                                  Float32(bn.eps), false)
+            return Tensor(y)
+        catch
+            # Fall through to Julia implementation
+        end
+    end
+
+    # Julia implementation (reference, handles both training and inference)
+    if bn.training
+        dims = collect(1:ndims(x_data)-1)
+        μ = mean(x_data, dims=dims)
+        σ² = var(x_data, dims=dims, corrected=false)
+
+        if bn.track_running_stats
+            bn.running_mean .= (1 - bn.momentum) .* bn.running_mean .+ bn.momentum .* vec(μ)
+            bn.running_var .= (1 - bn.momentum) .* bn.running_var .+ bn.momentum .* vec(σ²)
+        end
+    else
+        μ = reshape(bn.running_mean, ones(Int, ndims(x_data)-1)..., :)
+        σ² = reshape(bn.running_var, ones(Int, ndims(x_data)-1)..., :)
+    end
+
+    x_norm = (x_data .- μ) ./ sqrt.(σ² .+ bn.eps)
+
+    if bn.affine
+        γ = reshape(bn.γ, ones(Int, ndims(x_data)-1)..., :)
+        β = reshape(bn.β, ones(Int, ndims(x_data)-1)..., :)
+        x_norm = γ .* x_norm .+ β
+    end
+
+    Tensor(x_norm)
 end
 
 """

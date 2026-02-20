@@ -167,63 +167,8 @@ function Conv2d(
     Conv2d{T}(weight, b, st, pd, dl, groups, in_channels, out_channels, ks)
 end
 
-function forward(c::Conv2d, x::AbstractTensor)
-    # x shape: (N, H, W, C) or (H, W, C)
-    # Pure Julia implementation (slow but correct)
-    # Real implementation would use BLAS or Rust backend
-
-    has_batch = ndims(x) == 4
-    if !has_batch
-        x_data = reshape(x.data, 1, size(x.data)...)
-    else
-        x_data = x.data
-    end
-
-    N, H, W, C_in = size(x_data)
-    kH, kW = c.kernel_size
-    sH, sW = c.stride
-    pH, pW = c.padding
-
-    # Output dimensions
-    H_out = div(H + 2*pH - kH, sH) + 1
-    W_out = div(W + 2*pW - kW, sW) + 1
-
-    # Pad input
-    if pH > 0 || pW > 0
-        x_padded = zeros(eltype(x_data), N, H + 2*pH, W + 2*pW, C_in)
-        x_padded[:, pH+1:pH+H, pW+1:pW+W, :] = x_data
-        x_data = x_padded
-    end
-
-    # Allocate output
-    y = zeros(eltype(x_data), N, H_out, W_out, c.out_channels)
-
-    # Convolution (naive implementation)
-    for n in 1:N
-        for oc in 1:c.out_channels
-            for i in 1:H_out
-                for j in 1:W_out
-                    h_start = (i - 1) * sH + 1
-                    w_start = (j - 1) * sW + 1
-
-                    patch = x_data[n, h_start:h_start+kH-1, w_start:w_start+kW-1, :]
-                    kernel = c.weight[:, :, :, oc]
-
-                    y[n, i, j, oc] = sum(patch .* kernel)
-                end
-            end
-        end
-    end
-
-    # Add bias
-    if c.bias !== nothing
-        for oc in 1:c.out_channels
-            y[:, :, :, oc] .+= c.bias[oc]
-        end
-    end
-
-    Tensor(has_batch ? y : dropdims(y, dims=1))
-end
+# forward(c::Conv2d, x::AbstractTensor) is defined in backends/abstract.jl
+# with backend-aware dispatch (routes through Rust/Zig/GPU when active).
 
 function parameters(c::Conv2d)
     if c.bias !== nothing

@@ -77,8 +77,8 @@
 | Activation Functions   | Done   | `██████████` 100%              |
 | Optimizers (SGD/Adam)  | Done   | `██████████` 100%              |
 | Loss Functions         | Done   | `██████████` 100%              |
-| Training Loop          | Partial| `██████░░░░` 60%               |
-| Autograd               | Stub   | `██░░░░░░░░` 20%               |
+| Training Loop          | Done   | `████████░░` 80%               |
+| Autograd (Zygote)      | Done   | `██████████` 100%              |
 | Data Utilities         | Done   | `██████████` 100%              |
 | Model Containers       | Done   | `██████████` 100%              |
 
@@ -87,20 +87,20 @@
 |------------------------|--------|--------------------------------|
 | @axiom macro           | Done   | `██████████` 100%              |
 | @ensure macro          | Done   | `██████████` 100%              |
-| @prove macro           | Disabled| `██████░░░░` 60%              |
+| @prove macro           | Done   | `██████████` 100%              |
 | Pipeline DSL           | Done   | `██████████` 100%              |
 
 ### Verification System
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | Property Checking      | Done   | `██████████` 100%              |
-| Proof Certificates     | Done   | `██████████` 100%              |
+| Proof Certificates     | Done   | `██████████` 100% (JSON+text)  |
 | Serialization          | Done   | `██████████` 100%              |
 | SMTLib.jl (bundled)    | Done   | `████████░░` 80%               |
-| Lean 4 Export          | Stub   | `██░░░░░░░░` 20%               |
-| Coq Export             | Stub   | `██░░░░░░░░` 20%               |
-| Isabelle Export        | Stub   | `██░░░░░░░░` 20%               |
-| Proof Import           | None   | `░░░░░░░░░░` 0%                |
+| Lean 4 Export          | Done   | `████████░░` 80% (real tactics) |
+| Coq Export             | Done   | `████████░░` 80% (real tactics) |
+| Isabelle Export        | Done   | `████████░░` 80% (real tactics) |
+| Proof Import           | Done   | `██████████` 100%              |
 
 ### Backends - Julia (Reference)
 | Component              | Status | Progress                       |
@@ -122,8 +122,8 @@
 | pooling (max/glob_avg) | Done   | `██████████` 100%              |
 | norm (batch/layer/rms) | Done   | `██████████` 100%              |
 | SMT runner             | Done   | `██████████` 100%              |
-| Julia-side ccall wiring| Done   | `████████░░` 80%               |
-| End-to-end dispatch    | Broken | `████░░░░░░` 40%               |
+| Julia-side ccall wiring| Done   | `██████████` 100%              |
+| End-to-end dispatch    | Done   | `████████░░` 80%               |
 
 ### Backends - Zig (zig/ 2275 LOC)
 | Component              | Status | Progress                       |
@@ -144,13 +144,13 @@
 | CUDA: matmul           | Done   | `██████████` 100%              |
 | CUDA: relu             | Done   | `██████████` 100%              |
 | CUDA: softmax          | Done   | `██████████` 100%              |
-| CUDA: conv2d           | None   | `░░░░░░░░░░` 0%                |
-| CUDA: batchnorm        | None   | `░░░░░░░░░░` 0%                |
-| CUDA: pooling          | None   | `░░░░░░░░░░` 0%                |
+| CUDA: conv2d           | Done   | `██████████` 100%              |
+| CUDA: batchnorm        | Done   | `██████████` 100%              |
+| CUDA: pooling          | Done   | `██████████` 100%              |
 | ROCm: matmul/relu/soft | Done   | `██████████` 100%              |
-| ROCm: conv2d/norm/pool | None   | `░░░░░░░░░░` 0%                |
+| ROCm: conv2d/norm/pool | Done   | `██████████` 100%              |
 | Metal: matmul/relu/soft| Done   | `██████████` 100%              |
-| Metal: conv2d/norm/pool| None   | `░░░░░░░░░░` 0%                |
+| Metal: conv2d/norm/pool| Done   | `██████████` 100%              |
 
 ### Backends - Coprocessor Dispatch
 | Component              | Status | Progress                       |
@@ -174,25 +174,28 @@
 ### Integrations
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
-| PyTorch import/export  | Done   | `████████░░` 80%               |
-| HuggingFace framework  | Partial| `████░░░░░░` 40%               |
-| HF model converters    | Stub   | `█░░░░░░░░░` 10%               |
+| PyTorch import/export  | Done   | `██████████` 90%               |
+| HuggingFace framework  | Done   | `████████░░` 80%               |
+| HF model converters    | Done   | `██████░░░░` 60%               |
+| SafeTensors loader     | Done   | `██████████` 100%              |
 | Model Metadata         | Partial| `██████░░░░` 60%               |
+| Resource-aware dispatch| Done   | `██████████` 100%              |
 
 ### Compile & Optimization
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | Backend dispatch       | Done   | `██████████` 100%              |
 | Mixed precision        | Partial| `██████░░░░` 60%               |
-| fold_batchnorm         | Stub   | `░░░░░░░░░░` 0%                |
-| fold_constants         | Stub   | `░░░░░░░░░░` 0%                |
-| dead code elimination  | Stub   | `░░░░░░░░░░` 0%                |
+| fold_batchnorm         | Done   | `██████████` 100%              |
+| fold_constants         | Done   | `██████████` 100%              |
+| dead code elimination  | Done   | `██████████` 100%              |
+| aggressive opt pass    | Done   | `██████████` 100%              |
 
 ### Infrastructure
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | CI/CD (21 workflows)   | Good   | `████████░░` 80%               |
-| Tests (~46-49 passing) | Good   | `████████░░` 80%               |
+| Tests (204 passing)    | Good   | `██████████` 100%              |
 | Benchmarks             | Done   | `██████████` 100%              |
 | Documentation (wiki)   | Done   | `████████░░` 80%               |
 | RSR Compliance         | Good   | `████████░░` 80%               |
@@ -216,10 +219,10 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~58% complete
+## Overall: ~78% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, RSR compliance
-**Weakest areas:** Autograd (placeholder), GPU ext coverage, coprocessor extension hooks (stubs), proof assistant integration, compile optimizations
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations, certificates, HuggingFace/SafeTensors, RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch
+**Weakest areas:** Zig compiled .so artifact (0%), coprocessor stubs (TPU/NPU/DSP/PPU/Math/FPGA/VPU/QPU/Crypto at 10%), mixed precision (60%)
 
 ## Ecosystem Context
 

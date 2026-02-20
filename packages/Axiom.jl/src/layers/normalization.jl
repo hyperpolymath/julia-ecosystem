@@ -48,39 +48,8 @@ function BatchNorm(
                  affine, track_running_stats, true, num_features)
 end
 
-function forward(bn::BatchNorm, x::AbstractTensor)
-    # x shape: (N, ..., C) where C is the feature dimension
-    x_data = x.data
-
-    if bn.training
-        # Use batch statistics
-        dims = collect(1:ndims(x_data)-1)  # All dims except channels
-        μ = mean(x_data, dims=dims)
-        σ² = var(x_data, dims=dims, corrected=false)
-
-        # Update running statistics
-        if bn.track_running_stats
-            bn.running_mean .= (1 - bn.momentum) .* bn.running_mean .+ bn.momentum .* vec(μ)
-            bn.running_var .= (1 - bn.momentum) .* bn.running_var .+ bn.momentum .* vec(σ²)
-        end
-    else
-        # Use running statistics
-        μ = reshape(bn.running_mean, ones(Int, ndims(x_data)-1)..., :)
-        σ² = reshape(bn.running_var, ones(Int, ndims(x_data)-1)..., :)
-    end
-
-    # Normalize
-    x_norm = (x_data .- μ) ./ sqrt.(σ² .+ bn.eps)
-
-    # Scale and shift
-    if bn.affine
-        γ = reshape(bn.γ, ones(Int, ndims(x_data)-1)..., :)
-        β = reshape(bn.β, ones(Int, ndims(x_data)-1)..., :)
-        x_norm = γ .* x_norm .+ β
-    end
-
-    Tensor(x_norm)
-end
+# forward(bn::BatchNorm, x::AbstractTensor) is defined in backends/abstract.jl
+# with backend-aware dispatch (routes through Rust/Zig/GPU when active).
 
 function parameters(bn::BatchNorm)
     if bn.affine

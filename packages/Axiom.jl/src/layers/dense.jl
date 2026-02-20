@@ -123,60 +123,8 @@ function Dense(
     Dense{T, F}(weight, b, activation, in_features, out_features)
 end
 
-"""
-    forward(d::Dense, x::AbstractArray)
-
-Performs the forward pass through the `Dense` layer. It computes the linear
-transformation `y = Wx + b` (or `y = xW + b` for batched inputs), and then
-applies the layer's activation function.
-
-Arguments:
-- `d::Dense`: The `Dense` layer instance.
-- `x::AbstractArray`: The input data to the layer. It can be:
-    - A 1D array (`Vector{T}`) of shape `(d.in_features,)` for a single sample.
-    - A 2D array (`Matrix{T}`) of shape `(batch_size, d.in_features)` for a batch of samples.
-
-Returns:
-- An `AbstractArray` representing the output of the layer.
-    - If `x` is 1D, the output `y` will be a 1D array of shape `(d.out_features,)`.
-    - If `x` is 2D, the output `y` will be a 2D array of shape `(batch_size, d.out_features)`.
-
-# Details:
-- **Linear Transformation**:
-    - For 1D input `x`, the operation is `d.weight' * x`.
-    - For 2D (batched) input `x`, the operation is `x * d.weight`.
-- **Bias Addition**: If `d.bias` is not `nothing`, the bias vector is added to the
-  linear output (broadcasting across the batch dimension if applicable).
-- **Activation**: Finally, the `d.activation` function is applied element-wise to the result.
-
-# Examples
-```julia
-# 1D input
-dense = Dense(5, 3)
-input_1d = rand(5)
-output_1d = forward(dense, input_1d) # output_1d is a Vector{Float32} of length 3
-
-# 2D (batched) input
-input_2d = rand(16, 5) # Batch size 16
-output_2d = forward(dense, input_2d) # output_2d is a Matrix{Float32} of size (16, 3)
-```
-"""
-function forward(d::Dense, x::AbstractTensor)
-    # x: (batch, in_features) or (in_features,)
-    # output: (batch, out_features) or (out_features,)
-
-    if ndims(x) == 1
-        y = d.weight' * x.data # W'x
-    else
-        y = x.data * d.weight # xW
-    end
-
-    if d.bias !== nothing
-        y = y .+ d.bias' # Add bias, broadcasting if y is 2D
-    end
-
-    Tensor(d.activation(y))
-end
+# forward(d::Dense, x::AbstractTensor) is defined in backends/abstract.jl
+# with backend-aware dispatch (routes through Rust/Zig/GPU when active).
 
 """
     parameters(d::Dense) -> NamedTuple

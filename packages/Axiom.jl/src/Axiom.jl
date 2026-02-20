@@ -130,7 +130,8 @@ include("serving/api.jl")
 include("integrations/interop.jl")
 
 # Re-exports for user convenience
-export @axiom, @ensure
+export @axiom, @ensure, @prove, @no_grad
+export ParsedProperty, ProofResult, prove_property
 
 # Tensor types and creation
 export Tensor, DynamicTensor, Shape, DynamicShape
@@ -189,6 +190,10 @@ export ProofCertificate, serialize_proof, deserialize_proof
 export export_proof_certificate, import_proof_certificate, verify_proof_certificate
 export VerificationResult, generate_certificate, save_certificate, load_certificate, verify_certificate
 export verification_result_telemetry, verification_telemetry_report, reset_verification_telemetry!
+
+# Autograd
+export gradient, jacobian, pullback, zero_grad!, clip_grad_norm!
+export GradientTape, gradient_with_tape
 
 # Interop
 export from_pytorch, to_onnx

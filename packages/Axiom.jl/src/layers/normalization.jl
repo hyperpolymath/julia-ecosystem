@@ -104,8 +104,26 @@ function LayerNorm(
 end
 
 function forward(ln::LayerNorm, x::AbstractTensor)
-    # Normalize over the last n dimensions matching normalized_shape
+    backend = current_backend()
     x_data = x.data
+
+    # Try native backend dispatch for 2D inputs with affine params
+    if !(backend isa JuliaBackend) && ln.elementwise_affine && ndims(x_data) == 2
+        try
+            gamma = Float32.(vec(ln.γ))
+            beta = Float32.(vec(ln.β))
+            if backend isa SmartBackend
+                y = backend_layernorm(backend, Float32.(x_data), gamma, beta, ln.normalized_shape, Float32(ln.eps))
+            else
+                y = backend_layernorm(backend, Float32.(x_data), gamma, beta, Float32(ln.eps))
+            end
+            return Tensor(y)
+        catch
+            # Fall through to Julia implementation
+        end
+    end
+
+    # Julia implementation (reference, handles arbitrary dimensions)
     n_dims = length(ln.normalized_shape)
     norm_dims = collect(ndims(x_data)-n_dims+1:ndims(x_data))
 
@@ -115,8 +133,6 @@ function forward(ln::LayerNorm, x::AbstractTensor)
     x_norm = (x_data .- μ) ./ sqrt.(σ² .+ ln.eps)
 
     if ln.elementwise_affine
-        # Reshape γ and β to match input dimensions for broadcasting
-        # Prepend singleton dimensions for batch/non-normalized dims
         leading_ones = ntuple(_ -> 1, ndims(x_data) - n_dims)
         reshape_size = (leading_ones..., ln.normalized_shape...)
         γ_reshaped = reshape(ln.γ, reshape_size)
@@ -294,7 +310,21 @@ function RMSNorm(dim::Int; eps::Float32=Float32(1e-6), dtype::Type{T}=Float32) w
 end
 
 function forward(rn::RMSNorm, x::AbstractTensor)
+    backend = current_backend()
     x_data = x.data
+
+    # Try native backend dispatch for 2D inputs
+    if !(backend isa JuliaBackend) && ndims(x_data) == 2
+        try
+            weight = Float32.(rn.weight)
+            y = backend_rmsnorm(backend, Float32.(x_data), weight, Float32(rn.eps))
+            return Tensor(y)
+        catch
+            # Fall through to Julia implementation
+        end
+    end
+
+    # Julia implementation (reference)
     rms = sqrt.(mean(x_data .^ 2, dims=ndims(x_data)) .+ rn.eps)
     x_norm = x_data ./ rms
     Tensor(x_norm .* rn.weight')

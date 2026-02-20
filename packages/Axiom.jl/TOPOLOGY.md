@@ -39,10 +39,10 @@
     | mathsat   |
     +-----------+
 
-    Backend Abstraction Layer (15 backends)
+    Backend Abstraction Layer (16 backends incl. SmartBackend)
     +-----------------------------------------------------------------+
     |  abstract.jl  -  AbstractBackend / set_backend! / compile()     |
-    |  CompilationTarget / MixedPrecisionWrapper / self-healing       |
+    |  SmartBackend (per-op dispatch) / MixedPrecision / self-healing |
     +-----------------------------------------------------------------+
          |              |              |              |
          v              v              v              v
@@ -137,8 +137,9 @@
 | flash attention        | Done   | `██████████` 100%              |
 | rotary embeddings      | Done   | `██████████` 100%              |
 | Julia-side ccall wiring| Done   | `██████████` 100% (17 ops)     |
-| Compiled .so artifact  | Done   | `██████████` 100% (217KB)      |
-| FFI exports (31 syms)  | Done   | `██████████` 100%              |
+| Compiled .so artifact  | Done   | `██████████` 100% (213KB)      |
+| FFI exports (32 syms)  | Done   | `██████████` 100%              |
+| SIMD GELU/sigmoid/tanh | Done   | `██████████` 100% (3x speedup) |
 
 ### Backends - GPU Extensions
 | Component              | Status | Progress                       |
@@ -187,6 +188,7 @@
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | Backend dispatch       | Done   | `██████████` 100%              |
+| SmartBackend (per-op)  | Done   | `██████████` 100%              |
 | Mixed precision        | Done   | `████████░░` 80% (loss scaling) |
 | fold_batchnorm         | Done   | `██████████` 100%              |
 | fold_constants         | Done   | `██████████` 100%              |
@@ -221,9 +223,9 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~90% complete
+## Overall: ~92% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations (full parity, 31 Zig exports, 23 Rust exports), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations (full parity, 32 Zig exports, 23 Rust exports), SmartBackend per-op dispatch, SIMD-optimized Zig kernels (GELU 3x, RMSNorm 7x, sigmoid 2.9x), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch (LayerNorm/RMSNorm now route through backends), model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
 **Weakest areas:** Coprocessor skeletons (20% — need real hardware integrations), external benchmark comparison (PyTorch/Flux parity testing)
 
 ## Ecosystem Context

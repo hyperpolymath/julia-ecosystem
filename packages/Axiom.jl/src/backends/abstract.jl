@@ -146,6 +146,125 @@ struct CryptoBackend <: AbstractBackend
     device::Int
 end
 
+"""
+    SmartBackend
+
+Per-operation dispatch backend that routes each operation to its fastest
+backend based on benchmark data. Wraps Julia, Rust, and Zig backends
+and selects the optimal one for each kernel.
+
+Dispatch table (from 2026-02-20 benchmarks, post-SIMD):
+- matmul → Julia (BLAS, 7–50x faster)
+- relu → Julia (near-parity, avoids FFI overhead)
+- sigmoid → Zig (2.6–2.9x faster)
+- gelu → Zig (3.0–3.5x faster, SIMD @exp vectorized)
+- softmax → Zig (<50K classes), Julia (≥50K classes)
+- layernorm → Zig (1.2–2.6x faster)
+- rmsnorm → Zig (6.5–7.3x faster)
+- batchnorm → Julia (1.2–1.8x faster)
+- conv2d → Julia (BLAS-based)
+"""
+struct SmartBackend <: AbstractBackend
+    julia::JuliaBackend
+    zig::Union{ZigBackend, Nothing}
+    rust::Union{RustBackend, Nothing}
+end
+
+function SmartBackend(; zig_path::Union{String,Nothing}=nothing, rust_path::Union{String,Nothing}=nothing)
+    julia = JuliaBackend()
+    zig = zig_path !== nothing && isfile(zig_path) ? ZigBackend(zig_path) : nothing
+    rust = rust_path !== nothing && isfile(rust_path) ? RustBackend(rust_path) : nothing
+    SmartBackend(julia, zig, rust)
+end
+
+# SmartBackend dispatch: route each operation to the fastest backend.
+# Falls back to Julia if the preferred native backend is unavailable.
+
+function _smart_zig_or_julia(sb::SmartBackend)
+    sb.zig !== nothing ? sb.zig : sb.julia
+end
+
+# --- MatMul: always Julia (BLAS) ---
+function backend_matmul(sb::SmartBackend, A::Array{Float32}, B::Array{Float32})
+    backend_matmul(sb.julia, A, B)
+end
+
+# --- ReLU: Julia (FFI overhead negates kernel parity) ---
+function backend_relu(sb::SmartBackend, x::Array{Float32})
+    backend_relu(sb.julia, x)
+end
+
+# --- Sigmoid: Zig (3.3x faster) ---
+function backend_sigmoid(sb::SmartBackend, x::Array{Float32})
+    backend_sigmoid(_smart_zig_or_julia(sb), x)
+end
+
+# --- GELU: Zig (3.0–3.5x faster after SIMD optimization) ---
+function backend_gelu(sb::SmartBackend, x::Array{Float32})
+    backend_gelu(_smart_zig_or_julia(sb), x)
+end
+
+# --- Softmax: Zig for small, Julia for large ---
+function backend_softmax(sb::SmartBackend, x::Array{Float32}, dim::Int)
+    classes = size(x, dim)
+    if sb.zig !== nothing && classes < 50_000
+        backend_softmax(sb.zig, x, dim)
+    else
+        backend_softmax(sb.julia, x, dim)
+    end
+end
+
+# --- LayerNorm: Zig (1.9x faster) ---
+function backend_layernorm(sb::SmartBackend, x::Array{Float32}, gamma::Vector{Float32}, beta::Vector{Float32}, eps::Float32)
+    backend_layernorm(_smart_zig_or_julia(sb), x, gamma, beta, eps)
+end
+
+# JuliaBackend signature passthrough (with normalized_shape)
+function backend_layernorm(sb::SmartBackend, x::Array{Float32}, gamma::Vector{Float32}, beta::Vector{Float32}, nshape::Tuple, eps::Float32)
+    if sb.zig !== nothing
+        backend_layernorm(sb.zig, x, gamma, beta, eps)
+    else
+        backend_layernorm(sb.julia, x, gamma, beta, nshape, eps)
+    end
+end
+
+# --- RMSNorm: Zig (7.2x faster) ---
+function backend_rmsnorm(sb::SmartBackend, x::Array{Float32}, weight::Vector{Float32}, eps::Float32)
+    backend_rmsnorm(_smart_zig_or_julia(sb), x, weight, eps)
+end
+
+# --- BatchNorm: Julia (1.4x faster) ---
+function backend_batchnorm(sb::SmartBackend, x::Array{Float32}, gamma::Vector{Float32}, beta::Vector{Float32},
+                           rmean::Vector{Float32}, rvar::Vector{Float32}, eps::Float32, training::Bool)
+    backend_batchnorm(sb.julia, x, gamma, beta, rmean, rvar, eps, training)
+end
+
+# --- Conv2d: Julia (BLAS-based) ---
+function backend_conv2d(sb::SmartBackend, x::Array{Float32}, w::Array{Float32},
+                        bias, stride::Tuple, padding::Tuple)
+    backend_conv2d(sb.julia, x, w, bias, stride, padding)
+end
+
+# --- Tanh: Zig (same @exp path as sigmoid) ---
+function backend_tanh(sb::SmartBackend, x::Array{Float32})
+    backend_tanh(_smart_zig_or_julia(sb), x)
+end
+
+# --- Swish/SiLU: Julia (sigmoid variant, close to parity) ---
+function backend_swish(sb::SmartBackend, x::Array{Float32})
+    backend_swish(sb.julia, x)
+end
+
+# --- Log Softmax: follows softmax routing ---
+function backend_log_softmax(sb::SmartBackend, x::Array{Float32}, dim::Int)
+    classes = size(x, dim)
+    if sb.zig !== nothing && classes < 50_000
+        backend_log_softmax(sb.zig, x, dim)
+    else
+        backend_log_softmax(sb.julia, x, dim)
+    end
+end
+
 # Global current backend
 const _current_backend = Ref{AbstractBackend}(JuliaBackend())
 

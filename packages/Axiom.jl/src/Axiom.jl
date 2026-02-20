@@ -163,9 +163,10 @@ export mse_loss, crossentropy, binary_crossentropy
 export train!, compile, verify
 
 # Backends
-export AbstractBackend, JuliaBackend, RustBackend, ZigBackend
+export AbstractBackend, JuliaBackend, RustBackend, ZigBackend, SmartBackend
 export CUDABackend, ROCmBackend, MetalBackend
 export TPUBackend, NPUBackend, DSPBackend, PPUBackend, MathBackend, FPGABackend
+export VPUBackend, QPUBackend, CryptoBackend
 export current_backend, set_backend!, @with_backend
 export detect_gpu, detect_coprocessor, detect_accelerator
 export cuda_available, rocm_available, metal_available

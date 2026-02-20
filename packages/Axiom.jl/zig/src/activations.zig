@@ -86,23 +86,55 @@ pub fn relu6(input: []const f32, output: []f32) void {
 // ============================================================================
 
 /// GELU approximation: 0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x^3)))
+/// SIMD-vectorized using tanh(z) = 1 - 2/(exp(2z) + 1)
 pub fn gelu(input: []const f32, output: []f32) void {
-    const sqrt_2_over_pi: f32 = 0.7978845608028654;
-    const coeff: f32 = 0.044715;
+    const sqrt_2_over_pi_vec: Vec = @splat(0.7978845608028654);
+    const coeff_vec: Vec = @splat(0.044715);
+    const half_vec: Vec = @splat(0.5);
+    const one_vec: Vec = @splat(1.0);
+    const two_vec: Vec = @splat(2.0);
+    const n = input.len;
 
-    for (input, 0..) |x, i| {
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const x3 = x_vec * x_vec * x_vec;
+        const inner = sqrt_2_over_pi_vec * (x_vec + coeff_vec * x3);
+        // tanh(z) = 1 - 2/(exp(2z) + 1)
+        const exp_2inner = @exp(two_vec * inner);
+        const tanh_val = one_vec - two_vec / (exp_2inner + one_vec);
+        output[i..][0..VEC_SIZE].* = half_vec * x_vec * (one_vec + tanh_val);
+    }
+
+    // Scalar tail
+    while (i < n) : (i += 1) {
+        const x = input[i];
         const x3 = x * x * x;
-        const inner = sqrt_2_over_pi * (x + coeff * x3);
-        output[i] = 0.5 * x * (1.0 + math.tanh(inner));
+        const inner = 0.7978845608028654 * (x + 0.044715 * x3);
+        const exp_2i = @exp(2.0 * inner);
+        output[i] = 0.5 * x * (1.0 + (1.0 - 2.0 / (exp_2i + 1.0)));
     }
 }
 
 /// Fast GELU approximation using sigmoid: x * sigmoid(1.702 * x)
+/// SIMD-vectorized.
 pub fn gelu_fast(input: []const f32, output: []f32) void {
-    const coeff: f32 = 1.702;
+    const coeff_vec: Vec = @splat(1.702);
+    const one_vec: Vec = @splat(1.0);
+    const n = input.len;
 
-    for (input, 0..) |x, i| {
-        const sig = 1.0 / (1.0 + @exp(-coeff * x));
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const neg_cx = @as(Vec, @splat(@as(f32, 0))) - coeff_vec * x_vec;
+        const sig = one_vec / (one_vec + @exp(neg_cx));
+        output[i..][0..VEC_SIZE].* = x_vec * sig;
+    }
+
+    // Scalar tail
+    while (i < n) : (i += 1) {
+        const x = input[i];
+        const sig = 1.0 / (1.0 + @exp(-1.702 * x));
         output[i] = x * sig;
     }
 }
@@ -112,16 +144,41 @@ pub fn gelu_fast(input: []const f32, output: []f32) void {
 // ============================================================================
 
 /// Sigmoid: 1 / (1 + exp(-x))
+/// SIMD-vectorized.
 pub fn sigmoid(input: []const f32, output: []f32) void {
-    for (input, 0..) |x, i| {
-        output[i] = 1.0 / (1.0 + @exp(-x));
+    const one_vec: Vec = @splat(1.0);
+    const zero_vec: Vec = @splat(0.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const neg_x = zero_vec - x_vec;
+        output[i..][0..VEC_SIZE].* = one_vec / (one_vec + @exp(neg_x));
+    }
+
+    while (i < n) : (i += 1) {
+        output[i] = 1.0 / (1.0 + @exp(-input[i]));
     }
 }
 
-/// Tanh
+/// Tanh: (exp(2x) - 1) / (exp(2x) + 1)
+/// SIMD-vectorized using exp identity.
 pub fn tanh_activation(input: []const f32, output: []f32) void {
-    for (input, 0..) |x, i| {
-        output[i] = math.tanh(x);
+    const one_vec: Vec = @splat(1.0);
+    const two_vec: Vec = @splat(2.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const exp_2x = @exp(two_vec * x_vec);
+        output[i..][0..VEC_SIZE].* = (exp_2x - one_vec) / (exp_2x + one_vec);
+    }
+
+    while (i < n) : (i += 1) {
+        const exp_2x = @exp(2.0 * input[i]);
+        output[i] = (exp_2x - 1.0) / (exp_2x + 1.0);
     }
 }
 

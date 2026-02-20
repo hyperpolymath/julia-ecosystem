@@ -6,13 +6,13 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T13:10:00+00:00")
+       (updated . "2026-02-20T13:30:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 90)
+       (overall-completion . 92)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -43,7 +43,10 @@
           "aggressive-optimization-pass"
           "resource-aware-backend-dispatch"
           "device-resources-scoring"
-          "proof-type-inference-static-empirical-formal"))))
+          "proof-type-inference-static-empirical-formal"
+          "smart-backend-per-op-dispatch"
+          "simd-gelu-sigmoid-tanh-vectorization"
+          "backend-aware-layernorm-rmsnorm-forward"))))
 
     (route-to-mvp
       ((milestones
@@ -148,4 +151,13 @@
                       "Perfective: Model metadata bundle save/load (save_model_bundle, load_model_bundle)"
                       "Perfective: Benchmark Zig backend detection + batchnorm signature fix"
                       "204 tests passing, overall completion 82%→85%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20h
+         ((actions . ("SmartBackend: Per-operation dispatch routing (matmul→Julia, gelu/sigmoid/rmsnorm→Zig, etc.)"
+                      "SIMD optimization: Vectorized GELU using @exp identity tanh(z)=1-2/(exp(2z)+1) — 0.55x→3.0x"
+                      "SIMD optimization: Vectorized sigmoid and tanh with @Vector(8,f32)"
+                      "Backend-aware: LayerNorm and RMSNorm forward() now dispatch through backends"
+                      "Zig .so rebuilt: 217KB→213KB, 32 exported symbols"
+                      "Zig geomean: 0.89x→1.01x vs Julia (now at overall parity)"
+                      "204 tests passing, overall completion 90%→92%"))
           (agent . "claude-opus-4-6")))))))

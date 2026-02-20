@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
 //! Benchmarks for Axiom Zig Backend
 //!
 //! Run with: zig build bench

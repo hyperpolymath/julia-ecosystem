@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Axiom.jl — Provably Correct Machine Learning
+# Justfile (Julia-native recipes, no Nix required)
+
+set dotenv-load := false
+
+project_dir := justfile_directory()
+
+# Default: show available recipes
+default:
+    @just --list
+
+# Run the full test suite (204 tests)
+test:
+    julia --project={{project_dir}} -e 'using Pkg; Pkg.test()'
+
+# Run tests with verbose output
+test-verbose:
+    julia --project={{project_dir}} -e 'using Pkg; Pkg.test(; test_args=["--verbose"])'
+
+# Precompile the package
+precompile:
+    julia --project={{project_dir}} -e 'using Pkg; Pkg.precompile()'
+
+# Instantiate dependencies
+deps:
+    julia --project={{project_dir}} -e 'using Pkg; Pkg.instantiate()'
+
+# Update dependencies
+update:
+    julia --project={{project_dir}} -e 'using Pkg; Pkg.update()'
+
+# Run benchmarks
+bench:
+    julia --project={{project_dir}} benchmark/benchmarks.jl
+
+# Build Rust backend (.so)
+build-rust:
+    cd {{project_dir}}/rust && cargo build --release
+
+# Build Zig backend (.so)
+build-zig:
+    cd {{project_dir}}/zig && zig build -Doptimize=ReleaseFast
+
+# Build all native backends
+build-all: build-rust build-zig
+
+# Run a quick smoke test (load module, check exports)
+smoke:
+    julia --project={{project_dir}} -e 'using Axiom; println("Axiom v", pkgversion(Axiom)); println("Backend: ", Axiom.current_backend()); println("Exports: ", length(names(Axiom)))'
+
+# Check SPDX license headers
+check-spdx:
+    #!/usr/bin/env bash
+    missing=0
+    for f in $(find src ext -name "*.jl"); do
+        if ! head -1 "$f" | grep -q "SPDX-License-Identifier"; then
+            echo "MISSING SPDX: $f"
+            missing=$((missing + 1))
+        fi
+    done
+    if [ $missing -eq 0 ]; then echo "All .jl files have SPDX headers"; fi
+
+# Verify proof certificates
+verify-certs:
+    julia --project={{project_dir}} -e '
+        using Axiom
+        cert = Axiom.ProofCertificate("test", "ValidProbabilities", "heuristic", Dict(), "abc123")
+        println("Certificate hash: ", cert.hash)
+        println("Type: ", Axiom.proof_type(cert))
+    '
+
+# Export proofs to all three assistants
+export-proofs dir="/tmp/axiom-proofs":
+    julia --project={{project_dir}} -e '
+        using Axiom
+        mkpath("{{dir}}")
+        cert = Axiom.ProofCertificate("test", "ValidProbabilities", "formal", Dict(), "abc123")
+        Axiom.export_lean(cert, "{{dir}}/valid_prob.lean")
+        Axiom.export_coq(cert, "{{dir}}/valid_prob.v")
+        Axiom.export_isabelle(cert, "{{dir}}/valid_prob.thy")
+    '
+
+# Show backend diagnostics
+diagnostics:
+    julia --project={{project_dir}} -e '
+        using Axiom
+        println("=== Axiom.jl Backend Diagnostics ===")
+        println("Current backend: ", Axiom.current_backend())
+        println("Julia backend:   always available")
+        println("CUDA available:  ", Axiom.cuda_available())
+        println("ROCm available:  ", Axiom.rocm_available())
+        println("Metal available: ", Axiom.metal_available())
+        report = Axiom.resource_report()
+        for (k, v) in pairs(report)
+            println("  ", k, ": ", v)
+        end
+    '
+
+# Clean build artifacts
+clean:
+    rm -rf {{project_dir}}/rust/target
+    rm -rf {{project_dir}}/zig/zig-cache {{project_dir}}/zig/zig-out

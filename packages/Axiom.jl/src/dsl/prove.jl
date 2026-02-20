@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
 # This file defines the @prove macro and related utilities for property verification.
 
 """

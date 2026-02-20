@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
 //! Pooling Operations
 //!
 //! Max pooling, average pooling, and global pooling.

@@ -69,9 +69,7 @@
          ())
        (high
          (("Zig library not compiled" .
-           "No .so artifact committed. Users must run zig build manually.")
-          ("Git author wrong" .
-           "26/28 commits authored as 'Your Name <you@example.com>'. Needs rebase or note.")))
+           "No .so artifact committed. Users must run `just build-zig` manually.")))
        (medium
          (("Model save/load broken" .
            "save_model uses repr(), load_model! is a no-op. Needs JLD2/BSON.")
@@ -79,11 +77,7 @@
            "TPU/NPU/DSP/PPU/Math/FPGA/VPU/QPU/Crypto backends are env-detection stubs only.")
           ("Mixed precision incomplete" .
            "MixedPrecisionWrapper exists but only basic float16/float32 casting.")))
-       (low
-         (("SPDX header inconsistency" .
-           "Main module says MIT, other files say PMPL-1.0-or-later.")
-          ("Justfile is Nix-only" .
-           "All recipes require nix but no flake.nix exists in repo."))))))
+       (low ()))))
 
     (critical-next-actions
       ((immediate

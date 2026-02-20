@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
 //! Normalization Operations
 //!
 //! Layer normalization, RMS normalization, and batch normalization.

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
 //! Axiom Core - High-performance Rust backend for Axiom.jl
 //!
 //! This crate provides optimized implementations of neural network operations

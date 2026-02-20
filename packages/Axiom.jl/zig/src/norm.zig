@@ -11,6 +11,7 @@ const Vec = @Vector(VEC_SIZE, f32);
 
 /// Layer Normalization
 /// Normalizes over the last dimension (hidden_size)
+/// SIMD-optimized mean, variance, and normalization.
 pub fn layernorm(
     x_ptr: [*]const f32,
     y_ptr: [*]f32,
@@ -27,24 +28,45 @@ pub fn layernorm(
         const x = x_ptr[b * hidden_size ..][0..hidden_size];
         var y = y_ptr[b * hidden_size ..][0..hidden_size];
 
-        // Compute mean
-        var sum: f32 = 0;
-        for (x) |val| {
-            sum += val;
+        // Compute mean with SIMD
+        var sum_acc: Vec = @splat(0);
+        var i: usize = 0;
+        while (i + VEC_SIZE <= hidden_size) : (i += VEC_SIZE) {
+            const x_vec: Vec = x[i..][0..VEC_SIZE].*;
+            sum_acc += x_vec;
+        }
+        var sum: f32 = @reduce(.Add, sum_acc);
+        while (i < hidden_size) : (i += 1) {
+            sum += x[i];
         }
         const mean = sum / hidden_f;
 
-        // Compute variance
-        var var_sum: f32 = 0;
-        for (x) |val| {
-            const diff = val - mean;
+        // Compute variance with SIMD
+        const mean_vec: Vec = @splat(mean);
+        var var_acc: Vec = @splat(0);
+        i = 0;
+        while (i + VEC_SIZE <= hidden_size) : (i += VEC_SIZE) {
+            const x_vec: Vec = x[i..][0..VEC_SIZE].*;
+            const diff = x_vec - mean_vec;
+            var_acc += diff * diff;
+        }
+        var var_sum: f32 = @reduce(.Add, var_acc);
+        while (i < hidden_size) : (i += 1) {
+            const diff = x[i] - mean;
             var_sum += diff * diff;
         }
-        const variance = var_sum / hidden_f;
-        const inv_std = 1.0 / @sqrt(variance + eps);
+        const inv_std = 1.0 / @sqrt(var_sum / hidden_f + eps);
 
-        // Normalize and scale
-        var i: usize = 0;
+        // Normalize and scale with SIMD
+        const inv_std_vec: Vec = @splat(inv_std);
+        i = 0;
+        while (i + VEC_SIZE <= hidden_size) : (i += VEC_SIZE) {
+            const x_vec: Vec = x[i..][0..VEC_SIZE].*;
+            const g_vec: Vec = gamma_ptr[i..][0..VEC_SIZE].*;
+            const b_vec: Vec = beta_ptr[i..][0..VEC_SIZE].*;
+            const normalized = (x_vec - mean_vec) * inv_std_vec;
+            y[i..][0..VEC_SIZE].* = g_vec * normalized + b_vec;
+        }
         while (i < hidden_size) : (i += 1) {
             const normalized = (x[i] - mean) * inv_std;
             y[i] = gamma_ptr[i] * normalized + beta_ptr[i];

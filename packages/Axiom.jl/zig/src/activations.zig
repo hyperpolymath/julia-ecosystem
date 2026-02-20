@@ -207,26 +207,47 @@ pub fn hard_sigmoid(input: []const f32, output: []f32) void {
 // ============================================================================
 
 /// Softmax for a single vector
+/// SIMD-optimized max, exp, sum, and normalization.
 pub fn softmax(input: []const f32, output: []f32) void {
     const n = input.len;
 
-    // Find max for numerical stability
-    var max_val: f32 = input[0];
-    for (input[1..]) |x| {
-        if (x > max_val) max_val = x;
+    // Find max with SIMD
+    var max_acc: Vec = @splat(input[0]);
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        max_acc = @max(max_acc, x_vec);
+    }
+    var max_val: f32 = @reduce(.Max, max_acc);
+    while (i < n) : (i += 1) {
+        if (input[i] > max_val) max_val = input[i];
     }
 
-    // Compute exp(x - max) and sum
-    var sum: f32 = 0;
-    for (input, 0..) |x, i| {
-        const exp_val = @exp(x - max_val);
+    // Compute exp(x - max) and sum with SIMD
+    const max_vec: Vec = @splat(max_val);
+    var sum_acc: Vec = @splat(0.0);
+    i = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const exp_val = @exp(x_vec - max_vec);
+        output[i..][0..VEC_SIZE].* = exp_val;
+        sum_acc += exp_val;
+    }
+    var sum: f32 = @reduce(.Add, sum_acc);
+    while (i < n) : (i += 1) {
+        const exp_val = @exp(input[i] - max_val);
         output[i] = exp_val;
         sum += exp_val;
     }
 
-    // Normalize
-    const inv_sum = 1.0 / sum;
-    var i: usize = 0;
+    // Normalize with SIMD
+    const inv_sum: f32 = 1.0 / sum;
+    const inv_sum_vec: Vec = @splat(inv_sum);
+    i = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const y_vec: Vec = output[i..][0..VEC_SIZE].*;
+        output[i..][0..VEC_SIZE].* = y_vec * inv_sum_vec;
+    }
     while (i < n) : (i += 1) {
         output[i] *= inv_sum;
     }
@@ -273,10 +294,23 @@ pub fn log_softmax(input: []const f32, output: []f32) void {
 // Swish / SiLU / Mish
 // ============================================================================
 
-/// Swish: x * sigmoid(x)
+/// Swish: x * sigmoid(x) = x / (1 + exp(-x))
+/// SIMD-vectorized.
 pub fn swish(input: []const f32, output: []f32) void {
-    for (input, 0..) |x, i| {
-        output[i] = x / (1.0 + @exp(-x));
+    const one_vec: Vec = @splat(1.0);
+    const zero_vec: Vec = @splat(0.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const neg_x = zero_vec - x_vec;
+        const sig = one_vec / (one_vec + @exp(neg_x));
+        output[i..][0..VEC_SIZE].* = x_vec * sig;
+    }
+
+    while (i < n) : (i += 1) {
+        output[i] = input[i] / (1.0 + @exp(-input[i]));
     }
 }
 
@@ -289,8 +323,30 @@ pub fn hard_swish(input: []const f32, output: []f32) void {
 }
 
 /// Mish: x * tanh(softplus(x))
+/// SIMD-vectorized using tanh(z) = 1 - 2/(exp(2z)+1).
 pub fn mish(input: []const f32, output: []f32) void {
-    for (input, 0..) |x, i| {
+    const one_vec: Vec = @splat(1.0);
+    const two_vec: Vec = @splat(2.0);
+    const twenty_vec: Vec = @splat(20.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        // softplus(x) = log(1 + exp(x))
+        const exp_x = @exp(x_vec);
+        const sp = @log(one_vec + exp_x);
+        // tanh(sp) = 1 - 2/(exp(2*sp) + 1)
+        const exp_2sp = @exp(two_vec * sp);
+        const tanh_sp = one_vec - two_vec / (exp_2sp + one_vec);
+        // For large x (>20): mish ≈ x (softplus≈x, tanh≈1)
+        const high_mask = x_vec > twenty_vec;
+        const mish_val = x_vec * tanh_sp;
+        output[i..][0..VEC_SIZE].* = @select(f32, high_mask, x_vec, mish_val);
+    }
+
+    while (i < n) : (i += 1) {
+        const x = input[i];
         const sp = if (x > 20.0) x else @log(1.0 + @exp(x));
         output[i] = x * math.tanh(sp);
     }
@@ -301,18 +357,49 @@ pub fn mish(input: []const f32, output: []f32) void {
 // ============================================================================
 
 /// ELU: x if x > 0, else alpha * (exp(x) - 1)
+/// SIMD-vectorized.
 pub fn elu(input: []const f32, output: []f32, alpha: f32) void {
-    for (input, 0..) |x, i| {
+    const alpha_vec: Vec = @splat(alpha);
+    const zero_vec: Vec = @splat(0.0);
+    const one_vec: Vec = @splat(1.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const mask = x_vec > zero_vec;
+        const neg_path = alpha_vec * (@exp(x_vec) - one_vec);
+        output[i..][0..VEC_SIZE].* = @select(f32, mask, x_vec, neg_path);
+    }
+
+    while (i < n) : (i += 1) {
+        const x = input[i];
         output[i] = if (x > 0) x else alpha * (@exp(x) - 1);
     }
 }
 
 /// SELU (Scaled ELU)
+/// SIMD-vectorized.
 pub fn selu(input: []const f32, output: []f32) void {
-    const alpha: f32 = 1.6732632423543772;
-    const scale: f32 = 1.0507009873554805;
+    const alpha_vec: Vec = @splat(@as(f32, 1.6732632423543772));
+    const scale_vec: Vec = @splat(@as(f32, 1.0507009873554805));
+    const zero_vec: Vec = @splat(0.0);
+    const one_vec: Vec = @splat(1.0);
+    const n = input.len;
 
-    for (input, 0..) |x, i| {
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const mask = x_vec > zero_vec;
+        const neg_path = alpha_vec * (@exp(x_vec) - one_vec);
+        const elu_val = @select(f32, mask, x_vec, neg_path);
+        output[i..][0..VEC_SIZE].* = scale_vec * elu_val;
+    }
+
+    while (i < n) : (i += 1) {
+        const x = input[i];
+        const alpha: f32 = 1.6732632423543772;
+        const scale: f32 = 1.0507009873554805;
         const elu_val = if (x > 0) x else alpha * (@exp(x) - 1);
         output[i] = scale * elu_val;
     }
@@ -323,9 +410,28 @@ pub fn selu(input: []const f32, output: []f32) void {
 // ============================================================================
 
 /// Softplus: log(1 + exp(x))
+/// SIMD-vectorized with numerical stability.
 pub fn softplus(input: []const f32, output: []f32) void {
-    for (input, 0..) |x, i| {
-        // Numerically stable version
+    const one_vec: Vec = @splat(1.0);
+    const twenty_vec: Vec = @splat(20.0);
+    const neg_twenty_vec: Vec = @splat(-20.0);
+    const n = input.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = input[i..][0..VEC_SIZE].*;
+        const exp_x = @exp(x_vec);
+        const log1p_exp = @log(one_vec + exp_x);
+        // For x > 20: result ≈ x (avoids overflow in exp)
+        const high_mask = x_vec > twenty_vec;
+        // For x < -20: result ≈ exp(x) (avoids underflow in log)
+        const low_mask = x_vec < neg_twenty_vec;
+        const mid_or_low = @select(f32, low_mask, exp_x, log1p_exp);
+        output[i..][0..VEC_SIZE].* = @select(f32, high_mask, x_vec, mid_or_low);
+    }
+
+    while (i < n) : (i += 1) {
+        const x = input[i];
         output[i] = if (x > 20.0)
             x
         else if (x < -20.0)

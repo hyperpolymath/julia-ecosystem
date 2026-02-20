@@ -7,6 +7,7 @@
 
 const std = @import("std");
 const activations = @import("activations.zig");
+const norm = @import("norm.zig");
 
 /// Minimum elements before spawning threads (64K)
 pub const THREAD_THRESHOLD: usize = 65536;
@@ -275,6 +276,257 @@ fn parallel_unary_alpha(
         .start = last_start,
         .len = last_len,
         .alpha = alpha,
+    });
+
+    for (&handles) |*maybe_handle| {
+        if (maybe_handle.*) |handle| {
+            handle.join();
+            maybe_handle.* = null;
+        }
+    }
+}
+
+// ============================================================================
+// Batch-parallel dispatch for normalization/softmax operations
+// ============================================================================
+
+/// Minimum total elements before batch-parallel threading kicks in
+const BATCH_THREAD_THRESHOLD: usize = 8192;
+
+/// Context for batch-parallel softmax
+const SoftmaxBatchCtx = struct {
+    input: [*]const f32,
+    output: [*]f32,
+    batch_start: usize,
+    batch_count: usize,
+    num_classes: usize,
+};
+
+fn worker_softmax_batch(ctx: SoftmaxBatchCtx) void {
+    const offset = ctx.batch_start * ctx.num_classes;
+    activations.softmax_batched(
+        ctx.input + offset,
+        ctx.output + offset,
+        ctx.batch_count,
+        ctx.num_classes,
+    );
+}
+
+/// Parallel softmax over batch dimension
+pub fn parallel_softmax_batched(
+    input_ptr: [*]const f32,
+    output_ptr: [*]f32,
+    batch_size: usize,
+    num_classes: usize,
+) void {
+    const total = batch_size * num_classes;
+    if (total < BATCH_THREAD_THRESHOLD or batch_size < 4) {
+        activations.softmax_batched(input_ptr, output_ptr, batch_size, num_classes);
+        return;
+    }
+    parallel_batch(SoftmaxBatchCtx, worker_softmax_batch, input_ptr, output_ptr, batch_size, num_classes, null, null, null, 0);
+}
+
+/// Context for batch-parallel layernorm
+const LayernormBatchCtx = struct {
+    input: [*]const f32,
+    output: [*]f32,
+    gamma: [*]const f32,
+    beta: [*]const f32,
+    batch_start: usize,
+    batch_count: usize,
+    hidden_size: usize,
+    eps: f32,
+};
+
+fn worker_layernorm_batch(ctx: LayernormBatchCtx) void {
+    const offset = ctx.batch_start * ctx.hidden_size;
+    norm.layernorm(
+        ctx.input + offset,
+        ctx.output + offset,
+        ctx.gamma,
+        ctx.beta,
+        ctx.batch_count,
+        ctx.hidden_size,
+        ctx.eps,
+    );
+}
+
+/// Parallel layernorm over batch dimension
+pub fn parallel_layernorm(
+    input_ptr: [*]const f32,
+    output_ptr: [*]f32,
+    gamma_ptr: [*]const f32,
+    beta_ptr: [*]const f32,
+    batch_size: usize,
+    hidden_size: usize,
+    eps: f32,
+) void {
+    const total = batch_size * hidden_size;
+    if (total < BATCH_THREAD_THRESHOLD or batch_size < 4) {
+        norm.layernorm(input_ptr, output_ptr, gamma_ptr, beta_ptr, batch_size, hidden_size, eps);
+        return;
+    }
+
+    const num_threads = @min(MAX_WORKERS + 1, batch_size);
+    const chunk = (batch_size + num_threads - 1) / num_threads;
+    var handles: [MAX_WORKERS]?std.Thread = .{null} ** MAX_WORKERS;
+
+    for (0..num_threads - 1) |t| {
+        const b_start = t * chunk;
+        const b_count = @min(chunk, batch_size - b_start);
+        handles[t] = std.Thread.spawn(.{}, worker_layernorm_batch, .{LayernormBatchCtx{
+            .input = input_ptr,
+            .output = output_ptr,
+            .gamma = gamma_ptr,
+            .beta = beta_ptr,
+            .batch_start = b_start,
+            .batch_count = b_count,
+            .hidden_size = hidden_size,
+            .eps = eps,
+        }}) catch null;
+    }
+
+    // Main thread does last chunk
+    const last_start = (num_threads - 1) * chunk;
+    const last_count = batch_size - last_start;
+    worker_layernorm_batch(LayernormBatchCtx{
+        .input = input_ptr,
+        .output = output_ptr,
+        .gamma = gamma_ptr,
+        .beta = beta_ptr,
+        .batch_start = last_start,
+        .batch_count = last_count,
+        .hidden_size = hidden_size,
+        .eps = eps,
+    });
+
+    for (&handles) |*maybe_handle| {
+        if (maybe_handle.*) |handle| {
+            handle.join();
+            maybe_handle.* = null;
+        }
+    }
+}
+
+/// Context for batch-parallel rmsnorm
+const RmsnormBatchCtx = struct {
+    input: [*]const f32,
+    output: [*]f32,
+    weight: [*]const f32,
+    batch_start: usize,
+    batch_count: usize,
+    hidden_size: usize,
+    eps: f32,
+};
+
+fn worker_rmsnorm_batch(ctx: RmsnormBatchCtx) void {
+    const offset = ctx.batch_start * ctx.hidden_size;
+    norm.rmsnorm(
+        ctx.input + offset,
+        ctx.output + offset,
+        ctx.weight,
+        ctx.batch_count,
+        ctx.hidden_size,
+        ctx.eps,
+    );
+}
+
+/// Parallel rmsnorm over batch dimension
+pub fn parallel_rmsnorm(
+    input_ptr: [*]const f32,
+    output_ptr: [*]f32,
+    weight_ptr: [*]const f32,
+    batch_size: usize,
+    hidden_size: usize,
+    eps: f32,
+) void {
+    const total = batch_size * hidden_size;
+    if (total < BATCH_THREAD_THRESHOLD or batch_size < 4) {
+        norm.rmsnorm(input_ptr, output_ptr, weight_ptr, batch_size, hidden_size, eps);
+        return;
+    }
+
+    const num_threads = @min(MAX_WORKERS + 1, batch_size);
+    const chunk = (batch_size + num_threads - 1) / num_threads;
+    var handles: [MAX_WORKERS]?std.Thread = .{null} ** MAX_WORKERS;
+
+    for (0..num_threads - 1) |t| {
+        const b_start = t * chunk;
+        const b_count = @min(chunk, batch_size - b_start);
+        handles[t] = std.Thread.spawn(.{}, worker_rmsnorm_batch, .{RmsnormBatchCtx{
+            .input = input_ptr,
+            .output = output_ptr,
+            .weight = weight_ptr,
+            .batch_start = b_start,
+            .batch_count = b_count,
+            .hidden_size = hidden_size,
+            .eps = eps,
+        }}) catch null;
+    }
+
+    const last_start = (num_threads - 1) * chunk;
+    const last_count = batch_size - last_start;
+    worker_rmsnorm_batch(RmsnormBatchCtx{
+        .input = input_ptr,
+        .output = output_ptr,
+        .weight = weight_ptr,
+        .batch_start = last_start,
+        .batch_count = last_count,
+        .hidden_size = hidden_size,
+        .eps = eps,
+    });
+
+    for (&handles) |*maybe_handle| {
+        if (maybe_handle.*) |handle| {
+            handle.join();
+            maybe_handle.* = null;
+        }
+    }
+}
+
+// Generic batch parallel dispatcher (used by softmax)
+fn parallel_batch(
+    comptime Ctx: type,
+    comptime worker_fn: fn (Ctx) void,
+    input: [*]const f32,
+    output: [*]f32,
+    batch_size: usize,
+    feature_size: usize,
+    _gamma: ?[*]const f32,
+    _beta: ?[*]const f32,
+    _weight: ?[*]const f32,
+    _eps: f32,
+) void {
+    _ = _gamma;
+    _ = _beta;
+    _ = _weight;
+    _ = _eps;
+
+    const num_threads = @min(MAX_WORKERS + 1, batch_size);
+    const chunk = (batch_size + num_threads - 1) / num_threads;
+    var handles: [MAX_WORKERS]?std.Thread = .{null} ** MAX_WORKERS;
+
+    for (0..num_threads - 1) |t| {
+        const b_start = t * chunk;
+        const b_count = @min(chunk, batch_size - b_start);
+        handles[t] = std.Thread.spawn(.{}, worker_fn, .{Ctx{
+            .input = input,
+            .output = output,
+            .batch_start = b_start,
+            .batch_count = b_count,
+            .num_classes = feature_size,
+        }}) catch null;
+    }
+
+    const last_start = (num_threads - 1) * chunk;
+    const last_count = batch_size - last_start;
+    worker_fn(Ctx{
+        .input = input,
+        .output = output,
+        .batch_start = last_start,
+        .batch_count = last_count,
+        .num_classes = feature_size,
     });
 
     for (&handles) |*maybe_handle| {

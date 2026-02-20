@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
-//! Axiom.jl Zig Backend
+//! Axiom.jl Zig Backend — Sole Native Backend
 //!
-//! High-performance, minimal-footprint backend for Axiom.jl
-//! Provides SIMD-optimized neural network operations with zero-overhead C FFI.
+//! High-performance, minimal-footprint backend for Axiom.jl.
+//! Provides SIMD-optimized neural network operations with multi-threaded
+//! dispatch and zero-overhead C FFI.
 //!
-//! Advantages over Rust backend:
-//! - 10x faster compilation
-//! - Smaller binary size (~100KB vs ~2MB)
-//! - First-class SIMD support
-//! - Simpler codebase
-//! - Native C interop (no bindgen)
+//! Features:
+//! - 8-wide f32 SIMD vectorization for all activations
+//! - Multi-threaded dispatch (4 threads, 64K threshold for element-wise ops)
+//! - Batch-parallel threading for softmax/layernorm/rmsnorm
+//! - 32 FFI exports, ~340KB compiled .so
 
 const std = @import("std");
 const math = std.math;
@@ -110,7 +110,7 @@ export fn axiom_softmax(
     batch_size: usize,
     num_classes: usize,
 ) void {
-    activations.softmax_batched(x_ptr, y_ptr, batch_size, num_classes);
+    threading.parallel_softmax_batched(x_ptr, y_ptr, batch_size, num_classes);
 }
 
 export fn axiom_swish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
@@ -286,7 +286,7 @@ export fn axiom_layernorm(
     hidden_size: usize,
     eps: f32,
 ) void {
-    norm.layernorm(x_ptr, y_ptr, gamma_ptr, beta_ptr, batch_size, hidden_size, eps);
+    threading.parallel_layernorm(x_ptr, y_ptr, gamma_ptr, beta_ptr, batch_size, hidden_size, eps);
 }
 
 export fn axiom_rmsnorm(
@@ -297,7 +297,7 @@ export fn axiom_rmsnorm(
     hidden_size: usize,
     eps: f32,
 ) void {
-    norm.rmsnorm(x_ptr, y_ptr, weight_ptr, batch_size, hidden_size, eps);
+    threading.parallel_rmsnorm(x_ptr, y_ptr, weight_ptr, batch_size, hidden_size, eps);
 }
 
 export fn axiom_batchnorm(

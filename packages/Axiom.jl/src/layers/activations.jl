@@ -185,6 +185,7 @@ ReLU capped at 6: min(max(0, x), 6)
 """
 relu6(x::AbstractTensor) = Tensor(min.(max.(zero(eltype(x.data)), x.data), 6))
 relu6(x::AbstractArray) = min.(max.(zero(eltype(x)), x), 6)
+relu6(x::Number) = min(max(zero(x), x), oftype(x, 6))
 
 """
     hardsigmoid(x)

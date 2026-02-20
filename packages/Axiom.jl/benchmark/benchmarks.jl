@@ -77,8 +77,11 @@ for size in sizes
             Axiom.backend_gelu($backend, $x)
         end
 
-        SUITE["activations"][size]["swish_$backend_name"] = @benchmarkable begin
-            Axiom.backend_swish($backend, $x)
+        # swish only available on Zig/SmartBackend (not JuliaBackend)
+        if !(backend isa JuliaBackend)
+            SUITE["activations"][size]["swish_$backend_name"] = @benchmarkable begin
+                Axiom.backend_swish($backend, $x)
+            end
         end
     end
 end

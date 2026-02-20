@@ -58,6 +58,26 @@ macro zig_call(func_name, ret_type, arg_types, args...)
 end
 
 # ============================================================================
+# Row-major conversion helpers (Julia is column-major, Zig expects row-major)
+# ============================================================================
+
+"""Convert Julia column-major array to row-major flat vector for Zig FFI."""
+function _to_row_major_vec(x::AbstractArray{Float32})
+    if ndims(x) == 1
+        return Vector{Float32}(x)
+    end
+    vec(permutedims(x, reverse(1:ndims(x))))
+end
+
+"""Convert row-major flat vector back to Julia column-major array."""
+function _from_row_major_vec(v::Vector{Float32}, dims::Tuple)
+    if length(dims) == 1
+        return v
+    end
+    permutedims(reshape(v, reverse(dims)...), reverse(1:length(dims)))
+end
+
+# ============================================================================
 # Matrix Operations
 # ============================================================================
 
@@ -493,6 +513,7 @@ end
 
 """
 Layer normalization via Zig.
+Converts to row-major (batch-contiguous) layout for Zig FFI.
 """
 function backend_layernorm(
     ::ZigBackend,
@@ -501,25 +522,29 @@ function backend_layernorm(
     beta::Vector{Float32},
     eps::Float32
 )
-    if !zig_available()
-        return backend_layernorm(JuliaBackend(), x, gamma, beta, eps)
-    end
-
-    y = similar(x)
     batch_size = size(x, 1)
     hidden_size = size(x, 2)
+
+    if !zig_available()
+        return backend_layernorm(JuliaBackend(), x, gamma, beta, (hidden_size,), eps)
+    end
+
+    x_dims = Tuple(size(x))
+    x_row = _to_row_major_vec(x)
+    y_row = Vector{Float32}(undef, length(x_row))
 
     @zig_call axiom_layernorm Cvoid (
         Ptr{Float32}, Ptr{Float32},
         Ptr{Float32}, Ptr{Float32},
         Csize_t, Csize_t, Cfloat
-    ) x y gamma beta batch_size hidden_size eps
+    ) x_row y_row gamma beta batch_size hidden_size eps
 
-    y
+    _from_row_major_vec(y_row, x_dims)
 end
 
 """
 RMS normalization via Zig.
+Converts to row-major (batch-contiguous) layout for Zig FFI.
 """
 function backend_rmsnorm(
     ::ZigBackend,
@@ -527,20 +552,24 @@ function backend_rmsnorm(
     weight::Vector{Float32},
     eps::Float32
 )
+    batch_size = size(x, 1)
+    hidden_size = size(x, 2)
+
     if !zig_available()
         return backend_rmsnorm(JuliaBackend(), x, weight, eps)
     end
 
-    y = similar(x)
-    batch_size = size(x, 1)
-    hidden_size = size(x, 2)
+    x_dims = Tuple(size(x))
+
+    x_row = _to_row_major_vec(x)
+    y_row = Vector{Float32}(undef, length(x_row))
 
     @zig_call axiom_rmsnorm Cvoid (
         Ptr{Float32}, Ptr{Float32}, Ptr{Float32},
         Csize_t, Csize_t, Cfloat
-    ) x y weight batch_size hidden_size eps
+    ) x_row y_row weight batch_size hidden_size eps
 
-    y
+    _from_row_major_vec(y_row, x_dims)
 end
 
 # ============================================================================

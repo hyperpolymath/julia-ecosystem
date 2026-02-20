@@ -108,6 +108,54 @@ function backend_gelu(::JuliaBackend, x::AbstractArray{T}) where T
     T(0.5) .* x .* (one(T) .+ tanh.(c .* (x .+ T(0.044715) .* x .^ 3)))
 end
 
+function backend_swish(::JuliaBackend, x::AbstractArray{T}) where T
+    x .* (one(T) ./ (one(T) .+ exp.(-x)))
+end
+
+function backend_elu(::JuliaBackend, x::AbstractArray{T}, alpha::T) where T
+    ifelse.(x .> zero(T), x, alpha .* (exp.(x) .- one(T)))
+end
+
+function backend_selu(::JuliaBackend, x::AbstractArray{T}) where T
+    λ = T(1.0507009873554804934193349852946)
+    α = T(1.6732632423543772848170429916717)
+    λ .* ifelse.(x .> zero(T), x, α .* (exp.(x) .- one(T)))
+end
+
+function backend_mish(::JuliaBackend, x::AbstractArray{T}) where T
+    x .* tanh.(log.(one(T) .+ exp.(x)))
+end
+
+function backend_hardswish(::JuliaBackend, x::AbstractArray{T}) where T
+    x .* clamp.((x .+ T(3)) ./ T(6), zero(T), one(T))
+end
+
+function backend_hardsigmoid(::JuliaBackend, x::AbstractArray{T}) where T
+    clamp.((x .+ T(3)) ./ T(6), zero(T), one(T))
+end
+
+function backend_softplus(::JuliaBackend, x::AbstractArray{T}) where T
+    log.(one(T) .+ exp.(x))
+end
+
+function backend_log_softmax(::JuliaBackend, x::AbstractArray{T}, dim::Int) where T
+    x_max = maximum(x, dims=dim)
+    shifted = x .- x_max
+    shifted .- log.(sum(exp.(shifted), dims=dim))
+end
+
+function backend_rmsnorm(
+    ::JuliaBackend,
+    x::AbstractArray{T},
+    weight::AbstractArray{T},
+    eps::T
+) where T
+    rms = sqrt.(mean(x .^ 2, dims=ndims(x)) .+ eps)
+    x_norm = x ./ rms
+    w = reshape(weight, ntuple(i -> i == ndims(x) ? length(weight) : 1, ndims(x)))
+    w .* x_norm
+end
+
 # ============================================================================
 # Normalization
 # ============================================================================

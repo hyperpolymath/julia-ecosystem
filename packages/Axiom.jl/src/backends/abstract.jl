@@ -239,9 +239,44 @@ function backend_tanh(sb::SmartBackend, x::Array{Float32})
     backend_tanh(_smart_zig_or_julia(sb), x)
 end
 
-# --- Swish/SiLU: Julia (sigmoid variant, close to parity) ---
+# --- Swish/SiLU: Zig has SIMD+threaded, Julia as fallback ---
 function backend_swish(sb::SmartBackend, x::Array{Float32})
-    backend_swish(sb.julia, x)
+    backend_swish(_smart_zig_or_julia(sb), x)
+end
+
+# --- ELU: Zig has SIMD+threaded, Julia as fallback ---
+function backend_elu(sb::SmartBackend, x::Array{Float32}, alpha::Float32)
+    backend_elu(_smart_zig_or_julia(sb), x, alpha)
+end
+
+# --- Leaky ReLU: Zig has SIMD+threaded, Julia as fallback ---
+function backend_leaky_relu(sb::SmartBackend, x::Array{Float32}, alpha::Float32)
+    backend_leaky_relu(_smart_zig_or_julia(sb), x, alpha)
+end
+
+# --- SELU: Zig has SIMD+threaded, Julia as fallback ---
+function backend_selu(sb::SmartBackend, x::Array{Float32})
+    backend_selu(_smart_zig_or_julia(sb), x)
+end
+
+# --- Mish: Zig has SIMD+threaded, Julia as fallback ---
+function backend_mish(sb::SmartBackend, x::Array{Float32})
+    backend_mish(_smart_zig_or_julia(sb), x)
+end
+
+# --- Hard Swish: Zig has SIMD+threaded, Julia as fallback ---
+function backend_hardswish(sb::SmartBackend, x::Array{Float32})
+    backend_hardswish(_smart_zig_or_julia(sb), x)
+end
+
+# --- Hard Sigmoid: Zig has SIMD+threaded, Julia as fallback ---
+function backend_hardsigmoid(sb::SmartBackend, x::Array{Float32})
+    backend_hardsigmoid(_smart_zig_or_julia(sb), x)
+end
+
+# --- Softplus: Julia preferred (MKL exp+log faster than Zig) ---
+function backend_softplus(sb::SmartBackend, x::Array{Float32})
+    backend_softplus(sb.julia, x)
 end
 
 # --- Log Softmax: follows softmax routing ---

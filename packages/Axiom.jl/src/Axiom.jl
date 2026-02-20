@@ -68,6 +68,7 @@ using Dates
 using HTTP
 using SHA
 using JSON
+using Serialization
 
 # Core type system
 include("types/tensor.jl")

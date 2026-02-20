@@ -77,7 +77,8 @@
 | Activation Functions   | Done   | `██████████` 100%              |
 | Optimizers (SGD/Adam)  | Done   | `██████████` 100%              |
 | Loss Functions         | Done   | `██████████` 100%              |
-| Training Loop          | Done   | `████████░░` 80%               |
+| Training Loop          | Done   | `██████████` 90%               |
+| Model Save/Load        | Done   | `██████████` 100% (binary)     |
 | Autograd (Zygote)      | Done   | `██████████` 100%              |
 | Data Utilities         | Done   | `██████████` 100%              |
 | Model Containers       | Done   | `██████████` 100%              |
@@ -161,15 +162,15 @@
 | Strict mode / required | Done   | `██████████` 100%              |
 | Runtime diagnostics    | Done   | `██████████` 100%              |
 | Capability reporting   | Done   | `██████████` 100%              |
-| TPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| NPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| DSP extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| PPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| Math extension hooks   | Stub   | `█░░░░░░░░░` 10%               |
-| FPGA extension hooks   | Stub   | `█░░░░░░░░░` 10%               |
-| VPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| QPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
-| Crypto extension hooks | Stub   | `█░░░░░░░░░` 10%               |
+| TPU extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| NPU extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| DSP extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| PPU extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| Math extension skeleton| Skel   | `██░░░░░░░░` 20%               |
+| FPGA extension skeleton| Skel   | `██░░░░░░░░` 20%               |
+| VPU extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| QPU extension skeleton | Skel   | `██░░░░░░░░` 20%               |
+| Crypto ext. skeleton   | Skel   | `██░░░░░░░░` 20%               |
 
 ### Integrations
 | Component              | Status | Progress                       |
@@ -185,7 +186,7 @@
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | Backend dispatch       | Done   | `██████████` 100%              |
-| Mixed precision        | Partial| `██████░░░░` 60%               |
+| Mixed precision        | Done   | `████████░░` 80% (loss scaling) |
 | fold_batchnorm         | Done   | `██████████` 100%              |
 | fold_constants         | Done   | `██████████` 100%              |
 | dead code elimination  | Done   | `██████████` 100%              |
@@ -219,10 +220,10 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~78% complete
+## Overall: ~82% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations, certificates, HuggingFace/SafeTensors, RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch
-**Weakest areas:** Zig compiled .so artifact (0%), coprocessor stubs (TPU/NPU/DSP/PPU/Math/FPGA/VPU/QPU/Crypto at 10%), mixed precision (60%)
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace/SafeTensors, RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary serialization)
+**Weakest areas:** Zig compiled .so artifact (0%), coprocessor skeletons (20% — need real hardware integrations)
 
 ## Ecosystem Context
 

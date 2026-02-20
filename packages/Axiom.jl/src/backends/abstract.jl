@@ -1243,15 +1243,35 @@ end
     MixedPrecisionWrapper
 
 Wrapper that executes forward pass in Float16 while maintaining Float32 master weights.
+Includes dynamic loss scaling for numerical stability during training.
+
+# Fields
+- `model`: The wrapped model
+- `master_weights`: Float32 copies of all parameters (updated during optimizer step)
+- `loss_scale`: Current dynamic loss scale factor
+- `loss_scale_growth_interval`: Steps between scale increases
+- `loss_scale_growth_factor`: Multiplier when increasing scale
+- `loss_scale_backoff_factor`: Multiplier when NaN/Inf detected
+- `steps_since_last_scale`: Counter for growth interval
+- `precision_hints`: Per-layer precision overrides (symbol → :float16 or :float32)
 """
-struct MixedPrecisionWrapper{M}
+mutable struct MixedPrecisionWrapper{M}
     model::M
-    # Master weights stored in Float32
     master_weights::Dict{Symbol, Any}
+    loss_scale::Float32
+    loss_scale_growth_interval::Int
+    loss_scale_growth_factor::Float32
+    loss_scale_backoff_factor::Float32
+    steps_since_last_scale::Int
+    precision_hints::Dict{Symbol, Symbol}
 end
 
-function MixedPrecisionWrapper(model)
-    # Store copy of original Float32 weights
+function MixedPrecisionWrapper(model;
+        initial_loss_scale::Float32 = 2f0^15,
+        growth_interval::Int = 2000,
+        growth_factor::Float32 = 2f0,
+        backoff_factor::Float32 = 0.5f0,
+        precision_hints::Dict{Symbol, Symbol} = Dict{Symbol, Symbol}())
     master = Dict{Symbol, Any}()
     params = parameters(model)
     for (name, param) in pairs(params)
@@ -1259,11 +1279,18 @@ function MixedPrecisionWrapper(model)
             master[name] = copy(param)
         end
     end
-    MixedPrecisionWrapper(model, master)
+    MixedPrecisionWrapper(model, master, initial_loss_scale,
+                          growth_interval, growth_factor, backoff_factor,
+                          0, precision_hints)
 end
 
+"""
+    forward(mp::MixedPrecisionWrapper, x)
+
+Forward pass in Float16 with Float32 master weights.
+Layers listed in `precision_hints` as `:float32` skip Float16 conversion.
+"""
 function forward(mp::MixedPrecisionWrapper, x)
-    # Convert input to Float16 for forward pass.
     x_f16 = if x isa AbstractTensor
         Tensor(Float16.(x.data))
     else
@@ -1274,6 +1301,10 @@ function forward(mp::MixedPrecisionWrapper, x)
     params = parameters(mp.model)
     for (name, param) in pairs(params)
         if param isa AbstractArray{Float32}
+            # Check precision hints — some layers stay in Float32
+            if get(mp.precision_hints, name, :float16) == :float32
+                continue
+            end
             setfield!(mp.model, name, Float16.(param))
         end
     end
@@ -1281,16 +1312,80 @@ function forward(mp::MixedPrecisionWrapper, x)
     # Forward pass in Float16
     y = forward(mp.model, x_f16)
 
-    # Restore Float32 weights
+    # Restore Float32 master weights
     for (name, master_param) in mp.master_weights
         setfield!(mp.model, name, master_param)
     end
 
-    # Return result as Float32, preserving tensor wrappers when available.
     if y isa AbstractTensor
         return Tensor(Float32.(y.data))
     end
     Float32.(y)
+end
+
+"""
+    scale_loss(mp::MixedPrecisionWrapper, loss)
+
+Scale a loss value by the current dynamic loss scale factor.
+Call before backward pass to prevent Float16 underflow in gradients.
+"""
+function scale_loss(mp::MixedPrecisionWrapper, loss)
+    loss * mp.loss_scale
+end
+
+"""
+    unscale_and_update!(mp::MixedPrecisionWrapper, grads)
+
+Unscale gradients, check for NaN/Inf, and update loss scale.
+Returns `(unscaled_grads, valid)` where `valid` indicates whether
+the gradients are usable (no NaN/Inf found).
+"""
+function unscale_and_update!(mp::MixedPrecisionWrapper, grads)
+    inv_scale = 1f0 / mp.loss_scale
+
+    has_nan_inf = false
+    unscaled = map(grads) do g
+        if g isa AbstractArray
+            ug = Float32.(g) .* inv_scale
+            if any(isnan, ug) || any(isinf, ug)
+                has_nan_inf = true
+            end
+            ug
+        else
+            g
+        end
+    end
+
+    if has_nan_inf
+        # Reduce loss scale on NaN/Inf
+        mp.loss_scale *= mp.loss_scale_backoff_factor
+        mp.steps_since_last_scale = 0
+        return (unscaled, false)
+    end
+
+    # Gradients are valid — maybe increase scale
+    mp.steps_since_last_scale += 1
+    if mp.steps_since_last_scale >= mp.loss_scale_growth_interval
+        mp.loss_scale *= mp.loss_scale_growth_factor
+        mp.steps_since_last_scale = 0
+    end
+
+    (unscaled, true)
+end
+
+"""
+    update_master_weights!(mp::MixedPrecisionWrapper)
+
+Copy current model parameters back to master weights.
+Call after optimizer step to keep master weights in sync.
+"""
+function update_master_weights!(mp::MixedPrecisionWrapper)
+    params = parameters(mp.model)
+    for (name, param) in pairs(params)
+        if param isa AbstractArray{Float32} && haskey(mp.master_weights, name)
+            copyto!(mp.master_weights[name], param)
+        end
+    end
 end
 
 (mp::MixedPrecisionWrapper)(x) = forward(mp, x)

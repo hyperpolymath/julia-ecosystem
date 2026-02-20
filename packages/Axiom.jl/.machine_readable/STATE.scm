@@ -12,7 +12,7 @@
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 78)
+       (overall-completion . 82)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -26,6 +26,9 @@
           "proof-export-lean-coq-isabelle-real-tactics"
           "proof-import-lean-coq-isabelle"
           "backend-aware-forward-dispatch"
+          "model-save-load-binary-serialization"
+          "mixed-precision-loss-scaling"
+          "coprocessor-extension-skeletons-9-of-9"
           "data-loader" "benchmarks"
           "coprocessor-dispatch-15-backends"
           "self-healing-fallback"
@@ -71,12 +74,8 @@
          (("Zig library not compiled" .
            "No .so artifact committed. Users must run `just build-zig` manually.")))
        (medium
-         (("Model save/load broken" .
-           "save_model uses repr(), load_model! is a no-op. Needs JLD2/BSON.")
-          ("Coprocessor stubs" .
-           "TPU/NPU/DSP/PPU/Math/FPGA/VPU/QPU/Crypto backends are env-detection stubs only.")
-          ("Mixed precision incomplete" .
-           "MixedPrecisionWrapper exists but only basic float16/float32 casting.")))
+         (("Coprocessor skeletons only" .
+           "All 9 coprocessor extension skeletons exist but need real hardware integration.")))
        (low ()))))
 
     (critical-next-actions
@@ -118,6 +117,13 @@
                       "Resource-aware dispatch: DeviceResources, select_best_backend, resource_report"
                       "Fixed ROCmBackend definition ordering (moved to abstract.jl)"
                       "204 tests passing, pushed to GitHub and GitLab"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20e
+         ((actions . ("Corrective: SPDX headers on 15 files, Cargo.toml MIT→PMPL, justfile created"
+                      "Adaptive: Model save/load with binary Serialization (round-trip working)"
+                      "Adaptive: Mixed precision with dynamic loss scaling, gradient unscaling, precision hints"
+                      "Adaptive: 5 missing coprocessor skeletons (PPU, FPGA, VPU, QPU, Crypto)"
+                      "204 tests passing, overall completion 78%→82%"))
           (agent . "claude-opus-4-6")))
        (session-2026-02-20d
          ((actions . ("Tier 1: Exported @prove macro and autograd functions (were already implemented)"

@@ -277,23 +277,49 @@ end
 """
     save_model(model, path)
 
-Save model parameters to file.
+Save model parameters to a binary file using Julia's Serialization stdlib.
+The file stores a Dict mapping parameter names to their array values.
+
+Supports round-tripping via `load_model!`.
 """
 function save_model(model, path::String)
     params = parameters(model)
-    # Simple serialization - production would use JLD2 or BSON
-    open(path, "w") do f
-        write(f, repr(params))
+    param_dict = Dict{String, Any}()
+    for (name, value) in pairs(params)
+        param_dict[string(name)] = value
     end
-    @info "Model saved to $path"
+    open(path, "w") do f
+        Serialization.serialize(f, param_dict)
+    end
+    @info "Model saved to $path ($(length(param_dict)) parameters)"
 end
 
 """
     load_model!(model, path)
 
-Load model parameters from file.
+Load model parameters from a binary file and restore them into the model.
+The model's parameter arrays are updated in-place.
 """
 function load_model!(model, path::String)
-    # Simple deserialization - production would use JLD2 or BSON
-    @info "Loading model from $path"
+    param_dict = open(path, "r") do f
+        Serialization.deserialize(f)
+    end
+    params = parameters(model)
+    restored = 0
+    for (name, value) in pairs(params)
+        key = string(name)
+        if haskey(param_dict, key)
+            saved = param_dict[key]
+            if size(saved) == size(value)
+                copyto!(value, saved)
+                restored += 1
+            else
+                @warn "Shape mismatch for $key: model=$(size(value)), file=$(size(saved))"
+            end
+        else
+            @warn "Parameter $key not found in saved file"
+        end
+    end
+    @info "Model loaded from $path ($restored/$(length(params)) parameters restored)"
+    model
 end

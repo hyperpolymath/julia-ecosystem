@@ -19,7 +19,7 @@ using Axiom
         task = "classification",
         authors = ["Axiom CI"],
         description = "Packaging workflow coverage",
-        backend_compatibility = ["JuliaBackend", "RustBackend"],
+        backend_compatibility = ["JuliaBackend", "ZigBackend"],
     )
 
     @test verify_and_claim!(metadata, "FiniteOutput", "verified=true; source=ci") == true

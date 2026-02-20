@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 # Axiom.jl Benchmark Suite
 #
-# Tracks performance across Julia, Rust, and Zig backends.
+# Tracks performance across Julia and Zig backends.
 # Run with: julia --project=benchmark benchmark/benchmarks.jl
 #
 # Refs: Issue #13 - Benchmarks and regression baselines
@@ -21,16 +21,6 @@ const SUITE = BenchmarkGroup()
 const BACKENDS_TO_TEST = AbstractBackend[]
 
 push!(BACKENDS_TO_TEST, JuliaBackend())
-
-# Check Rust backend
-rust_lib = joinpath(@__DIR__, "..", "rust", "target", "release", "libaxiom_core.so")
-for ext in [".so", ".dylib", ".dll"]
-    candidate = replace(rust_lib, ".so" => ext)
-    if isfile(candidate)
-        push!(BACKENDS_TO_TEST, RustBackend(candidate))
-        break
-    end
-end
 
 # Check Zig backend
 zig_lib = joinpath(@__DIR__, "..", "zig", "zig-out", "lib", "libaxiom_zig.so")
@@ -260,8 +250,6 @@ function generate_summary(results)
                         bname = string(backend_name)
                         if occursin("JuliaBackend", bname)
                             julia_time = median(result).time
-                        elseif occursin("RustBackend", bname)
-                            alt_backends["Rust"] = median(result).time
                         elseif occursin("ZigBackend", bname)
                             alt_backends["Zig"] = median(result).time
                         end

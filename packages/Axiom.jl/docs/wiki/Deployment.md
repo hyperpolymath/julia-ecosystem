@@ -10,7 +10,7 @@
 ├──────────────┬──────────────┬──────────────┬───────────────────────┤
 │    Server    │    Edge      │   Browser    │      Mobile           │
 ├──────────────┼──────────────┼──────────────┼───────────────────────┤
-│  REST/gRPC   │  Rust/Julia  │  WASM*       │  JNI/Swift*           │
+│  REST/gRPC   │  Zig/Julia   │  WASM*       │  JNI/Swift*           │
 │  Docker      │  Embedded    │              │                       │
 │  Kubernetes  │  RTOS*       │              │                       │
 └──────────────┴──────────────┴──────────────┴───────────────────────┘
@@ -247,17 +247,17 @@ kubectl apply -f deployment.yaml
 
 ### Edge Runtime Path
 
-Current supported path for edge is Julia + optional Rust backend library.
+Current supported path for edge is Julia + optional Zig backend library.
 
 ```julia
 using Axiom
 
 model = load_model("model.axiom")
 
-# Optional: compile against Rust backend when lib is available
+# Optional: compile against Zig backend when lib is available
 model_runtime = compile(
     model,
-    backend = RustBackend("/path/to/libaxiom_core.so"),
+    backend = ZigBackend("/path/to/libaxiom_zig.so"),
     verify = false,
     optimize = :none,
 )
@@ -330,8 +330,8 @@ Step-by-step for Raspberry Pi 4:
 ```bash
 # On development machine: prepare model/runtime artifacts
 scp model.bin pi@raspberrypi:~/
-# Optional Rust backend shared library for ARM target:
-# scp libaxiom_core.so pi@raspberrypi:~/
+# Optional Zig backend shared library for ARM target:
+# scp libaxiom_zig.so pi@raspberrypi:~/
 
 # On Raspberry Pi
 ssh pi@raspberrypi

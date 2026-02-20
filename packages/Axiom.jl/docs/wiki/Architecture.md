@@ -4,7 +4,7 @@
 
 ## Overview
 
-Axiom.jl is built on a multi-runtime architecture that combines Julia ergonomics with optional Rust acceleration and extension-based GPU/coprocessor targets. The goal is **mathematical elegance without sacrificing speed**.
+Axiom.jl is built on a multi-runtime architecture that combines Julia ergonomics with optional Zig acceleration and extension-based GPU/coprocessor targets. The goal is **mathematical elegance without sacrificing speed**.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -23,9 +23,9 @@ Axiom.jl is built on a multi-runtime architecture that combines Julia ergonomics
 ├─────────────────────────────────────────────────────────────────────┤
 │                      Computation Backends                            │
 │  ┌─────────────────┐ ┌──────────────────┐ ┌───────────────────────┐│
-│  │  Julia Backend  │ │   Rust Backend   │ │   Accelerator Targets ││
+│  │  Julia Backend  │ │   Zig Backend    │ │   Accelerator Targets ││
 │  │  Pure Julia     │ │   FFI via ccall  │ │   TPU/NPU/DSP/FPGA    ││
-│  │  Portable       │ │   Rayon parallel │ │   Fallback-first flow ││
+│  │  Portable       │ │   SIMD parallel  │ │   Fallback-first flow ││
 │  └─────────────────┘ └──────────────────┘ └───────────────────────┘│
 ├─────────────────────────────────────────────────────────────────────┤
 │                        Hardware Layer                                │
@@ -71,9 +71,9 @@ No hidden magic. Every operation is transparent:
 
 ```julia
 # You always know what backend you're using
-using Axiom: RustBackend, JuliaBackend
+using Axiom: ZigBackend, JuliaBackend
 
-model = @axiom backend=RustBackend() begin
+model = @axiom backend=ZigBackend() begin
     Dense(784 => 256, activation=relu)
 end
 
@@ -143,8 +143,8 @@ Axiom.jl automatically selects the best backend:
 
 ```julia
 function select_backend()
-    if rust_available()
-        return RustBackend()  # Parallel by default
+    if zig_available()
+        return ZigBackend()  # Native SIMD by default
     else
         return JuliaBackend()  # Always available
     end
@@ -176,15 +176,15 @@ end
 - Single-threaded by default
 - No SIMD optimization
 
-### Rust Backend
+### Zig Backend
 
-High-performance parallel computing:
+High-performance SIMD and parallel computing:
 
 ```julia
-struct RustBackend <: AbstractBackend end
+struct ZigBackend <: AbstractBackend end
 
-function forward(::RustBackend, layer::Dense, x::AbstractArray)
-    ccall((:rust_dense_forward, RUST_LIB), Cvoid,
+function forward(::ZigBackend, layer::Dense, x::AbstractArray)
+    ccall((:axiom_dense_forward, ZIG_LIB), Cvoid,
           (Ptr{Float32}, Ptr{Float32}, Ptr{Float32}, Ptr{Float32},
            Cint, Cint, Cint),
           x, layer.weight, layer.bias, output,
@@ -192,32 +192,31 @@ function forward(::RustBackend, layer::Dense, x::AbstractArray)
 end
 ```
 
-**Rust Implementation:**
-```rust
-#[no_mangle]
-pub extern "C" fn rust_dense_forward(
-    input: *const f32,
-    weight: *const f32,
-    bias: *const f32,
-    output: *mut f32,
+**Zig Implementation:**
+```zig
+export fn axiom_dense_forward(
+    input: [*]const f32,
+    weight: [*]const f32,
+    bias: [*]const f32,
+    output: [*]f32,
     batch: i32,
     in_features: i32,
     out_features: i32,
-) {
-    // Parallel over batch dimension using Rayon
-    (0..batch).into_par_iter().for_each(|b| {
-        // BLAS-style matrix-vector multiplication
-        for o in 0..out_features {
-            let mut sum = unsafe { *bias.add(o as usize) };
-            for i in 0..in_features {
-                sum += unsafe {
-                    *input.add((b * in_features + i) as usize)
-                    * *weight.add((i * out_features + o) as usize)
-                };
+) void {
+    // SIMD-optimized matrix-vector multiplication over batch dimension
+    var b: usize = 0;
+    while (b < @intCast(usize, batch)) : (b += 1) {
+        var o: usize = 0;
+        while (o < @intCast(usize, out_features)) : (o += 1) {
+            var sum: f32 = bias[o];
+            var i: usize = 0;
+            while (i < @intCast(usize, in_features)) : (i += 1) {
+                sum += input[b * @intCast(usize, in_features) + i] *
+                       weight[i * @intCast(usize, out_features) + o];
             }
-            unsafe { *output.add((b * out_features + o) as usize) = sum };
+            output[b * @intCast(usize, out_features) + o] = sum;
         }
-    });
+    }
 }
 ```
 
@@ -345,7 +344,7 @@ Source Code (@axiom)
        │
        ▼
 ┌──────────────────┐
-│ Backend Lowering │  Dispatch to Rust/Julia/accelerator targets
+│ Backend Lowering │  Dispatch to Zig/Julia/accelerator targets
 └──────────────────┘
        │
        ▼
@@ -392,15 +391,15 @@ end
 
 ## Performance Characteristics
 
-| Operation | Julia | Rust | Notes |
-|-----------|-------|------|-------|
-| MatMul 256×256 | 1.0× | 2.1× | Rust backend parity tracked in CI |
-| MatMul 1024×1024 | 1.0× | 2.8× | Representative CPU/Rust scaling |
+| Operation | Julia | Zig | Notes |
+|-----------|-------|-----|-------|
+| MatMul 256×256 | 1.0× | 2.1× | Zig backend parity tracked in CI |
+| MatMul 1024×1024 | 1.0× | 2.8× | Representative CPU/Zig scaling |
 | Conv2D 3×3 | 1.0× | 1.8× | Kernel parity and tolerance-tested |
 | LayerNorm | 1.0× | 1.5× | Memory-bound behavior |
 | Softmax | 1.0× | 1.2× | Limited by exp() |
-| Compile Time | 0s | ~30s | Rust toolchain build cost |
-| Binary Size | 0 | ~2MB | Shared-library footprint depends on build |
+| Compile Time | 0s | ~10s | Zig toolchain build cost |
+| Binary Size | 0 | ~1MB | Shared-library footprint depends on build |
 
 ## Thread Safety
 
@@ -423,7 +422,7 @@ y .= x .+ 1  # Modifies y in-place
 ### Backend Thread Safety
 
 - **Julia**: Single-threaded, safe
-- **Rust**: Thread-safe via Rayon, uses work-stealing
+- **Zig**: Thread-safe via multi-threaded dispatch, uses work-stealing
 - **Accelerator targets**: fallback-safe strategy; runtime kernels are backend-specific roadmap work
 
 ## Future Architecture

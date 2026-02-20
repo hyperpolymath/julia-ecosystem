@@ -7,7 +7,7 @@
 
 image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
 image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
-image:https://img.shields.io/badge/Rust-Backend-DEA584?logo=rust[Rust,link="https://www.rust-lang.org/"]
+image:https://img.shields.io/badge/Zig-Backend-F7A41D?logo=zig[Zig,link="https://ziglang.org/"]
 
 *Provably Correct Machine Learning*
 
@@ -21,7 +21,7 @@ Axiom.jl is a *next-generation ML framework* that combines:
 
 * *Compile-time verification* - Shape errors caught before runtime
 * *Formal guarantees* - Verification checks and certificate workflows
-* *Optional acceleration* - Rust/GPU backend paths with explicit fallback behavior
+* *Optional acceleration* - Zig/GPU backend paths with explicit fallback behavior
 * *Julia elegance* - Express models as mathematical specifications
 
 [source,julia]
@@ -99,8 +99,8 @@ Current scope:
 # Development: Julia backend
 model = Sequential(Dense(784, 128, relu), Dense(128, 10))
 
-# Production path: optional Rust backend
-prod_model = compile(model, backend=RustBackend("/path/to/libaxiom_core.so"), optimize=:aggressive)
+# Production path: optional Zig backend
+prod_model = compile(model, backend=ZigBackend("/path/to/libaxiom_zig.so"), optimize=:aggressive)
 ----
 
 === Coprocessor Targets
@@ -288,12 +288,7 @@ Axiom.jl/
 │   ├── verification/   # @ensure, @prove
 │   ├── training/       # Optimizers, loss functions
 │   └── backends/       # Backend abstraction (15 backends)
-├── rust/               # Rust performance backend
-│   ├── src/
-│   │   ├── ops/       # Matrix, conv, activation ops
-│   │   └── ffi.rs     # Julia FFI bindings
-│   └── Cargo.toml
-├── zig/                # Zig SIMD backend
+├── zig/                # Zig native backend
 │   └── src/           # matmul, conv, norm, attention, etc.
 ├── ext/                # GPU package extensions (CUDA, ROCm, Metal)
 ├── test/               # Test suite
@@ -304,7 +299,7 @@ Axiom.jl/
 == Roadmap
 
 * [x] *v0.1* - Core framework, DSL, verification basics
-* [ ] *v0.2* - Full Rust backend, GPU support
+* [ ] *v0.2* - Full Zig backend, GPU support
 * [ ] *v0.3* - Hugging Face integration, model zoo
 * [ ] *v0.4* - Advanced proofs, SMT integration
 * [ ] *v1.0* - Production ready, industry certifications
@@ -322,7 +317,7 @@ We welcome contributions! See link:CONTRIBUTING.md[CONTRIBUTING.md].
 == Julia-First Verification
 
 Axiom's proof system is *Julia-native by default*. SMT solving runs through
-`packages/SMTLib.jl` with no Rust dependency. The Rust SMT runner is an optional
+`packages/SMTLib.jl` with no native backend dependency. The Zig SMT runner is an optional
 backend you can enable for hardened subprocess control.
 
 Julia-native example:
@@ -332,12 +327,12 @@ Julia-native example:
 @prove ∃x. x > 0
 ----
 
-Optional Rust runner:
+Optional Zig runner:
 
 [source,bash]
 ----
-export AXIOM_SMT_RUNNER=rust
-export AXIOM_SMT_LIB=/path/to/libaxiom_core.so
+export AXIOM_SMT_RUNNER=zig
+export AXIOM_ZIG_LIB=/path/to/libaxiom_zig.so
 export AXIOM_SMT_SOLVER=z3
 ----
 
@@ -356,7 +351,7 @@ Axiom.jl builds on the shoulders of giants:
 
 * https://julialang.org/[Julia] - The language
 * https://fluxml.ai/[Flux.jl] - Inspiration for Julia ML
-* https://www.rust-lang.org/[Rust] - Performance backend
+* https://ziglang.org/[Zig] - Native performance backend
 * https://pytorch.org/[PyTorch] - Ecosystem compatibility
 
 '''

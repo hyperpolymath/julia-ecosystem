@@ -6,13 +6,13 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T13:30:00+00:00")
+       (updated . "2026-02-20T14:30:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 92)
+       (overall-completion . 93)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -20,7 +20,7 @@
           "training-loop-zygote-autograd" "ensure-macro" "axiom-macro" "prove-macro-heuristic-smt"
           "property-checking" "proof-certificates-json-text" "proof-serialization"
           "smtlib-solver-interface" "julia-backend-all-ops"
-          "rust-ffi-all-ops" "zig-ffi-full-parity-17-ops" "zig-so-artifact-217kb"
+          "zig-ffi-full-parity-17-ops" "zig-so-artifact-320kb-threaded"
           "gpu-hooks-all-ops-cuda-rocm-metal"
           "pytorch-import-export-layernorm" "model-metadata"
           "proof-export-lean-coq-isabelle-real-tactics"
@@ -46,17 +46,20 @@
           "proof-type-inference-static-empirical-formal"
           "smart-backend-per-op-dispatch"
           "simd-gelu-sigmoid-tanh-vectorization"
-          "backend-aware-layernorm-rmsnorm-forward"))))
+          "backend-aware-layernorm-rmsnorm-forward"
+          "multi-threaded-dispatch-4-threads-64k-threshold"
+          "rust-backend-removed-zig-sole-native"
+          "external-benchmarks-axiom-flux-pytorch"))))
 
     (route-to-mvp
       ((milestones
         ((v0.1.0 . ((items . ("Core layers" "Julia backend" "Basic verification"
-                               "Training loop" "Rust FFI" "Zig FFI"
+                               "Training loop" "Zig FFI"
                                "GPU extension hooks" "SMTLib integration"
                                "PyTorch interop" "Proof certificates"))
                     (status . "mostly-complete")))
          (v0.2.0 . ((items . ("Enable @prove macro" "Real autograd via Zygote"
-                               "Complete GPU extensions" "Rust end-to-end dispatch"
+                               "Complete GPU extensions" "Zig end-to-end dispatch"
                                "Build zig .so artifact" "Complete HuggingFace converters"
                                "Compile optimizations"))
                     (status . "complete")
@@ -66,7 +69,7 @@
                                   "Real autograd via Zygote"
                                   "Complete GPU extensions"
                                   "Build zig .so artifact"
-                                  "Rust end-to-end dispatch"))))
+                                  "Zig SIMD + threading"))))
          (v1.0.0 . ((items . ("Proof assistant import" "Real proof translation"
                                "Production model save/load" "Full HuggingFace model zoo"
                                "Performance parity benchmarks" "Security audit"
@@ -87,7 +90,7 @@
 
     (critical-next-actions
       ((immediate
-         ("External framework benchmark comparison (PyTorch/Flux.jl parity)"))
+         ("Run threaded Zig benchmarks to measure threading impact"))
        (this-week
          ("Implement real coprocessor backends (TPU/NPU at minimum)"
           "Full RSR compliance"))
@@ -160,4 +163,15 @@
                       "Zig .so rebuilt: 217KB→213KB, 32 exported symbols"
                       "Zig geomean: 0.89x→1.01x vs Julia (now at overall parity)"
                       "204 tests passing, overall completion 90%→92%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20i
+         ((actions . ("Zig threading: Multi-threaded dispatch for element-wise ops (4 threads, 64K threshold)"
+                      "Zig threading: Parallel workers for all 12 activation functions"
+                      "Zig .so rebuilt: 213KB→320KB (threading code), 32 exported symbols"
+                      "Rust removal: Deleted rust/ directory (2040 LOC), rust_ffi.jl (632 LOC)"
+                      "Rust removal: Updated SmartBackend struct (removed rust field)"
+                      "Rust removal: Updated CI/CD, readiness-check, test files, docs, wiki"
+                      "Rust removal: Zig is now sole native backend"
+                      "External benchmarks: Axiom vs Flux vs PyTorch (25 operations)"
+                      "Overall completion 92%→93%"))
           (agent . "claude-opus-4-6")))))))

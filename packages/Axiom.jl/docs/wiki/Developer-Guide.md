@@ -7,7 +7,7 @@ This guide defines the development workflow and release gates for Axiom.jl.
 - Julia `1.10+`
 - Git
 - Optional for backend work:
-  - Rust toolchain
+  - Zig toolchain
   - CUDA / ROCm / Metal runtimes
 
 ## Local Setup
@@ -35,7 +35,7 @@ Run the consolidated release-readiness checks:
 
 Useful toggles:
 
-- `AXIOM_READINESS_RUN_RUST=0` disables Rust parity/smoke checks.
+- `AXIOM_READINESS_RUN_ZIG=0` disables Zig parity/smoke checks.
 - `AXIOM_READINESS_RUN_COPROCESSOR=0` disables coprocessor strategy/resilience checks.
 - `AXIOM_READINESS_RUN_GPU_PERF=0` disables GPU resilience/performance evidence checks.
 - `AXIOM_READINESS_RUN_COULD_PACKAGING=0` disables model package/registry could-item checks.
@@ -58,13 +58,13 @@ Run quick runtime checks after unit tests:
 julia --project=. test/ci/runtime_smoke.jl
 ```
 
-## Backend Parity (CPU vs Rust)
+## Backend Parity (CPU vs Zig)
 
-Run parity checks when Rust backend is available:
+Run parity checks when Zig backend is available:
 
 ```bash
-cargo build --release --manifest-path rust/Cargo.toml
-AXIOM_RUST_LIB=$PWD/rust/target/release/libaxiom_core.so julia --project=. test/ci/backend_parity.jl
+cd zig && zig build -Doptimize=ReleaseFast
+AXIOM_ZIG_LIB=$PWD/zig/zig-out/lib/libaxiom_zig.so julia --project=. test/ci/backend_parity.jl
 ```
 
 Tolerance budgets used by CI parity checks:
@@ -254,6 +254,6 @@ If a marker is required (for templates or roadmap planning), keep it out of prod
 1. `Pkg.build`, `Pkg.precompile`, and `Pkg.test` pass on a clean environment.
 2. Runtime smoke checks pass.
 3. No unresolved production work-marker markers in `src`, `ext`, or `test`.
-4. CPU vs Rust parity and certificate integrity CI checks pass.
+4. CPU vs Zig parity and certificate integrity CI checks pass.
 5. README/wiki claims are aligned with actual implementation status.
 6. Version metadata is consistent (`Project.toml` and `Axiom.VERSION`).

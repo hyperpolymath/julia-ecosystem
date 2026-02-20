@@ -226,7 +226,7 @@ Axiom.config[:fast_math] = false
 | Backend | Deterministic by Default | Notes |
 |---------|-------------------------|-------|
 | Julia | Yes | Single-threaded |
-| Rust | Configurable | Rayon can be non-deterministic |
+| Zig | Configurable | Multi-threaded dispatch can be non-deterministic |
 | Coprocessor targets (TPU/NPU/DSP/FPGA) | Strategy-level | Fallback-first; production kernels are backend-specific roadmap work |
 
 ## Redundancy Patterns
@@ -255,7 +255,7 @@ end
 # Create redundant model with different backends
 model = RedundantModel([
     @axiom backend=JuliaBackend() begin ... end,
-    @axiom backend=RustBackend() begin ... end,
+    @axiom backend=ZigBackend() begin ... end,
     @axiom backend=TPUBackend(0) begin ... end,
 ], MajorityVote())
 ```

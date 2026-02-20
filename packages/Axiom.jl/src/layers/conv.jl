@@ -168,7 +168,7 @@ function Conv2d(
 end
 
 # forward(c::Conv2d, x::AbstractTensor) is defined in backends/abstract.jl
-# with backend-aware dispatch (routes through Rust/Zig/GPU when active).
+# with backend-aware dispatch (routes through Zig/GPU when active).
 
 function parameters(c::Conv2d)
     if c.bias !== nothing

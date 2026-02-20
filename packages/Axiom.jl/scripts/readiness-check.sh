@@ -10,16 +10,16 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 JULIA_BIN="${JULIA_BIN:-julia}"
-CARGO_BIN="${CARGO_BIN:-cargo}"
+ZIG_BIN="${ZIG_BIN:-zig}"
 
 # If 0, skipped critical checks fail the run.
 ALLOW_SKIPS="${AXIOM_READINESS_ALLOW_SKIPS:-0}"
 
-# Rust profile:
-# - auto: run Rust checks if cargo + rust/Cargo.toml are present
-# - 1: require Rust checks
-# - 0: skip Rust checks
-RUN_RUST="${AXIOM_READINESS_RUN_RUST:-auto}"
+# Zig profile:
+# - auto: run Zig checks if zig + zig/build.zig are present
+# - 1: require Zig checks
+# - 0: skip Zig checks
+RUN_ZIG="${AXIOM_READINESS_RUN_ZIG:-auto}"
 
 RUN_BASELINE="${AXIOM_READINESS_RUN_BASELINE:-1}"
 RUN_RUNTIME="${AXIOM_READINESS_RUN_RUNTIME:-1}"
@@ -232,31 +232,31 @@ check_doc_alignment() {
   return "$status"
 }
 
-resolve_rust_lib_path() {
+resolve_zig_lib_path() {
   case "$(uname -s)" in
     Linux)
-      echo "rust/target/release/libaxiom_core.so"
+      echo "zig/zig-out/lib/libaxiom_zig.so"
       ;;
     Darwin)
-      echo "rust/target/release/libaxiom_core.dylib"
+      echo "zig/zig-out/lib/libaxiom_zig.dylib"
       ;;
     MINGW*|MSYS*|CYGWIN*|Windows_NT)
-      echo "rust/target/release/axiom_core.dll"
+      echo "zig/zig-out/lib/axiom_zig.dll"
       ;;
     *)
-      if [ -f rust/target/release/libaxiom_core.so ]; then
-        echo "rust/target/release/libaxiom_core.so"
-      elif [ -f rust/target/release/libaxiom_core.dylib ]; then
-        echo "rust/target/release/libaxiom_core.dylib"
+      if [ -f zig/zig-out/lib/libaxiom_zig.so ]; then
+        echo "zig/zig-out/lib/libaxiom_zig.so"
+      elif [ -f zig/zig-out/lib/libaxiom_zig.dylib ]; then
+        echo "zig/zig-out/lib/libaxiom_zig.dylib"
       else
-        echo "rust/target/release/axiom_core.dll"
+        echo "zig/zig-out/lib/axiom_zig.dll"
       fi
       ;;
   esac
 }
 
-should_run_rust_checks() {
-  case "$RUN_RUST" in
+should_run_zig_checks() {
+  case "$RUN_ZIG" in
     1)
       return 0
       ;;
@@ -264,30 +264,30 @@ should_run_rust_checks() {
       return 1
       ;;
     auto)
-      command -v "$CARGO_BIN" >/dev/null 2>&1 && [ -f rust/Cargo.toml ]
+      command -v "$ZIG_BIN" >/dev/null 2>&1 && [ -f zig/build.zig ]
       ;;
     *)
-      echo "Invalid AXIOM_READINESS_RUN_RUST value: $RUN_RUST (expected: auto|0|1)"
+      echo "Invalid AXIOM_READINESS_RUN_ZIG value: $RUN_ZIG (expected: auto|0|1)"
       return 2
       ;;
   esac
 }
 
-run_rust_checks() {
-  "$CARGO_BIN" build --release --manifest-path rust/Cargo.toml
+run_zig_checks() {
+  "$ZIG_BIN" build -Doptimize=ReleaseFast
 
   local lib_path
-  lib_path="$(resolve_rust_lib_path)"
+  lib_path="$(resolve_zig_lib_path)"
   [ -f "$lib_path" ] || {
-    echo "Rust shared library not found: $lib_path"
+    echo "Zig shared library not found: $lib_path"
     return 1
   }
 
-  AXIOM_RUST_LIB="$ROOT_DIR/$lib_path" \
+  AXIOM_ZIG_LIB="$ROOT_DIR/$lib_path" \
     "$JULIA_BIN" --project=. test/ci/backend_parity.jl
 
-  AXIOM_RUST_LIB="$ROOT_DIR/$lib_path" \
-  AXIOM_SMOKE_ACCELERATOR=rust \
+  AXIOM_ZIG_LIB="$ROOT_DIR/$lib_path" \
+  AXIOM_SMOKE_ACCELERATOR=zig \
   AXIOM_SMOKE_ACCELERATOR_REQUIRED=1 \
     "$JULIA_BIN" --project=. test/ci/runtime_smoke.jl
 }
@@ -425,18 +425,18 @@ run() {
     record_skip "README/wiki roadmap alignment (disabled)"
   fi
 
-  if should_run_rust_checks; then
-    run_check "Rust backend parity + accelerated runtime smoke" run_rust_checks
+  if should_run_zig_checks; then
+    run_check "Zig backend parity + accelerated runtime smoke" run_zig_checks
   else
-    case "$RUN_RUST" in
+    case "$RUN_ZIG" in
       0)
-        record_skip "Rust backend parity + accelerated runtime smoke (disabled)"
+        record_skip "Zig backend parity + accelerated runtime smoke (disabled)"
         ;;
       auto)
-        record_skip "Rust backend parity + accelerated runtime smoke (cargo/rust project unavailable)"
+        record_skip "Zig backend parity + accelerated runtime smoke (zig/build.zig unavailable)"
         ;;
       *)
-        record_fail "Rust backend parity + accelerated runtime smoke"
+        record_fail "Zig backend parity + accelerated runtime smoke"
         ;;
     esac
   fi

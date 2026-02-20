@@ -18,7 +18,7 @@ function run()
         task = "classification",
         authors = ["Axiom.jl"],
         description = "Packaging evidence artifact",
-        backend_compatibility = ["JuliaBackend", "RustBackend"],
+        backend_compatibility = ["JuliaBackend", "ZigBackend"],
     )
 
     verify_and_claim!(metadata, "FiniteOutput", "verified=true; source=model-package-evidence")

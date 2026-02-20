@@ -124,7 +124,7 @@ function Dense(
 end
 
 # forward(d::Dense, x::AbstractTensor) is defined in backends/abstract.jl
-# with backend-aware dispatch (routes through Rust/Zig/GPU when active).
+# with backend-aware dispatch (routes through Zig/GPU when active).
 
 """
     parameters(d::Dense) -> NamedTuple

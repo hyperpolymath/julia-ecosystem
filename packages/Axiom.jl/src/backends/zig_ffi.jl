@@ -2,7 +2,7 @@
 # Axiom.jl Zig FFI
 #
 # Interface to high-performance Zig backend.
-# Provides full parity with the Rust backend for all neural network operations.
+# Primary native backend with SIMD vectorization and multi-threaded dispatch.
 
 # Track if Zig backend is available
 const _zig_available = Ref(false)

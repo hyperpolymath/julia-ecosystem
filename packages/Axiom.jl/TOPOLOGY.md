@@ -39,22 +39,23 @@
     | mathsat   |
     +-----------+
 
-    Backend Abstraction Layer (16 backends incl. SmartBackend)
+    Backend Abstraction Layer (15 backends incl. SmartBackend)
     +-----------------------------------------------------------------+
     |  abstract.jl  -  AbstractBackend / set_backend! / compile()     |
     |  SmartBackend (per-op dispatch) / MixedPrecision / self-healing |
     +-----------------------------------------------------------------+
-         |              |              |              |
-         v              v              v              v
-    +-----------+  +-----------+  +-----------+  +-----------+
-    | Julia     |  | Rust      |  | Zig       |  | GPU       |
-    | Backend   |  | Backend   |  | Backend   |  | Backends  |
-    |-----------|  |-----------|  |-----------|  |-----------|
-    | (default) |  | rust/     |  | zig/      |  | CUDA      |
-    | reference |  |  ffi.rs   |  |  axiom    |  | ROCm      |
-    | impl      |  |  ops/     |  |  .zig     |  | Metal     |
-    +-----------+  +-----------+  +-----------+  +-----------+
-                                                      |
+         |              |              |
+         v              v              v
+    +-----------+  +-----------+  +-----------+
+    | Julia     |  | Zig       |  | GPU       |
+    | Backend   |  | Backend   |  | Backends  |
+    |-----------|  |-----------|  |-----------|
+    | (default) |  | zig/      |  | CUDA      |
+    | reference |  |  axiom    |  | ROCm      |
+    | impl      |  |  .zig     |  | Metal     |
+    |           |  | SIMD+MT   |  |           |
+    +-----------+  +-----------+  +-----------+
+                                       |
     Coprocessor Backends (self-healing fallback)       |
     +-----------------------------------------------------------------+
     | TPU | NPU | DSP | PPU | Math | FPGA | VPU | QPU | Crypto      |
@@ -113,20 +114,7 @@
 | pooling (max/avg/glob) | Done   | `██████████` 100%              |
 | dropout / flatten      | Done   | `██████████` 100%              |
 
-### Backends - Rust (rust/ 2040 LOC)
-| Component              | Status | Progress                       |
-|------------------------|--------|--------------------------------|
-| FFI exports (ffi.rs)   | Done   | `██████████` 100%              |
-| matmul (tiled+Rayon)   | Done   | `██████████` 100%              |
-| activations (12 funcs) | Done   | `██████████` 100%              |
-| conv2d                 | Done   | `██████████` 100%              |
-| pooling (max/glob_avg) | Done   | `██████████` 100%              |
-| norm (batch/layer/rms) | Done   | `██████████` 100%              |
-| SMT runner             | Done   | `██████████` 100%              |
-| Julia-side ccall wiring| Done   | `██████████` 100%              |
-| End-to-end dispatch    | Done   | `████████░░` 80%               |
-
-### Backends - Zig (zig/ 2275 LOC)
+### Backends - Zig (sole native backend, 320KB .so)
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | matmul (SIMD tiled)    | Done   | `██████████` 100%              |
@@ -137,9 +125,10 @@
 | flash attention        | Done   | `██████████` 100%              |
 | rotary embeddings      | Done   | `██████████` 100%              |
 | Julia-side ccall wiring| Done   | `██████████` 100% (17 ops)     |
-| Compiled .so artifact  | Done   | `██████████` 100% (213KB)      |
+| Compiled .so artifact  | Done   | `██████████` 100% (320KB)      |
 | FFI exports (32 syms)  | Done   | `██████████` 100%              |
 | SIMD GELU/sigmoid/tanh | Done   | `██████████` 100% (3x speedup) |
+| Multi-threaded dispatch| Done   | `██████████` 100% (4 threads)  |
 
 ### Backends - GPU Extensions
 | Component              | Status | Progress                       |
@@ -219,14 +208,13 @@
 | AMDGPU.jl      | AMD GPU acceleration       | Optional |
 | Metal.jl       | Apple GPU acceleration     | Optional |
 | PyCall.jl      | PyTorch interop            | Optional |
-| Rust toolchain | Rust backend compilation   | Optional |
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~92% complete
+## Overall: ~93% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations (full parity, 32 Zig exports, 23 Rust exports), SmartBackend per-op dispatch, SIMD-optimized Zig kernels (GELU 3x, RMSNorm 7x, sigmoid 2.9x), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch (LayerNorm/RMSNorm now route through backends), model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
-**Weakest areas:** Coprocessor skeletons (20% — need real hardware integrations), external benchmark comparison (PyTorch/Flux parity testing)
+**Strongest areas:** Core layers, activations, Zig kernel implementations (sole native backend, 32 exports, 320KB .so, SIMD + 4-thread dispatch), SmartBackend per-op dispatch, SIMD-optimized Zig kernels (GELU 3x, RMSNorm 7x, sigmoid 2.9x), multi-threaded element-wise ops (>64K threshold), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch (LayerNorm/RMSNorm route through backends), model save/load (binary + metadata bundle), external benchmarks (Axiom vs Flux vs PyTorch)
+**Weakest areas:** Coprocessor skeletons (20% — need real hardware integrations)
 
 ## Ecosystem Context
 

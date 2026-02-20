@@ -48,12 +48,7 @@ function Axiom.smt_proof(property::Axiom.ParsedProperty)
         cached !== nothing && return finalize_smt_result(property, cached)
     end
 
-    result = if use_rust_smt_runner() && Axiom.rust_available()
-        output = Axiom.rust_smt_run(string(ctx.solver.kind), ctx.solver.path, script, ctx.timeout_ms)
-        SMTLib.parse_result(output)
-    else
-        SMTLib.check_sat(ctx; get_model=true)
-    end
+    result = SMTLib.check_sat(ctx; get_model=true)
 
     smt_cache_put(cache_key, result)
     return finalize_smt_result(property, result)
@@ -94,10 +89,6 @@ Get available SMT solver.
 const SMT_ALLOWLIST = Set([:z3, :cvc5, :yices, :mathsat])
 const SMT_CACHE = Dict{UInt64, SMTLib.SMTResult}()
 const SMT_CACHE_ORDER = UInt64[]
-
-function use_rust_smt_runner()
-    get(ENV, "AXIOM_SMT_RUNNER", "") == "rust"
-end
 
 function smt_cache_enabled()
     get(ENV, "AXIOM_SMT_CACHE", "") in ("1", "true", "yes")

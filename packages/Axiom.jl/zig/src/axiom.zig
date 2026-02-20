@@ -22,6 +22,7 @@ pub const conv = @import("conv.zig");
 pub const pool = @import("pool.zig");
 pub const norm = @import("norm.zig");
 pub const attention = @import("attention.zig");
+pub const threading = @import("threading.zig");
 
 // ============================================================================
 // Version & Initialization
@@ -88,7 +89,7 @@ export fn axiom_bmm(
 // ============================================================================
 
 export fn axiom_relu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.relu(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_relu(x_ptr, y_ptr, n);
 }
 
 export fn axiom_relu_inplace(x_ptr: [*]f32, n: usize) void {
@@ -96,11 +97,11 @@ export fn axiom_relu_inplace(x_ptr: [*]f32, n: usize) void {
 }
 
 export fn axiom_gelu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.gelu(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_gelu(x_ptr, y_ptr, n);
 }
 
 export fn axiom_sigmoid(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.sigmoid(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_sigmoid(x_ptr, y_ptr, n);
 }
 
 export fn axiom_softmax(
@@ -113,35 +114,35 @@ export fn axiom_softmax(
 }
 
 export fn axiom_swish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.swish(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_swish(x_ptr, y_ptr, n);
 }
 
 export fn axiom_tanh(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.tanh_activation(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_tanh(x_ptr, y_ptr, n);
 }
 
 export fn axiom_leaky_relu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize, alpha: f32) void {
-    activations.leaky_relu(x_ptr[0..n], y_ptr[0..n], alpha);
+    threading.parallel_leaky_relu(x_ptr, y_ptr, n, alpha);
 }
 
 export fn axiom_elu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize, alpha: f32) void {
-    activations.elu(x_ptr[0..n], y_ptr[0..n], alpha);
+    threading.parallel_elu(x_ptr, y_ptr, n, alpha);
 }
 
 export fn axiom_selu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.selu(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_selu(x_ptr, y_ptr, n);
 }
 
 export fn axiom_mish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.mish(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_mish(x_ptr, y_ptr, n);
 }
 
 export fn axiom_hardswish(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.hard_swish(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_hard_swish(x_ptr, y_ptr, n);
 }
 
 export fn axiom_hardsigmoid(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.hard_sigmoid(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_hard_sigmoid(x_ptr, y_ptr, n);
 }
 
 export fn axiom_log_softmax(
@@ -158,7 +159,7 @@ export fn axiom_log_softmax(
 }
 
 export fn axiom_softplus(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
-    activations.softplus(x_ptr[0..n], y_ptr[0..n]);
+    threading.parallel_softplus(x_ptr, y_ptr, n);
 }
 
 // ============================================================================

@@ -37,7 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Isabelle proof skeleton exports now emit explicit unresolved placeholders (`oops`) so reconciliation/import status cannot report incomplete artifacts as complete.
 
 === Added
-- Zig backend with SIMD-optimized operations
+- Zig backend with SIMD-optimized operations (now the sole native backend)
+
+=== Removed
+- Rust backend removed; Zig backend is now the sole native backend. Migrate any `RustBackend(...)` calls to `ZigBackend(...)` and update `AXIOM_RUST_LIB` references to `AXIOM_ZIG_LIB`.
 - Comprehensive documentation (Architecture, Performance, Safety-Critical, etc.)
 - RSR compliance infrastructure (flake.nix, Justfile, security policies)
 - Attention mechanisms for transformer models
@@ -86,7 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ==== Backends
 - JuliaBackend: Pure Julia implementation
-- RustBackend: High-performance parallel backend using Rayon
+- RustBackend: High-performance parallel backend using Rayon (removed in Unreleased — use ZigBackend)
 - ZigBackend: SIMD-optimized backend with minimal binary size
 
 ==== Compatibility
@@ -100,7 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migration guide from PyTorch
 
 === Security
-- Memory-safe backends (Rust, Zig)
+- Memory-safe backends (Zig)
 - Type-safe tensor operations
 - Verification system for safety-critical applications
 

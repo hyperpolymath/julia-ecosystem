@@ -17,13 +17,12 @@ using JSON
 const AXIOM_DIR = dirname(@__DIR__)
 
 zig_lib = joinpath(AXIOM_DIR, "zig", "zig-out", "lib", "libaxiom_zig.so")
-rust_lib = joinpath(AXIOM_DIR, "rust", "target", "release", "libaxiom_core.so")
 
 # Init SmartBackend
 local smart = nothing
 try
     Axiom.init_zig_backend(zig_lib)
-    global smart = SmartBackend(zig_path=zig_lib, rust_path=rust_lib)
+    global smart = SmartBackend(zig_path=zig_lib)
     println("✓ Axiom SmartBackend (Zig: $(filesize(zig_lib) ÷ 1024)KB)")
 catch e
     println("✗ SmartBackend failed: $e — using JuliaBackend")

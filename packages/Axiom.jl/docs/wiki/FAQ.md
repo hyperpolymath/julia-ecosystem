@@ -11,7 +11,7 @@
 Axiom.jl is a **formally verified machine learning framework** for Julia. It combines:
 
 - **Julia** for high-level, expressive model definitions
-- **Rust** for high-performance production inference
+- **Zig** for high-performance native inference
 - **Formal methods** for mathematical guarantees about model behavior
 
 ### Why the name "Axiom"?
@@ -59,19 +59,19 @@ Pkg.add("Axiom")
 
 Julia 1.9 or higher. We recommend Julia 1.10 for best performance.
 
-### Do I need Rust installed?
+### Do I need Zig installed?
 
-Not for basic usage. The Julia backend works without Rust.
+Not for basic usage. The Julia backend works without Zig.
 
-For the high-performance Rust backend:
+For the high-performance Zig backend:
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install Zig from https://ziglang.org/download/
 ```
 
 Then build:
 ```bash
-cd ~/.julia/packages/Axiom/*/rust
-cargo build --release
+cd ~/.julia/packages/Axiom/*/zig
+zig build -Doptimize=ReleaseFast
 ```
 
 ### Can I use Axiom.jl without GPU?
@@ -225,17 +225,17 @@ end
 
 ### Is Axiom.jl faster than PyTorch?
 
-**Inference**: Yes, 2-3x faster with Rust backend
-**Training**: Comparable (Julia) to 1.5x faster (Rust)
+**Inference**: Yes, 2-3x faster with Zig backend
+**Training**: Comparable (Julia) to 1.5x faster (Zig)
 
-### How do I enable the Rust backend?
+### How do I enable the Zig backend?
 
 ```julia
-# Compile for Rust
-model = compile(my_model, backend=:rust)
+# Compile for Zig
+model = compile(my_model, backend=:zig)
 
 # Or set environment variable
-ENV["AXIOM_BACKEND"] = "rust"
+ENV["AXIOM_BACKEND"] = "zig"
 ```
 
 ### Why is compilation slow?
@@ -342,13 +342,13 @@ x = some_computation()
 x::Matrix{Float32} = some_computation()
 ```
 
-### "Rust backend not found"
+### "Zig backend not found"
 
-Build the Rust backend:
+Build the Zig backend:
 ```bash
-cd ~/.julia/packages/Axiom/*/rust
-cargo build --release
-export AXIOM_RUST_LIB=$(pwd)/target/release/libaxiom_core.so
+cd ~/.julia/packages/Axiom/*/zig
+zig build -Doptimize=ReleaseFast
+export AXIOM_ZIG_LIB=$(pwd)/zig-out/lib/libaxiom_zig.so
 ```
 
 ### "Out of memory"
@@ -391,7 +391,7 @@ See [Roadmap Commitments](Roadmap-Commitments.md) for planned work and delivery 
 ### Is Axiom Julia-first?
 
 Yes. The core DSL, verification pipeline, and SMT integration are Julia-native.
-Rust backends are optional and only used when explicitly enabled.
+The Zig backend is optional and only used when explicitly enabled.
 
 ---
 

@@ -147,7 +147,7 @@ environment variables:
 - `AXIOM_SMT_SOLVER_PATH` + `AXIOM_SMT_SOLVER_KIND`
 - `AXIOM_SMT_TIMEOUT_MS` (default: 30000)
 - `AXIOM_SMT_LOGIC` (default: `QF_NRA`)
-- `AXIOM_SMT_RUNNER=rust` to execute the solver via the Rust backend runner
+- `AXIOM_SMT_RUNNER=zig` to execute the solver via the Zig backend runner
 - `AXIOM_SMT_CACHE=1` to enable SMT result caching
 - `AXIOM_SMT_CACHE_MAX` to cap cache entries (default: 128)
 
@@ -159,7 +159,7 @@ Axiom supports three SMT execution modes:
 |------|---------------------|----------|-------------|----------|
 | **Julia (default)** | None | Basic | Fast | Development |
 | **Containerized** | `AXIOM_SMT_RUNNER=container` | **High** | Medium | Production |
-| **Rust** | `AXIOM_SMT_RUNNER=rust` | Medium | Fast | Embedded |
+| **Zig** | `AXIOM_SMT_RUNNER=zig` | Medium | Fast | Embedded |
 
 **Recommendation:** Use `container` mode for production deployments requiring maximum security.
 
@@ -218,13 +218,13 @@ export AXIOM_CONTAINER_RUNTIME=svalinn
 export AXIOM_SMT_POLICY=/path/to/svalinn-policy.json
 ```
 
-### Optional Rust Runner Example
+### Optional Zig Runner Example
 
-The Rust runner is optional and only used when explicitly enabled.
+The Zig runner is optional and only used when explicitly enabled.
 
 ```bash
-export AXIOM_SMT_RUNNER=rust
-export AXIOM_RUST_LIB=/path/to/libaxiom_core.so
+export AXIOM_SMT_RUNNER=zig
+export AXIOM_ZIG_LIB=/path/to/libaxiom_zig.so
 export AXIOM_SMT_SOLVER=z3
 ```
 
@@ -371,25 +371,25 @@ export AXIOM_SMT_CACHE_MAX=128
 - ✓ Reduced solver invocations
 - ✗ Uses additional memory (bounded by CACHE_MAX)
 
-#### 5. Optional Rust Runner 🔒
+#### 5. Optional Zig Runner 🔒
 
-**What**: Execute SMT solvers through a Rust subprocess manager.
+**What**: Execute SMT solvers through a Zig subprocess manager.
 
 **Why**: Provides additional sandboxing and resource limits.
 
 **Implementation**:
 
 ```bash
-# Enable Rust runner (optional, requires Rust backend)
-export AXIOM_SMT_RUNNER=rust
-export AXIOM_RUST_LIB=/path/to/libaxiom_core.so
+# Enable Zig runner (optional, requires Zig backend)
+export AXIOM_SMT_RUNNER=zig
+export AXIOM_ZIG_LIB=/path/to/libaxiom_zig.so
 
-# Configure Rust runner
-export AXIOM_RUST_SANDBOX=strict  # Future: seccomp, namespaces
+# Configure Zig runner
+export AXIOM_ZIG_SANDBOX=strict  # Future: seccomp, namespaces
 ```
 
 **Security Benefits**:
-- Rust memory safety prevents buffer overflows in runner code
+- Zig memory safety prevents buffer overflows in runner code
 - Future: Process isolation, resource limits, seccomp filters
 - Centralized auditing of solver invocations
 
@@ -453,7 +453,7 @@ export AXIOM_SMT_CACHE=1
 | **Path traversal attack** | Absolute path validation | ✓ Enforced |
 | **Resource exhaustion** | Timeout + cache limits | ✓ Enforced |
 | **Cache poisoning** | Hash includes solver + script | ✓ Enforced |
-| **Sandbox escape** | Rust runner isolation | 🚧 Planned |
+| **Sandbox escape** | Zig runner isolation | 🚧 Planned |
 | **Supply chain attack** | Checksum verification | ⚠ User responsibility |
 
 ---

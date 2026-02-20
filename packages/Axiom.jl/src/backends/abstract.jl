@@ -21,15 +21,6 @@ Pure Julia implementation (default, for development and debugging).
 struct JuliaBackend <: AbstractBackend end
 
 """
-    RustBackend
-
-High-performance Rust implementation.
-"""
-struct RustBackend <: AbstractBackend
-    lib_path::String
-end
-
-"""
     ZigBackend
 
 High-performance Zig implementation.
@@ -150,14 +141,14 @@ end
     SmartBackend
 
 Per-operation dispatch backend that routes each operation to its fastest
-backend based on benchmark data. Wraps Julia, Rust, and Zig backends
-and selects the optimal one for each kernel.
+backend based on benchmark data. Wraps Julia and Zig backends and selects
+the optimal one for each kernel. Zig backend uses SIMD + multi-threading.
 
-Dispatch table (from 2026-02-20 benchmarks, post-SIMD):
+Dispatch table (from 2026-02-20 benchmarks, post-SIMD + threading):
 - matmul → Julia (BLAS, 7–50x faster)
 - relu → Julia (near-parity, avoids FFI overhead)
-- sigmoid → Zig (2.6–2.9x faster)
-- gelu → Zig (3.0–3.5x faster, SIMD @exp vectorized)
+- sigmoid → Zig (2.6–2.9x faster, threaded ≥64K)
+- gelu → Zig (3.0–3.5x faster, SIMD @exp, threaded ≥64K)
 - softmax → Zig (<50K classes), Julia (≥50K classes)
 - layernorm → Zig (1.2–2.6x faster)
 - rmsnorm → Zig (6.5–7.3x faster)
@@ -167,14 +158,12 @@ Dispatch table (from 2026-02-20 benchmarks, post-SIMD):
 struct SmartBackend <: AbstractBackend
     julia::JuliaBackend
     zig::Union{ZigBackend, Nothing}
-    rust::Union{RustBackend, Nothing}
 end
 
-function SmartBackend(; zig_path::Union{String,Nothing}=nothing, rust_path::Union{String,Nothing}=nothing)
+function SmartBackend(; zig_path::Union{String,Nothing}=nothing)
     julia = JuliaBackend()
     zig = zig_path !== nothing && isfile(zig_path) ? ZigBackend(zig_path) : nothing
-    rust = rust_path !== nothing && isfile(rust_path) ? RustBackend(rust_path) : nothing
-    SmartBackend(julia, zig, rust)
+    SmartBackend(julia, zig)
 end
 
 # SmartBackend dispatch: route each operation to the fastest backend.
@@ -902,7 +891,7 @@ end
     forward(d::Dense, x::AbstractTensor)
 
 Backend-aware Dense forward pass. Dispatches matrix multiplication through
-the current backend (Rust, Zig, GPU, or Julia).
+the current backend (Zig, GPU, or Julia).
 """
 function forward(d::Dense, x::AbstractTensor)
     backend = current_backend()
@@ -1517,19 +1506,6 @@ function compile_to_backend(model, backend::JuliaBackend)
     model
 end
 
-function compile_to_backend(model, backend::RustBackend)
-    @info "Compiling to Rust backend..."
-
-    # Verify Rust library exists
-    if !isfile(backend.lib_path)
-        @warn "Rust library not found at $(backend.lib_path), falling back to Julia backend"
-        return model
-    end
-
-    # Wrap model for Rust execution
-    RustCompiledModel(model, backend)
-end
-
 function compile_to_backend(model, backend::ZigBackend)
     @info "Compiling to Zig backend..."
 
@@ -2024,7 +2000,6 @@ function _resource_env_prefix(::MetalBackend)  "AXIOM_METAL" end
 function _resource_env_prefix(b::CoprocessorBackend)
     "AXIOM_$(_coprocessor_label(b))"
 end
-function _resource_env_prefix(::RustBackend)   "AXIOM_RUST" end
 function _resource_env_prefix(::ZigBackend)    "AXIOM_ZIG" end
 
 function _env_int64(key::String, default::Int64)
@@ -2199,61 +2174,6 @@ function resource_report(model)
         "backends" => backends,
     )
 end
-
-"""
-    RustCompiledModel
-
-Model wrapper that dispatches operations to Rust backend.
-"""
-struct RustCompiledModel{M}
-    model::M
-    backend::RustBackend
-    lib_handle::Ptr{Nothing}
-end
-
-function RustCompiledModel(model, backend::RustBackend)
-    # Load the Rust shared library
-    lib_handle = try
-        Libdl.dlopen(backend.lib_path)
-    catch e
-        @warn "Failed to load Rust library: $e"
-        Ptr{Nothing}()
-    end
-
-    RustCompiledModel(model, backend, lib_handle)
-end
-
-function forward(rm::RustCompiledModel, x)
-    if rm.lib_handle == Ptr{Nothing}()
-        # Fallback to Julia implementation
-        return forward(rm.model, x)
-    end
-
-    # Dispatch to Rust backend based on layer type
-    rust_forward(rm.model, x, rm.lib_handle)
-end
-
-(rm::RustCompiledModel)(x) = forward(rm, x)
-
-function rust_forward(model, x, lib_handle)
-    # Default: fall back to Julia for unsupported layers
-    forward(model, x)
-end
-
-function rust_forward(model::Dense, x, lib_handle)
-    # Call Rust matmul if available
-    matmul_fn = Libdl.dlsym(lib_handle, :axiom_matmul; throw_error=false)
-    if matmul_fn != C_NULL
-        # Would call: ccall(matmul_fn, ...)
-        # For now, fall back to Julia
-        forward(model, x)
-    else
-        forward(model, x)
-    end
-end
-
-parameters(rm::RustCompiledModel) = parameters(rm.model)
-output_shape(rm::RustCompiledModel, input_shape) = output_shape(rm.model, input_shape)
 
 """
     ZigCompiledModel

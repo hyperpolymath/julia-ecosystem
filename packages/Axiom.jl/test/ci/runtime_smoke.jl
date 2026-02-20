@@ -15,13 +15,13 @@ function maybe_load_accelerator_backend()
     backend_name = lowercase(strip(get(ENV, "AXIOM_SMOKE_ACCELERATOR", "")))
     isempty(backend_name) && return nothing
 
-    if backend_name == "rust"
-        lib_path = get(ENV, "AXIOM_RUST_LIB", "")
-        isempty(lib_path) && error("AXIOM_RUST_LIB is required when AXIOM_SMOKE_ACCELERATOR=rust")
-        isfile(lib_path) || error("AXIOM_RUST_LIB does not exist: $lib_path")
-        Axiom.init_rust_backend(lib_path)
-        Axiom.rust_available() || error("Rust backend failed to initialize from $lib_path")
-        return RustBackend(lib_path)
+    if backend_name == "zig"
+        lib_path = get(ENV, "AXIOM_ZIG_LIB", "")
+        isempty(lib_path) && error("AXIOM_ZIG_LIB is required when AXIOM_SMOKE_ACCELERATOR=zig")
+        isfile(lib_path) || error("AXIOM_ZIG_LIB does not exist: $lib_path")
+        Axiom.init_zig_backend(lib_path)
+        Axiom.zig_available() || error("Zig backend failed to initialize from $lib_path")
+        return ZigBackend(lib_path)
     elseif backend_name == "cuda"
         @eval using CUDA
         return CUDABackend(0)

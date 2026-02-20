@@ -33,30 +33,17 @@ repl:
 bench:
     julia --project=. benchmark/benchmarks.jl
 
-# Build Rust backend (.so)
-build-rust:
-    cd rust && cargo build --release
-    @echo "Rust library built at rust/target/release/libaxiom_core.so"
-
 # Build Zig backend (.so)
 build-zig:
     cd zig && zig build -Doptimize=ReleaseFast
     @echo "Zig library built at zig/zig-out/lib/libaxiom_zig.so"
 
 # Build all native backends
-build-backends: build-rust build-zig
+build-backends: build-zig
 
-# Run Rust tests
-test-rust:
-    cd rust && cargo test
-
-# Run Rust benchmarks
-bench-rust:
-    cd rust && cargo bench
-
-# Run with Rust backend
-run-rust: build-rust
-    AXIOM_RUST_LIB=rust/target/release/libaxiom_core.so julia --project=. -e 'using Axiom; println("Backend: ", typeof(current_backend()))'
+# Run with Zig backend
+run-zig: build-zig
+    AXIOM_ZIG_LIB=zig/zig-out/lib/libaxiom_zig.so julia --project=. -e 'using Axiom; println("Backend: ", typeof(current_backend()))'
 
 # Check code quality
 lint:
@@ -67,7 +54,7 @@ lint:
 
 # Clean build artifacts
 clean:
-    rm -rf rust/target zig/zig-out zig/zig-cache result
+    rm -rf zig/zig-out zig/zig-cache result
     @echo "Build artifacts cleaned"
 
 # Run panic-attack security scan
@@ -85,7 +72,5 @@ status:
     @echo "Julia version:"
     @julia --version
     @echo ""
-    @echo "Rust backend:"
-    @test -f rust/target/release/libaxiom_core.so && echo "  Built" || echo "  Not built (run: just build-rust)"
     @echo "Zig backend:"
     @test -f zig/zig-out/lib/libaxiom_zig.so && echo "  Built" || echo "  Not built (run: just build-zig)"

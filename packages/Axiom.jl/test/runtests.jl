@@ -715,33 +715,15 @@ with open(args.output, "w", encoding="utf-8") as f:
         @test_throws EnsureViolation @ensure sum(x) ≈ 2.0 "Wrong sum"
     end
 
-    @testset "SMT Rust Runner" begin
-        if get(ENV, "AXIOM_SMT_RUNNER", "") != "rust"
-            @test true # Skip if not enabled
+    @testset "SMT Runner" begin
+        solver = Axiom.get_smt_solver()
+        if solver === nothing
+            @info "Skipping SMT runner test; no solver available"
+            @test true
         else
-            # Test error case: runner enabled, but lib not set
-            if !haskey(ENV, "AXIOM_RUST_LIB")
-                 prop = Axiom.ParsedProperty(:exists, [:x], :(x > 0))
-                 @test_throws ErrorException Axiom.smt_proof(prop)
-            end
-
-            # In a real CI, we would build the rust lib and run the tests
-            # Here we just check that the code doesn't crash if the lib is not available
-            if !Axiom.rust_available()
-                @info "Skipping full Rust SMT runner test; backend not available"
-                @test true
-            else
-                solver = Axiom.get_smt_solver()
-                if solver === nothing
-                    @info "Skipping Rust SMT runner test; solver not available"
-                    @test true
-                else
-                    prop = Axiom.ParsedProperty(:exists, [:x], :(x > 0))
-                    result = Axiom.smt_proof(prop)
-                    # We can't know the result without the actual lib, so just check it doesn't error
-                    @test result.status in (:proven, :unknown)
-                end
-            end
+            prop = Axiom.ParsedProperty(:exists, [:x], :(x > 0))
+            result = Axiom.smt_proof(prop)
+            @test result.status in (:proven, :unknown)
         end
     end
 

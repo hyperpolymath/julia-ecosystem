@@ -72,10 +72,10 @@ CPU is the default:
 set_backend!(JuliaBackend())
 ```
 
-Rust backend (requires a compiled shared library):
+Zig backend (requires a compiled shared library):
 
 ```julia
-set_backend!(RustBackend("/path/to/libaxiom_core.so"))
+set_backend!(ZigBackend("/path/to/libaxiom_zig.so"))
 ```
 
 GPU backend (extension package required):
@@ -88,7 +88,7 @@ set_backend!(CUDABackend(0))
 ## Accelerator Scope
 
 - Implemented today:
-  - CPU + Rust backend
+  - CPU + Zig backend
   - GPU backends via extensions (CUDA/ROCm/Metal)
   - Coprocessor backend targets (`TPUBackend`, `NPUBackend`, `PPUBackend`, `MathBackend`, `FPGABackend`, `DSPBackend`) with detection and CPU fallback
 - Still in progress:

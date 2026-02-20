@@ -476,7 +476,7 @@ end
 ```
 
 **Options:**
-- `backend=RustBackend("/path/to/libaxiom_core.so")`: Backend selection
+- `backend=ZigBackend("/path/to/libaxiom_zig.so")`: Backend selection
 - `verified=true`: Enable verification
 - `name="MyModel"`: Model name
 
@@ -606,15 +606,15 @@ end
 
 ---
 
-### RustBackend
+### ZigBackend
 
-High-performance Rust implementation.
+High-performance Zig native implementation.
 
 ```julia
-backend = RustBackend()
+backend = ZigBackend()
 
 # Check availability
-rust_available()  # Returns Bool
+zig_available()  # Returns Bool
 ```
 
 ---

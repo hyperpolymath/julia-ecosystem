@@ -31,9 +31,9 @@ Key Features:
     ML models (e.g., robustness, safety invariants, fairness criteria) using
     specialized DSLs and integration with proof assistants.
 -   **Multi-Backend Support**: Seamlessly integrate with high-performance
-    Rust backend via Foreign Function Interface (FFI),
-    allowing for optimized computation without sacrificing verification
-    capabilities. GPU acceleration available through CUDA/ROCm/Metal extensions.
+    Zig backend via Foreign Function Interface (FFI) with SIMD vectorization
+    and multi-threading, allowing for optimized computation without sacrificing
+    verification capabilities. GPU acceleration via CUDA/ROCm/Metal extensions.
 -   **Model Interoperability**: Facilitate the import and export of models
     from popular frameworks like PyTorch and ONNX, enabling formal
     verification workflows for existing models.
@@ -110,9 +110,6 @@ include("backends/abstract.jl")
 include("backends/julia_backend.jl")
 include("backends/gpu_hooks.jl")  # GPU backend interface (issue #12)
 
-# Rust FFI (loaded conditionally)
-include("backends/rust_ffi.jl")
-
 # Zig FFI (loaded conditionally)
 include("backends/zig_ffi.jl")
 
@@ -163,7 +160,7 @@ export mse_loss, crossentropy, binary_crossentropy
 export train!, compile, verify
 
 # Backends
-export AbstractBackend, JuliaBackend, RustBackend, ZigBackend, SmartBackend
+export AbstractBackend, JuliaBackend, ZigBackend, SmartBackend
 export CUDABackend, ROCmBackend, MetalBackend
 export TPUBackend, NPUBackend, DSPBackend, PPUBackend, MathBackend, FPGABackend
 export VPUBackend, QPUBackend, CryptoBackend
@@ -220,15 +217,6 @@ export import_lean_certificate, import_coq_certificate, import_isabelle_certific
 const VERSION = v"1.0.0"
 
 function __init__()
-    # Check for Rust backend availability
-    if haskey(ENV, "AXIOM_RUST_LIB")
-        try
-            init_rust_backend(ENV["AXIOM_RUST_LIB"])
-        catch e
-            @warn "Rust backend not available, using pure Julia" exception=e
-        end
-    end
-
     # Check for Zig backend availability
     if haskey(ENV, "AXIOM_ZIG_LIB")
         try

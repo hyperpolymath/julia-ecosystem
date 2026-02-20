@@ -388,16 +388,16 @@ end
 # Julia: Maximum compatibility
 model_julia = @axiom backend=JuliaBackend() $architecture
 
-# Rust: Best for parallel workloads
-model_rust = @axiom backend=RustBackend() $architecture
+# Zig: Best for native SIMD/parallel workloads
+model_zig = @axiom backend=ZigBackend() $architecture
 
 # Train once (use fastest available)
-best_backend = rust_available() ? RustBackend() : JuliaBackend()
+best_backend = zig_available() ? ZigBackend() : JuliaBackend()
 model = @axiom backend=best_backend $architecture
 train!(model, train_loader, epochs=10)
 
 # Copy weights to all versions
-for target_model in [model_julia, model_rust]
+for target_model in [model_julia, model_zig]
     copy_weights!(target_model, model)
 end
 
@@ -408,9 +408,9 @@ using BenchmarkTools
 println("Julia backend:")
 @btime forward($model_julia, $x)
 
-if rust_available()
-    println("Rust backend:")
-    @btime forward($model_rust, $x)
+if zig_available()
+    println("Zig backend:")
+    @btime forward($model_zig, $x)
 end
 ```
 

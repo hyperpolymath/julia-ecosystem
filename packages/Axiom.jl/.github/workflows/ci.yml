@@ -18,7 +18,6 @@ concurrency:
 
 env:
   JULIA_NUM_THREADS: 2
-  RUST_BACKTRACE: 1
 
 jobs:
   julia-compat:
@@ -69,46 +68,28 @@ jobs:
       - name: Instantiate / Build / Precompile / Test
         run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build(); Pkg.precompile(); Pkg.test()'
 
-  rust-build:
-    name: Rust Backend
+  zig-build:
+    name: Zig Backend
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@6d9817901c499d6b02debbb57edb38d33daa680b # stable
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@7ab2955eb728f5440978d7a4f7b08092032d2a5c # v2
         with:
-          toolchain: stable
-          components: rustfmt, clippy
+          version: '0.15.2'
 
-      - name: Cache Cargo
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            rust/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
+      - name: Build Zig backend (ReleaseFast)
+        working-directory: zig
+        run: zig build -Doptimize=ReleaseFast
 
-      - name: Check formatting
-        working-directory: rust
-        run: cargo fmt --check
+      - name: Run Zig tests
+        working-directory: zig
+        run: zig build test
 
-      - name: Clippy lints
-        working-directory: rust
-        run: cargo clippy -- -D warnings
-
-      - name: Run tests
-        working-directory: rust
-        run: cargo test
-
-      - name: Build release
-        working-directory: rust
-        run: cargo build --release
-
-  backend-parity-rust:
-    name: CPU vs Rust parity + accelerated smoke
+  backend-parity-zig:
+    name: CPU vs Zig parity + accelerated smoke
     runs-on: ubuntu-latest
 
     steps:
@@ -120,27 +101,27 @@ jobs:
 
       - uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@6d9817901c499d6b02debbb57edb38d33daa680b # stable
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@7ab2955eb728f5440978d7a4f7b08092032d2a5c # v2
         with:
-          toolchain: stable
+          version: '0.15.2'
 
-      - name: Build Rust shared library
-        working-directory: rust
-        run: cargo build --release
+      - name: Build Zig shared library
+        working-directory: zig
+        run: zig build -Doptimize=ReleaseFast
 
       - name: Instantiate / Build / Precompile
         run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build(); Pkg.precompile()'
 
       - name: Run backend parity tests
         env:
-          AXIOM_RUST_LIB: ${{ github.workspace }}/rust/target/release/libaxiom_core.so
+          AXIOM_ZIG_LIB: ${{ github.workspace }}/zig/zig-out/lib/libaxiom_zig.so
         run: julia --project=. test/ci/backend_parity.jl
 
-      - name: Run accelerated runtime smoke test (Rust)
+      - name: Run accelerated runtime smoke test (Zig)
         env:
-          AXIOM_RUST_LIB: ${{ github.workspace }}/rust/target/release/libaxiom_core.so
-          AXIOM_SMOKE_ACCELERATOR: rust
+          AXIOM_ZIG_LIB: ${{ github.workspace }}/zig/zig-out/lib/libaxiom_zig.so
+          AXIOM_SMOKE_ACCELERATOR: zig
           AXIOM_SMOKE_ACCELERATOR_REQUIRED: '1'
         run: julia --project=. test/ci/runtime_smoke.jl
 
@@ -593,13 +574,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Install cargo-audit
-        run: cargo install cargo-audit
-
-      - name: Rust dependency audit
-        working-directory: rust
-        run: cargo audit
 
       - name: Check for secrets
         uses: trufflesecurity/trufflehog@6961f2bace57ab32b23b3ba40f8f420f6bc7e004 # v3.93.3

@@ -39,10 +39,10 @@
     | mathsat   |
     +-----------+
 
-    Backend Abstraction Layer
+    Backend Abstraction Layer (15 backends)
     +-----------------------------------------------------------------+
     |  abstract.jl  -  AbstractBackend / set_backend! / compile()     |
-    |  CompilationTarget / MixedPrecisionWrapper / optimize_model*    |
+    |  CompilationTarget / MixedPrecisionWrapper / self-healing       |
     +-----------------------------------------------------------------+
          |              |              |              |
          v              v              v              v
@@ -50,21 +50,19 @@
     | Julia     |  | Rust      |  | Zig       |  | GPU       |
     | Backend   |  | Backend   |  | Backend   |  | Backends  |
     |-----------|  |-----------|  |-----------|  |-----------|
-    | julia_    |  | rust_     |  | zig_      |  | gpu_      |
-    |  backend  |  |  ffi.jl   |  |  ffi.jl   |  |  hooks.jl |
-    |  .jl      |  |   |       |  |   |       |  |   |       |
-    | (default) |  |   v       |  |   v       |  |   v       |
-    |           |  | rust/     |  | zig/      |  | ext/      |
-    +-----------+  | src/      |  | src/      |  | CUDA      |
-                   | ffi.rs    |  | axiom.zig |  | AMDGPU    |
-                   | ops/      |  | matmul    |  | Metal     |
-                   |  matmul   |  | activa-   |  | PyTorch   |
-                   |  activ    |  |  tions    |  +-----------+
-                   |  conv     |  | conv      |
-                   |  pool     |  | pool      |
-                   |  norm     |  | norm      |
-                   +-----------+  | attention |
-                                  +-----------+
+    | (default) |  | rust/     |  | zig/      |  | CUDA      |
+    | reference |  |  ffi.rs   |  |  axiom    |  | ROCm      |
+    | impl      |  |  ops/     |  |  .zig     |  | Metal     |
+    +-----------+  +-----------+  +-----------+  +-----------+
+                                                      |
+    Coprocessor Backends (self-healing fallback)       |
+    +-----------------------------------------------------------------+
+    | TPU | NPU | DSP | PPU | Math | FPGA | VPU | QPU | Crypto      |
+    |-----------------------------------------------------------------|
+    | Environment-based detection (AXIOM_*_AVAILABLE)                 |
+    | Strict mode: AXIOM_*_REQUIRED=1 prevents fallback              |
+    | Self-healing: graceful degradation to JuliaBackend              |
+    +-----------------------------------------------------------------+
 
     * = disabled, stub, or placeholder
 ```
@@ -154,6 +152,25 @@
 | Metal: matmul/relu/soft| Done   | `██████████` 100%              |
 | Metal: conv2d/norm/pool| None   | `░░░░░░░░░░` 0%                |
 
+### Backends - Coprocessor Dispatch
+| Component              | Status | Progress                       |
+|------------------------|--------|--------------------------------|
+| Backend type hierarchy | Done   | `██████████` 100%              |
+| Env-based detection    | Done   | `██████████` 100%              |
+| Self-healing fallback  | Done   | `██████████` 100%              |
+| Strict mode / required | Done   | `██████████` 100%              |
+| Runtime diagnostics    | Done   | `██████████` 100%              |
+| Capability reporting   | Done   | `██████████` 100%              |
+| TPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| NPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| DSP extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| PPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| Math extension hooks   | Stub   | `█░░░░░░░░░` 10%               |
+| FPGA extension hooks   | Stub   | `█░░░░░░░░░` 10%               |
+| VPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| QPU extension hooks    | Stub   | `█░░░░░░░░░` 10%               |
+| Crypto extension hooks | Stub   | `█░░░░░░░░░` 10%               |
+
 ### Integrations
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
@@ -174,11 +191,14 @@
 ### Infrastructure
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
-| CI/CD (GitHub Actions) | Partial| `██████░░░░` 60%               |
+| CI/CD (21 workflows)   | Good   | `████████░░` 80%               |
 | Tests (~46-49 passing) | Good   | `████████░░` 80%               |
 | Benchmarks             | Done   | `██████████` 100%              |
 | Documentation (wiki)   | Done   | `████████░░` 80%               |
-| RSR Compliance         | Poor   | `██░░░░░░░░` 20%               |
+| RSR Compliance         | Good   | `████████░░` 80%               |
+| Bot directives (8)     | Done   | `██████████` 100%              |
+| Contractiles (5)       | Done   | `██████████` 100%              |
+| SCM files (5)          | Done   | `██████████` 100%              |
 
 ## Key Dependencies
 
@@ -196,7 +216,14 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~55% complete
+## Overall: ~58% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib
-**Weakest areas:** Autograd (placeholder), GPU ext coverage, proof assistant integration, compile optimizations, RSR compliance
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, RSR compliance
+**Weakest areas:** Autograd (placeholder), GPU ext coverage, coprocessor extension hooks (stubs), proof assistant integration, compile optimizations
+
+## Ecosystem Context
+
+Axiom.jl is the flagship package in `julia-ecosystem` (part of `developer-ecosystem` monorepo).
+13 sibling COMPUTE packages share the same backend abstraction: Cladistics.jl, BowtieRisk.jl,
+Cliometrics.jl, KnotTheory.jl, HackenbushGames.jl, QuantumCircuit.jl, SMTLib.jl,
+PolyglotFormalisms.jl, Causals.jl, SiliconCore.jl, LowLevel.jl, ZeroProb.jl, ProvenCrypto.jl.

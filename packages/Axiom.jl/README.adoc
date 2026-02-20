@@ -107,8 +107,8 @@ prod_model = compile(model, backend=RustBackend("/path/to/libaxiom_core.so"), op
 
 [source,julia]
 ----
-# Non-GPU accelerator targets with safe fallback
-cop = detect_coprocessor()  # TPU/NPU/PPU/MATH/FPGA/DSP or nothing
+# Non-GPU accelerator targets with self-healing fallback
+cop = detect_coprocessor()  # TPU/NPU/VPU/QPU/PPU/MATH/CRYPTO/FPGA/DSP or nothing
 if cop !== nothing
     model_accel = compile(model, backend=cop, verify=false)
 end
@@ -287,12 +287,15 @@ Axiom.jl/
 │   ├── dsl/            # @axiom macro system
 │   ├── verification/   # @ensure, @prove
 │   ├── training/       # Optimizers, loss functions
-│   └── backends/       # Julia/Rust backends
+│   └── backends/       # Backend abstraction (15 backends)
 ├── rust/               # Rust performance backend
 │   ├── src/
 │   │   ├── ops/       # Matrix, conv, activation ops
 │   │   └── ffi.rs     # Julia FFI bindings
 │   └── Cargo.toml
+├── zig/                # Zig SIMD backend
+│   └── src/           # matmul, conv, norm, attention, etc.
+├── ext/                # GPU package extensions (CUDA, ROCm, Metal)
 ├── test/               # Test suite
 ├── examples/           # Example models
 └── docs/               # Documentation & wiki

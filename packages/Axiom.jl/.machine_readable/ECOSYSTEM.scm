@@ -24,7 +24,15 @@
      (eclexia . ((relationship . "sibling-project")
                  (description . "Programming language with shadow pricing - similar formal verification goals")))
      (language-bridges . ((relationship . "pattern-reference")
-                          (description . "Zig FFI bridge patterns used by Axiom.jl's zig backend")))))
+                          (description . "Zig FFI bridge patterns used by Axiom.jl's zig backend")))
+     (julia-ecosystem . ((relationship . "parent-monorepo")
+                          (description . "Axiom.jl lives in developer-ecosystem/julia-ecosystem alongside 13 sibling COMPUTE packages")))
+     (quantumcircuit-jl . ((relationship . "sibling-package")
+                            (description . "Quantum circuit simulation - shares backend abstraction")))
+     (provencrypto-jl . ((relationship . "sibling-package")
+                          (description . "Formally verified cryptography - shares backend abstraction")))
+     (bowtierisk-jl . ((relationship . "sibling-package")
+                        (description . "Financial risk modeling - shares backend abstraction")))))
 
   (what-this-is
     "A Julia package that makes ML models provably correct by combining:
@@ -34,7 +42,8 @@
      4. Proof certificate export to Lean 4, Coq, Isabelle/HOL
      5. High-performance backends in Rust (Rayon parallelism) and Zig (SIMD)
      6. GPU acceleration via CUDA, ROCm, Metal package extensions
-     7. PyTorch model import/export for interoperability")
+     7. Coprocessor dispatch for 9 accelerator types (TPU, NPU, DSP, PPU, Math, FPGA, VPU, QPU, Crypto)
+     8. PyTorch model import/export for interoperability")
 
   (what-this-is-not
     ("Not a general-purpose deep learning framework (use Flux.jl/Lux.jl for that)"

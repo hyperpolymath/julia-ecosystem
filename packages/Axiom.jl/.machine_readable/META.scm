@@ -33,7 +33,12 @@
                    (status . "accepted")
                    (context . "Most existing ML models are in PyTorch. Need import path for verification.")
                    (decision . "AxiomPyTorchExt provides bidirectional conversion (Dense, Conv2d, BatchNorm, activations). State dict parsing for weight transfer.")
-                   (consequences . "Depends on PyCall.jl and user's Python/PyTorch installation. HuggingFace model-specific converters still needed.")))))
+                   (consequences . "Depends on PyCall.jl and user's Python/PyTorch installation. HuggingFace model-specific converters still needed.")))
+       (adr-007 . ((title . "Coprocessor dispatch with self-healing fallback")
+                   (status . "accepted")
+                   (context . "Need to support 9 accelerator types (TPU, NPU, DSP, PPU, Math, FPGA, VPU, QPU, Crypto) beyond GPU backends, with graceful degradation when hardware unavailable.")
+                   (decision . "CoprocessorBackend union type with environment-variable-based detection (AXIOM_*_AVAILABLE, AXIOM_*_DEVICE_COUNT). Self-healing fallback to JuliaBackend with runtime diagnostics. Strict mode (AXIOM_*_REQUIRED=1) prevents fallback for safety-critical deployments. Shared infrastructure across 14 packages via abstract.jl template.")
+                   (consequences . "Extension hooks are stubs until vendor SDKs integrated. 13 sibling packages share identical infrastructure pattern with domain-specific operation hooks.")))))
     (development-practices
       ((code-style . "julian")
        (security . "openssf-scorecard")

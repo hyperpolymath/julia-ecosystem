@@ -93,23 +93,26 @@ impl Tensor<f32> {
 /// Tensor from raw pointer (for FFI)
 ///
 /// # Safety
-/// The pointer must be valid and point to `len` elements
-pub unsafe fn tensor_from_ptr<T: Clone>(ptr: *const T, shape: &[usize]) -> Tensor<T> {
+/// The pointer must be valid and point to `len` elements.
+/// Returns `None` if the shape doesn't match the data length.
+pub unsafe fn tensor_from_ptr<T: Clone>(ptr: *const T, shape: &[usize]) -> Option<Tensor<T>> {
     let len: usize = shape.iter().product();
     let slice = std::slice::from_raw_parts(ptr, len);
-    let data =
-        ArrayD::from_shape_vec(IxDyn(shape), slice.to_vec()).expect("tensor: shape mismatch");
-    Tensor::from_array(data)
+    let data = ArrayD::from_shape_vec(IxDyn(shape), slice.to_vec()).ok()?;
+    Some(Tensor::from_array(data))
 }
 
 /// Copy tensor data to pointer (for FFI)
 ///
 /// # Safety
-/// The destination pointer must have enough space
-pub unsafe fn tensor_to_ptr<T: Clone>(tensor: &Tensor<T>, dst: *mut T) {
-    let src = tensor
-        .data
-        .as_slice()
-        .expect("tensor: array not contiguous");
-    std::ptr::copy_nonoverlapping(src.as_ptr(), dst, src.len());
+/// The destination pointer must have enough space.
+/// Returns `false` if the tensor data is not contiguous.
+pub unsafe fn tensor_to_ptr<T: Clone>(tensor: &Tensor<T>, dst: *mut T) -> bool {
+    match tensor.data.as_slice() {
+        Some(src) => {
+            std::ptr::copy_nonoverlapping(src.as_ptr(), dst, src.len());
+            true
+        }
+        None => false,
+    }
 }

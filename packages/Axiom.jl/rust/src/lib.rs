@@ -107,8 +107,15 @@ fn choose_rayon_threads(
 /// Get library version as C string (for FFI)
 #[no_mangle]
 pub extern "C" fn axiom_version() -> *const libc::c_char {
-    let version = CString::new(VERSION).unwrap();
-    version.into_raw()
+    match std::panic::catch_unwind(|| {
+        // SAFETY: VERSION is a compile-time string with no interior null bytes.
+        CString::new(VERSION)
+            .unwrap_or_else(|_| CString::default())
+            .into_raw()
+    }) {
+        Ok(ptr) => ptr,
+        Err(_) => std::ptr::null(),
+    }
 }
 
 /// Initialize the library

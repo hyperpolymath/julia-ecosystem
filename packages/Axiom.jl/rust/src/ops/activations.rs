@@ -70,6 +70,7 @@ pub fn softmax(x: &ArrayD<f32>) -> ArrayD<f32> {
             let idx = batch_idx * num_classes + class_idx;
             let val = result
                 .as_slice()
+                // SAFETY: array is freshly cloned — always contiguous; caught by ffi_catch if not
                 .expect("activations: array not contiguous")[idx];
             if val > max_val {
                 max_val = val;
@@ -80,7 +81,8 @@ pub fn softmax(x: &ArrayD<f32>) -> ArrayD<f32> {
         let mut sum = 0.0f32;
         let result_slice = result
             .as_slice_mut()
-            .expect("activations: array not contiguous");
+            // SAFETY: array is freshly cloned — always contiguous; caught by ffi_catch if not
+                .expect("activations: array not contiguous");
         for class_idx in 0..num_classes {
             let idx = batch_idx * num_classes + class_idx;
             let exp_val = (result_slice[idx] - max_val).exp();
@@ -114,6 +116,7 @@ pub fn log_softmax(x: &ArrayD<f32>) -> ArrayD<f32> {
             let idx = batch_idx * num_classes + class_idx;
             let val = result
                 .as_slice()
+                // SAFETY: array is freshly cloned — always contiguous; caught by ffi_catch if not
                 .expect("activations: array not contiguous")[idx];
             if val > max_val {
                 max_val = val;
@@ -124,7 +127,8 @@ pub fn log_softmax(x: &ArrayD<f32>) -> ArrayD<f32> {
         let mut log_sum_exp = 0.0f32;
         let result_slice = result
             .as_slice()
-            .expect("activations: array not contiguous");
+            // SAFETY: array is freshly cloned — always contiguous; caught by ffi_catch if not
+                .expect("activations: array not contiguous");
         for class_idx in 0..num_classes {
             let idx = batch_idx * num_classes + class_idx;
             log_sum_exp += (result_slice[idx] - max_val).exp();
@@ -134,7 +138,8 @@ pub fn log_softmax(x: &ArrayD<f32>) -> ArrayD<f32> {
         // Subtract from each element
         let result_slice = result
             .as_slice_mut()
-            .expect("activations: array not contiguous");
+            // SAFETY: array is freshly cloned — always contiguous; caught by ffi_catch if not
+                .expect("activations: array not contiguous");
         for class_idx in 0..num_classes {
             let idx = batch_idx * num_classes + class_idx;
             result_slice[idx] -= log_sum_exp;

@@ -2,14 +2,31 @@
 //! Foreign Function Interface for Julia
 //!
 //! These functions are called from Julia via ccall.
+//!
+//! # Safety
+//!
+//! Every `extern "C"` function wraps its body in `catch_unwind` to prevent
+//! panics from crossing the FFI boundary (which is undefined behavior in Rust).
+//! On panic, void-returning functions leave the output buffer unchanged and
+//! return silently; pointer-returning functions return a null pointer or error
+//! string.
 
 use crate::ops::{activations, conv, matmul, norm, pool};
 use ndarray::{ArrayD, ArrayView2, ArrayView4, IxDyn};
 use std::ffi::{CStr, CString};
+use std::panic::AssertUnwindSafe;
 use std::process::{Command, Stdio};
 use std::slice;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use std::{env, thread};
+
+/// Catch panics at the FFI boundary. On panic the output buffer is left
+/// unchanged and the function returns `()`.
+macro_rules! ffi_catch {
+    ($($body:tt)*) => {
+        let _ = ::std::panic::catch_unwind(AssertUnwindSafe(|| { $($body)* }));
+    };
+}
 
 // ============================================================================
 // Matrix Operations
@@ -32,16 +49,26 @@ pub unsafe extern "C" fn axiom_matmul(
     if a_ptr.is_null() || b_ptr.is_null() || c_ptr.is_null() {
         return;
     }
-    let a_slice = slice::from_raw_parts(a_ptr, m * k);
-    let b_slice = slice::from_raw_parts(b_ptr, k * n);
+    ffi_catch! { unsafe {
+        let a_slice = slice::from_raw_parts(a_ptr, m * k);
+        let b_slice = slice::from_raw_parts(b_ptr, k * n);
 
-    let a = ArrayView2::from_shape((m, k), a_slice).expect("axiom_matmul: A shape mismatch");
-    let b = ArrayView2::from_shape((k, n), b_slice).expect("axiom_matmul: B shape mismatch");
+        let a = match ArrayView2::from_shape((m, k), a_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
+        let b = match ArrayView2::from_shape((k, n), b_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let c = matmul::matmul_parallel(a, b);
+        let c = matmul::matmul_parallel(a, b);
 
-    let c_slice = slice::from_raw_parts_mut(c_ptr, m * n);
-    c_slice.copy_from_slice(c.as_slice().expect("axiom_matmul: output not contiguous"));
+        let c_slice = slice::from_raw_parts_mut(c_ptr, m * n);
+        if let Some(src) = c.as_slice() {
+            c_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 // ============================================================================
@@ -58,14 +85,20 @@ pub unsafe extern "C" fn axiom_relu(x_ptr: *const f32, y_ptr: *mut f32, n: libc:
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec())
-        .expect("axiom_relu: input shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::relu(&x);
+        let y = activations::relu(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("axiom_relu: output not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Sigmoid activation
@@ -78,13 +111,20 @@ pub unsafe extern "C" fn axiom_sigmoid(x_ptr: *const f32, y_ptr: *mut f32, n: li
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::sigmoid(&x);
+        let y = activations::sigmoid(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Softmax activation
@@ -102,15 +142,21 @@ pub unsafe extern "C" fn axiom_softmax(
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let n = batch_size * num_classes;
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[batch_size, num_classes]), x_slice.to_vec())
-        .expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let n = batch_size * num_classes;
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[batch_size, num_classes]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::softmax(&x);
+        let y = activations::softmax(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// GELU activation
@@ -123,13 +169,20 @@ pub unsafe extern "C" fn axiom_gelu(x_ptr: *const f32, y_ptr: *mut f32, n: libc:
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::gelu(&x);
+        let y = activations::gelu(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Tanh activation
@@ -142,13 +195,20 @@ pub unsafe extern "C" fn axiom_tanh(x_ptr: *const f32, y_ptr: *mut f32, n: libc:
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::tanh_activation(&x);
+        let y = activations::tanh_activation(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Leaky ReLU activation
@@ -166,13 +226,20 @@ pub unsafe extern "C" fn axiom_leaky_relu(
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::leaky_relu(&x, alpha);
+        let y = activations::leaky_relu(&x, alpha);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// ELU activation
@@ -190,13 +257,20 @@ pub unsafe extern "C" fn axiom_elu(
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::elu(&x, alpha);
+        let y = activations::elu(&x, alpha);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// SELU activation
@@ -209,13 +283,20 @@ pub unsafe extern "C" fn axiom_selu(x_ptr: *const f32, y_ptr: *mut f32, n: libc:
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::selu(&x);
+        let y = activations::selu(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Swish/SiLU activation
@@ -228,13 +309,20 @@ pub unsafe extern "C" fn axiom_swish(x_ptr: *const f32, y_ptr: *mut f32, n: libc
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::swish(&x);
+        let y = activations::swish(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Mish activation
@@ -247,13 +335,20 @@ pub unsafe extern "C" fn axiom_mish(x_ptr: *const f32, y_ptr: *mut f32, n: libc:
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::mish(&x);
+        let y = activations::mish(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Hard Swish activation
@@ -266,13 +361,20 @@ pub unsafe extern "C" fn axiom_hardswish(x_ptr: *const f32, y_ptr: *mut f32, n: 
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::hardswish(&x);
+        let y = activations::hardswish(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Hard Sigmoid activation
@@ -285,13 +387,20 @@ pub unsafe extern "C" fn axiom_hardsigmoid(x_ptr: *const f32, y_ptr: *mut f32, n
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::hardsigmoid(&x);
+        let y = activations::hardsigmoid(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Log Softmax activation
@@ -309,15 +418,21 @@ pub unsafe extern "C" fn axiom_log_softmax(
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let n = batch_size * num_classes;
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[batch_size, num_classes]), x_slice.to_vec())
-        .expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let n = batch_size * num_classes;
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[batch_size, num_classes]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::log_softmax(&x);
+        let y = activations::log_softmax(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Softplus activation
@@ -330,13 +445,20 @@ pub unsafe extern "C" fn axiom_softplus(x_ptr: *const f32, y_ptr: *mut f32, n: l
     if x_ptr.is_null() || y_ptr.is_null() {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n);
-    let x = ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()).expect("FFI: shape mismatch");
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n);
+        let x = match ArrayD::from_shape_vec(IxDyn(&[n]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = activations::softplus(&x);
+        let y = activations::softplus(&x);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 // ============================================================================
@@ -370,31 +492,39 @@ pub unsafe extern "C" fn axiom_conv2d(
     if input_ptr.is_null() || weight_ptr.is_null() || output_ptr.is_null() {
         return;
     }
-    let input_size = n * h_in * w_in * c_in;
-    let weight_size = kh * kw * c_in * c_out;
+    ffi_catch! { unsafe {
+        let input_size = n * h_in * w_in * c_in;
+        let weight_size = kh * kw * c_in * c_out;
 
-    let input_slice = slice::from_raw_parts(input_ptr, input_size);
-    let weight_slice = slice::from_raw_parts(weight_ptr, weight_size);
+        let input_slice = slice::from_raw_parts(input_ptr, input_size);
+        let weight_slice = slice::from_raw_parts(weight_ptr, weight_size);
 
-    let input = ArrayView4::from_shape((n, h_in, w_in, c_in), input_slice)
-        .expect("FFI: view shape mismatch");
-    let weight = ArrayView4::from_shape((kh, kw, c_in, c_out), weight_slice)
-        .expect("FFI: view shape mismatch");
+        let input = match ArrayView4::from_shape((n, h_in, w_in, c_in), input_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
+        let weight = match ArrayView4::from_shape((kh, kw, c_in, c_out), weight_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let bias = if bias_ptr.is_null() {
-        None
-    } else {
-        Some(slice::from_raw_parts(bias_ptr, c_out))
-    };
+        let bias = if bias_ptr.is_null() {
+            None
+        } else {
+            Some(slice::from_raw_parts(bias_ptr, c_out))
+        };
 
-    let output = conv::conv2d(input, weight, bias, (stride_h, stride_w), (pad_h, pad_w));
+        let output = conv::conv2d(input, weight, bias, (stride_h, stride_w), (pad_h, pad_w));
 
-    let h_out = (h_in + 2 * pad_h - kh) / stride_h + 1;
-    let w_out = (w_in + 2 * pad_w - kw) / stride_w + 1;
-    let output_size = n * h_out * w_out * c_out;
+        let h_out = (h_in + 2 * pad_h - kh) / stride_h + 1;
+        let w_out = (w_in + 2 * pad_w - kw) / stride_w + 1;
+        let output_size = n * h_out * w_out * c_out;
 
-    let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
-    output_slice.copy_from_slice(output.as_slice().expect("FFI: array not contiguous"));
+        let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
+        if let Some(src) = output.as_slice() {
+            output_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 // ============================================================================
@@ -424,19 +554,25 @@ pub unsafe extern "C" fn axiom_maxpool2d(
     if input_ptr.is_null() || output_ptr.is_null() {
         return;
     }
-    let input_size = n * h_in * w_in * c;
-    let input_slice = slice::from_raw_parts(input_ptr, input_size);
-    let input =
-        ArrayView4::from_shape((n, h_in, w_in, c), input_slice).expect("FFI: view shape mismatch");
+    ffi_catch! { unsafe {
+        let input_size = n * h_in * w_in * c;
+        let input_slice = slice::from_raw_parts(input_ptr, input_size);
+        let input = match ArrayView4::from_shape((n, h_in, w_in, c), input_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let output = pool::maxpool2d(input, (kh, kw), (stride_h, stride_w), (pad_h, pad_w));
+        let output = pool::maxpool2d(input, (kh, kw), (stride_h, stride_w), (pad_h, pad_w));
 
-    let h_out = (h_in + 2 * pad_h - kh) / stride_h + 1;
-    let w_out = (w_in + 2 * pad_w - kw) / stride_w + 1;
-    let output_size = n * h_out * w_out * c;
+        let h_out = (h_in + 2 * pad_h - kh) / stride_h + 1;
+        let w_out = (w_in + 2 * pad_w - kw) / stride_w + 1;
+        let output_size = n * h_out * w_out * c;
 
-    let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
-    output_slice.copy_from_slice(output.as_slice().expect("FFI: array not contiguous"));
+        let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
+        if let Some(src) = output.as_slice() {
+            output_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 // ============================================================================
@@ -459,11 +595,7 @@ fn get_container_runtime() -> String {
 }
 
 /// Run SMT solver in container
-///
-/// # Safety
-///
-/// The script path must be a valid path to an SMT-LIB script.
-unsafe fn run_smt_containerized(
+fn run_smt_containerized(
     solver_kind: &str,
     script_path: &std::path::Path,
     timeout_ms: u64,
@@ -533,11 +665,7 @@ unsafe fn run_smt_containerized(
 }
 
 /// Run SMT solver directly (without container)
-///
-/// # Safety
-///
-/// The solver path must be a valid executable and the script path must be a valid script.
-unsafe fn run_smt_direct(
+fn run_smt_direct(
     solver_kind: &str,
     solver_path: &str,
     script_path: &std::path::Path,
@@ -616,52 +744,58 @@ pub unsafe extern "C" fn axiom_smt_run(
     script: *const libc::c_char,
     timeout_ms: libc::c_uint,
 ) -> *mut libc::c_char {
+    // Helper to create error return without panicking
+    fn error_cstring(msg: &str) -> *mut libc::c_char {
+        CString::new(msg)
+            .unwrap_or_else(|_| CString::new("error: internal").unwrap_or_default())
+            .into_raw()
+    }
+
     if solver_path.is_null() || script.is_null() {
-        return CString::new("error: missing solver path or script")
-            .expect("FFI: CString conversion failed")
-            .into_raw();
+        return error_cstring("error: missing solver path or script");
     }
 
-    let kind = if solver_kind.is_null() {
-        ""
-    } else {
-        CStr::from_ptr(solver_kind).to_str().unwrap_or("")
-    };
-    let path = CStr::from_ptr(solver_path).to_str().unwrap_or("");
-    let script_str = CStr::from_ptr(script).to_str().unwrap_or("");
+    match std::panic::catch_unwind(AssertUnwindSafe(|| unsafe {
+        let kind = if solver_kind.is_null() {
+            ""
+        } else {
+            CStr::from_ptr(solver_kind).to_str().unwrap_or("")
+        };
+        let path = CStr::from_ptr(solver_path).to_str().unwrap_or("");
+        let script_str = CStr::from_ptr(script).to_str().unwrap_or("");
 
-    // Write script to temporary file
-    let nanos = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap_or_default()
-        .as_nanos();
-    let filename = format!("axiom_smt_{}_{}.smt2", std::process::id(), nanos);
-    let script_path = env::temp_dir().join(filename);
+        // Write script to temporary file
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_nanos();
+        let filename = format!("axiom_smt_{}_{}.smt2", std::process::id(), nanos);
+        let script_path = env::temp_dir().join(filename);
 
-    if let Err(e) = std::fs::write(&script_path, script_str) {
-        return CString::new(format!("error: {}", e))
-            .expect("FFI: CString conversion failed")
-            .into_raw();
-    }
+        if let Err(e) = std::fs::write(&script_path, script_str) {
+            return error_cstring(&format!("error: {}", e));
+        }
 
-    // Choose execution method: containerized or direct
-    let output = if use_containerized_smt() {
-        run_smt_containerized(kind, &script_path, timeout_ms as u64)
-    } else {
-        run_smt_direct(kind, path, &script_path, timeout_ms as u64)
-    };
+        // Choose execution method: containerized or direct
+        let output = if use_containerized_smt() {
+            run_smt_containerized(kind, &script_path, timeout_ms as u64)
+        } else {
+            run_smt_direct(kind, path, &script_path, timeout_ms as u64)
+        };
 
-    // Clean up temporary file
-    let _ = std::fs::remove_file(&script_path);
+        // Clean up temporary file
+        let _ = std::fs::remove_file(&script_path);
 
-    // Return result
-    match output {
-        Ok(text) => CString::new(text)
-            .unwrap_or_else(|_| CString::new("error").unwrap())
-            .into_raw(),
-        Err(e) => CString::new(format!("error: {}", e))
-            .expect("FFI: CString conversion failed")
-            .into_raw(),
+        // Return result
+        match output {
+            Ok(text) => CString::new(text)
+                .unwrap_or_else(|_| CString::new("error").unwrap_or_default())
+                .into_raw(),
+            Err(e) => error_cstring(&format!("error: {}", e)),
+        }
+    })) {
+        Ok(ptr) => ptr,
+        Err(_) => error_cstring("error: internal panic in SMT runner"),
     }
 }
 
@@ -694,16 +828,22 @@ pub unsafe extern "C" fn axiom_global_avgpool2d(
     if input_ptr.is_null() || output_ptr.is_null() {
         return;
     }
-    let input_size = n * h * w * c;
-    let input_slice = slice::from_raw_parts(input_ptr, input_size);
-    let input =
-        ArrayView4::from_shape((n, h, w, c), input_slice).expect("FFI: view shape mismatch");
+    ffi_catch! { unsafe {
+        let input_size = n * h * w * c;
+        let input_slice = slice::from_raw_parts(input_ptr, input_size);
+        let input = match ArrayView4::from_shape((n, h, w, c), input_slice) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let output = pool::global_avgpool2d(input);
+        let output = pool::global_avgpool2d(input);
 
-    let output_size = n * c;
-    let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
-    output_slice.copy_from_slice(output.as_slice().expect("FFI: array not contiguous"));
+        let output_size = n * c;
+        let output_slice = slice::from_raw_parts_mut(output_ptr, output_size);
+        if let Some(src) = output.as_slice() {
+            output_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 // ============================================================================
@@ -728,32 +868,44 @@ pub unsafe extern "C" fn axiom_batchnorm(
     eps: f32,
     training: libc::c_int,
 ) {
-    if x_ptr.is_null() || y_ptr.is_null() || gamma_ptr.is_null() || beta_ptr.is_null() || running_mean_ptr.is_null() || running_var_ptr.is_null() {
+    if x_ptr.is_null()
+        || y_ptr.is_null()
+        || gamma_ptr.is_null()
+        || beta_ptr.is_null()
+        || running_mean_ptr.is_null()
+        || running_var_ptr.is_null()
+    {
         return;
     }
-    let x_slice = slice::from_raw_parts(x_ptr, n_elements);
-    let gamma = slice::from_raw_parts(gamma_ptr, n_features);
-    let beta = slice::from_raw_parts(beta_ptr, n_features);
-    let running_mean = slice::from_raw_parts_mut(running_mean_ptr, n_features);
-    let running_var = slice::from_raw_parts_mut(running_var_ptr, n_features);
+    ffi_catch! { unsafe {
+        let x_slice = slice::from_raw_parts(x_ptr, n_elements);
+        let gamma = slice::from_raw_parts(gamma_ptr, n_features);
+        let beta = slice::from_raw_parts(beta_ptr, n_features);
+        let running_mean = slice::from_raw_parts_mut(running_mean_ptr, n_features);
+        let running_var = slice::from_raw_parts_mut(running_var_ptr, n_features);
 
-    let batch_size = n_elements / n_features;
-    let x = ArrayD::from_shape_vec(IxDyn(&[batch_size, n_features]), x_slice.to_vec())
-        .expect("FFI: shape mismatch");
+        let batch_size = n_elements / n_features;
+        let x = match ArrayD::from_shape_vec(IxDyn(&[batch_size, n_features]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = norm::batchnorm(
-        &x,
-        gamma,
-        beta,
-        running_mean,
-        running_var,
-        eps,
-        0.1,
-        training != 0,
-    );
+        let y = norm::batchnorm(
+            &x,
+            gamma,
+            beta,
+            running_mean,
+            running_var,
+            eps,
+            0.1,
+            training != 0,
+        );
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// Layer Normalization
@@ -774,22 +926,32 @@ pub unsafe extern "C" fn axiom_layernorm(
     if x_ptr.is_null() || y_ptr.is_null() || gamma_ptr.is_null() || beta_ptr.is_null() {
         return;
     }
-    let n_elements = batch_size * hidden_size;
-    let x_slice = slice::from_raw_parts(x_ptr, n_elements);
-    let gamma_slice = slice::from_raw_parts(gamma_ptr, hidden_size);
-    let beta_slice = slice::from_raw_parts(beta_ptr, hidden_size);
+    ffi_catch! { unsafe {
+        let n_elements = batch_size * hidden_size;
+        let x_slice = slice::from_raw_parts(x_ptr, n_elements);
+        let gamma_slice = slice::from_raw_parts(gamma_ptr, hidden_size);
+        let beta_slice = slice::from_raw_parts(beta_ptr, hidden_size);
 
-    let x = ArrayD::from_shape_vec(IxDyn(&[batch_size, hidden_size]), x_slice.to_vec())
-        .expect("FFI: shape mismatch");
-    let gamma = ArrayD::from_shape_vec(IxDyn(&[hidden_size]), gamma_slice.to_vec())
-        .expect("FFI: shape mismatch");
-    let beta = ArrayD::from_shape_vec(IxDyn(&[hidden_size]), beta_slice.to_vec())
-        .expect("FFI: shape mismatch");
+        let x = match ArrayD::from_shape_vec(IxDyn(&[batch_size, hidden_size]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
+        let gamma = match ArrayD::from_shape_vec(IxDyn(&[hidden_size]), gamma_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
+        let beta = match ArrayD::from_shape_vec(IxDyn(&[hidden_size]), beta_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = norm::layernorm(&x, &gamma, &beta, &[hidden_size], eps);
+        let y = norm::layernorm(&x, &gamma, &beta, &[hidden_size], eps);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }
 
 /// RMS Normalization
@@ -809,15 +971,21 @@ pub unsafe extern "C" fn axiom_rmsnorm(
     if x_ptr.is_null() || y_ptr.is_null() || weight_ptr.is_null() {
         return;
     }
-    let n_elements = batch_size * hidden_size;
-    let x_slice = slice::from_raw_parts(x_ptr, n_elements);
-    let weight = slice::from_raw_parts(weight_ptr, hidden_size);
+    ffi_catch! { unsafe {
+        let n_elements = batch_size * hidden_size;
+        let x_slice = slice::from_raw_parts(x_ptr, n_elements);
+        let weight = slice::from_raw_parts(weight_ptr, hidden_size);
 
-    let x = ArrayD::from_shape_vec(IxDyn(&[batch_size, hidden_size]), x_slice.to_vec())
-        .expect("FFI: shape mismatch");
+        let x = match ArrayD::from_shape_vec(IxDyn(&[batch_size, hidden_size]), x_slice.to_vec()) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
 
-    let y = norm::rmsnorm(&x, weight, eps);
+        let y = norm::rmsnorm(&x, weight, eps);
 
-    let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
-    y_slice.copy_from_slice(y.as_slice().expect("FFI: array not contiguous"));
+        let y_slice = slice::from_raw_parts_mut(y_ptr, n_elements);
+        if let Some(src) = y.as_slice() {
+            y_slice.copy_from_slice(src);
+        }
+    }}
 }

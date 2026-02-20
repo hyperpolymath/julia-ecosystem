@@ -154,11 +154,18 @@ function _linear_from_pytorch(spec::Dict{String, Any})
     in_features > 0 || throw(ArgumentError("Linear layer requires positive `in_features`"))
     out_features > 0 || throw(ArgumentError("Linear layer requires positive `out_features`"))
 
-    weight_rows = _float32_rows(get(spec, "weight", nothing), "weight")
+    has_weight = haskey(spec, "weight") && spec["weight"] !== nothing
+    has_bias = haskey(spec, "bias") && spec["bias"] !== nothing
+
+    # Architecture-only import: no weights provided, initialize randomly
+    if !has_weight
+        return Dense(in_features, out_features, identity; bias=true, dtype=Float32)
+    end
+
+    weight_rows = _float32_rows(spec["weight"], "weight")
     length(weight_rows) == out_features || throw(ArgumentError("Linear `weight` must have $out_features rows (PyTorch shape: [out_features, in_features])"))
     all(length(row) == in_features for row in weight_rows) || throw(ArgumentError("Each `weight` row must have $in_features elements"))
 
-    has_bias = haskey(spec, "bias") && spec["bias"] !== nothing
     bias_values = has_bias ? _float32_vector(spec["bias"], "bias") : Float32[]
     if has_bias
         length(bias_values) == out_features || throw(ArgumentError("Linear `bias` must have $out_features elements"))
@@ -192,6 +199,7 @@ function _conv2d_from_pytorch(spec::Dict{String, Any})
     groups > 0 || throw(ArgumentError("Conv2d layer requires positive `groups`"))
 
     has_bias = haskey(spec, "bias") && spec["bias"] !== nothing
+    has_weight = haskey(spec, "weight") && spec["weight"] !== nothing
     conv = Conv2d(
         in_channels,
         out_channels,
@@ -200,11 +208,16 @@ function _conv2d_from_pytorch(spec::Dict{String, Any})
         padding=padding,
         dilation=dilation,
         groups=groups,
-        bias=has_bias,
+        bias=has_bias || !has_weight,
         dtype=Float32
     )
 
-    weight_oihw = _nested_array_f32(get(spec, "weight", nothing), "weight")
+    # Architecture-only import: no weights provided
+    if !has_weight
+        return conv
+    end
+
+    weight_oihw = _nested_array_f32(spec["weight"], "weight")
     expected = (out_channels, div(in_channels, groups), kernel[1], kernel[2])
     size(weight_oihw) == expected || throw(ArgumentError(
         "Conv2d `weight` must have shape $(expected) in PyTorch (O, I/groups, kH, kW), got $(size(weight_oihw))"
@@ -236,8 +249,14 @@ function _batchnorm_from_pytorch(spec::Dict{String, Any})
         dtype=Float32
     )
 
+    # Architecture-only import: no weight data provided
+    has_weight_data = haskey(spec, "weight") && spec["weight"] !== nothing
+    if !has_weight_data
+        return bn
+    end
+
     if affine
-        gamma_values = _float32_vector(get(spec, "weight", nothing), "weight")
+        gamma_values = _float32_vector(spec["weight"], "weight")
         beta_values = _float32_vector(get(spec, "bias", nothing), "bias")
         length(gamma_values) == num_features || throw(ArgumentError("BatchNorm `weight` must have $num_features elements"))
         length(beta_values) == num_features || throw(ArgumentError("BatchNorm `bias` must have $num_features elements"))
@@ -271,8 +290,15 @@ function _layernorm_from_pytorch(spec::Dict{String, Any})
     eps = Float32(get(spec, "eps", 1e-5))
 
     ln = LayerNorm(norm_shape; eps=eps, elementwise_affine=elementwise_affine, dtype=Float32)
+
+    # Architecture-only import: no weight data provided
+    has_weight = haskey(spec, "weight") && spec["weight"] !== nothing
+    if !has_weight
+        return ln
+    end
+
     if elementwise_affine
-        gamma = _nested_array_f32(get(spec, "weight", nothing), "weight")
+        gamma = _nested_array_f32(spec["weight"], "weight")
         beta = _nested_array_f32(get(spec, "bias", nothing), "bias")
         size(gamma) == norm_shape || throw(ArgumentError("LayerNorm `weight` shape mismatch: expected $(norm_shape), got $(size(gamma))"))
         size(beta) == norm_shape || throw(ArgumentError("LayerNorm `bias` shape mismatch: expected $(norm_shape), got $(size(beta))"))
@@ -638,7 +664,7 @@ end
 
 function _export_layers(model)
     if model isa Pipeline
-        return collect(model.layers)
+        return AbstractLayer[l for l in model.layers]
     elseif model isa AbstractLayer
         return AbstractLayer[model]
     end

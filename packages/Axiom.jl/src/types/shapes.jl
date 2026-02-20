@@ -66,6 +66,15 @@ Tensor{Float32, 2, Shape{Tuple{typeof(:dynamic), typeof(:dynamic)}}}
 """
 struct Shape{dims} end
 
+"""
+    DynamicShape
+
+Alias for `Shape` — used when the shape contains dynamic (runtime-determined)
+dimensions. A `DynamicShape` is simply a `Shape` whose type parameter tuple
+includes `typeof(:dynamic)` entries.
+"""
+const DynamicShape = Shape
+
 # Shape arithmetic for layer composition
 """
     DynamicDim

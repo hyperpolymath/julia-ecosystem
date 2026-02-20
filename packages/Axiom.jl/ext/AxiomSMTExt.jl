@@ -203,7 +203,7 @@ function validate_solver_path(path::String)
     true
 end
 
-function get_smt_solver()
+function Axiom.get_smt_solver()
     path_override = get(ENV, "AXIOM_SMT_SOLVER_PATH", nothing)
     if path_override !== nothing
         kind_raw = get(ENV, "AXIOM_SMT_SOLVER_KIND", nothing)
@@ -240,7 +240,7 @@ function get_smt_solver()
 end
 
 function get_smt_context()
-    solver = get_smt_solver()
+    solver = Axiom.get_smt_solver()
     solver === nothing && return nothing
     SMTLib.SMTContext(solver=solver, logic=smt_logic(), timeout_ms=smt_timeout_ms())
 end

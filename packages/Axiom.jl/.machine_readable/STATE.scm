@@ -6,13 +6,13 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T15:10:00+00:00")
+       (updated . "2026-02-20T16:00:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 93)
+       (overall-completion . 95)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -54,7 +54,13 @@
           "batch-parallel-threading-softmax-layernorm-rmsnorm"
           "row-major-ffi-conversion-correct"
           "inplace-activations-relu-sigmoid-tanh-gelu-swish-zero-alloc"
-          "36-zig-ffi-exports-400kb"))))
+          "36-zig-ffi-exports-400kb"
+          "pytorch-architecture-only-import"
+          "onnx-export-sequential-pipeline-fix"
+          "dropout-layer"
+          "dynamic-shape-alias"
+          "smt-solver-forward-declaration"
+          "204-tests-passing-0-errors"))))
 
     (route-to-mvp
       ((milestones
@@ -179,4 +185,20 @@
                       "Rust removal: Zig is now sole native backend"
                       "External benchmarks: Axiom vs Flux vs PyTorch (25 operations)"
                       "Overall completion 92%→93%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20j
+         ((actions . ("SIMD activations: swish, elu, selu, softplus, mish, softmax, layernorm vectorized"
+                      "Batch-parallel threading: softmax, layernorm, rmsnorm over batch dimension"
+                      "Row-major FFI conversion: _to_row_major_vec/_from_row_major_vec defined"
+                      "In-place activations: relu!/sigmoid!/tanh!/gelu!/swish! zero-alloc via Zig FFI"
+                      "ROADMAP: All Rust references replaced with Zig"
+                      "Zig .so rebuilt: 320KB→395KB, 36 FFI exports"
+                      "Interop: from_pytorch architecture-only import (linear/conv2d/batchnorm/layernorm)"
+                      "Interop: to_onnx Sequential/Pipeline export fix (_export_layers type dispatch)"
+                      "Dropout layer: struct + forward with backend dispatch"
+                      "DynamicShape: alias for Shape type"
+                      "SMT: get_smt_solver forward declaration + fallback"
+                      "All SONNET-TASKS complete (1-10)"
+                      "204 tests passing, 0 errors, 186 exports valid"
+                      "Overall completion 93%→95%"))
           (agent . "claude-opus-4-6")))))))

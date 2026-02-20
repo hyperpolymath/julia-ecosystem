@@ -197,6 +197,15 @@ end
 function smt_proof end
 
 """
+    get_smt_solver()
+
+Returns the first available SMT solver, or `nothing` if none is installed.
+When the AxiomSMTExt extension is loaded (via `using SMTLib`), this is replaced
+with a real implementation that queries installed solvers.
+"""
+get_smt_solver() = nothing
+
+"""
     prove_property(property::ParsedProperty)
 
 Dispatches to the appropriate proving strategy based on the property.

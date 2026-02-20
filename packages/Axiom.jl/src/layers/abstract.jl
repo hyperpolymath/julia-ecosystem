@@ -599,3 +599,25 @@ Layers that should inherit from `StatelessLayer`:
 abstract type StatelessLayer <: AbstractLayer end
 
 parameters(::StatelessLayer) = NamedTuple() # Stateless layers have no trainable parameters
+
+"""
+    Dropout(p=0.5)
+
+Dropout regularization layer. During training, randomly zeroes elements with
+probability `p` and scales remaining elements by `1/(1-p)`. During evaluation
+(inference), acts as identity.
+"""
+struct Dropout <: StatelessLayer
+    p::Float64
+end
+
+Dropout(; p::Real=0.5) = Dropout(Float64(p))
+Dropout(p::Real) = Dropout(Float64(p))
+
+function forward(d::Dropout, x::AbstractArray; training::Bool=false)
+    backend_dropout(current_backend(), x, eltype(x)(d.p), training)
+end
+
+function (d::Dropout)(x::AbstractArray; training::Bool=false)
+    forward(d, x; training=training)
+end

@@ -93,6 +93,10 @@ include("dsl/pipeline.jl")
 include("autograd/gradient.jl")
 include("autograd/tape.jl")
 
+# Invertible layers (requires Zygote from autograd/gradient.jl)
+include("layers/invertible.jl")
+include("autograd/invertible_rules.jl")
+
 # Training infrastructure
 include("training/optimizers.jl")
 include("training/loss.jl")
@@ -153,6 +157,12 @@ export ReLU, Sigmoid, Tanh, Softmax, GELU, LeakyReLU
 # Model containers
 export Sequential, Chain, Residual
 
+# Invertible / reversible computing layers
+export InvertibleLayer, CouplingLayer, ActNorm, Invertible1x1Conv, RevBlock
+export InvertibleSequential, NormalizingFlow
+export inverse, log_abs_det_jacobian, forward_and_log_det
+export flow_log_prob, flow_sample, flow_nll_loss
+
 # Optimizers
 export Adam, SGD, RMSprop, AdamW
 
@@ -176,6 +186,7 @@ export tpu_device_count, npu_device_count, dsp_device_count, ppu_device_count, m
 export select_device!, gpu_capability_report, coprocessor_capability_report
 export gpu_runtime_diagnostics, reset_gpu_runtime_diagnostics!
 export coprocessor_runtime_diagnostics, reset_coprocessor_runtime_diagnostics!
+export coprocessor_setup_guide, detect_system_coprocessors
 
 # Data utilities
 export DataLoader, train_test_split, one_hot

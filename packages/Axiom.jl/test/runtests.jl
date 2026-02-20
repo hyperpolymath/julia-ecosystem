@@ -744,6 +744,9 @@ with open(args.output, "w", encoding="utf-8") as f:
         end
     end
 
+    # Include invertible / reversible computing tests
+    include("test_invertible.jl")
+
     # Include proof serialization tests
     include("verification/serialization_tests.jl")
     include("verification/proof_export_tests.jl")

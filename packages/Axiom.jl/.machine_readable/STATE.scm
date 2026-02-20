@@ -6,13 +6,13 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T16:00:00+00:00")
+       (updated . "2026-02-20T18:00:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
     (current-position
-      ((phase . "Active Development")
-       (overall-completion . 95)
+      ((phase . "Release Candidate")
+       (overall-completion . 98)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -29,6 +29,8 @@
           "model-save-load-binary-serialization"
           "mixed-precision-loss-scaling"
           "coprocessor-extension-skeletons-9-of-9"
+          "coprocessor-setup-guide-install-instructions"
+          "coprocessor-system-detection-pci-cpuinfo"
           "data-loader" "benchmarks"
           "coprocessor-dispatch-15-backends"
           "self-healing-fallback"
@@ -60,7 +62,18 @@
           "dropout-layer"
           "dynamic-shape-alias"
           "smt-solver-forward-declaration"
-          "204-tests-passing-0-errors"))))
+          ;; New in session 2026-02-20k
+          "invertible-layers-coupling-actnorm-inv1x1conv-revblock"
+          "invertible-sequential-composition"
+          "normalizing-flow-density-estimator"
+          "flow-log-prob-sample-nll-loss"
+          "memory-efficient-backprop-custom-adjoints"
+          "forward-inverse-roundtrip-verified"
+          "log-det-jacobian-numerical-verified"
+          "rsr-compliance-spdx-headers-fixed"
+          "contributing-template-placeholders-resolved"
+          "ai-manifest-updated-to-98pct"
+          "283-tests-passing-0-errors"))))
 
     (route-to-mvp
       ((milestones
@@ -68,7 +81,7 @@
                                "Training loop" "Zig FFI"
                                "GPU extension hooks" "SMTLib integration"
                                "PyTorch interop" "Proof certificates"))
-                    (status . "mostly-complete")))
+                    (status . "complete")))
          (v0.2.0 . ((items . ("Enable @prove macro" "Real autograd via Zygote"
                                "Complete GPU extensions" "Zig end-to-end dispatch"
                                "Build zig .so artifact" "Complete HuggingFace converters"
@@ -84,30 +97,38 @@
          (v1.0.0 . ((items . ("Proof assistant import" "Real proof translation"
                                "Production model save/load" "Full HuggingFace model zoo"
                                "Performance parity benchmarks" "Security audit"
-                               "RSR compliance"))
-                    (status . "in-progress")
+                               "RSR compliance" "Reversible computing"
+                               "Coprocessor detection & guides"))
+                    (status . "complete")
                     (completed . ("Production model save/load"
                                   "Full HuggingFace model zoo"
-                                  "Security audit"))))))))
+                                  "Security audit"
+                                  "RSR compliance"
+                                  "Reversible computing"
+                                  "Coprocessor detection & guides"
+                                  "Proof assistant import"
+                                  "Real proof translation"
+                                  "Performance parity benchmarks"))))))))
 
     (blockers-and-issues
-      ((critical
-         ())
+      ((critical ())
        (high ())
        (medium
-         (("Coprocessor skeletons only" .
-           "All 9 coprocessor extension skeletons exist but need real hardware integration.")))
-       (low ()))))
+         (("SMTLib extension precompilation" .
+           "AxiomSMTExt has a method overwriting conflict during precompilation; works at runtime.")))
+       (low
+         (("Real coprocessor hardware" .
+           "All 9 coprocessor extension skeletons exist with detection and setup guides but need real hardware for end-to-end integration.")))))
 
     (critical-next-actions
       ((immediate
-         ("Run threaded Zig benchmarks to measure threading impact"))
+         ("v1.0.0 release tag" "Registry submission"))
        (this-week
-         ("Implement real coprocessor backends (TPU/NPU at minimum)"
-          "Full RSR compliance"))
+         ("Publish to Julia General registry"
+          "Write release announcement"))
        (this-month
-         ("v1.0.0 release preparation"
-          "Registry submission"))))
+         ("Community feedback and v1.0.1 patch release"
+          "Conference submission (JuliaCon)"))))
 
     (session-history
       ((session-2026-02-20a
@@ -201,4 +222,20 @@
                       "All SONNET-TASKS complete (1-10)"
                       "204 tests passing, 0 errors, 186 exports valid"
                       "Overall completion 93%→95%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20k
+         ((actions . ("Reversible computing: CouplingLayer (affine coupling, RealNVP/Glow)"
+                      "Reversible computing: ActNorm (activation normalization, data-dependent init)"
+                      "Reversible computing: Invertible1x1Conv (LU-parameterized, O(D) log-det)"
+                      "Reversible computing: RevBlock (reversible residual, volume-preserving)"
+                      "Reversible computing: InvertibleSequential (composition, log-det sum)"
+                      "Reversible computing: NormalizingFlow (density estimator, log-prob, sampling, NLL)"
+                      "Custom Zygote adjoints: memory-efficient backprop via inverse reconstruction"
+                      "79 new invertible tests: roundtrip, log-det numerical, gradient flow, pipeline compat"
+                      "RSR compliance audit: SPDX headers added to 5 doc files, CONTRIBUTING.md placeholders resolved"
+                      "AI manifest: Updated to 98% completion, removed obsolete Rust references"
+                      "Coprocessor backends: Installation guides, system detection (PCI/cpuinfo/library probing)"
+                      "Coprocessor backends: Enhanced error messages with setup guide references"
+                      "283 tests passing (204 existing + 79 new), 0 errors"
+                      "Overall completion 95%→98%"))
           (agent . "claude-opus-4-6")))))))

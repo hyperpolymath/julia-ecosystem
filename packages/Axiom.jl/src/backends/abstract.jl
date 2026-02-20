@@ -830,21 +830,28 @@ for (hook, cpu_op) in (
 )
     hook_name = String(hook)
     @eval function $hook(backend::CoprocessorBackend, args...)
+        label = _coprocessor_label(backend)
         if _coprocessor_required(backend)
             throw(ErrorException(string(
-                _coprocessor_label(backend),
+                label,
                 " extension hook not loaded for `",
                 $hook_name,
                 "` while strict mode is enabled (set ",
                 _coprocessor_required_env_key(backend),
-                "=0 or AXIOM_COPROCESSOR_REQUIRED=0 to allow fallback)."
+                "=0 or AXIOM_COPROCESSOR_REQUIRED=0 to allow fallback).\n",
+                "To configure this backend, run: Axiom.coprocessor_setup_guide(\"",
+                label,
+                "\")"
             )))
         end
         @warn string(
-            _coprocessor_label(backend),
+            label,
             " extension hook not loaded for `",
             $hook_name,
-            "`, falling back to Julia backend"
+            "`, falling back to Julia backend. ",
+            "Run Axiom.coprocessor_setup_guide(\"",
+            label,
+            "\") for setup instructions."
         ) maxlog=1
         return $cpu_op(JuliaBackend(), args...)
     end
@@ -2589,3 +2596,262 @@ const FPGACompiledModel = CoprocessorCompiledModel{M, FPGABackend} where M
 const VPUCompiledModel = CoprocessorCompiledModel{M, VPUBackend} where M
 const QPUCompiledModel = CoprocessorCompiledModel{M, QPUBackend} where M
 const CryptoCompiledModel = CoprocessorCompiledModel{M, CryptoBackend} where M
+
+# ============================================================================
+# Coprocessor Installation Instructions & Real Capability Detection
+# ============================================================================
+
+"""
+    _coprocessor_install_instructions(label::String) -> String
+
+Return human-readable instructions for installing and configuring a coprocessor
+backend. Includes library requirements, driver versions, and environment variables.
+"""
+function _coprocessor_install_instructions(label::String)
+    instructions = Dict{String, String}(
+        "TPU" => """
+            TPU Backend Setup:
+              1. Install Google Cloud TPU libraries:
+                 - libtpu.so (from cloud-tpu-client or JAX distribution)
+                 - Set AXIOM_TPU_LIB_PATH to the libtpu.so directory
+              2. Set environment variables:
+                 export AXIOM_TPU_AVAILABLE=1
+                 export AXIOM_TPU_DEVICE_COUNT=<number_of_tpu_cores>
+              3. For Google Cloud TPU VMs, the driver is pre-installed.
+              4. Package extension: Add AxiomTPUExt (when available) to load kernel hooks.
+            """,
+        "NPU" => """
+            NPU Backend Setup:
+              1. Install vendor NPU SDK:
+                 - Intel NPU: install intel-npu-driver and intel-level-zero-gpu
+                 - Qualcomm: install QNN SDK (libQnnHtp.so)
+                 - Huawei Ascend: install CANN toolkit (libascendcl.so)
+              2. Set environment variables:
+                 export AXIOM_NPU_AVAILABLE=1
+                 export AXIOM_NPU_DEVICE_COUNT=<number_of_npu_devices>
+                 export AXIOM_NPU_LIB_PATH=<path_to_npu_libraries>
+              3. Package extension: Add AxiomNPUExt (when available) to load kernel hooks.
+            """,
+        "DSP" => """
+            DSP Backend Setup:
+              1. Install Qualcomm Hexagon SDK or TI C6000 DSP tools:
+                 - Hexagon: libcdsprpc.so (from Hexagon SDK)
+                 - TI: TI-RTOS DSP runtime
+              2. Set environment variables:
+                 export AXIOM_DSP_AVAILABLE=1
+                 export AXIOM_DSP_DEVICE_COUNT=<number_of_dsp_cores>
+              3. Package extension: Add AxiomDSPExt (when available) to load kernel hooks.
+            """,
+        "PPU" => """
+            PPU Backend Setup (Physics Processing Unit):
+              1. PPU backends are experimental. Supported hardware:
+                 - NVIDIA PhysX accelerators (via CUDA)
+                 - Dedicated physics coprocessors (vendor-specific SDK)
+              2. Set environment variables:
+                 export AXIOM_PPU_AVAILABLE=1
+                 export AXIOM_PPU_DEVICE_COUNT=<number_of_ppu_devices>
+              3. Package extension: Add AxiomPPUExt (when available) to load kernel hooks.
+            """,
+        "MATH" => """
+            Math Coprocessor Backend Setup:
+              1. Supported math coprocessors:
+                 - Intel AMX (Advanced Matrix Extensions): requires kernel >= 5.19
+                 - ARM SVE/SME coprocessors: requires vendor runtime
+              2. Check availability: grep -q 'amx' /proc/cpuinfo
+              3. Set environment variables:
+                 export AXIOM_MATH_AVAILABLE=1
+                 export AXIOM_MATH_DEVICE_COUNT=1
+              4. Package extension: Add AxiomMathExt (when available) to load kernel hooks.
+            """,
+        "FPGA" => """
+            FPGA Backend Setup:
+              1. Install FPGA runtime:
+                 - Intel/Altera: OpenCL for FPGA (aocl), OneAPI FPGA toolkit
+                 - Xilinx/AMD: Vitis AI Runtime (libxrt_core.so)
+              2. Load bitstream for ML inference (vendor-specific).
+              3. Set environment variables:
+                 export AXIOM_FPGA_AVAILABLE=1
+                 export AXIOM_FPGA_DEVICE_COUNT=<number_of_fpga_devices>
+                 export AXIOM_FPGA_BITSTREAM=<path_to_bitstream>
+              4. Package extension: Add AxiomFPGAExt (when available) to load kernel hooks.
+            """,
+        "VPU" => """
+            VPU Backend Setup (Vision Processing Unit):
+              1. Install Intel Movidius / Myriad VPU runtime:
+                 - OpenVINO toolkit (libinference_engine.so)
+                 - Intel Neural Compute SDK
+              2. Set environment variables:
+                 export AXIOM_VPU_AVAILABLE=1
+                 export AXIOM_VPU_DEVICE_COUNT=<number_of_vpu_devices>
+              3. Package extension: Add AxiomVPUExt (when available) to load kernel hooks.
+            """,
+        "QPU" => """
+            QPU Backend Setup (Quantum Processing Unit):
+              1. Install quantum computing SDK:
+                 - IBM Qiskit: pip install qiskit (bridge via PyCall.jl)
+                 - Google Cirq: pip install cirq (bridge via PyCall.jl)
+                 - Amazon Braket: AWS SDK configuration
+              2. QPU backends execute quantum circuits for quantum ML kernels.
+              3. Set environment variables:
+                 export AXIOM_QPU_AVAILABLE=1
+                 export AXIOM_QPU_DEVICE_COUNT=1
+                 export AXIOM_QPU_PROVIDER=<ibm|google|amazon>
+              4. Package extension: Add AxiomQPUExt (when available) to load kernel hooks.
+            """,
+        "CRYPTO" => """
+            Crypto Coprocessor Backend Setup:
+              1. Supported cryptographic accelerators:
+                 - Intel QAT (QuickAssist): install qat driver + libqat
+                 - ARM CryptoCell: vendor SDK
+                 - AES-NI / SHA-NI (CPU extensions): auto-detected
+              2. Used for encrypted inference and homomorphic encryption.
+              3. Set environment variables:
+                 export AXIOM_CRYPTO_AVAILABLE=1
+                 export AXIOM_CRYPTO_DEVICE_COUNT=1
+              4. Package extension: Add AxiomCryptoExt (when available) to load kernel hooks.
+            """,
+    )
+    get(instructions, label, "No installation instructions available for $label backend.")
+end
+
+"""
+    coprocessor_setup_guide(backend_label::String)
+
+Print detailed setup instructions for a coprocessor backend.
+Valid labels: "TPU", "NPU", "DSP", "PPU", "MATH", "FPGA", "VPU", "QPU", "CRYPTO".
+"""
+function coprocessor_setup_guide(label::String)
+    label = uppercase(label)
+    println(_coprocessor_install_instructions(label))
+end
+
+"""
+    coprocessor_setup_guide()
+
+Print setup instructions for all coprocessor backends.
+"""
+function coprocessor_setup_guide()
+    for label in ("TPU", "NPU", "DSP", "PPU", "MATH", "FPGA", "VPU", "QPU", "CRYPTO")
+        println("=" ^ 70)
+        println("  $label Backend")
+        println("=" ^ 70)
+        println(_coprocessor_install_instructions(label))
+    end
+end
+
+"""
+    detect_system_coprocessors() -> Dict{String,Any}
+
+Probe the local system for real coprocessor hardware by checking:
+- PCI devices (lspci)
+- Kernel modules (lsmod)
+- CPU features (/proc/cpuinfo)
+- Shared libraries (ldconfig -p)
+
+Returns a Dict mapping backend label → detection results.
+This does NOT set AXIOM_*_AVAILABLE env vars; it reports what the system has.
+"""
+function detect_system_coprocessors()
+    results = Dict{String, Any}()
+
+    # Helper: run command and capture output, return empty string on failure
+    function _run_cmd(cmd::Cmd)
+        try
+            buf = IOBuffer()
+            run(pipeline(cmd, stdout=buf, stderr=devnull))
+            return String(take!(buf))
+        catch
+            return ""
+        end
+    end
+
+    # Check CPU features
+    cpuinfo = ""
+    if isfile("/proc/cpuinfo")
+        try
+            cpuinfo = read("/proc/cpuinfo", String)
+        catch
+        end
+    end
+
+    # Math coprocessor (AMX, SVE)
+    has_amx = occursin("amx", lowercase(cpuinfo))
+    has_avx512 = occursin("avx512", lowercase(cpuinfo))
+    has_aesni = occursin("aes", lowercase(cpuinfo))
+    results["MATH"] = Dict(
+        "detected" => has_amx || has_avx512,
+        "features" => filter(!isempty, [
+            has_amx ? "Intel AMX" : "",
+            has_avx512 ? "AVX-512" : "",
+        ]),
+        "note" => has_amx ? "AMX detected — set AXIOM_MATH_AVAILABLE=1 to enable" : "No dedicated math coprocessor detected",
+    )
+
+    # Crypto coprocessor (AES-NI, SHA-NI)
+    has_sha = occursin("sha_ni", lowercase(cpuinfo)) || occursin("sha1", lowercase(cpuinfo))
+    results["CRYPTO"] = Dict(
+        "detected" => has_aesni,
+        "features" => filter(!isempty, [
+            has_aesni ? "AES-NI" : "",
+            has_sha ? "SHA-NI" : "",
+        ]),
+        "note" => has_aesni ? "AES-NI detected — crypto acceleration available" : "No crypto acceleration detected",
+    )
+
+    # PCI-based detection (TPU, FPGA, VPU, NPU)
+    pci_output = _run_cmd(`lspci`)
+
+    # Google TPU (Coral / Cloud TPU)
+    has_tpu_pci = occursin("Google", pci_output) && occursin(r"TPU|Coral|Edge", pci_output)
+    has_tpu_lib = isfile("/usr/lib/libtpu.so") || isfile("/usr/local/lib/libtpu.so")
+    results["TPU"] = Dict(
+        "detected" => has_tpu_pci || has_tpu_lib,
+        "pci_device" => has_tpu_pci,
+        "library_found" => has_tpu_lib,
+        "note" => has_tpu_pci || has_tpu_lib ? "TPU hardware detected — set AXIOM_TPU_AVAILABLE=1 to enable" : "No TPU hardware detected",
+    )
+
+    # Intel FPGA (Altera) / Xilinx (AMD)
+    has_fpga_pci = occursin(r"Altera|Xilinx|FPGA", pci_output)
+    results["FPGA"] = Dict(
+        "detected" => has_fpga_pci,
+        "pci_device" => has_fpga_pci,
+        "note" => has_fpga_pci ? "FPGA detected — install vendor SDK and set AXIOM_FPGA_AVAILABLE=1" : "No FPGA detected",
+    )
+
+    # Intel VPU (Movidius/Myriad)
+    has_vpu_pci = occursin(r"Myriad|Movidius|VPU|03e7", pci_output)
+    results["VPU"] = Dict(
+        "detected" => has_vpu_pci,
+        "pci_device" => has_vpu_pci,
+        "note" => has_vpu_pci ? "VPU detected — install OpenVINO and set AXIOM_VPU_AVAILABLE=1" : "No VPU detected",
+    )
+
+    # NPU (various vendors)
+    has_npu_pci = occursin(r"NPU|Neural|Ascend", pci_output)
+    results["NPU"] = Dict(
+        "detected" => has_npu_pci,
+        "pci_device" => has_npu_pci,
+        "note" => has_npu_pci ? "NPU detected — install vendor SDK and set AXIOM_NPU_AVAILABLE=1" : "No NPU detected",
+    )
+
+    # DSP (typically not PCI — embedded)
+    results["DSP"] = Dict(
+        "detected" => false,
+        "note" => "DSP detection requires vendor-specific tools (Hexagon SDK, TI tools)",
+    )
+
+    # PPU (typically integrated in GPU or dedicated)
+    results["PPU"] = Dict(
+        "detected" => false,
+        "note" => "PPU detection requires NVIDIA PhysX or vendor-specific SDK",
+    )
+
+    # QPU (cloud-only, no local detection)
+    results["QPU"] = Dict(
+        "detected" => false,
+        "note" => "QPU backends require cloud provider access (IBM, Google, Amazon)",
+    )
+
+    results
+end

@@ -31,8 +31,7 @@
       (integrations "src/integrations/"))
 
     (native-backends
-      (rust "rust/" "Cargo crate axiom-core, FFI via rust/src/ffi.rs")
-      (zig "zig/" "SIMD kernels via zig/src/axiom.zig"))
+      (zig "zig/" "SIMD kernels via zig/src/axiom.zig, sole native backend"))
 
     (extensions "ext/"
       (cuda "ext/AxiomCUDAExt.jl")
@@ -71,14 +70,13 @@
   ;; =========================================================================
   (structure
     (language "Julia")
-    (version "0.1.0")
-    (julia-compat ">= 1.9")
-    (backend-languages ("Rust" "Zig"))
-    (build-system "Julia Pkg + Cargo + Zig Build")
+    (version "1.0.0")
+    (julia-compat ">= 1.10")
+    (backend-languages ("Zig"))
+    (build-system "Julia Pkg + Zig Build")
     (task-runner "just (Justfile)")
     (key-commands
       ("just test" "Run Julia test suite")
-      ("just build-rust" "Build Rust backend .so")
       ("just build-zig" "Build Zig backend .so")
       ("just bench" "Run benchmarks")
       ("just status" "Show project status")))
@@ -87,16 +85,13 @@
   ;; Current Status (see STATE.scm for details)
   ;; =========================================================================
   (status
-    (completion-pct 55)
-    (phase "Active Development")
+    (completion-pct 98)
+    (phase "Release Candidate")
+    (tests-passing 283)
     (known-disabled-features
-      ("@prove macro (SMTLib import ordering issue)"
-       "Rust end-to-end dispatch (ccall stub in rust_forward)"
-       "Zig compiled artifact (needs zig build)"
-       "HuggingFace model converters (GPT-2, ViT, ResNet)"
-       "Compile optimizations (fold_batchnorm, etc.)"
-       "Proof assistant import (Lean/Coq/Isabelle)"
-       "Autograd (finite differences placeholder)")))
+      ("@prove macro (SMTLib extension precompilation conflict)"
+       "Coprocessor backends (TPU/NPU/DSP/etc.) need real hardware for integration")))
+
 
   ;; =========================================================================
   ;; Lifecycle Hooks

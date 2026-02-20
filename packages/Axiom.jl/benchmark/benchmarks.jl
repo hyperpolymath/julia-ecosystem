@@ -33,7 +33,7 @@ for ext in [".so", ".dylib", ".dll"]
 end
 
 # Check Zig backend
-zig_lib = joinpath(@__DIR__, "..", "zig", "zig-out", "lib", "libaxiom.so")
+zig_lib = joinpath(@__DIR__, "..", "zig", "zig-out", "lib", "libaxiom_zig.so")
 for ext in [".so", ".dylib", ".dll"]
     candidate = replace(zig_lib, ".so" => ext)
     if isfile(candidate)

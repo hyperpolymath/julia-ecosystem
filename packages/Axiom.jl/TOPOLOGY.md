@@ -9,6 +9,7 @@
     +-----------------------------------------------------------------+
     |  @axiom    @ensure    @prove*    Sequential/Chain/Pipeline      |
     |  Dense  Conv2d  BatchNorm  LayerNorm  MaxPool  Dropout  ReLU   |
+    |  CouplingLayer  ActNorm  Inv1x1Conv  RevBlock  NormFlow        |
     |  train!()    compile()    verify()    from_pytorch()            |
     +-----------------------------------------------------------------+
          |              |              |              |
@@ -84,6 +85,18 @@
 | Autograd (Zygote)      | Done   | `██████████` 100%              |
 | Data Utilities         | Done   | `██████████` 100%              |
 | Model Containers       | Done   | `██████████` 100%              |
+
+### Reversible Computing
+| Component              | Status | Progress                       |
+|------------------------|--------|--------------------------------|
+| CouplingLayer (affine) | Done   | `██████████` 100%              |
+| ActNorm (data-dep init)| Done   | `██████████` 100%              |
+| Invertible1x1Conv (LU) | Done   | `██████████` 100%              |
+| RevBlock (reversible)  | Done   | `██████████` 100%              |
+| InvertibleSequential   | Done   | `██████████` 100%              |
+| NormalizingFlow        | Done   | `██████████` 100%              |
+| Custom Zygote adjoints | Done   | `██████████` 100%              |
+| Roundtrip verification | Done   | `██████████` 100%              |
 
 ### DSL & Macros
 | Component              | Status | Progress                       |
@@ -189,10 +202,10 @@
 | Component              | Status | Progress                       |
 |------------------------|--------|--------------------------------|
 | CI/CD (21 workflows)   | Good   | `████████░░` 80%               |
-| Tests (204 passing)    | Good   | `██████████` 100%              |
+| Tests (283 passing)    | Good   | `██████████` 100%              |
 | Benchmarks             | Done   | `██████████` 100%              |
-| Documentation (wiki)   | Done   | `████████░░` 80%               |
-| RSR Compliance         | Good   | `████████░░` 80%               |
+| Documentation (wiki)   | Done   | `██████████` 100%              |
+| RSR Compliance         | Done   | `██████████` 100%              |
 | Bot directives (8)     | Done   | `██████████` 100%              |
 | Contractiles (5)       | Done   | `██████████` 100%              |
 | SCM files (5)          | Done   | `██████████` 100%              |
@@ -201,7 +214,7 @@
 
 | Dependency     | Purpose                    | Required |
 |----------------|----------------------------|----------|
-| Julia >= 1.9   | Runtime                    | Yes      |
+| Julia >= 1.10  | Runtime                    | Yes      |
 | LinearAlgebra  | Matrix operations          | Yes      |
 | SHA            | Proof certificate hashing  | Yes      |
 | JSON           | Metadata serialization     | Yes      |
@@ -212,10 +225,10 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~93% complete
+## Overall: ~98% complete
 
-**Strongest areas:** Core layers, activations, Zig kernel implementations (sole native backend, 32 exports, 320KB .so, SIMD + 4-thread dispatch), SmartBackend per-op dispatch, SIMD-optimized Zig kernels (GELU 3x, RMSNorm 7x, sigmoid 2.9x), multi-threaded element-wise ops (>64K threshold), SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch (LayerNorm/RMSNorm route through backends), model save/load (binary + metadata bundle), external benchmarks (Axiom vs Flux vs PyTorch)
-**Weakest areas:** Coprocessor skeletons (20% — need real hardware integrations)
+**Strongest areas:** Core layers, activations, reversible computing (CouplingLayer/ActNorm/Inv1x1Conv/RevBlock/NormalizingFlow with custom Zygote adjoints), Zig kernel implementations (sole native backend, 36 exports, 395KB .so, SIMD + 4-thread dispatch), SmartBackend per-op dispatch, SIMD-optimized Zig kernels (GELU 3x, RMSNorm 7x, sigmoid 2.9x), multi-threaded element-wise ops (>64K threshold), SMTLib, coprocessor dispatch infrastructure (9 backends with setup guides and hardware detection), compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance (SPDX on all files), GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch (LayerNorm/RMSNorm route through backends), model save/load (binary + metadata bundle), external benchmarks (Axiom vs Flux vs PyTorch), 283 tests passing
+**Weakest areas:** Coprocessor skeletons (20% — need real hardware for end-to-end integration)
 
 ## Ecosystem Context
 

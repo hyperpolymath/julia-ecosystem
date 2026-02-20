@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # API Reference
 
 > Complete reference for all Axiom.jl functions, types, and macros

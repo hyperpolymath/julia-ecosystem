@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # The @axiom DSL
 
 > *Declare what you want, not how to compute it.*

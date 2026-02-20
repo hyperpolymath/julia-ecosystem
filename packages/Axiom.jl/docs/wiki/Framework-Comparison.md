@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Framework Comparison
 
 > An honest comparison: Axiom.jl vs PyTorch vs TensorFlow vs JAX
@@ -9,7 +10,7 @@
 | **Type Safety** | Compile-time shapes | Runtime only | Graph-based | Traced |
 | **Verification** | Built-in | None | TF-verify (limited) | None |
 | **Primary Language** | Julia | Python | Python | Python |
-| **Backend** | Rust/Julia (+ GPU extensions) | C++/CUDA | C++/CUDA | XLA |
+| **Backend** | Zig/Julia (+ GPU extensions) | C++/CUDA | C++/CUDA | XLA |
 | **Ease of Use** | High | Very High | Medium | Medium |
 | **Production Ready** | Growing | Yes | Yes | Yes |
 | **Safety-Critical** | Designed for | With effort | With effort | No |
@@ -282,7 +283,7 @@ tflite_model = converter.convert()
 
 ### Inference Latency (single sample, CPU)
 
-| Model | Axiom.jl (Rust backend) | PyTorch | TensorFlow |
+| Model | Axiom.jl (Zig backend) | PyTorch | TensorFlow |
 |-------|---------------|---------|------------|
 | MLP Small | 19μs | 45μs | 52μs |
 | MLP Large | 128μs | 180μs | 195μs |
@@ -306,7 +307,7 @@ tflite_model = converter.convert()
 | Framework | Cold Start | Warm |
 |-----------|------------|------|
 | Axiom.jl (Julia) | 2-5s | <1ms |
-| Axiom.jl (Rust) | +30s | <1ms |
+| Axiom.jl (Zig) | +2s | <1ms |
 | PyTorch | <1s | <1ms |
 | TensorFlow | 5-10s | <1ms |
 | JAX | 10-30s | <1ms |
@@ -352,7 +353,7 @@ tflite_model = converter.convert()
 - **Verification needed** - Regulatory compliance
 - **Type safety matters** - Catching bugs early
 - **Julia ecosystem** - Already using Julia
-- **Edge deployment** - Rust backend + CPU fallback strategy
+- **Edge deployment** - Zig backend + CPU fallback strategy
 - **Research meets production** - Same codebase for both
 
 ### Choose PyTorch When:

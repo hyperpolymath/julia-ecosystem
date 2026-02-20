@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Reliability FAQ (Self-Healing, Fault Tolerance, Self-Diagnostics)
 
 This FAQ is a quick reference for the reliability concepts we discussed.

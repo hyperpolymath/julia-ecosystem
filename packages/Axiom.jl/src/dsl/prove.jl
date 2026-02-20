@@ -200,10 +200,14 @@ function smt_proof end
     get_smt_solver()
 
 Returns the first available SMT solver, or `nothing` if none is installed.
-When the AxiomSMTExt extension is loaded (via `using SMTLib`), this is replaced
-with a real implementation that queries installed solvers.
+When the AxiomSMTExt extension is loaded (via `using SMTLib`), the extension
+overrides this via `_get_smt_solver_impl` internal dispatch.
 """
-get_smt_solver() = nothing
+function get_smt_solver()
+    ext = Base.get_extension(@__MODULE__, :AxiomSMTExt)
+    ext === nothing && return nothing
+    return ext._get_smt_solver_impl()
+end
 
 """
     prove_property(property::ParsedProperty)

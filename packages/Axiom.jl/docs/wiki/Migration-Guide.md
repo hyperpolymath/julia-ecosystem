@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # PyTorch to Axiom.jl Migration Guide
 
 > *"Your models, but better."*
@@ -459,8 +460,8 @@ After migration, you can compile for production:
 # Development (Julia backend)
 dev_model = from_pytorch("model.pytorch.json")
 
-# Production (Rust backend) - 2-3x faster
-prod_model = compile(dev_model, backend=:rust, optimize=:aggressive)
+# Production (Zig backend) - 2-3x faster
+prod_model = compile(dev_model, backend=:zig, optimize=:aggressive)
 
 # Benchmark
 @time dev_model(test_input)   # 0.012s

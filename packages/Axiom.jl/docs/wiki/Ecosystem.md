@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Ecosystem & Integrations
 
 > Connect Axiom.jl to the wider Julia and ML ecosystem

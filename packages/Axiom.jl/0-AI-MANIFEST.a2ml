@@ -85,12 +85,11 @@
   ;; Current Status (see STATE.scm for details)
   ;; =========================================================================
   (status
-    (completion-pct 98)
+    (completion-pct 99)
     (phase "Release Candidate")
     (tests-passing 283)
     (known-disabled-features
-      ("@prove macro (SMTLib extension precompilation conflict)"
-       "Coprocessor backends (TPU/NPU/DSP/etc.) need real hardware for integration")))
+      ("Coprocessor backends (TPU/NPU/DSP/etc.) need real hardware for integration")))
 
 
   ;; =========================================================================

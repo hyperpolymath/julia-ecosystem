@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Developer Guide
 
 This guide defines the development workflow and release gates for Axiom.jl.

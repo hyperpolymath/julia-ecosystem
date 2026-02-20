@@ -73,7 +73,14 @@
           "rsr-compliance-spdx-headers-fixed"
           "contributing-template-placeholders-resolved"
           "ai-manifest-updated-to-98pct"
-          "283-tests-passing-0-errors"))))
+          "283-tests-passing-0-errors"
+          ;; New in session 2026-02-20l
+          "smtext-precompilation-conflict-resolved"
+          "smtlib-weakdep-correct-extension-pattern"
+          "pytorchext-declared-in-project-toml"
+          "all-wiki-docs-spdx-headers"
+          "stale-rust-references-removed-from-docs"
+          "duplicate-files-cleaned-up"))))
 
     (route-to-mvp
       ((milestones
@@ -113,9 +120,7 @@
     (blockers-and-issues
       ((critical ())
        (high ())
-       (medium
-         (("SMTLib extension precompilation" .
-           "AxiomSMTExt has a method overwriting conflict during precompilation; works at runtime.")))
+       (medium ())
        (low
          (("Real coprocessor hardware" .
            "All 9 coprocessor extension skeletons exist with detection and setup guides but need real hardware for end-to-end integration.")))))
@@ -238,4 +243,20 @@
                       "Coprocessor backends: Enhanced error messages with setup guide references"
                       "283 tests passing (204 existing + 79 new), 0 errors"
                       "Overall completion 95%→98%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20l
+         ((actions . ("Fix: AxiomSMTExt precompilation conflict — get_smt_solver() stub→function decl"
+                      "Fix: SMTLib moved from [deps] to [weakdeps] in Project.toml"
+                      "Fix: PyCall added to [weakdeps], AxiomPyTorchExt to [extensions]"
+                      "Fix: Zygote compat entry added to Project.toml"
+                      "Fix: Removed redundant Base.eval export from AxiomSMTExt.__init__"
+                      "Cleanup: Deleted lowercase justfile (had stale build-rust recipe)"
+                      "Cleanup: Deleted AI.a2ml legacy duplicate (0-AI-MANIFEST.a2ml is canonical)"
+                      "Cleanup: Deleted orphaned zygote_rules.jl (not included in module)"
+                      "Cleanup: Deleted ROADMAP.md duplicate (keeping ROADMAP.adoc with SPDX)"
+                      "Docs: All Rust references replaced with Zig in wiki (Framework-Comparison, Migration-Guide, Performance-Tuning)"
+                      "Docs: SPDX headers added to all 24 wiki markdown files"
+                      "TOPOLOGY.md: Added reversible computing section, updated to 283 tests, 98%"
+                      "STATE.scm: SMTLib precompilation blocker resolved (was medium, now clear)"
+                      "Overall completion 98%→99%"))
           (agent . "claude-opus-4-6")))))))

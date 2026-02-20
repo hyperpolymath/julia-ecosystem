@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Frequently Asked Questions
 
 > *"There are no stupid questions, only stupid bugs that weren't caught at compile time."*

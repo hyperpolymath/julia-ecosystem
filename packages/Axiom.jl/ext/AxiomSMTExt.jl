@@ -7,8 +7,7 @@ using SHA
 using Dates
 
 function __init__()
-    # This ensures @prove is exported from the main Axiom module when SMTLib is loaded
-    Base.eval(Axiom, :(export @prove))
+    # @prove is already exported from the main Axiom module
 end
 
 """
@@ -203,7 +202,7 @@ function validate_solver_path(path::String)
     true
 end
 
-function Axiom.get_smt_solver()
+function _get_smt_solver_impl()
     path_override = get(ENV, "AXIOM_SMT_SOLVER_PATH", nothing)
     if path_override !== nothing
         kind_raw = get(ENV, "AXIOM_SMT_SOLVER_KIND", nothing)
@@ -240,7 +239,7 @@ function Axiom.get_smt_solver()
 end
 
 function get_smt_context()
-    solver = Axiom.get_smt_solver()
+    solver = _get_smt_solver_impl()
     solver === nothing && return nothing
     SMTLib.SMTContext(solver=solver, logic=smt_logic(), timeout_ms=smt_timeout_ms())
 end

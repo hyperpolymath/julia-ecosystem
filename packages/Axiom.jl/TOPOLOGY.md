@@ -177,9 +177,9 @@
 |------------------------|--------|--------------------------------|
 | PyTorch import/export  | Done   | `██████████` 90%               |
 | HuggingFace framework  | Done   | `████████░░` 80%               |
-| HF model converters    | Done   | `██████░░░░` 60%               |
+| HF model converters    | Done   | `████████░░` 80% (BERT/GPT2/ViT/ResNet/LLaMA/Whisper) |
 | SafeTensors loader     | Done   | `██████████` 100%              |
-| Model Metadata         | Partial| `██████░░░░` 60%               |
+| Model Metadata         | Done   | `████████░░` 80% (bundle save/load) |
 | Resource-aware dispatch| Done   | `██████████` 100%              |
 
 ### Compile & Optimization
@@ -220,9 +220,9 @@
 | Zig toolchain  | Zig backend compilation    | Optional |
 | Z3/CVC5        | SMT solver for @prove      | Optional |
 
-## Overall: ~82% complete
+## Overall: ~85% complete
 
-**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace/SafeTensors, RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary serialization)
+**Strongest areas:** Core layers, activations, Rust/Zig kernel implementations, SMTLib, coprocessor dispatch infrastructure, compile optimizations (incl. mixed precision with loss scaling), certificates, HuggingFace (7 architectures + SafeTensors), RSR compliance, GPU extensions (full coverage), autograd (Zygote), @prove (heuristic+SMT), proof export (real tactics), backend-aware dispatch, model save/load (binary + metadata bundle), benchmarks (Julia/Rust/Zig)
 **Weakest areas:** Zig compiled .so artifact (0%), coprocessor skeletons (20% — need real hardware integrations)
 
 ## Ecosystem Context

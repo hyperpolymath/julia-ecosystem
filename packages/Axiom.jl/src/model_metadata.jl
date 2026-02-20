@@ -436,3 +436,93 @@ function detect_precision(params)
     end
     :unknown
 end
+
+# ============================================================================
+# Model Bundle (weights + metadata in one operation)
+# ============================================================================
+
+"""
+    save_model_bundle(model, path::String; metadata_kwargs...)
+
+Save model weights and metadata as a self-describing bundle.
+
+Creates two files:
+- `path` — binary model weights (via Serialization)
+- `path.metadata.json` — JSON metadata with checksums, architecture info, etc.
+
+# Arguments
+- `model` — the Axiom model to save
+- `path` — file path for the weights file (e.g., "my_model.axiom")
+
+# Keyword Arguments
+All keyword arguments are forwarded to `create_metadata`. At minimum, provide:
+- `name::String` — model name
+- `architecture::String` — architecture type (e.g., "ResNet", "Transformer")
+
+# Example
+```julia
+save_model_bundle(model, "resnet50.axiom",
+    name="ResNet50-ImageNet",
+    architecture="ResNet",
+    task="image-classification",
+    metrics=Dict("accuracy" => 0.92))
+```
+"""
+function save_model_bundle(model, path::String; name::String, architecture::String, kwargs...)
+    # Save weights
+    params = parameters(model)
+    param_dict = Dict{String, Any}()
+    for (pname, value) in pairs(params)
+        param_dict[string(pname)] = value
+    end
+    open(path, "w") do f
+        Serialization.serialize(f, param_dict)
+    end
+
+    # Create and save metadata
+    metadata = create_metadata(model; name=name, architecture=architecture, kwargs...)
+    metadata_path = path * ".metadata.json"
+    save_metadata(metadata, metadata_path)
+
+    @info "Model bundle saved" weights=path metadata=metadata_path parameters=length(param_dict)
+    return metadata
+end
+
+"""
+    load_model_bundle(model, path::String) -> ModelMetadata
+
+Load model weights from a bundle and return metadata if available.
+
+Restores weights from `path` and reads metadata from `path.metadata.json` if it exists.
+"""
+function load_model_bundle(model, path::String)
+    # Load weights
+    param_dict = open(path, "r") do f
+        Serialization.deserialize(f)
+    end
+    params = parameters(model)
+    restored = 0
+    for (pname, value) in pairs(params)
+        key = string(pname)
+        if haskey(param_dict, key)
+            saved = param_dict[key]
+            if size(saved) == size(value)
+                copyto!(value, saved)
+                restored += 1
+            else
+                @warn "Shape mismatch for $key: model=$(size(value)), file=$(size(saved))"
+            end
+        end
+    end
+    @info "Model loaded from $path ($restored/$(length(params)) parameters restored)"
+
+    # Load metadata if available
+    metadata_path = path * ".metadata.json"
+    metadata = nothing
+    if isfile(metadata_path)
+        metadata = load_metadata(metadata_path)
+        @info "Metadata loaded" name=metadata.name version=metadata.version
+    end
+
+    return metadata
+end

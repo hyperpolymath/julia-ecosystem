@@ -204,6 +204,7 @@ export load_pytorch, export_onnx
 export ModelMetadata, VerificationClaim
 export create_metadata, save_metadata, load_metadata, validate_metadata
 export add_verification_claim!, verify_and_claim!
+export save_model_bundle, load_model_bundle
 export MODEL_PACKAGE_FORMAT, MODEL_REGISTRY_ENTRY_FORMAT
 export model_package_manifest, export_model_package, load_model_package_manifest
 export build_registry_entry, export_registry_entry

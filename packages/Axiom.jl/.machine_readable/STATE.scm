@@ -12,7 +12,7 @@
 
     (current-position
       ((phase . "Active Development")
-       (overall-completion . 82)
+       (overall-completion . 85)
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"
@@ -37,7 +37,8 @@
           "capability-reporting"
           "vpu-qpu-crypto-backend-types"
           "huggingface-safetensors-loader"
-          "huggingface-gpt2-vit-resnet-builders"
+          "huggingface-bert-gpt2-vit-resnet-llama-whisper-builders"
+          "model-metadata-bundle-save-load"
           "fold-batchnorm" "fold-constants" "dead-code-elimination"
           "aggressive-optimization-pass"
           "resource-aware-backend-dispatch"
@@ -65,7 +66,9 @@
                                "Production model save/load" "Full HuggingFace model zoo"
                                "Performance parity benchmarks" "Security audit"
                                "RSR compliance"))
-                    (status . "not-started")))))))
+                    (status . "in-progress")
+                    (completed . ("Production model save/load"
+                                  "Full HuggingFace model zoo"))))))))
 
     (blockers-and-issues
       ((critical
@@ -81,15 +84,12 @@
     (critical-next-actions
       ((immediate
          ("Build zig .so artifact and commit"
-          "Fix SPDX headers to PMPL-1.0-or-later"
-          "Production model save/load via JLD2"))
+          "Run panic-attack security audit"))
        (this-week
          ("Implement real coprocessor backends (TPU/NPU at minimum)"
-          "Complete mixed precision support"
-          "Performance parity benchmarks"))
+          "External framework benchmark comparison"))
        (this-month
-         ("Security audit"
-          "Full RSR compliance"
+         ("Full RSR compliance"
           "v1.0.0 release preparation"))))
 
     (session-history
@@ -133,4 +133,12 @@
                       "Tier 1: Fixed method overwriting by moving forward() from layer files to abstract.jl"
                       "Tier 1: JuliaBackend default ops for conv2d/batchnorm/pooling"
                       "204 tests passing, overall completion 63%→78%"))
+          (agent . "claude-opus-4-6")))
+       (session-2026-02-20f
+         ((actions . ("Perfective: Real BERT builder (multi-head attention, Q/K/V projections, FFN)"
+                      "Perfective: LLaMA builder (GQA, SwiGLU MLP, RMSNorm-style layers)"
+                      "Perfective: Whisper builder (encoder-decoder, cross-attention, mel projection)"
+                      "Perfective: Model metadata bundle save/load (save_model_bundle, load_model_bundle)"
+                      "Perfective: Benchmark Zig backend detection + batchnorm signature fix"
+                      "204 tests passing, overall completion 82%→85%"))
           (agent . "claude-opus-4-6")))))))

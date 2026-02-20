@@ -24,8 +24,22 @@ push!(BACKENDS_TO_TEST, JuliaBackend())
 
 # Check Rust backend
 rust_lib = joinpath(@__DIR__, "..", "rust", "target", "release", "libaxiom_core.so")
-if isfile(rust_lib) || isfile(replace(rust_lib, ".so" => ".dylib")) || isfile(replace(rust_lib, ".so" => ".dll"))
-    push!(BACKENDS_TO_TEST, RustBackend(rust_lib))
+for ext in [".so", ".dylib", ".dll"]
+    candidate = replace(rust_lib, ".so" => ext)
+    if isfile(candidate)
+        push!(BACKENDS_TO_TEST, RustBackend(candidate))
+        break
+    end
+end
+
+# Check Zig backend
+zig_lib = joinpath(@__DIR__, "..", "zig", "zig-out", "lib", "libaxiom.so")
+for ext in [".so", ".dylib", ".dll"]
+    candidate = replace(zig_lib, ".so" => ext)
+    if isfile(candidate)
+        push!(BACKENDS_TO_TEST, ZigBackend(candidate))
+        break
+    end
 end
 
 println("Testing backends: ", [typeof(b) for b in BACKENDS_TO_TEST])
@@ -130,7 +144,7 @@ for (batch, features) in norm_sizes
         backend_name = string(typeof(backend))
 
         SUITE["normalization"]["batchnorm_$(batch)x$(features)"][backend_name] = @benchmarkable begin
-            Axiom.backend_batchnorm($backend, $x, $gamma, $beta, $mean, $var, $eps)
+            Axiom.backend_batchnorm($backend, $x, $gamma, $beta, $mean, $var, $eps, false)
         end
     end
 end
@@ -232,7 +246,7 @@ function run_benchmarks()
 end
 
 function generate_summary(results)
-    # Compare Julia vs Rust for each operation
+    # Compare Julia vs Rust/Zig for each operation
     println("Backend Performance Comparison (relative to Julia):\n")
 
     for (category, group) in results
@@ -240,19 +254,25 @@ function generate_summary(results)
             for (test_name, test_group) in group
                 if test_group isa BenchmarkGroup
                     julia_time = nothing
-                    rust_time = nothing
+                    alt_backends = Dict{String, Float64}()
 
                     for (backend_name, result) in test_group
-                        if occursin("JuliaBackend", string(backend_name))
+                        bname = string(backend_name)
+                        if occursin("JuliaBackend", bname)
                             julia_time = median(result).time
-                        elseif occursin("RustBackend", string(backend_name))
-                            rust_time = median(result).time
+                        elseif occursin("RustBackend", bname)
+                            alt_backends["Rust"] = median(result).time
+                        elseif occursin("ZigBackend", bname)
+                            alt_backends["Zig"] = median(result).time
                         end
                     end
 
-                    if julia_time !== nothing && rust_time !== nothing
-                        speedup = julia_time / rust_time
-                        println("  $category/$test_name: Rust is $(round(speedup, digits=2))x $(speedup > 1 ? "faster" : "slower")")
+                    if julia_time !== nothing
+                        for (name, alt_time) in alt_backends
+                            speedup = julia_time / alt_time
+                            label = speedup > 1 ? "faster" : "slower"
+                            println("  $category/$test_name: $name is $(round(speedup, digits=2))x $label")
+                        end
                     end
                 end
             end

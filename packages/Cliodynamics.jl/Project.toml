@@ -1,0 +1,38 @@
+name = "Cliodynamics"
+uuid = "8d2f3e70-4c6b-5e9c-a3d1-2f8e9c0b1d2e"
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+version = "1.0.0"
+
+[deps]
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+
+[weakdeps]
+RecipesBase = "3cdcf5f2-e6d6-5e1a-8b42-8b8bba0c8c9b"
+Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+MCMCChains = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
+
+[extensions]
+CliodynamicsPlotsExt = "RecipesBase"
+CliodynamicsTuringExt = ["Turing", "Distributions", "MCMCChains"]
+
+[compat]
+julia = "1.10"
+DifferentialEquations = "7"
+Statistics = "1"
+Optim = "1"
+DataFrames = "1"
+RecipesBase = "1"
+Turing = "0.30, 0.31, 0.32, 0.33, 0.34, 0.35"
+Distributions = "0.25"
+MCMCChains = "6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

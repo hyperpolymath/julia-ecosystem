@@ -1,0 +1,15 @@
+name = "PostDisciplinary"
+uuid = "f1e2d3c4-b5a6-4b7c-8d9e-0f1a2b3c4d5e"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+Graphs = "86223616-38f0-11e9-10bd-bb67a441a0ed"
+MetaGraphsNext = "d17304a5-4378-4cd5-abeb-e3984efdfcf4"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+Dagger = "4806a3f5-2134-5ef0-a841-2ca95195cd39"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+
+[compat]
+julia = "1.10"

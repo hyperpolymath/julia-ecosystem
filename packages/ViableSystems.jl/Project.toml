@@ -1,0 +1,12 @@
+name = "ViableSystems"
+uuid = "e1f2g3h4-i5j6-k7l8-m9n0-o1p2q3r4s5t6"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+Graphs = "86223616-38f0-11e9-10bd-bb67a441a0ed"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+
+[compat]
+julia = "1.10"

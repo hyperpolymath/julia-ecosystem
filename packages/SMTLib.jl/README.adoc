@@ -1,0 +1,276 @@
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= SMTLib.jl
+
+:toc: macro
+:toclevels: 2
+:icons: font
+:source-highlighter: rouge
+
+[.lead]
+*A lightweight Julia interface to SMT solvers via SMT-LIB2, designed for verification, synthesis, and symbolic automation.*
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-93%25-green[93%,link="TOPOLOGY.md"]
+
+toc::[]
+
+== What is SMTLib.jl?
+
+SMTLib.jl is a Julia package that generates and consumes SMT-LIB2, the standard
+language for communicating with SMT solvers such as Z3, CVC5, Yices, and MathSAT.
+It gives you a clean Julia API for building constraints, checking satisfiability,
+and parsing models -- with support for quantifiers, optimization, theory helpers,
+unsat cores, and more.
+
+== Features
+
+* **Solver auto-detection** -- discover installed solvers on PATH
+* **SMT-LIB2 generation** -- emit solver-ready programs from Julia expressions
+* **Model parsing** -- pull structured model values back into Julia
+* **Incremental solving** -- push/pop contexts for interactive workflows
+* **Quantifiers** -- `forall` and `exists` for first-order reasoning
+* **Optimization** -- `minimize!`, `maximize!`, `optimize` (Z3 via νZ)
+* **Theory helpers** -- bitvectors, floating-point sorts, arrays, regex sorts
+* **Named assertions & unsat cores** -- `get_unsat_core` for debugging UNSAT results
+* **Statistics** -- `get_statistics` for solver performance introspection
+* **Model evaluation** -- `evaluate` expressions against a solved model
+* **Convenience macro** -- `@smt` for concise constraint specification
+* **Solver options** -- `set_option!` for fine-grained solver configuration
+* **Timeouts** -- control solver budgets deterministically
+* **Zero dependencies** -- pure Julia
+
+== Quick Start
+
+[source,julia]
+----
+using SMTLib
+
+ctx = SMTContext(logic=:QF_LIA)
+
+declare(ctx, :x, Int)
+declare(ctx, :y, Int)
+
+assert!(ctx, :(x + y == 10))
+assert!(ctx, :(x > 0))
+assert!(ctx, :(y > 0))
+
+result = check_sat(ctx)
+@show result.status
+@show result.model
+----
+
+== API Reference
+
+=== Types
+
+[cols="1,3", options="header"]
+|===
+| Type | Description
+| `SMTSolver` | Solver descriptor (name, path, capabilities)
+| `SMTResult` | Result of `check_sat` (status, model, statistics)
+| `SMTContext` | Solver session holding declarations, assertions, and options
+|===
+
+=== Core Operations
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `declare(ctx, name, sort)` | Declare a constant or function
+| `assert!(ctx, expr)` | Add a constraint to the context
+| `check_sat(ctx)` | Check satisfiability, return `SMTResult`
+| `get_model(ctx)` | Retrieve model after SAT result
+| `reset!(ctx)` | Clear all declarations and assertions
+|===
+
+=== Incremental Solving
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `push!(ctx)` | Push a new assertion scope
+| `pop!(ctx)` | Pop the most recent assertion scope
+|===
+
+=== Solver Management
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `find_solver(name)` | Find a specific solver on PATH
+| `available_solvers()` | List all detected solvers
+| `set_option!(ctx, key, value)` | Set solver option (e.g. `:produce-models`)
+|===
+
+=== Parsing & Conversion
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `to_smtlib(expr)` | Convert Julia expression to SMT-LIB2 string
+| `from_smtlib(str)` | Parse SMT-LIB2 string into Julia structure
+|===
+
+=== Quantifiers
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `forall(vars, body)` | Universal quantification
+| `exists(vars, body)` | Existential quantification
+|===
+
+=== Optimization (Z3)
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `minimize!(ctx, expr)` | Add minimization objective
+| `maximize!(ctx, expr)` | Add maximization objective
+| `optimize(ctx)` | Solve with optimization objectives
+|===
+
+=== Theory Helpers
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `bv(value, width)` | Bitvector literal
+| `fp_sort(ebits, sbits)` | Floating-point sort constructor
+| `array_sort(index, element)` | Array sort constructor
+| `re_sort(base)` | Regular expression sort constructor
+|===
+
+=== Analysis
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `get_statistics(result)` | Solver performance statistics
+| `evaluate(model, expr)` | Evaluate expression in a model
+| `get_unsat_core(ctx)` | Extract unsat core from UNSAT result
+|===
+
+=== Convenience
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `@smt expr` | Macro for concise constraint building
+|===
+
+== Usage Patterns
+
+=== Solver Discovery
+
+[source,julia]
+----
+available_solvers()
+find_solver(:z3)
+----
+
+=== Incremental Solving
+
+[source,julia]
+----
+push!(ctx)
+assert!(ctx, :(x < 5))
+check_sat(ctx)
+pop!(ctx)
+----
+
+=== Quantified Formulas
+
+[source,julia]
+----
+ctx = SMTContext(logic=:LIA)
+declare(ctx, :f, Int => Int)
+
+# For all x, f(x) > x
+assert!(ctx, forall([:x => Int], :(f(x) > x)))
+
+result = check_sat(ctx)
+----
+
+=== Optimization (Z3)
+
+[source,julia]
+----
+ctx = SMTContext(logic=:QF_LIA)
+declare(ctx, :x, Int)
+declare(ctx, :y, Int)
+
+assert!(ctx, :(x + y >= 10))
+assert!(ctx, :(x >= 0))
+assert!(ctx, :(y >= 0))
+minimize!(ctx, :(x + y))
+
+result = optimize(ctx)
+@show result.model  # x=10, y=0 or x=0, y=10
+----
+
+=== Unsat Core Extraction
+
+[source,julia]
+----
+ctx = SMTContext(logic=:QF_LIA)
+set_option!(ctx, :produce_unsat_cores, true)
+
+declare(ctx, :x, Int)
+assert!(ctx, :(x > 5), name=:c1)
+assert!(ctx, :(x < 3), name=:c2)
+assert!(ctx, :(x > 0), name=:c3)
+
+result = check_sat(ctx)  # UNSAT
+core = get_unsat_core(ctx)  # [:c1, :c2]
+----
+
+== Repository Layout
+
+Standard Julia package structure:
+
+----
+SMTLib.jl/
+├── src/          # Core library
+├── test/         # Unit tests (468 assertions)
+├── Project.toml  # Package metadata
+└── README.adoc   # This file
+----
+
+== Relationship to Axiom.jl
+
+SMTLib.jl is used by Axiom.jl for solver interaction and verification workflows.
+This repo keeps the SMT interface modular and independently reusable.
+
+== Status
+
+Stable, used across the Hyperpolymath verification stack.
+468 test assertions covering solver discovery, SMT-LIB generation, parsing,
+quantifiers, optimization, theory helpers, unsat cores, and integration tests.
+
+=== Release Readiness Baseline
+
+- Readiness script: `scripts/readiness-check.sh`
+- Readiness guide: `docs/release-readiness.adoc`
+- Parity checklist: `SMTLIB-AXIOM-PARITY-CHECKLIST.adoc`
+
+== References & Bibliography
+
+=== Textbooks
+
+* Barrett, C. & Tinelli, C. "Satisfiability Modulo Theories." In _Handbook of Model Checking_, Springer, 2018, pp. 305-343. -- Comprehensive handbook chapter on SMT.
+* Kroening, D. & Strichman, O. _Decision Procedures: An Algorithmic Point of View_. 2nd ed., Springer, 2016. -- Comprehensive text on decision procedures underlying SMT.
+* Bradley, A.R. & Manna, Z. _The Calculus of Computation: Decision Procedures with Applications to Verification_. Springer, 2007. -- Verification foundations and decision procedures.
+* Biere, A., Heule, M., van Maaren, H., & Walsh, T. (eds.) _Handbook of Satisfiability_. 2nd ed., IOS Press, 2021. -- Comprehensive reference for SAT/SMT.
+
+=== Key Papers
+
+* de Moura, L. & Bjørner, N. "Z3: An Efficient SMT Solver." In _TACAS 2008_, LNCS 4963, Springer, 2008, pp. 337-340. -- Z3 solver.
+* Barrett, C., Stump, A., & Tinelli, C. "The SMT-LIB Standard: Version 2.6." Technical report, 2017. -- The SMT-LIB2 language standard.
+* Bjørner, N., Phan, A.-D., & Fleckenstein, L. "νZ -- An Optimizing SMT Solver." In _TACAS 2015_, LNCS 9035, Springer, 2015, pp. 194-199. -- Z3 optimization extensions.
+* Barbosa, H. et al. "cvc5: A Versatile and Industrial-Strength SMT Solver." In _TACAS 2022_, LNCS 13243, Springer, 2022, pp. 415-442. -- CVC5 solver.
+
+== License
+
+Palimpsest-MPL License v1.0 (PMPL-1.0-or-later) -- see link:LICENSE[LICENSE].

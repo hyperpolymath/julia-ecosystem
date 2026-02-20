@@ -1,0 +1,303 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= ZeroProb.jl
+Jonathan D. A. Jewell <jonathan.jewell@open.ac.uk>
+:toc:
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-95%25-green[95%,link="TOPOLOGY.md"]
+
+== Overview
+
+**ZeroProb.jl** is a Julia library for handling zero-probability events in continuous probability spaces. It provides rigorous mathematical tools for reasoning about events with measure zero, including density-based relevance, Hausdorff measures, paradox demonstrations, tail risk modelling, and black swan event analysis.
+
+> In continuous probability distributions, events with measure zero can still occur. This library provides alternative relevance measures, classical paradox demonstrations, and application-oriented tools for extreme events.
+
+== The Zero-Probability Paradox
+
+In continuous probability theory, individual points have measure zero (P(X = x) = 0), yet one such point must occur when sampling. This creates a paradox:
+
+* **Probability:** P(X = 3.14159...) = 0
+* **Reality:** X can equal exactly 3.14159...
+* **Problem:** How do we reason about relevance when probability is always zero?
+
+== Solution: Alternative Relevance Measures
+
+ZeroProb.jl provides three complementary approaches:
+
+=== 1. Density Ratio
+Compare probability densities instead of probabilities:
+
+[source,julia]
+----
+relevance = density_ratio(f, x, baseline)
+# Higher density -> more "typical" for the distribution
+----
+
+=== 2. Hausdorff Measure
+Use dimensional analysis for sets of measure zero:
+
+[source,julia]
+----
+measure = hausdorff_measure(event_set, dimension)
+# Generalizes volume to fractional dimensions
+----
+
+=== 3. Epsilon-Neighborhood Probability
+Consider probability mass in small neighborhoods:
+
+[source,julia]
+----
+prob = epsilon_neighborhood_prob(X, x, eps)
+# P(|X - x| < eps) as eps -> 0
+----
+
+== Installation
+
+From Julia REPL:
+
+[source,julia]
+----
+using Pkg
+Pkg.add("ZeroProb")
+----
+
+== Usage Examples
+
+=== Density Ratio Analysis
+
+[source,julia]
+----
+using ZeroProb, Distributions
+
+# Define distribution
+dist = Normal(0, 1)
+
+# Compare relevance of two points
+x1 = 0.0    # At mean
+x2 = 3.0    # 3 standard deviations out
+
+ratio = density_ratio(dist, x1, x2)
+# ratio ~ 228.0 (x1 is 228x more "typical")
+----
+
+=== Hausdorff Measure for Fractals
+
+[source,julia]
+----
+using ZeroProb
+
+# Cantor set has Hausdorff dimension log(2)/log(3) ~ 0.631
+cantor_set = construct_cantor_set(iterations=10)
+dimension = hausdorff_dimension(cantor_set)
+measure = hausdorff_measure(cantor_set, dimension)
+
+# Even though Lebesgue measure is 0, Hausdorff measure is non-zero
+----
+
+=== Epsilon-Neighborhood Convergence
+
+[source,julia]
+----
+using ZeroProb, Distributions
+
+dist = Exponential(1.0)
+x = 2.0
+
+# Compute probability in shrinking neighborhoods
+eps_values = [0.1, 0.01, 0.001, 0.0001]
+probs = [epsilon_neighborhood_prob(dist, x, e) for e in eps_values]
+
+# Observe convergence rate
+convergence_rate = estimate_convergence_rate(eps_values, probs)
+----
+
+== API Reference
+
+=== Core Types
+
+`ZeroProbEvent`::
+Abstract base type for zero-probability events.
+
+`ContinuousZeroProbEvent`::
+Zero-probability event in a continuous space.
+
+`DiscreteZeroProbEvent`::
+Zero-probability event in a discrete approximation.
+
+`AlmostSureEvent`::
+Event that occurs with probability 1 (complement has measure zero).
+
+`SureEvent`::
+Event that occurs in every outcome (not just almost every).
+
+=== Extended Types
+
+`TailRiskEvent`::
+Extreme tail event with severity and return period.
+
+`QuantumMeasurementEvent`::
+Quantum measurement outcome with Born rule probability.
+
+`InsuranceCatastropheEvent`::
+Catastrophe event for insurance/reinsurance modelling.
+
+=== Core Measures
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `probability(event)` | Probability of an event (zero for measure-zero events)
+| `relevance(event)` | Alternative relevance score
+| `density_ratio(dist, x, baseline)` | Ratio of probability densities at two points
+| `hausdorff_measure(set, dim)` | Hausdorff measure of a set at given dimension
+| `epsilon_neighborhood(dist, x, eps)` | Probability mass in epsilon-ball around x
+| `relevance_score(event)` | Composite relevance score
+|===
+
+=== Extended Measures
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `hausdorff_dimension(set)` | Box-counting dimension estimate
+| `estimate_convergence_rate(eps, probs)` | Rate of P(ball) -> 0 as eps -> 0
+| `epsilon_neighborhood_prob(dist, x, eps)` | P(\|X - x\| < eps) for distribution
+| `conditional_density(dist, x, condition)` | Conditional density given event
+| `radon_nikodym_derivative(mu, nu, x)` | Radon-Nikodym derivative dmu/dnu at x
+| `total_variation_distance(P, Q)` | Total variation between measures
+| `kl_divergence(P, Q)` | Kullback-Leibler divergence
+| `fisher_information(dist, x)` | Fisher information at a point
+| `entropy_contribution(dist, x)` | Pointwise entropy contribution
+| `almost_surely(event)` | Test if event holds almost surely
+| `measure_zero_test(set)` | Test if a set has Lebesgue measure zero
+|===
+
+=== Paradoxes
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `continuum_paradox()` | P(X = x) = 0 yet outcomes exist
+| `borel_kolmogorov_paradox()` | Conditioning on measure-zero sets
+| `rational_points_paradox()` | Countable dense set with measure zero
+| `uncountable_union_paradox()` | Uncountable union of measure-zero sets
+| `almost_sure_vs_sure()` | Distinction between a.s. and sure events
+| `construct_cantor_set(; iterations)` | Build Cantor set to given depth
+| `banach_tarski_paradox()` | Equidecomposition via non-measurable sets
+| `vitali_set_paradox()` | Non-measurable Vitali set construction
+| `gabriels_horn_paradox()` | Infinite surface area, finite volume
+| `bertrand_paradox()` | Ambiguity of "random chord" in a circle
+| `buffon_needle_problem()` | Geometric probability via needle drops
+|===
+
+=== Applications
+
+[cols="1,3", options="header"]
+|===
+| Type / Function | Description
+| `BlackSwanEvent` | Type for high-impact, low-probability events
+| `MarketCrashEvent` | Type for financial market crash events
+| `BettingEdgeCase` | Type for edge cases in probabilistic betting
+| `impact_severity(event)` | Severity measure for extreme events
+| `expected_impact(event)` | Expected impact accounting for severity
+| `expected_value(event)` | Expected value of event outcome
+| `handles_black_swan(system)` | Test if a system handles black swan events
+| `handles_zero_prob_events(system)` | Test if a system handles zero-prob events
+| `handles_zero_prob_event(system)` | Singular alias for above
+|===
+
+=== Visualization
+
+[cols="1,3", options="header"]
+|===
+| Function | Description
+| `plot_zero_probability(dist)` | Visualize the zero-probability paradox
+| `plot_continuum_paradox()` | Visualize the continuum paradox
+| `plot_density_vs_probability(dist)` | Compare density and probability
+| `plot_epsilon_neighborhood(dist, x)` | Visualize shrinking neighborhoods
+| `plot_black_swan_impact(events)` | Visualize black swan impact distribution
+|===
+
+== Integration with ECHIDNA
+
+ZeroProb.jl is designed for use with ECHIDNA's probabilistic reasoning:
+
+* **Premise Selection**: Rank premises by density ratio instead of raw probability
+* **Proof Search**: Use epsilon-neighborhood probability to guide search
+* **Anomaly Detection**: Flag events far from distribution support using Hausdorff measures
+
+== Development Status
+
+Current Version: **0.1.0**
+
+* [x] Core types and density ratio
+* [x] Hausdorff measure and dimension
+* [x] Epsilon-neighborhood probability
+* [x] Extended types (tail risk, quantum, insurance)
+* [x] Extended measures (KL divergence, Fisher information, Radon-Nikodym)
+* [x] Classical paradoxes (Cantor, Banach-Tarski, Vitali, Bertrand, Buffon)
+* [x] Black swan and extreme event applications
+* [x] Visualization functions
+* [x] Comprehensive test suite (280 tests)
+* [ ] Performance optimization
+* [ ] Integration examples with ECHIDNA
+
+See link:ROADMAP.adoc[ROADMAP.adoc] for future development plans.
+
+== References & Bibliography
+
+=== Measure Theory & Probability Foundations
+
+* Kolmogorov, A.N. _Foundations of the Theory of Probability_. Chelsea Publishing, 1933/1956. -- Axiomatic probability theory.
+* Billingsley, P. _Probability and Measure_. 3rd ed., Wiley, 1995. -- Measure-theoretic probability.
+* Halmos, P.R. _Measure Theory_. Graduate Texts in Mathematics 18, Springer, 1950/1974. -- Classic measure theory reference.
+* Dudley, R.M. _Real Analysis and Probability_. Cambridge University Press, 2002. -- Rigorous integration of real analysis and probability.
+* Feller, W. _An Introduction to Probability Theory and Its Applications_. Vol. II, 2nd ed., Wiley, 1971. -- Continuous distributions, densities, and convergence.
+
+=== Fractal Geometry
+
+* Falconer, K.J. _Fractal Geometry: Mathematical Foundations and Applications_. 3rd ed., Wiley, 2014. -- Hausdorff dimension, box-counting, iterated function systems.
+
+=== Extreme Value Theory & Tail Risk
+
+* Taleb, N.N. _The Black Swan: The Impact of the Highly Improbable_. 2nd ed., Random House, 2010. -- Black swan events and fat-tailed distributions.
+* de Haan, L. & Ferreira, A. _Extreme Value Theory: An Introduction_. Springer, 2006. -- GEV/GPD distributions, tail risk.
+* Embrechts, P., Kluppelberg, C., & Mikosch, T. _Modelling Extremal Events for Insurance and Finance_. Springer, 1997. -- Extreme events in insurance and financial applications.
+
+=== Quantum Measurement
+
+* Nielsen, M.A. & Chuang, I.L. _Quantum Computation and Quantum Information_. 10th anniversary ed., Cambridge University Press, 2010. -- Born rule and quantum measurement theory.
+
+=== Classical Paradoxes
+
+* Bertrand, J. _Calcul des probabilites_. Gauthier-Villars, 1889. -- Bertrand paradox origin.
+* Banach, S. & Tarski, A. "Sur la decomposition des ensembles de points en parties respectivement congruentes." _Fundamenta Mathematicae_ 6, 1924, pp. 244-277. -- Banach-Tarski theorem.
+
+== License
+
+Palimpsest-MPL License v1.0 (PMPL-1.0-or-later) -- see link:LICENSE[LICENSE].
+
+== Contributing
+
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for contribution guidelines.
+
+== Citation
+
+If you use ZeroProb.jl in research, please cite:
+
+[source,bibtex]
+----
+@software{zeroprob2026,
+  author = {Jewell, Jonathan D.A.},
+  title = {ZeroProb.jl: Zero-Probability Event Analysis},
+  year = {2026},
+  version = {0.1.0},
+  url = {https://github.com/hyperpolymath/ZeroProb.jl}
+}
+----
+
+== Contact
+
+* **Author:** Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>
+* **GitHub:** https://github.com/hyperpolymath/ZeroProb.jl
+* **Issues:** https://github.com/hyperpolymath/ZeroProb.jl/issues

@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Lithoglyph.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-40%25-yellow[40%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+
+*Native Julia Client for the Lithoglyph Symbolic Database.*
+
+Lithoglyph.jl provides a high-integrity bridge to the Lithoglyph ecosystem. It allows Julia researchers to store, normalize, and query symbolic data (glyphs) across federated nodes.
+
+== Core Capabilities
+
+* **Symbolic Storage**: Register discrete glyphs with rich metadata and provenance.
+* **FFI Bridge**: Native calls to the core Zig/Forth normalization engine.
+* **Federated Search**: Query multiple Lithoglyph nodes from a single Julia client.
+* **Axiomatic Provenance**: Link symbols to their "unbreakable" Idris2 specifications.
+
+== Usage
+
+[source,julia]
+----
+using Lithoglyph
+
+client = LithoglyphClient("https://litho.local", "secret-token")
+
+# Create a new symbol
+g = Glyph(:MySymbol, "data...", ["tag1"], "hash...")
+
+# Register it
+register_glyph(client, g)
+----

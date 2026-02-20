@@ -1,0 +1,120 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= SMTLib.jl -> Axiom.jl Parity Checklist
+:revdate: 2026-02-17
+:toc:
+:toclevels: 2
+
+== Objective
+Bring `SMTLib.jl` to the same release/readiness posture as `Axiom.jl` for JuliaHub + registry + security-gated CI.
+
+== Baseline Snapshot (2026-02-17)
+- Repo: `/var/mnt/eclipse/repos/SMTLib.jl` (`main`, clean working tree).
+- Package version: `Project.toml` = `0.1.0`; tag `v0.1.0` exists.
+- Workflows: `CI.yml`, `quality.yml`, `release.yml`, `codeql.yml`, `scorecard.yml`.
+- Missing parity items seen in `Axiom.jl`: `CHANGELOG.adoc`, `.github/CODEOWNERS`, `scripts/readiness-check.sh`, workflow linter gate, expanded release-readiness checks.
+- Metadata consistency gap: `.machine_readable/STATE.scm` reports `version = 0.3.0` while `Project.toml` is `0.1.0`.
+- Roadmap depth gap: `ROADMAP.adoc` is currently template-level and not implementation-tracking.
+
+== Basic Baseline Applied (2026-02-17)
+- Added `CHANGELOG.adoc`.
+- Added `.github/CODEOWNERS`.
+- Added `scripts/readiness-check.sh` and `docs/release-readiness.adoc`.
+- Added `.github/workflows/readiness.yml` and `.github/workflows/workflow-linter.yml`.
+- Pinned release workflow artifact actions to SHA references.
+- Replaced template roadmap with a concrete Must/Intend/Like roadmap.
+- Aligned `.machine_readable/STATE.scm` metadata version with `Project.toml`.
+
+== MUST (Blockers for Axiom-level parity)
+1. Package identity/version discipline
+- Keep a single authoritative release version and enforce it in CI.
+- Add a CI check: `Project.toml` version must match release tag on tag builds.
+- Decide and lock next version (`0.1.x` patch vs `0.2.0`/`0.3.0`) and align `STATE.scm` to it.
+
+2. Registry + dependency interoperability
+- Publish `SMTLib.jl` to a registry (General or your own registry used by dependent packages).
+- In downstream packages (e.g., `Axiom.jl`), avoid unresolved deps on unregistered UUIDs during JuliaHub ingest.
+- Add explicit install guidance for both registry and URL modes.
+
+3. Release-readiness automation
+- Add `scripts/readiness-check.sh` equivalent for SMTLib.
+- Minimum gates: add/precompile/build/test/load smoke, docs sanity, version consistency, license presence, no unresolved placeholders.
+- Add a CI job that runs readiness check on PRs and tags.
+
+4. Security and branch-governance parity
+- Add `.github/CODEOWNERS`.
+- Enforce branch protection in GitHub settings: required checks, signed commits, no direct pushes, review by non-pusher.
+- Tighten workflow token permissions to minimum per job (especially `release.yml`).
+- Add `workflow-linter` workflow/job and set required.
+
+5. Changelog and release notes hygiene
+- Add `CHANGELOG.adoc` with Keep-a-Changelog structure.
+- Tie releases to changelog entries and machine-readable release note snippets.
+
+6. Claim verification policy
+- Replace static claims such as "468 assertions" with CI-generated counts/evidence artifacts.
+- Add a check that documentation claims are sourced from generated evidence files.
+
+== INTEND (Strongly recommended for operational parity)
+1. CI expansion toward Axiom breadth
+- Keep current Julia matrix and add:
+- docs build verification (`docs/make.jl`).
+- package install smoke from clean temp environment.
+- optional solver-backed integration job(s) with explicit Z3/CVC5 installs.
+- artifact upload for solver capability report and test evidence.
+
+2. Diagnostics and failure ergonomics
+- Add machine-readable diagnostics API/report for solver detection and fallback behavior.
+- Standardize actionable error messages (missing solver, invalid solver path, timeout policy).
+- Add strict-mode env controls for production pipelines (fail-fast when solver required).
+
+3. Roadmap and machine docs alignment
+- Rewrite `ROADMAP.adoc` with concrete stages (Must/Intend/Like) and evidence checkpoints.
+- Sync `.machine_readable/STATE.scm` with actual repo status each release.
+
+4. Security posture hardening
+- Add `.well-known/security.txt` and link from `SECURITY.md`.
+- Keep Scorecard findings tracked with owners and due dates.
+- Add dependency and secret-scanning policy notes into readiness checks.
+
+== LIKE (Good improvements after parity)
+1. Performance and determinism
+- Benchmarks against representative solver workloads (Z3/CVC5).
+- Performance regression guardrails in CI.
+- Deterministic timeout/seed modes documented for reproducibility.
+
+2. Ecosystem UX
+- Add migration guide for downstream packages currently vendoring SMT logic.
+- Publish an extension template for consumers integrating SMTLib into optional extensions.
+
+3. Formal interface hardening
+- Expand ABI/FFI docs from placeholder-level to executable examples with validation tests.
+- Add compatibility policy for solver versions and capability matrix.
+
+== Suggested Execution Order
+1. Version + metadata alignment (`Project.toml`, `STATE.scm`, release policy).
+2. Add changelog and readiness-check script.
+3. Add CODEOWNERS + workflow-linter + permission tightening.
+4. Add install/load smoke and docs build gates.
+5. Publish to chosen registry and update downstream dependency strategy.
+
+== Deliverables to add in-repo
+- `CHANGELOG.adoc`
+- `.github/CODEOWNERS`
+- `scripts/readiness-check.sh`
+- `.github/workflows/workflow-linter.yml`
+- `docs/release-readiness.adoc`
+- updated `ROADMAP.adoc` (Must/Intend/Like + dated evidence)
+
+== JuliaHub Direct Access: Requirements and Status
+For direct JuliaHub automation, you need all of:
+- reachable DNS/network to `juliahub.com`
+- valid JuliaHub auth file (`~/.julia/servers/juliahub.com/auth.toml`)
+- valid token/session in that auth file
+- a Julia runtime that can run networked package commands
+
+Current environment status:
+- Auth path found: `/home/hyper/.julia/servers/juliahub.com/auth.toml`
+- Network currently blocked here (`curl https://juliahub.com` fails DNS), so direct JuliaHub actions cannot be executed from this session.
+
+Security note:
+- tighten auth file permissions to owner-only (`chmod 600 ~/.julia/servers/juliahub.com/auth.toml`).

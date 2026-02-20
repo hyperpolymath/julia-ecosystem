@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= LowLevel.jl
+:toc: macro
+:toclevels: 3
+:icons: font
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-85%25-green[85%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/Status-Peak_System-red.svg[Peak System]
+
+*The Definitive Bare-Metal & Coprocessor Foundation for Julia.*
+
+toc::[]
+
+== Overview
+
+LowLevel.jl is not just a bridge; it is a **Resource-Aware Hardware Orchestrator**. It provides the Hyperpolymath ecosystem with deep-cycle diagnostics, self-healing fault tolerance, and native execution paths for every major processing unit in modern and future computing.
+
+It is designed for "High-Stakes Silicon"—where performance is non-negotiable and failure must be mathematically impossible.
+
+== Core Architectural Pillars
+
+=== 1. Universal Coprocessor Support (X-PU)
+LowLevel.jl provides specialized kernels and dispatch logic for:
+*   **CPU**: Optimized for **Intel Core i9/Xeon** (AVX-512) and **AMD Ryzen 9/Pro** (Zen 4/5 extensions).
+*   **GPU**: Native hooks for NVIDIA (CUDA), AMD (ROCm), and Apple (Metal).
+*   **NPU/TPU**: Dedicated paths for Neural and Tensor units (Intel NPU, Google TPU).
+*   **QPU**: Quantum Processing Unit abstraction layer for hybrid classical-quantum algorithms.
+*   **PPU/MPU**: Physics and Mathematical Processing Units for high-fidelity simulations.
+*   **DSP/APU**: Digital Signal and Audio/Accelerated Processing Units.
+*   **IOPU**: Specialized I/O Processing for high-frequency data ingestion.
+
+=== 2. Resilience & Self-Healing
+*   **Diagnostics**: Real-time monitoring of thermal throttling, cache misses, and branch mispredictions.
+*   **Self-Healing**: Automated kernel hot-swapping. If an AVX-512 kernel triggers a hardware fault, the system transparently downgrades to a verified scalar fallback.
+*   **Fault-Tolerance**: Integration with Julia's task system to handle hardware-level MCE (Machine Check Exceptions) without crashing the runtime.
+
+=== 3. Resource Awareness
+*   **Topology Mapping**: Deep awareness of NUMA nodes, L1/L2/L3 cache boundaries, and memory bandwidth saturation.
+*   **Energy-Aware Computing**: Dynamic frequency scaling hooks to optimize for performance-per-watt during massive research simulations.
+
+== Project Structure
+
+[source,text]
+----
+LowLevel.jl/
+├── src/
+│   ├── LowLevel.jl           # Main Orchestrator
+│   ├── hardware/             # Topology & Feature Detection
+│   ├── accelerators/         # NPU, TPU, QPU, GPU modules
+│   ├── resilience/           # Self-healing & Fault tolerance
+│   ├── diagnostics/          # Telemetry & Performance monitoring
+│   ├── asm/                  # Multi-arch Assembly (x86, ARM, RISC-V)
+│   └── zig/                  # Safe systems logic
+└── deps/                     # Binary artifacts
+----
+
+== License
+Palimpsest-MPL-1.0 License.

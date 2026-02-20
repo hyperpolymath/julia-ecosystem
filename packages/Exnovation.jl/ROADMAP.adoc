@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Roadmap
+:revdate: 2026-02-17
+
+== Release Baseline (Must)
+- Package installs from a clean Julia environment (`Pkg.add`).
+- Precompile, build, test, and module load smoke are gated in CI.
+- Versioning stays semver and aligned with release refs/tags.
+
+== V2 Backlog (Should)
+- Expand CI matrix (OS + Julia versions + optional dependency modes).
+- Add performance baselines and regression checks.
+- Improve machine-readable evidence and release artifact metadata.
+
+== V2 Backlog (Could)
+- Add deeper formal verification evidence exports.
+- Add optional accelerator/hardware strategy tracks where relevant.
+- Add richer diagnostics and fault-recovery instrumentation.

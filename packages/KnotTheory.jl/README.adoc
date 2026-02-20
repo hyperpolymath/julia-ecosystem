@@ -1,0 +1,143 @@
+= KnotTheory.jl
+:toc: macro
+
+**Julia Toolkit for Knot Theory**
+_Planar diagrams, invariants, and import/export helpers for knot theorists and mathematicians._
+
+toc::[]
+
+== What is KnotTheory.jl?
+
+KnotTheory.jl is a **Julia toolkit** designed for:
+- **Planar diagram manipulation** – Create, visualize, and transform knot diagrams.
+- **Invariant computation** – Calculate polynomial invariants (Jones, Alexander, HOMFLY-PT, etc.).
+- **Import/export helpers** – Seamlessly exchange data with other knot theory software (e.g., SnapPy, KnotAtlas).
+- **Formal verification** – Ensure correctness of knot transformations and invariants.
+
+[source,julia]
+----
+using KnotTheory
+
+# Define a trefoil knot
+trefoil = Knot([1, -2, 3, -1, 2, -3])
+
+# Compute the Jones polynomial
+jones_poly = jones_polynomial(trefoil)
+
+# Visualize the knot
+plot(trefoil)
+----
+
+== Features
+
+=== Planar Diagram Tools
+- **Knot and link diagrams** – Create and manipulate planar projections.
+- **Reidemeister moves** – Apply moves programmatically and verify equivalence.
+- **Crossing information** – Track over/under crossings and writhe.
+
+[source,julia]
+----
+# Apply a Reidemeister I move
+new_knot = reidemeister1(trefoil, crossing=1)
+
+# Check if two knots are equivalent
+are_equivalent(trefoil, new_knot)
+----
+
+=== Invariant Calculation
+- **Jones polynomial** – Compute with normalization options.
+- **Alexander polynomial** – Support for both single-variable and multivariable versions.
+- **Khovanov homology** – Categorification of the Jones polynomial.
+
+[source,julia]
+----
+# Compute the Alexander polynomial
+alexander_poly = alexander_polynomial(trefoil)
+
+# Khovanov homology
+khovanov = khovanov_homology(trefoil)
+----
+
+=== Import/Export
+- **SnapPy integration** – Import/export knots and links.
+- **PD code support** – Read/write planar diagram codes.
+- **KnotAtlas compatibility** – Fetch and work with KnotAtlas data.
+
+[source,julia]
+----
+# Import from SnapPy
+knot = import_snappy("3_1")
+
+# Export to PD code
+pd_code = export_pd(trefoil)
+----
+
+== Quick Start
+
+=== Installation
+[source,julia]
+----
+using Pkg
+Pkg.add("KnotTheory")
+----
+
+=== Hello World
+[source,julia]
+----
+using KnotTheory
+
+# Create a figure-eight knot
+figure_eight = Knot([1, -2, 3, -4, 2, -1, 4, -3])
+
+# Compute its Jones polynomial
+jones_poly = jones_polynomial(figure_eight)
+
+# Plot the knot
+plot(figure_eight)
+----
+
+== Why KnotTheory.jl?
+
+=== The Problem
+Knot theory research often involves:
+- Manual diagram manipulation
+- Error-prone invariant calculations
+- Incompatible file formats between tools
+
+=== The Solution
+KnotTheory.jl provides:
+- **Automated diagram manipulation** – Reduce manual errors.
+- **Verified invariants** – Trust your calculations.
+- **Interoperability** – Work with existing tools and datasets.
+
+| Task                | Traditional Tools | KnotTheory.jl          |
+|---------------------|-------------------|-----------------------|
+| Diagram manipulation| Manual            | Programmatic          |
+| Invariant calculation| Error-prone       | Verified              |
+| Data exchange       | Cumbersome        | Seamless              |
+
+== Project Structure
+[source]
+----
+KnotTheory.jl/
+├── src/
+│   ├── diagrams/      # Planar diagram tools
+│   ├── invariants/    # Polynomial and homology calculations
+│   ├── io/            # Import/export functionality
+│   └── KnotTheory.jl  # Main module
+├── test/              # Test suite
+├── examples/          # Example scripts
+└── docs/              # Documentation
+----
+
+== Roadmap
+- ✅ **v0.1** – Core diagram and invariant tools
+- ❏ **v0.2** – Advanced homology and categorification
+- ❏ **v0.3** – Integration with SnapPy and KnotAtlas
+- ❏ **v1.0** – Full verification suite
+
+== Acknowledgments
+KnotTheory.jl builds on the work of:
+- *KnotAtlas* for knot data
+- *SnapPy* for 3D visualization
+- *Julia* for high-performance numerical computing

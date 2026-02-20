@@ -1,0 +1,16 @@
+name = "PolyglotFormalisms"
+uuid = "8fd979ee-625c-447d-87f1-33af4d789de5"
+version = "1.0.1"
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+license = "PMPL-1.0-or-later"
+
+[deps]
+
+[compat]
+julia = "1.9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

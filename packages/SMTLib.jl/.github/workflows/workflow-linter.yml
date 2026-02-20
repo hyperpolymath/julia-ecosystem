@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name: Workflow Security Linter
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - '.github/CODEOWNERS'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/CODEOWNERS'
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  lint-workflows:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Check SPDX Headers
+        run: |
+          failed=0
+          for file in .github/workflows/*.yml .github/workflows/*.yaml; do
+            [ -f "$file" ] || continue
+            if ! head -1 "$file" | grep -q '^# SPDX-License-Identifier:'; then
+              echo "ERROR: $file missing SPDX header"
+              failed=1
+            fi
+          done
+          [ "$failed" -eq 0 ]
+
+      - name: Check Permissions Declaration
+        run: |
+          failed=0
+          for file in .github/workflows/*.yml .github/workflows/*.yaml; do
+            [ -f "$file" ] || continue
+            if ! grep -q '^permissions:' "$file"; then
+              echo "ERROR: $file missing top-level permissions"
+              failed=1
+            fi
+          done
+          [ "$failed" -eq 0 ]
+
+      - name: Check SHA-Pinned Actions
+        run: |
+          uses_lines=$(grep -rnE '^[[:space:]]*[-]?[[:space:]]*uses:[[:space:]]+' .github/workflows/ || true)
+          unpinned=$(echo "$uses_lines" | grep -v '@[a-f0-9]\{40\}' | grep -v 'uses: \./\|uses: docker://' || true)
+          if [ -n "$unpinned" ]; then
+            echo "ERROR: unpinned actions found:"
+            echo "$unpinned"
+            exit 1
+          fi

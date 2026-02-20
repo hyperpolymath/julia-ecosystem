@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Hyperpolymath Julia Ecosystem Roadmap
+:toc: macro
+:toclevels: 2
+
+== Vision
+To provide a seamless computational environment where high-level research across any discipline can be formally verified, causally modeled, and visually synthesized.
+
+== Phase 1: Consolidation & Hardening (Current)
+* [x] **Monorepo Transition**: Consolidate 20+ standalone repos into a unified structure.
+* [x] **Standard Documentation**: Align all packages with `README.adoc` and `ROADMAP.adoc` standards.
+* [ ] **Unified CI**: Implement a "Smart CI" that triggers tests based on changed subdirectories.
+* [ ] **Registry Submission**: Register all core modules in the Julia General Registry using `subdir` support.
+
+== Phase 2: Integration & Synergy (v1.0)
+* [ ] **Post-Disciplinary Glue**: Complete the `PostDisciplinary.jl` orchestration layer to link all modules.
+* [ ] **Cross-Modality Storage**: Native integration of all packages with `VeriSimDB` for federated research.
+* [ ] **Common Ontology**: Define a shared entity schema (People, Proofs, Claims, Events) used across the entire ecosystem.
+* [ ] **Verification Standard**: Ensure every library has at least one `Axiom.jl`-verified property.
+
+== Phase 3: Planetary-Scale Research (v2.0+)
+* [ ] **Federated Search**: Enable cross-institutional searching of research artifacts via `Skein.jl`.
+* [ ] **Axiomatic World Models**: Build integrated models of global risk that combine physics, history, and social theory.
+* [ ] **Autonomous Researcher**: AI agents that use the entire ecosystem to discover and prove cross-disciplinary relationships.
+
+== Major Sub-Ecosystem Goals
+
+=== 🧪 Formal Science Track
+* Move from property checking to full formal proof in `Axiom.jl`.
+* Implementation of verified Quantum and Homomorphic computing in `ProvenCrypto.jl`.
+
+=== 🏛️ Social & Historical Track
+* Full `Seshat` databank integration in `Cliodynamics.jl`.
+* Causal attribution of historical policy interventions in `Causals.jl`.
+
+=== ✊ Power & Organizing Track
+* Full spatial "Power Maps" for global labor organizations in `TradeUnionist.jl`.
+* Verified, tamper-proof whistleblower "Drops" in `InvestigativeJournalist.jl`.
+
+'''
+_Synthesis is not the end, but the beginning of a higher order of knowledge._

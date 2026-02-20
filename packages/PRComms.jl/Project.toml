@@ -1,0 +1,15 @@
+name = "PRComms"
+uuid = "b2c3d4e5-6f7g-8h9i-0j1k-l2m3n4o5p6q7"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+SQLite = "0aa819cd-06f1-547f-88ef-0d1bc55bc9b6"
+Mustache = "ffc61752-8da7-5510-adfd-99503ae90577"
+Dates = "ade2ca70-3891-5945-931b-dc5ea821e773"
+Luxor = "ae8d54c2-7cca-5de8-81d1-92b9faecda3a"
+
+[compat]
+julia = "1.10"

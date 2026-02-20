@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Hyperpolymath.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-100%25-green[100%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/Status-Metapackage-blue.svg[Metapackage]
+
+*The Everything Bundle for the Hyperpolymath Julia Ecosystem.*
+
+== Overview
+
+Hyperpolymath.jl is a **metapackage** (a bundle) that provides a convenient way to install and load the entire Hyperpolymath Julia Ecosystem at once.
+
+== Installation
+
+=== 1. The Full Bundle (Recommended for Research)
+To install all 29 packages in the ecosystem:
+[source,julia]
+----
+using Pkg
+Pkg.add("Hyperpolymath")
+----
+
+=== 2. Selective Installation (Minimalist)
+If you only need specific disciplinary modules, you do **not** need to install this metapackage. Instead, add only the packages you need from their subdirectories:
+[source,julia]
+----
+using Pkg
+# Example: Only install Causals and InvestigativeJournalist
+Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/Causals.jl")
+Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/InvestigativeJournalist.jl")
+----
+
+== Usage
+
+[source,julia]
+----
+using Hyperpolymath
+
+# Now you can use EVERYTHING:
+# - InvestigativeJournalist for forensics
+# - Causals for inference
+# - JuliaKids for teaching
+# - LowLevel for assembly optimization
+# - PostDisciplinary to link them all together
+
+p = PostDisciplinary.ResearchProject("The Everything Project")
+----
+
+== Contained Modules
+This metapackage re-exports:
+
+* link:packages/Axiom.jl[Axiom.jl], link:packages/Axiology.jl[Axiology.jl], link:packages/SMTLib.jl[SMTLib.jl], link:packages/ZeroProb.jl[ZeroProb.jl], link:packages/PolyglotFormalisms.jl[PolyglotFormalisms.jl]
+* link:packages/ProvenCrypto.jl[ProvenCrypto.jl], link:packages/InvestigativeJournalist.jl[InvestigativeJournalist.jl]
+* link:packages/Cliodynamics.jl[Cliodynamics.jl], link:packages/Cliometrics.jl[Cliometrics.jl], link:packages/Causals.jl[Causals.jl]
+* link:packages/TradeUnionist.jl[TradeUnionist.jl], link:packages/PRComms.jl[PRComms.jl], link:packages/Exnovation.jl[Exnovation.jl], link:packages/BowtieRisk.jl[BowtieRisk.jl]
+* link:packages/JuliaKids.jl[JuliaKids.jl], link:packages/KnotTheory.jl[KnotTheory.jl], link:packages/Skein.jl[Skein.jl], link:packages/HackenbushGames.jl[HackenbushGames.jl], link:packages/Cladistics.jl[Cladistics.jl]
+* link:packages/PostDisciplinary.jl[PostDisciplinary.jl], link:packages/JuliaPackage-Reuse-Audit.jl[JuliaPackageSpitter.jl], link:packages/MacroPower.jl[MacroPower.jl], link:packages/ShellIntegration.jl[ShellIntegration.jl], link:packages/MinixSDK.jl[MinixSDK.jl], link:packages/LowLevel.jl[LowLevel.jl]

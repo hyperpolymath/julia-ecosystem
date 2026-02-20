@@ -1,0 +1,68 @@
+# AI Assistant Instructions for ZeroProb.jl
+
+## Repository Overview
+**ZeroProb.jl** is a Julia library for handling zero-probability events in continuous probability spaces, providing alternative relevance measures when classical probability (P=0) is insufficient.
+
+## Core Concepts
+
+### Zero-Probability Paradox
+In continuous distributions, individual points have measure zero (P(X = x) = 0), yet one such point must occur when sampling. ZeroProb.jl provides three alternative relevance measures:
+
+1. **Density Ratio**: Compare probability densities instead of probabilities
+2. **Hausdorff Measure**: Dimensional analysis for sets of measure zero
+3. **ε-Neighborhood Probability**: Probability mass in small neighborhoods
+
+### Key Features
+- `ContinuousZeroProbEvent` type system
+- Alternative relevance measures
+- Pedagogical paradox examples (continuum paradox, Borel-Kolmogorov)
+- Black swan event modeling
+- Comprehensive test suite
+
+## Canonical File Locations
+- **SCM Files**: `.machine_readable/` ONLY (STATE.scm, META.scm, ECOSYSTEM.scm, AGENTIC.scm, NEUROSYM.scm, PLAYBOOK.scm)
+- **Source Code**: `src/ZeroProb.jl` (main module)
+- **Tests**: `test/runtests.jl`
+- **Examples**: `examples/` directory
+
+## Critical Invariants (NEVER VIOLATE)
+1. **No duplicate SCM files**: SCM files ONLY in `.machine_readable/`, never in root
+2. **Zero-probability focus**: Library focuses on P=0 events, not general probability theory
+3. **Alternative measures**: Always provide density ratio, Hausdorff, or ε-neighborhood—never just P=0
+4. **Pedagogical purpose**: Include teaching examples, not just code
+5. **License**: PMPL-1.0-or-later throughout
+
+## Workflow
+1. Check `.machine_readable/STATE.scm` for current status (v0.1.0, 100% complete)
+2. When modifying code: update relevant SCM files
+3. After changes: update STATE.scm with progress
+4. Commit with concise, imperative message following CCCP
+
+## Tech Stack
+- **Julia 1.9+**: Primary language
+- **Distributions.jl**: Probability distributions
+- **StatsBase.jl**: Statistical utilities
+- **Plots.jl / Makie.jl**: Visualization
+
+## Ecosystem Integration
+- **Axiom.jl**: Broader probability reasoning framework
+- **Axiology.jl**: Value theory (complementary focus)
+- **ECHIDNA**: May integrate zero-prob reasoning in proof strategies
+
+## Current Status (v0.1.0)
+- ✅ Core type system complete
+- ✅ Three relevance measures implemented
+- ✅ Pedagogical examples included
+- ✅ Comprehensive test suite
+- ✅ RSR compliance complete
+- 🔄 **Next**: Expand documentation, performance benchmarks
+
+## Testing
+- Unit tests: `julia --project=. test/runtests.jl`
+- Coverage: Test all three relevance measures
+
+## Delivery Promises
+- Update STATE.scm after completing tasks
+- Maintain focus on zero-probability events (not general probability)
+- Include pedagogical examples with code changes
+- Preserve mathematical rigor in implementations

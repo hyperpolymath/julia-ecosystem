@@ -1,0 +1,286 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Axiology.jl Roadmap
+Jonathan D. A. Jewell <jonathan.jewell@open.ac.uk>
+:toc:
+
+== Current Status (v0.1.0)
+
+Initial release with foundational value theory:
+
+* [x] Core value type hierarchy (Fairness, Welfare, Profit, Efficiency, Safety)
+* [x] Basic API (satisfy, maximize, verify_value)
+* [x] Initial test suite
+* [x] RSR compliance (AI manifest, checkpoint files, workflows)
+* [x] Multi-objective optimization (Pareto frontiers)
+* [ ] Formal verification integration
+* [ ] ML library integration
+
+== v0.2.0 - Multi-Objective Optimization
+
+=== Pareto Frontier Computation
+* [ ] Implement Pareto frontier algorithm for value tradeoffs
+* [ ] Interactive visualization of value spaces
+* [ ] Scalarization methods (weighted sum, Chebyshev)
+* [ ] Hypervolume indicator for solution quality
+
+=== Value Composition
+* [ ] Conjunctive values: satisfy(v1 ∧ v2)
+* [ ] Disjunctive values: satisfy(v1 ∨ v2)
+* [ ] Lexicographic ordering: prioritize v1 over v2
+* [ ] Threshold constraints: satisfy(v1) subject to v2 > threshold
+
+=== Tradeoff Analysis
+* [ ] Sensitivity analysis for value weights
+* [ ] Marginal rate of substitution between values
+* [ ] Value conflict detection and resolution
+* [ ] Stakeholder preference elicitation
+
+== v0.3.0 - Formal Verification
+
+=== ECHIDNA Integration
+* [ ] Automatic invariant generation from values
+* [ ] Multi-prover verification (Lean, Coq, Isabelle)
+* [ ] Counterexample-guided refinement
+* [ ] Proof certificate generation and storage
+
+=== Correctness Guarantees
+* [ ] Type-level value proofs with Idris2
+* [ ] Runtime assertion checking
+* [ ] Contract programming (pre/post conditions)
+* [ ] Dependent types for value constraints
+
+=== Verification Strategies
+* [ ] SMT-based verification (Z3, CVC5)
+* [ ] Model checking for finite state systems
+* [ ] Symbolic execution for constraint solving
+* [ ] Abstract interpretation for program analysis
+
+== v0.4.0 - ML Fairness Integration
+
+=== Fairness Metrics
+* [x] Demographic parity (group fairness)
+* [x] Equalized odds (conditional fairness)
+* [ ] Predictive parity (calibration)
+* [x] Individual fairness (Lipschitz continuity)
+* [ ] Counterfactual fairness (causal)
+
+=== Library Wrappers
+* [ ] FairLearn.jl wrapper (convert Axiology ↔ FairLearn)
+* [ ] AIF360.jl wrapper (IBM fairness toolkit)
+* [ ] Fairness.jl integration (native Julia fairness)
+* [ ] Themis-ML integration (via PyCall)
+
+=== Bias Detection
+* [ ] Statistical bias tests (chi-squared, KS)
+* [ ] Causal fairness analysis (do-calculus)
+* [ ] Intersectional fairness (multiple protected attributes)
+* [ ] Temporal fairness (distributional shift)
+
+=== Bias Mitigation
+* [ ] Pre-processing: Fair data sampling and reweighting
+* [ ] In-processing: Fair training with regularization
+* [ ] Post-processing: Threshold optimization
+* [ ] Reject option classification
+
+== v0.5.0 - Neural Integration
+
+=== Differentiable Values
+* [ ] Convert values to differentiable loss functions
+* [ ] Flux.jl integration for neural training
+* [ ] Automatic differentiation through value constraints
+* [ ] Gradient-based value optimization
+
+=== Value-Aware Training
+* [ ] Multi-task learning with value heads
+* [ ] Adversarial training for fairness
+* [ ] Regularization for value alignment
+* [ ] Meta-learning for value generalization
+
+=== Explainability
+* [ ] Value attribution (Shapley values, LIME)
+* [ ] Natural language value explanations
+* [ ] Counterfactual value explanations
+* [ ] Visualization of value landscapes
+
+== v1.0.0 - Production Ready
+
+=== Maturity Goals
+* [ ] Comprehensive test coverage (>95%)
+* [ ] Full API stability (semantic versioning)
+* [ ] Production case studies (3+ domains)
+* [ ] Registered in Julia General registry
+
+=== Performance Optimization
+* [ ] Parallel Pareto frontier computation
+* [ ] Caching for repeated value checks
+* [ ] JIT compilation for value predicates
+* [ ] GPU acceleration for neural values
+
+=== Enterprise Features
+* [ ] Audit logging for value decisions
+* [ ] Compliance reporting (GDPR, CCPA)
+* [ ] Value dashboard and monitoring
+* [ ] A/B testing with value metrics
+
+=== Ecosystem Integration
+* [ ] MLJ.jl integration (value-aware model selection)
+* [ ] Turing.jl integration (Bayesian value inference)
+* [ ] DataFrames.jl (value-based data analysis)
+* [ ] JuMP.jl (optimization with value constraints)
+
+== v2.0.0 - Advanced Theory
+
+=== Computational Ethics
+* [ ] Normative ethics encodings (utilitarian, deontological, virtue)
+* [ ] Moral uncertainty quantification
+* [ ] Ethical pluralism (multiple value frameworks)
+* [ ] Trolley problem formalizations
+
+=== Game-Theoretic Values
+* [ ] Nash equilibrium with value constraints
+* [ ] Cooperative game solutions (Shapley value, core)
+* [ ] Mechanism design for value alignment
+* [ ] Social choice theory (voting, aggregation)
+
+=== Causal Value Models
+* [ ] Structural causal models for values
+* [ ] Counterfactual value reasoning
+* [ ] Mediation analysis for value attribution
+* [ ] Causal fairness (path-specific effects)
+
+=== Temporal Values
+* [ ] Intertemporal tradeoffs (discount rates)
+* [ ] Long-term value preservation
+* [ ] Option value (flexibility under uncertainty)
+* [ ] Dynamic value learning and adaptation
+
+== v3.0.0 - Research Frontier
+
+=== Value Learning
+* [ ] Inverse reinforcement learning for value recovery
+* [ ] Preference elicitation with active learning
+* [ ] Value alignment from human feedback (RLHF)
+* [ ] Meta-learning over value distributions
+
+=== Robustness
+* [ ] Adversarial value attacks and defenses
+* [ ] Value stability under distribution shift
+* [ ] Certified robustness for value constraints
+* [ ] Worst-case value guarantees
+
+=== Scalability
+* [ ] Distributed value verification
+* [ ] Approximate value checking (PAC guarantees)
+* [ ] Hierarchical value decomposition
+* [ ] Compositional value reasoning
+
+== Long-Term Vision
+
+=== Interdisciplinary Integration
+* **Philosophy**: Collaborate with ethicists on normative foundations
+* **Economics**: Partner with welfare economists on social choice
+* **Law**: Work with legal scholars on compliance and liability
+* **Psychology**: Integrate moral psychology research
+
+=== Real-World Impact
+* **Healthcare**: Value-aligned clinical decision support
+* **Finance**: Fair and transparent algorithmic trading
+* **Criminal Justice**: Bias-free risk assessment tools
+* **Education**: Equitable resource allocation
+
+=== Standardization
+* **IEEE**: Contribute to ethics standards for autonomous systems
+* **ISO**: Participate in AI governance frameworks
+* **W3C**: Value annotation standards for web AI
+* **OpenAI**: Alignment research collaboration
+
+== Use Case Development
+
+=== Priority Domains
+
+**Healthcare AI (v0.5)**::
+- Fair diagnostic models (demographic parity)
+- Safe treatment recommendations (formal verification)
+- Welfare-optimal resource allocation
+
+**Financial Systems (v0.6)**::
+- Fair lending (equalized odds)
+- Profitable and ethical trading
+- Transparent credit scoring
+
+**Autonomous Vehicles (v0.7)**::
+- Formally verified safety constraints
+- Utilitarian welfare optimization
+- Real-time ethical decision-making
+
+**Public Policy (v0.8)**::
+- Social welfare function optimization
+- Fairness impact assessment
+- Cost-effectiveness with equity constraints
+
+== Contributing
+
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for details.
+
+Priority areas for contributors:
+
+1. **Formal Methods**: Integrate theorem provers (Lean, Coq, Isabelle)
+2. **ML Fairness**: Wrap existing libraries (FairLearn, AIF360)
+3. **Case Studies**: Real-world applications in target domains
+4. **Theory**: Extend value theory foundations
+
+== References
+
+Key works informing this roadmap:
+
+=== AI Ethics & Alignment
+* Russell, S. (2019). _Human Compatible: AI and the Problem of Control_
+* Bostrom, N. (2014). _Superintelligence: Paths, Dangers, Strategies_
+* Yudkowsky, E. (2001). "Creating Friendly AI"
+
+=== ML Fairness
+* Barocas, S., Hardt, M., & Narayanan, A. (2023). _Fairness and Machine Learning_
+* Chouldechova, A. & Roth, A. (2020). "A Snapshot of the Frontiers of Fairness"
+* Mitchell, S. et al. (2021). "Algorithmic Fairness: Choices, Assumptions, and Definitions"
+
+=== Formal Methods
+* Hoare, T. (1969). "An Axiomatic Basis for Computer Programming"
+* Dijkstra, E. (1976). _A Discipline of Programming_
+* Meyer, B. (1992). "Applying 'Design by Contract'"
+
+=== Value Theory
+* Moore, G.E. (1903). _Principia Ethica_
+* Korsgaard, C. (1983). "Two Distinctions in Goodness"
+* Parfit, D. (1984). _Reasons and Persons_
+
+=== Welfare Economics
+* Sen, A. (1970). _Collective Choice and Social Welfare_
+* Arrow, K. (1951). _Social Choice and Individual Values_
+* Rawls, J. (1971). _A Theory of Justice_
+
+== Contact
+
+Questions, collaborations, or suggestions?
+
+* **Jonathan D.A. Jewell** <jonathan.jewell@open.ac.uk>
+* **GitHub Issues**: https://github.com/hyperpolymath/Axiology.jl/issues
+* **Discussions**: https://github.com/hyperpolymath/Axiology.jl/discussions
+
+== Future Horizons (v4.0+)
+
+=== Dynamic Value Evolution
+* [ ] **Value Drift Detection**: Monitor and alert when system behavior diverges from historical value alignments due to distributional shift.
+* [ ] **Recursive Value Refinement**: Implement active learning loops where the system proactively seeks human feedback on "edge case" ethical dilemmas.
+* [ ] **Temporal Value Consistency**: Formally verify that value-aligned decisions today do not preclude value alignment in the far future (long-termism).
+
+=== Pluralistic & Cross-Cultural Axiology
+* [ ] **Ethical Profile Mapping**: Support for switchable value profiles (e.g., Virtue Ethics, Ubuntu, Confucianism) and conflict resolution between them.
+* [ ] **Relativist Verification**: Tools to verify a system against multiple, potentially contradictory, value frameworks simultaneously.
+
+=== Axiomatic Hardware & Low-Level Safety
+* [ ] **Axiomatic HDL**: Extend value verification to hardware descriptions (Verilog/VHDL/Chisel) to ensure safety invariants are baked into the silicon.
+* [ ] **Value-Gated Execution**: Runtime monitoring at the OS/Kernel level that can halt execution if a "Value Invariant" is violated.
+
+=== Synthetic Axiology
+* [ ] **Axiologically-Guided Data Generation**: Use value constraints to guide GANs or LLMs to generate training data that is "Fair/Safe by Design".
+* [ ] **Moral Sandbox Simulations**: High-fidelity environments for "stress-testing" AI agents against complex, multi-agent ethical scenarios.

@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= SMTLib.jl Release Readiness
+
+This checklist is the minimum release gate for tagged and JuliaHub-facing refs.
+
+== Required Checks
+- `Pkg.add` from clean environment (URL + ref)
+- `Pkg.precompile`
+- `Pkg.build`
+- `Pkg.test`
+- `using SMTLib` load smoke
+- `Project.toml` version aligned with release branch/tag intent
+- core docs present (`README.adoc`, `ROADMAP.adoc`, `CHANGELOG.adoc`, `SECURITY.md`)
+
+== Local Command
+[source,bash]
+----
+./scripts/readiness-check.sh
+----
+
+== CI Command
+[source,bash]
+----
+bash ./scripts/readiness-check.sh
+----
+
+== Deferred (Not Blocking for Current Baseline)
+- Full solver-backed matrix by solver kind (z3/cvc5/yices/mathsat)
+- Performance baseline artifacts
+- Hardware-accelerator strategy (Physics/VPU/FPGA/QPU) beyond current package scope

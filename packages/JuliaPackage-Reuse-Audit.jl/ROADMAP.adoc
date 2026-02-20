@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= JuliaPackageSpitter.jl Roadmap
+
+== v0.1.0 - The Skeleton (Current)
+* [x] Basic directory tree generation.
+* [x] `Project.toml` and `README.md` templating.
+* [x] Standard `src/Package.jl` and `src/types.jl` wiring.
+* [x] `Standard` CI profile (GitHub Actions template).
+
+== v0.2.0 - Ecosystem Expansion
+* [ ] `Strict` CI profile (Audit-grade gates, marker checks).
+* [ ] Idris2 ABI + Zig FFI scaffold generation.
+* [ ] Docstring-to-API-Doc automation template.
+* [ ] Release checklist and changelog automation scripts.
+
+== v0.3.0 - AI Intelligence
+* [ ] LLM-Handoff brief (`SONNET-TASKS.md`) auto-generation.
+* [ ] Domain entity prompt generator (scaffolds types from description).
+* [ ] Automated "Reuse Audit" (scans existing repo for compliance).
+
+== v1.0.0 - Production Core
+* [ ] CLI tool (`spitter generate ...`) for shell-based scaffolding.
+* [ ] 100% RSR-template compliance.
+* [ ] Registry submission automation hooks.
+
+== Future Horizons (v2.0+)
+
+=== Axiomatic Scaffolding
+* [ ] **Proof Obligation Synthesis**: Automatically generate `Axiom.jl` `@prove` skeletons for basic domain invariants defined in the input spec.
+* [ ] **Verified Scaffolding**: Formally prove that the generated scaffolding itself satisfies certain "Non-Interference" properties with the domain code.
+
+=== Multi-Language Synthesis
+* [ ] **Polyglot Bridge Generator**: Use PolyglotFormalisms.jl to generate semantically equivalent skeletons in ReScript or Elixir for cross-language projects.
+* [ ] **WASM Target Scaffolder**: Specialized profile for generating Julia packages intended for browser-based WASM deployment.
+
+=== Meta-Audit Tools
+* [ ] **Consistency Guardian**: A daemon that monitors a suite of repositories and automatically proposes "Sync PRs" when the global scaffolding standard changes.
+* [ ] **Complexity Scoring**: Automatically score the "Remake" portions of a package to identify where domain logic might be leaking into reusable scaffolding.

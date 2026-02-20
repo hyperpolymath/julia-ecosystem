@@ -1,0 +1,84 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Cladistics.jl Roadmap
+
+== Current Status
+
+Active development at v0.2.0. Core distance-based and parsimony-based tree building methods implemented and working.
+
+== Completed Milestones
+
+=== v0.1.0 - Core Algorithms ✓
+* [x] Distance metrics: Hamming, p-distance, Jukes-Cantor 69, Kimura 2-parameter
+* [x] UPGMA tree construction
+* [x] Neighbor-Joining tree construction
+* [x] Fitch algorithm for parsimony scoring
+* [x] Bootstrap support calculation
+* [x] Clade identification
+* [x] Robinson-Foulds tree distance
+* [x] Newick format export
+
+=== v0.2.0 - Maximum Parsimony and Tree Rerooting ✓
+* [x] Fix fitch_score return type bug
+* [x] Fix Kimura 2-parameter operator precedence bug
+* [x] Implement tree rerooting with midpoint algorithm
+* [x] Implement maximum parsimony search with stepwise addition heuristic
+* [x] Add comprehensive test coverage
+
+== In Progress
+
+=== v0.3.0 - Newick I/O
+* [ ] Implement Newick parser (read trees from strings)
+* [ ] Round-trip tests (parse → export → parse)
+* [ ] Tree visualization examples
+
+== Planned
+
+=== v1.0.0 - Package Registration
+* [ ] Julia General registry submission
+* [ ] Full API documentation with examples
+* [ ] Performance benchmarks vs. established tools (MEGA, PAUP*)
+* [ ] User guide with real biological datasets
+* [ ] Tree visualization integration (Makie.jl / GraphRecipes.jl)
+
+== Future Directions
+
+=== Advanced Methods (v1.x)
+* Maximum likelihood phylogenetic inference
+* Bayesian methods (MCMC sampling)
+* Quartet puzzling algorithms
+* Model selection (AIC, BIC)
+
+=== Performance (v1.x)
+* Parallel tree search algorithms
+* GPU acceleration for distance calculations
+* Memory-efficient algorithms for large datasets (1000+ taxa)
+
+=== Ecosystem Integration (v2.x)
+* Integration with BioSequences.jl for direct sequence input
+* PhyloNetworks.jl compatibility
+* Support for phylogenetic networks (reticulation)
+* Integration with alignment tools (BioAlignments.jl)
+
+=== Specialized Features (v2.x)
+* Molecular clock testing
+* Ancestral state reconstruction
+* Divergence time estimation
+* Trait evolution models
+
+== Future Horizons (v3.0+)
+
+=== AI-Augmented Phylogeny
+* [ ] **GNN Topology Prediction**: Integrate with `Axiom.jl` to use Graph Neural Networks for predicting tree topologies from high-dimensional genomic data.
+* [ ] **Deep Evolutionary Embedding**: Use Variational Autoencoders (VAEs) to learn low-dimensional "Evolutionary Latent Spaces" for species.
+
+=== Multimodal & Non-Genic Cladistics
+* [ ] **Epigenetic Tree Construction**: Support for incorporating methylation and other epigenetic markers into the distance and character matrices.
+* [ ] **Cultural & Linguistic Cladistics**: Specialized templates for modeling the evolution of languages and cultural traits (linking to `Cliodynamics.jl`).
+
+=== Real-Time & Streaming Evolution
+* [ ] **Streaming Cladistics Engine**: Incrementally update large phylogenetic trees as new sequence data arrives (essential for real-time pathogen surveillance).
+* [ ] **Dynamic Phylodynamic Monitoring**: Real-time tracking of substitution rates and selection pressure across branches.
+
+=== Axiomatic Evolutionary Invariants
+* [ ] **Formal Monophyly Verification**: Link with `Axiom.jl` to formally prove that a proposed tree topology satisfies specific biological constraints or monophyly rules.
+* [ ] **Verified Evolutionary Bounds**: Provide mathematically guaranteed bounds on divergence times and ancestral state probabilities.

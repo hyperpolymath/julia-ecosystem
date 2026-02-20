@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: read-all
+
+jobs:
+  test:
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version: ['1.10']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - uses: julia-actions/setup-julia@824fb972babf1837cf21c49159bf8a8130f26840 # v2
+        with:
+          version: ${{ matrix.julia-version }}
+
+      - uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
+
+      - name: Install libsodium (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libsodium-dev
+
+      - name: Install libsodium (macOS)
+        if: runner.os == 'macOS'
+        run: brew install libsodium
+
+      - name: Install libsodium (Windows)
+        if: runner.os == 'Windows'
+        run: choco install libsodium
+
+      - uses: julia-actions/julia-buildpkg@90dd6f23eb49626e4e6612cb9d64d456f86e6a1c # v1
+
+      - uses: julia-actions/julia-runtest@79a7e100883947123f8263c5f06e6c0ea3eb972f # v1

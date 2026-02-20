@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= HardwareResilience.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-10%25-red[10%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+
+*The Self-Healing Foundation for Hyperpolymath Hardware.*
+
+== Overview
+
+HardwareResilience.jl provides the "Guardian" logic for long-running kernels. It detects hardware faults and handles transparent fallbacks.
+
+== Features
+
+* **KernelGuardian**: Monitor and track the status of critical kernels.
+* **Self-Healing**: Automated error handling and fallback logic.

@@ -1,0 +1,92 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Cliodynamics.jl Roadmap
+
+== Current Status
+
+Beta release at v0.1.0. Core cliodynamic models implemented and tested. Julia package ready for community use and feedback.
+
+== Completed Milestones
+
+=== v0.1.0 - Core Models ✓
+* [x] Malthusian population dynamics model
+* [x] Demographic-structural theory (DST) model
+* [x] Elite overproduction index calculation
+* [x] Political stress indicator (PSI)
+* [x] Secular cycle analysis and phase detection
+* [x] State capacity model
+* [x] Collective action problem modeling
+* [x] Utility functions (moving average, detrend, normalize, etc.)
+* [x] Comprehensive test suite (16 exported functions)
+* [x] All tests passing
+
+== In Progress
+
+=== v0.2.0 - Examples & Data Integration
+* [x] Julia usage examples (basic_usage.jl, historical_analysis.jl)
+* [ ] Empirical dataset integration (Seshat Global History Databank)
+* [ ] Plotting recipes for Plots.jl integration
+* [ ] Model fitting to historical data utilities
+* [ ] Parameter estimation with Optim.jl workflows
+
+== Planned
+
+=== v0.3.0 - Visualization & Documentation
+* [ ] Interactive plotting with Makie.jl
+* [ ] Documenter.jl comprehensive documentation
+* [ ] Publication-quality figure generation
+* [ ] Tutorial notebooks (Pluto.jl or Jupyter)
+
+=== v1.0.0 - Production Release
+* [ ] Bayesian inference support (Turing.jl integration)
+* [ ] Spatial cliodynamic models (geographic extension)
+* [ ] Agent-based model components
+* [ ] Julia General registry submission
+* [ ] Performance benchmarks and optimization
+* [ ] API stability guarantees
+
+== Future Directions (v1.x+)
+
+=== Advanced Methods
+* Causal inference for historical processes
+* Machine learning integration for pattern detection
+* Network analysis for elite dynamics
+* Time-varying parameter models
+
+=== Ecosystem Integration
+* Integration with economic history packages (Cliometrics.jl)
+* Compatibility with DifferentialEquations.jl ecosystem
+* DataFrames.jl workflows for historical time series
+* Interoperability with R cliodynamics packages
+
+=== Domain Expansion
+* Archaeological data analysis
+* Climate-society interaction modeling
+* Epidemiological-demographic models
+* Institutional evolution analysis
+
+== Future Horizons (v2.0+)
+
+=== Planetary Cliodynamics
+* [ ] **Interplanetary Complexity Models**: Extend secular cycle theory to model the dynamics of solar-system-scale social organizations and interplanetary resource dependency.
+* [ ] **Great Transition Modeling**: Formalize the transition between planetary and multi-planetary social structures in the context of Turchin's complexity index.
+
+=== Causal Historical Reconstruction (CHR)
+* [ ] **Causal "What-If" Analysis**: Integration with `Causals.jl` to build structural causal models of historical events, allowing users to simulate alternative histories with mathematically grounded uncertainty.
+* [ ] **Path-Dependency Analysis**: Formally quantify the "Sensitivity to Initial Conditions" of various historical trajectories.
+
+=== Neuro-Cliodynamics & Sentiment
+* [ ] **Collective Sentiment Monitoring**: Use LLMs and sentiment analysis to extract "Social Stress" and "Elite Mood" indicators from historical texts (e.g., newspapers, chronicles) for real-time instability prediction.
+* [ ] **Psychohistorical Modeling**: Incorporate cognitive biases and "Human Factor" agents into DST models to account for irrationality in state breakdown.
+
+=== Automated AI Historian
+* [ ] **Seshat-LLM Integration**: Automate the extraction of structured cliodynamic variables from raw historical narratives and archaeological reports.
+* [ ] **Automated Hypothesis Testing**: AI-driven search through the Seshat databank to find correlations and "Natural Experiments" that confirm or refute cliodynamic theories.
+
+== Community Goals
+
+* Academic citations in cliodynamics research
+* Collaboration with Complexity Science Hub Vienna
+* Collaboration with Seshat Global History Databank
+* Integration with Peter Turchin's research program
+* JuliaCon presentation
+* Publication in _Cliodynamics: The Journal of Quantitative History and Cultural Evolution_

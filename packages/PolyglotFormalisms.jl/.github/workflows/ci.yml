@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name: CI
+permissions: read-all
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version: ['1.9', '1.10', 'nightly']
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874 # v2
+        with:
+          version: ${{ matrix.julia-version }}
+
+      - uses: julia-actions/cache@824c9ea9043b860d397cfb4c4c52d7682db0fce4 # v2
+
+      - name: Build package
+        run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+
+      - name: Run tests
+        run: julia --project=. -e 'using Pkg; Pkg.test()'
+
+      - uses: julia-actions/julia-processcoverage@03114f09f119417c3242a9fb6e0b722676aedf38 # v1
+        if: matrix.os == 'ubuntu-latest' && matrix.julia-version == '1.10'
+
+      - uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        if: matrix.os == 'ubuntu-latest' && matrix.julia-version == '1.10'
+        with:
+          file: lcov.info

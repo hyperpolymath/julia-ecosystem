@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= JuliaPackageSpitter.jl
+:toc: macro
+:toclevels: 2
+:icons: font
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-90%25-green[90%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
+
+*Standardized Package Scaffolding for the Hyperpolymath Ecosystem*
+
+_Generate production-ready Julia package skeletons where you only fill the domain gaps._
+
+toc::[]
+
+== Overview
+
+JuliaPackageSpitter.jl is an automated scaffolding tool that implements the "Reuse vs. Remake" philosophy for Julia packages. It handles 80%+ of the boilerplate required for production-grade repos—including CI, quality gates, docs skeletons, and ABI/FFI adapters—allowing developers and LLMs to focus purely on domain models and core algorithms.
+
+== The "Reuse vs. Remake" Philosophy
+
+* **Reuse Heavily**: Scaffolding, CI workflows, release playbooks, test harness patterns, ABI/FFI adapters.
+* **Remake Per Package**: Domain entities, safety invariants, core algorithms, public API semantics.
+
+== Core Capabilities
+
+* **Full Directory Generation**: Creates `src`, `test`, `docs`, and `.github/workflows` in seconds.
+* **Smart Templating**: Boilerplate files include "TODO" anchors ONLY in domain-specific sections.
+* **CI Profiles**: Choose between `minimal`, `standard`, and `strict` quality gate configurations.
+* **LLM Handoff**: Generates a pre-filled brief (`SONNET-TASKS.md`) ready for an AI agent to begin implementation.
+* **FFI Ready**: Optional generation of Idris2 ABI and Zig FFI skeletons.
+
+== Quick Start
+
+[source,julia]
+----
+using JuliaPackageSpitter
+
+# Scaffold a new safety-critical package
+generate_package(
+    name = "NuclearSafety.jl",
+    domain_summary = "Core cooling logic for SMR reactors",
+    ci_profile = :strict,
+    ffi_enabled = true
+)
+----
+
+== Success Criteria
+
+* **Speed**: New package scaffolded in under 2 minutes.
+* **Consistency**: 80%+ non-domain files are generated identical to ecosystem standards.
+* **Ease of Implementation**: LLMs can implement the first domain module from the generated brief without extra prompting.
+
+== License
+
+Palimpsest-MPL-1.0 License - see link:LICENSE[LICENSE] for details.

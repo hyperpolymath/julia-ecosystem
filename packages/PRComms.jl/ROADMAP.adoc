@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= PRComms.jl Roadmap
+
+== v0.1.0 - Message Core (Current)
+* [x] Message architecture models (`Pillar`, `AudienceVariant`).
+* [x] Basic press release CRUD and status tracking.
+* [x] Media contact registry schema.
+* [x] Crisis management playbooks.
+
+== v0.2.0 - Campaign & Evaluation
+* [x] **Survey Engine**: Design and build programatic surveys (`Surveys` module).
+* [x] **Ratio Analysis**: 1st, 2nd, and 3rd order metrics for campaign performance.
+* [ ] **Campaign Analytics**: Aggregated dashboard for "Share of Voice".
+* [ ] **Integrated Comms Plan**: Gantt-style timeline builder.
+
+== v0.3.0 - Specialized Operations (The New Pillars)
+* [ ] **Boundary Object Factory**: Tools for generating Shared Glossaries and Message Houses.
+* [ ] **Internal Comms Suite**: Dedicated engagement tracking and newsletter lifecycle.
+* [ ] **Personal PR / Thought Leadership**: Executive narrative tracking and appearance logging.
+* [ ] **Planning Tiering**: Logic to link Operational tasks to Business-level objectives.
+
+== v0.4.0 - Business Integration (The "Hard" Metrics)
+* [ ] **Brand Valuation**: Formulas for calculating "Intangible Asset Value" based on reputation metrics (ISO 10668 alignment).
+* [ ] **Finance Bridge**: Export reports that map "PR Activity" to "Risk Reduction" or "Cost Avoidance."
+* [ ] **Marketing Mix Modeling**: Basic causal inference integration (via `Causals.jl`) to attribute sales lift to PR.
+
+== v1.0.0 - Production Operations
+* [ ] Immutable audit log backend (SQLite WAL).
+* [ ] Integration with common PR distribution APIs.
+* [ ] Full "Crisis Command Center" dashboard.
+
+== Future Horizons (v2.0+)
+
+=== AI-Enhanced Strategy
+* [ ] **Sentiment Forecast**: Use `Axiom.jl` verified neural models to predict audience sentiment.
+* [ ] **Automated Crisis Simulation**: Monte Carlo "What-If" scenarios.
+
+=== Verified Communications
+* [ ] **Axiomatic Content Invariants**: Formally prove that variants contain required proof points.
+* [ ] **Fact-Checking Integration**: Link with `InvestigativeJournalist.jl`.
+
+=== Reputation Dynamics
+* [ ] **Reputation Causal Models**: Causal links between PR interventions and market sentiment.
+* [ ] **Zero-Knowledge Distribution**: Verifiable embargo delivery.
+
+=== Advanced Publics & ESG
+* [ ] **ESG Reporting Engine**: Automatically map message pillars to Environmental, Social, and Governance (ESG) disclosure requirements (linking to `Axiology.jl`).
+* [ ] **Multi-Lingual Narrative Control**: Integration with translation APIs to ensure "Pillar Truth" is preserved across 50+ languages without semantic drift.
+* [ ] **Decentralized PR**: Publish press releases to IPFS for censorship-resistant, permanent record-keeping.

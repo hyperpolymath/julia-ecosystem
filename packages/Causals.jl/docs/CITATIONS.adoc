@@ -1,0 +1,36 @@
+= Causals.jl - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{causals_jl_2025,
+  author = {Jewell, Jonathan D.A.},
+  title = {Causals.jl},
+  year = {2026},
+  url = {https://github.com/hyperpolymath/Causals.jl},
+  license = {PMPL-1.0-or-later}
+}
+----
+
+== Harvard Style
+
+Jewell, J. D. A. (2026) _Causals.jl_ [Computer software]. Available at: https://github.com/hyperpolymath/Causals.jl
+
+== OSCOLA
+
+Hyper Polymath, 'Causals.jl' (2025) <https://github.com/hyperpolymath/Causals.jl>
+
+== MLA
+
+Polymath, Hyper. "Causals.jl." 2025, github.com/hyperpolymath/Causals.jl.
+
+== APA 7
+
+Polymath, H. (2025). _Causals.jl_ [Computer software]. GitHub. https://github.com/hyperpolymath/Causals.jl
+
+== See Also
+
+* link:../CITATION.cff[CITATION.cff]
+* link:../codemeta.json[codemeta.json]

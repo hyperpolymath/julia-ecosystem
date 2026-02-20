@@ -1,0 +1,15 @@
+
+# AI Assistant Instructions
+
+## Repository Focus
+- `HackenbushGames.jl` is treated as a Rhodium Standard Repository; obey the Rhodium policies, maintain `.bot_directives`, and keep `.machine_readable/` authoritative.
+- Prefer to keep generated files out of source control, and regenerate them with the documented commands before committing.
+
+## Workflow
+1. Inspect `.machine_readable/STATE.scm` for blockers and next actions.
+2. After finishing edits, update STATE with your outcomes and commit with a concise, imperative message.
+3. Run tests after significant changes: `julia --project=. -e 'using Pkg; Pkg.test()'`
+
+## Delivery Promises
+- Mention in summaries whether STATE, `contractiles/`, or `.bot_directives/` changed.
+- Keep this file in sync with the repository's status; update it if the governance changes.

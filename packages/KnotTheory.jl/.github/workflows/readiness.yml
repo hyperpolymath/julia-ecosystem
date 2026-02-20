@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name: Readiness
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@a0a0978e4ec4b89e96c418be701e7d94bc0c62fc # v2.3.0
+        with:
+          version: '1.10'
+
+      - name: Cache Julia artifacts
+        uses: julia-actions/cache@580d2b69d895343992af2cbad49c32a2b8325da0 # v2.0.1
+
+      - name: Run readiness checks
+        env:
+          READINESS_STRICT_JULIA: '1'
+        run: |
+          bash ./scripts/readiness-check.sh

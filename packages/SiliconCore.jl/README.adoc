@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= SiliconCore.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-10%25-red[10%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+
+*The Hardware Intrinsic Foundation for Hyperpolymath.*
+
+== Overview
+
+SiliconCore.jl provides the most basic hardware-level primitives used by LowLevel.jl and Axiom.jl. It focuses on architecture detection and raw assembly kernels.
+
+== Features
+
+* **Arch Detection**: Precise identification of CPU features (AVX-512, AMX, etc.).
+* **ASM Kernels**: Hand-optimized assembly routines for core operations.

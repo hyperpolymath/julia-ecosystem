@@ -1,0 +1,36 @@
+= Exnovation.jl - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{exnovation_jl_2026,
+  author = {Jewell, Jonathan D. A.},
+  title = {Exnovation.jl: Framework for measuring and accelerating legacy system retirement},
+  year = {2026},
+  url = {https://github.com/hyperpolymath/Exnovation.jl},
+  license = {PMPL-1.0-or-later}
+}
+----
+
+== Harvard Style
+
+Jewell, J.D.A. (2026) _Exnovation.jl: Framework for measuring and accelerating legacy system retirement_ [Computer software]. Available at: https://github.com/hyperpolymath/Exnovation.jl
+
+== OSCOLA
+
+Jonathan D A Jewell, 'Exnovation.jl' (2026) <https://github.com/hyperpolymath/Exnovation.jl>
+
+== MLA
+
+Jewell, Jonathan D. A. "Exnovation.jl: Framework for measuring and accelerating legacy system retirement." 2026, github.com/hyperpolymath/Exnovation.jl.
+
+== APA 7
+
+Jewell, J. D. A. (2026). _Exnovation.jl: Framework for measuring and accelerating legacy system retirement_ [Computer software]. GitHub. https://github.com/hyperpolymath/Exnovation.jl
+
+== See Also
+
+* link:../CITATION.cff[CITATION.cff]
+* link:../codemeta.json[codemeta.json]

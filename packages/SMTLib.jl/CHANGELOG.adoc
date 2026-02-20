@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Changelog
+
+All notable changes to SMTLib.jl are documented in this file.
+
+The format is based on Keep a Changelog and this project follows Semantic Versioning.
+
+== [Unreleased]
+
+=== Added
+- `SMTLIB-AXIOM-PARITY-CHECKLIST.adoc` baseline plan for Axiom-level release/readiness parity.
+- Basic release-readiness documentation and local readiness script scaffold.
+- CODEOWNERS and workflow linting baseline for governance/security hardening.
+
+=== Changed
+- Roadmap rewritten to a concrete Must/Intend/Like delivery model.
+- `.machine_readable/STATE.scm` aligned with package version and current roadmap intent.
+
+== [0.1.0] - 2026-01-25
+
+=== Added
+- Initial SMTLib.jl release.
+- Core SMT-LIB expression generation/parsing pipeline.
+- Solver discovery and SAT/UNSAT/UNKNOWN result handling.
+- Test suite and documentation baseline.

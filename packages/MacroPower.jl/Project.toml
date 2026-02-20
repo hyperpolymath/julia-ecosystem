@@ -1,0 +1,11 @@
+name = "MacroPower"
+uuid = "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-931b-dc5ea821e773"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+
+[compat]
+julia = "1.10"

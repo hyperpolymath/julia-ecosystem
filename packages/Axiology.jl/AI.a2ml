@@ -1,0 +1,83 @@
+# AI Assistant Instructions for Axiology.jl
+
+## Repository Overview
+**Axiology.jl** (from Greek ἀξία "value") is a Julia library for value theory in machine learning, enabling explicit encoding and verification of ethical, economic, and social values in ML systems.
+
+## Core Concepts
+
+### Value Types
+Abstract `Value` type hierarchy with concrete implementations:
+- **Fairness**: Demographic parity, equalized odds, individual fairness
+- **Welfare**: Utilitarian, Rawlsian, social welfare functions
+- **Profit**: Economic optimization with ethical constraints
+- **Efficiency**: Pareto, Kaldor-Hicks efficiency
+- **Safety**: Formal invariants and verification
+
+### Value Operations
+- **satisfy(value, state)**: Check if state satisfies value criterion
+- **maximize(value, system)**: Optimize system to maximize value
+- **verify_value(value, proof)**: Formally verify value alignment
+
+## Canonical File Locations
+- **SCM Files**: `.machine_readable/` ONLY (STATE.scm, META.scm, ECOSYSTEM.scm, AGENTIC.scm, NEUROSYM.scm, PLAYBOOK.scm)
+- **Source Code**: `src/Axiology.jl` (main module)
+- **Tests**: `test/runtests.jl`
+- **Examples**: `examples/` directory
+
+## Critical Invariants (NEVER VIOLATE)
+1. **No duplicate SCM files**: SCM files ONLY in `.machine_readable/`, never in root
+2. **Explicit values**: Make all value judgments explicit, never implicit
+3. **Formal verification**: Integrate with ECHIDNA for proof-based verification
+4. **Multi-objective**: Support Pareto frontiers for value tradeoffs
+5. **License**: PMPL-1.0-or-later throughout
+
+## Workflow
+1. Check `.machine_readable/STATE.scm` for current status (v0.1.0, 10% complete - minimal scaffold)
+2. When adding features: define formal semantics first
+3. After changes: update STATE.scm with progress
+4. Commit with concise, imperative message following CCCP
+
+## Tech Stack
+- **Julia 1.9+**: Primary language
+- **JuMP.jl**: Optimization framework
+- **Optim.jl**: Numerical optimization
+- **Flux.jl**: (future) Neural value-aware training
+- **ECHIDNA**: (future) Formal verification integration
+
+## Ecosystem Integration
+- **ZeroProb.jl**: Probability theory (complementary focus)
+- **Axiom.jl**: May integrate value-aware probability reasoning
+- **ECHIDNA**: Formal verification of value properties
+- **Flux.jl**: ML optimization with value constraints
+
+## Current Status (v0.1.0)
+- ✅ Abstract Value type hierarchy defined
+- ✅ Concrete types: Fairness, Welfare, Profit, Efficiency, Safety
+- ✅ Minimal API: satisfy, maximize, verify_value
+- ✅ RSR compliance complete
+- 🔄 **Next Steps (HIGH PRIORITY)**:
+  - Define fairness metrics (demographic parity, equalized odds)
+  - Implement welfare functions (utilitarian, Rawlsian)
+  - Add multi-objective optimization (Pareto frontiers)
+  - ECHIDNA integration for formal verification
+
+## Development Priorities
+1. **Immediate**: Define precise fairness metrics
+2. **This week**: Implement welfare functions
+3. **This month**: ML model verification infrastructure
+
+## Use Cases
+- **Healthcare**: Fair diagnostic models, safe treatment recommendations
+- **Finance**: Fair lending, ethical trading
+- **Autonomous Vehicles**: Safety-first optimization
+- **Public Policy**: Social welfare optimization
+
+## Testing
+- Unit tests: `julia --project=. test/runtests.jl`
+- Property-based testing for value axioms (transitivity, etc.)
+
+## Delivery Promises
+- Update STATE.scm after completing tasks
+- Make all value judgments explicit and verifiable
+- Provide formal semantics for each value type
+- Include ethical trade-off examples with implementations

@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= MinixSDK.jl Roadmap
+
+== Phase 1: The Cross-Bridge (Current)
+* [x] Basic directory structure and Project.toml.
+* [x] C-code generation stubs for MINIX services.
+
+== Phase 2: Microkernel IPC
+* [ ] **Messaging Interface**: Implement the MINIX `sendrec` and `notify` patterns in Julia for remote IPC.
+* [ ] **VFS Handlers**: Tools to write MINIX Virtual File System (VFS) servers in Julia.
+
+== Phase 3: High-Assurance Deployment
+* [ ] **Axiom Verification**: Link with `Axiom.jl` to verify MINIX service logic.
+* [ ] **Reincarnation Tests**: Integration with the MINIX `RS` (Reincarnation Server).
+
+== Phase 4: Alternative Runtimes (Research)
+* [ ] **WASM on MINIX**: Port a lightweight WebAssembly runtime to MINIX to allow "Julia-to-WASM" execution.
+* [ ] **Distilled BEAM**: Explore porting a minimal Erlang VM (BEAM) to run as a native MINIX service for fault-tolerant orchestration.
+
+== Future Horizons (v1.0+)
+* [ ] **Native Minix Port**: Collaborate with the Julia community on a native LLVM-based MINIX target.
+* [ ] **Embedded Real-time**: Extend to other microkernels like seL4 or QNX.

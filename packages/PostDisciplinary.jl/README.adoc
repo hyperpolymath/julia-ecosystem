@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= PostDisciplinary.jl
+:toc: macro
+:toclevels: 2
+:icons: font
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-60%25-yellow[60%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
+
+*Synthesizing Knowledge Across Intellectual Boundaries*
+
+_A framework for unified research workflows that transcend traditional academic disciplines._
+
+toc::[]
+
+== Overview
+
+PostDisciplinary.jl is a meta-framework designed to support research that doesn't fit into a single "department." It provides the glue logic to connect formal logic, historical dynamics, social theory, and computer science into a single, cohesive research artifact. It is the "orchestrator" for the Hyperpolymath ecosystem.
+
+== The Post-Disciplinary Philosophy
+
+Modern problems—AI safety, climate collapse, societal breakdown—are "wicked problems" that cannot be solved by a single discipline. PostDisciplinary.jl moves from:
+* **Interdisciplinary**: Talking between departments.
+* **Transdisciplinary**: Crossing boundaries.
+* **Post-Disciplinary**: Ignoring boundaries entirely to follow the logic of the problem itself.
+
+== Core Capabilities
+
+* **Integrated Research Graphs**: Link evidence from `InvestigativeJournalist.jl` with models from `Cliodynamics.jl`.
+* **Cross-Theory Verification**: Verify a social value from `Axiology.jl` using a formal proof in `Axiom.jl`.
+* **Universal Ontology**: A common data schema for linking "Entities" (People, Events, Proofs, Claims) across all Hyperpolymath libraries.
+* **Orchestration Layer**: Execute complex, multi-library workflows (e.g., "Analyze historical instability, then find causal factors, then verify safety bounds").
+
+== Quick Start
+
+[source,julia]
+----
+using PostDisciplinary
+using Cliodynamics, Causals, Axiom
+
+# Define a post-disciplinary project
+project = ResearchProject("Global Instability Analysis")
+
+# Glue logic between libraries
+@link project begin
+    historical_data = Cliodynamics.load_seshat_data(...)
+    causal_model = Causals.CausalGraph(historical_data)
+    safety_prop = Axiom.verify(causal_model, ...)
+end
+
+# Generate a unified synthesis report
+report = generate_synthesis(project)
+----
+
+== Suggested Tech Stack
+
+* **Knowledge Graphs**: `Graphs.jl`, `MetaGraphsNext.jl`
+* **Synthesis**: `DataFrames.jl`, `JSON3.jl`
+* **Reporting**: `Documenter.jl`, `Quarto` (integration)
+* **Automation**: `Dagger.jl` for multi-library task orchestration.
+
+== License
+
+Palimpsest-MPL-1.0 License - see link:LICENSE[LICENSE] for details.

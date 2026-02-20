@@ -1,0 +1,10 @@
+name = "LowLevel"
+uuid = "a1b2c3d4-e5f6-4a1b-8c2d-3e4f5a6b7c8d"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+Libdl = "8f399da3-3557-5675-b5ff-fb832c9795de"
+
+[compat]
+julia = "1.10"

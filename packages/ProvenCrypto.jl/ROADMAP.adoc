@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Roadmap
+:revdate: 2026-02-17
+
+== Release Baseline (Must)
+- Package installs from a clean Julia environment (`Pkg.add`).
+- Precompile, build, test, and module load smoke are gated in CI.
+- Versioning stays semver and aligned with release refs/tags.
+
+== V2 Backlog (Should)
+- Expand CI matrix (OS + Julia versions + optional dependency modes).
+- Add performance baselines and regression checks.
+- Improve machine-readable evidence and release artifact metadata.
+
+== V2 Backlog (Could)
+- Add deeper formal verification evidence exports.
+- Add optional accelerator/hardware strategy tracks where relevant.
+- Add richer diagnostics and fault-recovery instrumentation.
+
+== Future Horizons (v2.0+)
+
+=== Axiomatic Side-Channel Mitigation
+* [ ] **Constant-Time Verification**: Link with `Axiom.jl` to formally prove that critical primitive implementations (NTT, SHA3, AES) have data-independent execution time to prevent side-channel leaks.
+* [ ] **Verified Memory Sanitization**: Proofs that sensitive key material is effectively zeroed out from memory across all supported Julia garbage collection modes.
+
+=== Topological & Physical Cryptography
+* [ ] **Knot-Theoretic PKI**: Integration with `KnotTheory.jl` to prototype cryptographic schemes where security is based on the hardness of the "Markov Problem" for braids and knots.
+* [ ] **Quantum-Key-Distribution (QKD) Simulator**: Verified models for BB84 and other QKD protocols, integrating with existing post-quantum primitives.
+
+=== Advanced Cryptographic Computing
+* [ ] **Verified Homomorphic Encryption (FHE)**: Implement a formally verified version of the TFHE or CKKS scheme for performing privacy-preserving computation on encrypted data.
+* [ ] **Privacy-Preserving Proofs for MPC**: Formalize and prove the privacy properties of Distributed Key Generation (DKG) and Threshold Signatures.
+
+=== Secure Enclave & Hardware Hardening
+* [ ] **Enclave-Aware Compilation**: Tools to verify the partitioning of code between "Untrusted" host memory and "Secure" enclave memory (SGX/TrustZone).
+* [ ] **FPGA-Verified Kernels**: Hardened HDL kernels for PQC primitives, formally verified against the Idris2 specification (linking to `Axiology.jl` hardware goals).

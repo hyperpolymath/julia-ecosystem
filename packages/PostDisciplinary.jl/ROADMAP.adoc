@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= PostDisciplinary.jl Roadmap
+
+== v0.1.0 - The Glue (Current)
+* [x] Core data models for `ResearchProject` and `SynthesisReport`.
+* [x] Basic "Link" macro for connecting library outputs.
+* [x] Common entity schema (mapping entities across `.jl` repos).
+* [x] Markdown export for integrated research.
+
+== v0.2.0 - Integrated Workflows
+* [ ] Multi-library task orchestration (via Dagger.jl).
+* [ ] Cross-package "Search" engine (search claims, proofs, and models simultaneously).
+* [ ] Unified visualization dashboard (bringing together Makie plots from different sources).
+* [ ] Hypothesis tracker (linking "Post-Disciplinary Hypotheses" to evidence and proofs).
+
+== v0.3.0 - Theory Synthesis
+* [x] **Raft Consensus**: Distributed agreement logic for multi-node research networks.
+* [x] **Meta-Analysis**: Formal aggregation of Effect Sizes from multiple studies.
+* [x] **Knowledge Diffing**: Tools to compare two research graphs and find the "Delta of Truth."
+* [x] **Memetics Module**: Formal logic for tracking information replicators and mutation paths.
+* [x] **Methodology Engine**: Native support for Multi, Inter, Trans, and Anti-disciplinary research modes (NLC Journal alignment).
+* [x] **Expert Synthesis**: Mixture of Experts (MoE) routing and Graph of Thought (GoT) logic.
+* [x] **Computational Hermeneutics**: Formal implementation of the Hermeneutic Circle for iterative interpretation.
+* [x] **Mixed-Methods Orchestrator**: Logic for Quant, Qual, and Mixed research designs.
+* [x] **Impact & Utilisation Tracker**: Tools to measure knowledge transfer and strategic influence.
+* [x] **Research Templates**: Pre-configured skeletons for Wicked Problems, Structural Forensics, and Action Research.
+* [ ] "Bridge Theories": Formal logic for mapping terms between disciplines.
+* [ ] Automated "Literature Synthesis" from `InvestigativeJournalist.jl` records.
+* [ ] Conflict resolution between disciplinary models.
+
+== v1.0.0 - Universal Research OS
+* [ ] Full Quarto/Jupyter integration for publishing "Executable Synthesis".
+* [ ] Community "Ontology Registry" for shared research terms.
+* [ ] Cloud-native research backend for large-scale team collaboration.
+
+== Future Horizons (v2.0+)
+
+=== Computational Wisdom
+* [ ] **Epistemic Invariant Proofs**: Use `Axiom.jl` to prove that a specific synthesis report doesn't violate core axioms from any of its constituent disciplines.
+* [ ] **Synthetic Scholar**: An AI agent that "Reads" the output of all other `.jl` libraries and suggests "Post-Disciplinary" links that a human might have missed.
+
+=== Planetary Scale Synthesis
+* [ ] **Automated Peer Review**: Use `Axiom.jl` and `MetaAnalysis` to automatically review and score new papers against the global knowledge graph.
+* [ ] **Consensus Computer**: A global, decentralized network of `RaftNode` instances that maintains the canonical "State of Science."
+* [ ] **Global Research Gossip Protocol**: Enable decentralized synthesis of knowledge across hundreds of research nodes (linking to `Skein.jl` federated search).
+* [ ] **Axiomatic World Modeling**: Formal, proven models of global systemic risk that integrate history, economics, ethics, and physics.
+
+=== Cognitive Extensions
+* [ ] **Neural Knowledge Synthesis**: Use Large Language Models to "summarize" the high-level implications of low-level formal proofs for policy-makers.
+* [ ] **Immersive Synthesis**: VR environments for "walking through" the knowledge graph of a post-disciplinary problem.

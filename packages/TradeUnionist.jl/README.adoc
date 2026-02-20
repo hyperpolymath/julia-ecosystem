@@ -1,0 +1,65 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= TradeUnionist.jl
+:toc: macro
+:toclevels: 2
+:icons: font
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-70%25-yellow[70%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
+
+*Empowering Labor with Data-Driven Organizing*
+
+_Strategic intelligence for unions: from membership mapping to collective bargaining._
+
+toc::[]
+
+== Overview
+
+TradeUnionist.jl is a management and analysis toolkit for labor unions and organizing committees. It provides high-integrity structures for mapping workplaces, tracking member engagement, managing the grievance lifecycle, and supporting collective bargaining with transparent costing and clause comparison.
+
+== Core Capabilities
+
+* **Workplace Mapping**: Detailed visualization of sites, departments, and shifts to identify organizing gaps.
+* **Member Engagement**: Track the "Organizer Conversation" lifecycle and sentiment across the workforce.
+* **Grievance Pipeline**: Integrated intake, evidence logging, and deadline management for contract enforcement.
+* **Bargaining Support**: Side-by-side contract clause comparison and fiscal costing of proposals.
+* **Mobilization Planning**: Data-driven action planning for strike votes, rallies, and turnouts.
+
+== Quick Start
+
+[source,julia]
+----
+using TradeUnionist
+
+# Register a new worksite
+site = register_worksite(employer="GlobalCorp", headcount=500)
+
+# Log an organizing conversation
+log_conversation(member_id, "Highly supportive of higher wages", sentiment=0.8)
+
+# Open a grievance case
+case = open_grievance(member_id, "Unsafe machinery in Dept B")
+
+# Cost a bargaining proposal
+proposal = build_proposal(clause_id, "10% wage increase")
+println("Total unit cost: ", cost_estimate(proposal))
+----
+
+== Suggested Tech Stack
+
+* **Data**: `DataFrames.jl`, `Arrow.jl`, `JSON3.jl`
+* **Analysis**: `Statistics`, `StatsBase.jl`
+* **Visualization**: `AlgebraOfGraphics.jl` for engagement heatmaps.
+* **Persistence**: `SQLite.jl` or `DuckDB.jl`
+
+== Governance & Risk
+
+* **Permissioned Access**: Rigid security model for sensitive member data.
+* **Privacy-First**: Support for redaction and retention policies to protect workers from employer retaliation.
+* **Auditable Bargaining**: Immutable logs for all contract revisions and proposal costing.
+
+== License
+
+Palimpsest-MPL-1.0 License - see link:LICENSE[LICENSE] for details.

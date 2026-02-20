@@ -1,0 +1,306 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Axiology.jl
+Jonathan D. A. Jewell <jonathan.jewell@open.ac.uk>
+:toc:
+
+== Overview
+
+**Axiology.jl** is a fully functional Julia library for value theory in machine learning and automated reasoning systems.
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-65%25-yellow[65%,link="TOPOLOGY.md"]
+
+> **Status**: ✅ **Alpha - Core value system functional, integration APIs planned** - 1,088 lines of code, 43/45 tests passing
+
+> Axiology (from Greek ἀξία _axiā_ "value") is the philosophical study of value. This library brings axiology into computational form, enabling ML systems to reason about and verify value-aligned behavior.
+
+== The Value Alignment Problem
+
+Machine learning systems optimize objective functions, but:
+
+* **Misalignment Risk**: Optimizing the wrong metric leads to harmful behavior
+* **Multi-Objective Tradeoffs**: Real systems balance competing values (fairness, efficiency, safety)
+* **Implicit Values**: ML decisions encode ethical choices whether acknowledged or not
+
+Axiology.jl makes values **explicit, verifiable, and composable**.
+
+== Core Concepts
+
+=== Value Types
+
+Axiology.jl provides a hierarchy of value types:
+
+[source,julia]
+----
+abstract type Value end
+
+struct Fairness <: Value end
+struct Welfare <: Value end
+struct Profit <: Value end
+struct Efficiency <: Value end
+struct Safety <: Value end
+----
+
+=== Value Operations
+
+**Satisfy**: Check if a system state satisfies a value criterion
+
+[source,julia]
+----
+satisfy(value::Value, state::SystemState) -> Bool
+----
+
+**Maximize**: Optimize a system to maximize a value
+
+[source,julia]
+----
+maximize(value::Value, system::System) -> OptimizedSystem
+----
+
+**Verify**: Formally verify value alignment
+
+[source,julia]
+----
+verify_value(value::Value, proof::Proof) -> Verified | Failed
+----
+
+== Installation
+
+From Julia REPL:
+
+[source,julia]
+----
+using Pkg
+Pkg.add("Axiology")
+----
+
+== Usage Examples
+
+=== Fairness-Aware ML
+
+[source,julia]
+----
+using Axiology, MLJ
+
+# Define fairness criterion
+fairness = Fairness(
+    protected_attribute = :gender,
+    metric = :demographic_parity,
+    threshold = 0.05  # Max 5% disparity
+)
+
+# Train model with fairness constraint
+model = train(algorithm, data, constraints=[fairness])
+
+# Verify fairness post-hoc
+@assert satisfy(fairness, model)
+----
+
+=== Multi-Objective Optimization
+
+[source,julia]
+----
+using Axiology
+
+# Define competing values
+values = [
+    Welfare(metric=:utility_sum, weight=0.4),
+    Fairness(metric=:gini_coefficient, weight=0.3),
+    Efficiency(metric=:computation_time, weight=0.3)
+]
+
+# Pareto-optimal solutions
+solutions = pareto_frontier(system, values)
+
+# Select solution with value tradeoff
+chosen = select_solution(solutions, preference=:balanced)
+----
+
+=== Formal Value Verification
+
+[source,julia]
+----
+using Axiology, ECHIDNA
+
+# Define value invariant
+safety = Safety(
+    invariant = "∀ state. system(state) ⟹ safe(state)",
+    prover = :Lean
+)
+
+# Generate formal proof
+proof = prove(safety.invariant, system)
+
+# Verify with theorem prover
+verification = verify_value(safety, proof)
+
+if verification isa Verified
+    println("System formally proven safe ✓")
+else
+    println("Safety violation: $(verification.counterexample)")
+end
+----
+
+== API Reference
+
+=== Value Types
+
+`Fairness`::
+Encodes fairness criteria (demographic parity, equalized odds, etc.)
+
+`Welfare`::
+Utilitarian welfare measures (sum, mean, or weighted utility)
+
+`Profit`::
+Economic value (revenue, cost, ROI)
+
+`Efficiency`::
+Resource efficiency (time, memory, energy)
+
+`Safety`::
+Safety constraints (invariants, preconditions, postconditions)
+
+=== Core Functions
+
+`satisfy(value, state) -> Bool`::
+Check if `state` satisfies `value` criterion.
+
+`maximize(value, system) -> OptimizedSystem`::
+Optimize `system` to maximize `value` while preserving constraints.
+
+`verify_value(value, proof) -> Verified | Failed`::
+Formally verify that `proof` demonstrates value alignment.
+
+`pareto_frontier(system, values) -> Vector{Solution}`::
+Compute Pareto-optimal solutions for multi-objective value optimization.
+
+`select_solution(solutions, preference) -> Solution`::
+Select solution from Pareto frontier based on value preferences.
+
+== Theoretical Foundations
+
+Axiology.jl draws from:
+
+* **Moral Philosophy**: Utilitarianism, deontology, virtue ethics
+* **Welfare Economics**: Pareto efficiency, social welfare functions
+* **Game Theory**: Nash equilibria, cooperative games, mechanism design
+* **Formal Methods**: Model checking, theorem proving, contract verification
+* **ML Fairness**: Demographic parity, equalized odds, individual fairness
+
+== Integration with ECHIDNA
+
+Axiology.jl is designed for tight integration with ECHIDNA:
+
+* **Formal Verification**: Use ECHIDNA's 17 theorem provers to verify value invariants
+* **Neural Guidance**: Train ML models to predict value-aligned actions
+* **Multi-Prover Consensus**: Cross-validate value proofs across multiple provers
+* **Explainability**: Generate natural language explanations of value tradeoffs
+
+=== Example: Verified Fairness
+
+[source,julia]
+----
+using Axiology, ECHIDNA
+
+# Define fairness as formal invariant
+fairness = Fairness(
+    invariant = "∀ (x₁ x₂ : Input).
+                 protected_attr(x₁) ≠ protected_attr(x₂) ⟹
+                 |P(Ŷ=1|X=x₁) - P(Ŷ=1|X=x₂)| < ε",
+    prover = :Lean
+)
+
+# Generate proof with ECHIDNA
+proof = ECHIDNA.prove(fairness.invariant,
+                      model=my_classifier,
+                      prover=:Lean)
+
+# Verify
+result = verify_value(fairness, proof)
+----
+
+== Development Status
+
+Current Version: **0.1.0** (Initial Release)
+
+* [x] Core value type hierarchy
+* [x] Basic satisfy/maximize/verify API
+* [x] Initial test suite
+* [x] RSR compliance
+* [ ] Multi-objective optimization
+* [ ] Formal verification integration with ECHIDNA
+* [ ] ML fairness library integration (FairLearn, AIF360)
+* [ ] Comprehensive documentation
+
+See link:ROADMAP.adoc[ROADMAP.adoc] for development plans.
+
+== Use Cases
+
+=== Healthcare AI
+* **Safety**: Verify medical AI never recommends contraindicated treatments
+* **Fairness**: Ensure diagnostic models don't discriminate by race/gender
+* **Welfare**: Optimize for patient outcomes, not just hospital metrics
+
+=== Financial Systems
+* **Fairness**: Prevent algorithmic discrimination in lending
+* **Profit**: Balance returns with stakeholder welfare
+* **Efficiency**: Optimize execution speed without market manipulation
+
+=== Autonomous Vehicles
+* **Safety**: Formally prove collision avoidance under all conditions
+* **Welfare**: Balance passenger and pedestrian safety
+* **Efficiency**: Optimize routes without compromising safety
+
+=== Public Policy
+* **Welfare**: Evaluate policy impact with social welfare functions
+* **Fairness**: Detect and mitigate disparate impact
+* **Efficiency**: Balance effectiveness with resource constraints
+
+== License
+
+Dual licensed under:
+
+* **MIT License** - link:LICENSE-MIT[LICENSE-MIT]
+* **Palimpsest Meta-Project License 1.0** - link:LICENSE-PMPL[LICENSE-PMPL]
+
+Choose either license for use, modification, and distribution.
+
+== Contributing
+
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for contribution guidelines.
+
+Priority areas:
+
+* **Formal Methods**: Integration with Lean, Coq, Isabelle
+* **ML Fairness**: Wrappers for existing fairness libraries
+* **Case Studies**: Real-world value alignment applications
+* **Visualization**: Tools for value tradeoff exploration
+
+== Citation
+
+If you use Axiology.jl in research, please cite:
+
+[source,bibtex]
+----
+@software{axiology2026,
+  author = {Jewell, Jonathan D.A.},
+  title = {Axiology.jl: Value Theory for Machine Learning},
+  year = {2026},
+  version = {0.1.0},
+  url = {https://github.com/hyperpolymath/Axiology.jl}
+}
+----
+
+== References
+
+* **AI Alignment**: Russell, S. (2019). _Human Compatible: AI and the Problem of Control_
+* **ML Fairness**: Barocas, S., Hardt, M., & Narayanan, A. (2023). _Fairness and Machine Learning_
+* **Formal Methods**: Hoare, T. (1969). "An Axiomatic Basis for Computer Programming"
+* **Value Theory**: Korsgaard, C. (1983). "Two Distinctions in Goodness"
+* **Welfare Economics**: Sen, A. (1970). _Collective Choice and Social Welfare_
+
+== Contact
+
+* **Author:** Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>
+* **GitHub:** https://github.com/hyperpolymath/Axiology.jl
+* **Issues:** https://github.com/hyperpolymath/Axiology.jl/issues

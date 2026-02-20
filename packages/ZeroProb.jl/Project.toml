@@ -1,0 +1,24 @@
+name = "ZeroProb"
+uuid = "f9e8c2e0-8b4a-4d5f-9a3c-1e2d3c4b5a6f"
+version = "0.1.0"
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+[compat]
+Distributions = "0.25"
+Plots = "1.39"
+StatsBase = "0.34"
+julia = "1.9"
+
+[extras]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "Random", "LinearAlgebra"]

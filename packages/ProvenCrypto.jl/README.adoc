@@ -1,0 +1,92 @@
+= ProvenCrypto.jl: Formally Verified Cryptographic Protocols for Julia
+:toc: macro
+:toc-title:
+:toclevels: 3
+
+toc::[]
+
+== Overview
+
+ProvenCrypto.jl provides a Julia library of *formally verified* cryptographic protocols and post-quantum primitives. This project is part of the hyperpolymath ecosystem, emphasizing mathematical proofs of correctness, security, and robustness.
+
+== Features
+
+* **Formal Verification**: All cryptographic primitives are accompanied by machine-checked proofs of security properties.
+* **Post-Quantum Security**: Includes algorithms resistant to quantum computing attacks.
+* **Julia Integration**: Designed for high performance and seamless integration with the Julia scientific computing ecosystem.
+* **Interoperability**: Follows the Hyperpolymath Universal Standard for ABI/FFI, ensuring compatibility with other languages and systems.
+
+== Directory Structure
+
+[source]
+----
+ProvenCrypto.jl/
+├── src/            # Main Julia source code
+├── proofs/         # Formal proofs (Idris2/Lean/Coq)
+├── bindings/       # Language bindings (optional)
+├── test/           # Unit and property tests
+├── docs/           # Documentation
+└── examples/       # Usage examples
+----
+
+== Core Components
+
+=== 1. Cryptographic Primitives
+
+* **Symmetric Encryption**: AES, ChaCha20 (with formal proofs)
+* **Asymmetric Encryption**: Kyber, Dilithium (post-quantum)
+* **Hash Functions**: SHA-3, BLAKE3 (with collision resistance proofs)
+* **Signatures**: Ed25519, SPHINCS+ (post-quantum)
+
+=== 2. Formal Proofs
+
+* **Correctness**: Proofs that implementations match their mathematical specifications.
+* **Security**: Proofs of resistance to known attacks (e.g., side-channel, quantum).
+* **Interoperability**: Proofs of ABI/FFI compliance for cross-language use.
+
+== Usage
+
+=== Installation
+
+[source,julia]
+----
+using Pkg
+Pkg.add(url="https://github.com/hyperpolymath/ProvenCrypto.jl")
+----
+
+=== Example: Secure Key Exchange
+
+[source,julia]
+----
+using ProvenCrypto
+
+# Generate a post-quantum key pair
+(sk, pk) = generate_keypair(:kyber)
+
+# Encrypt/decrypt with formal guarantees
+ciphertext = encrypt(pk, "secret message")
+plaintext = decrypt(sk, ciphertext)
+----
+
+== Verification
+
+All proofs are available in the `proofs/` directory and can be checked using:
+
+* Idris2 (for ABI/FFI correctness)
+* Lean/Coq (for cryptographic properties)
+
+== Standards Compliance
+
+* **ABI/FFI**: Follows the Hyperpolymath Universal Standard for cross-language compatibility.
+* **AI CLI**: Includes crash capture and contractile support for automated verification.
+
+== Contributing
+
+Contributions are welcome! Please ensure all new code includes:
+1. Formal proofs of correctness and security.
+2. Comprehensive tests.
+3. Documentation updates.
+
+== License
+
+MIT

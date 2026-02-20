@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Lithoglyph.jl Roadmap
+
+== v0.1.0 - The Client (Current)
+* [x] Basic `Glyph` and `Client` data structures.
+* [x] `register` and `search` function stubs.
+* [x] FFI bridge skeleton.
+
+== v0.2.0 - Core Integration
+* [ ] **Zig/Forth FFI**: Implement the actual `ccall` hooks to the Lithoglyph shared library.
+* [ ] **Normalization**: Automated normalization of Julia strings using Lithoglyph's core logic.
+* [ ] **VQL Support**: Integrate with `VeriSimDB` via Veridical Query Language for cross-modal search.
+
+== v0.3.0 - Visual Studio & Studio
+* [ ] **Glyph Rendering**: Use `Luxor.jl` to render symbolic glyphs stored in the database.
+* [ ] **Studio Bridge**: A real-time bridge to the Lithoglyph Studio for visual editing.
+
+== Future Horizons (v1.0+)
+* [ ] **Axiomatic Symbolic Logic**: Use `Axiom.jl` to prove properties about symbolic transformations.
+* [ ] **Distributed Consensus**: Use `PostDisciplinary.RaftConsensus` to manage the canonical state of symbols across nodes.

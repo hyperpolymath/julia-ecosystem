@@ -1,0 +1,29 @@
+name = "KnotTheory"
+uuid = "215268c9-7579-426e-8b7c-a3dc27acd339"
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+version = "1.0.1"
+license = "PMPL-1.0-or-later"
+
+[deps]
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+
+[compat]
+julia = "1.9"
+JSON3 = "1"
+Graphs = "1"
+Polynomials = "4"
+
+[weakdeps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+
+[extensions]
+KnotTheoryCairoMakieExt = "CairoMakie"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

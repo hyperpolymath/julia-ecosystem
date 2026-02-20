@@ -1,0 +1,32 @@
+= HackenbushGames.jl - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{hackenbush-games-jl_2026,
+  author = {Jewell, Jonathan D. A.},
+  title = {HackenbushGames.jl},
+  year = {2026},
+  url = {https://github.com/hyperpolymath/HackenbushGames.jl},
+  license = {PMPL-1.0-or-later}
+}
+----
+
+== Harvard Style
+
+Jewell, J. D. A. (2026) _HackenbushGames.jl_ [Computer software]. Available at: https://github.com/hyperpolymath/HackenbushGames.jl
+
+== OSCOLA
+
+Jonathan D. A. Jewell, 'HackenbushGames.jl' (2026) <https://github.com/hyperpolymath/HackenbushGames.jl>
+
+== MLA
+
+Jewell, Jonathan D. A.. "HackenbushGames.jl." 2026, github.com/hyperpolymath/HackenbushGames.jl.
+
+== APA 7
+
+Jewell, J. D. A. (2026). _HackenbushGames.jl_ [Computer software]. GitHub. https://github.com/hyperpolymath/HackenbushGames.jl
+

@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= LowLevel.jl Roadmap
+
+== Phase 1: Silicon Foundation (Current)
+* [x] **Multi-Arch Dispatch**: Runtime selection between x86_64 and ARM64.
+* [ ] **Zen/Lake Optimization**: Targeted kernels for **AMD Ryzen Pro** and **Intel i9** specific instruction sets (AMX, AVX-512).
+* [ ] **NUMA Awareness**: Memory allocation strategies that respect multi-socket Xeon/Epyc topologies.
+
+== Phase 2: Accelerator Mastery (The X-PU Track)
+* [ ] **Neural & Tensor (NPU/TPU)**: Native driver integration for specialized AI silicon in modern laptops and servers.
+* [ ] **Quantum Bridge (QPU)**: Simulation environment for reversible circuits that can dispatch to real QPU hardware (e.g. Rigetti, IBM).
+* [ ] **Signal & Sound (DSP/APU)**: Ultra-low latency kernels for real-time investigative audio forensics.
+* [ ] **Physics Kernels (PPU)**: Hardened math routines for the `Cliodynamics` simulation engine.
+
+== Phase 3: Intelligence & Resilience
+* [ ] **Real-time Diagnostics**: Prometheus-compatible exporter for hardware telemetry (Wattage, Temps, Cache).
+* [ ] **Self-Healing Runtime**: Implementation of "Watcher Tasks" that detect illegal instruction signals and automatically re-compile/hot-swap the failing function.
+* [ ] **Fault-Tolerant Memory**: "Poison-pill" detection for ECC memory errors to prevent data corruption in `VeriSimDB`.
+
+== Phase 4: Axiomatic Bare-Metal
+* [ ] **Formal Verification**: Use `Axiom.jl` to prove that the Assembly kernels match the `PolyglotFormalisms` specification.
+* [ ] **UEFI/ACPI Persistence**: Safe API for writing persistent research metadata to motherboard NVRAM (Digital Sovereignty).
+
+== Future Horizons (v2.0+)
+* [ ] **Planetary Scale Dispatch**: Orchestration of kernels across a cluster where some nodes have QPUs and others have TPUs.
+* [ ] **Energy-Minimized Research**: AI-driven "Eco-Mode" that re-routes computations to the most energy-efficient processor (e.g. NPU vs GPU) based on the specific math required.

@@ -1,0 +1,97 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Cliometrics.jl Roadmap
+
+== Current Status
+
+Beta release at v0.1.0. Core cliometric analysis functions implemented and tested. All 11 exported functions working with 75 passing tests.
+
+== Completed Milestones
+
+=== v0.1.0 - Core Functionality ✅
+* [x] Growth accounting (Solow residual, TFP)
+* [x] Growth decomposition (capital, labor, TFP contributions)
+* [x] Convergence analysis (beta-convergence testing)
+* [x] Institutional quality index (composite indicators)
+* [x] Institutional change measurement (quantify_institutions)
+* [x] Historical data loading and cleaning
+* [x] Missing year interpolation
+* [x] Counterfactual scenario modeling
+* [x] Treatment effect estimation (DiD)
+* [x] Comparative trajectory analysis
+* [x] Comprehensive test suite (75 tests)
+* [x] Function docstrings and README
+
+== In Progress
+
+=== v0.2.0 - Extended Features 🚧
+* [ ] Sigma-convergence testing (variance reduction over time)
+* [ ] Conditional convergence estimation (control variables)
+* [ ] Long-run growth trend analysis (Hodrick-Prescott filter)
+* [ ] Outlier detection and handling (robust methods)
+* [ ] Cross-country data alignment utilities
+* [ ] Plotting recipes for Plots.jl integration
+* [ ] Model fitting to historical data workflows
+* [ ] Parameter estimation with Optim.jl
+
+== Planned
+
+=== v0.3.0 - Visualization & Documentation 📋
+* [ ] Interactive plotting with Makie.jl
+* [ ] Documenter.jl comprehensive documentation
+* [ ] Publication-quality figure generation
+* [ ] Tutorial notebooks (Pluto.jl or Jupyter)
+* [ ] Case studies (Industrial Revolution, Asian Tigers, etc.)
+
+=== v1.0.0 - Production Release 🎯
+* [ ] Bayesian inference support (Turing.jl integration)
+* [ ] Synthetic control methods for causal inference
+* [ ] Event study designs
+* [ ] Julia General registry submission
+* [ ] Performance benchmarks and optimization
+* [ ] API stability guarantees
+* [ ] Academic paper/citation
+
+== Future Directions (v1.x+)
+
+=== Advanced Methods
+* Spatial cliometric models (geographic effects)
+* Network analysis for trade/migration patterns
+* Time-varying parameter models
+* Machine learning integration for pattern detection
+
+=== Ecosystem Integration
+* Integration with DifferentialEquations.jl (dynamic models)
+* DataFrames.jl transformation pipelines
+* Compatibility with R cliometrics packages (data import/export)
+* Interoperability with economic history databases
+
+=== Domain Expansion
+* Demographic historical analysis
+* Historical price indices and inflation
+* Agricultural productivity over time
+* Technological change measurement
+
+== Future Horizons (v2.0+)
+
+=== Quantum & Non-Linear Cliometrics
+* [ ] **Quantum Economic Modeling**: Integrate with `Axiom.jl` to use quantum-inspired probability for analyzing periods of extreme economic uncertainty or phase transitions (e.g., historical market crashes).
+* [ ] **Complex Economic Bifurcations**: Formalize the mathematical "Tipping Points" in historical trade networks that lead to Great Divergences or Convergence.
+
+=== Automated Counterfactual Search
+* [ ] **Optimal Policy Search**: Use optimization algorithms (via `JuMP.jl`) to find the "minimal historical change" needed to reach a different economic outcome (e.g., preventing the Great Depression).
+* [ ] **Causal Policy Attribution**: Link with `Causals.jl` to formally attribute economic growth to specific historical policy interventions versus exogenous shocks.
+
+=== Cross-Species & Biological Cliometrics
+* [ ] **Biocliometrics**: Apply economic growth accounting and resource allocation models to the "history" of different species and ecosystems over geological time.
+* [ ] **Energy Flow History**: Map the "Thermodynamic History" of civilizations as a series of energy extraction and dissipation efficiency gains.
+
+=== Axiomatic Economic Invariants
+* [ ] **Verified Economic Models**: Link with `Axiom.jl` to formally prove that a historical economic model satisfies specific "Conservation of Value" or "Fairness" properties (e.g., verifying that a trade model is non-exploitative).
+* [ ] **Axiomatic Inequality Limits**: Formally prove the theoretical upper/lower bounds of inequality in various historical economic structures (e.g., slave economies vs. industrial ones).
+
+== Community Goals
+
+* Academic citations in economic history research
+* Collaboration with Cliometric Society
+* JuliaCon presentation
+* Publication in _Economic History Review_ or _Explorations in Economic History_

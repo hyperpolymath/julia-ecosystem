@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= JuliaForChildren.jl Roadmap
+
+== v0.1.0 - The Playground (Current)
+* [x] Core data models (`Lesson`, `Exercise`, `LearnerProfile`).
+* [x] Pluto.jl template integration for reactive coding.
+* [x] Basic "Drawing" module (wrappers for Luxor/Makie).
+* [x] Initial badge/streak tracking logic.
+* [x] Juliet the Robot (Turtle Graphics).
+* [x] Minecraft & KSP game stubs.
+* [x] Automation "Magic Rules" engine.
+
+== v0.2.0 - Foundations & Accessibility
+* [ ] **Accessibility Core**: High-contrast themes, screen-reader friendly output, text-to-speech hooks.
+* [ ] **The Sticker Book**: A visual achievement dashboard where earned badges are displayed.
+* [ ] **Juliet's Backpack**: Persistent storage for "Tools" (functions) kids build.
+* [ ] **Fact-Check Buddy**: Simple logic tool to verify claims (e.g., "Is a whale a fish?").
+
+== v0.3.0 - Digital Workspace & Productivity
+* [ ] **Scheduler**: Alarm clock and calendar integration (`TimeTools`).
+* [ ] **Reference Manager**: `.bib` file import/export and Zotero JSON bridge (`BibTools`).
+* [ ] **Note Interop**: Integration with OneNote, Joplin, and Obsidian.
+* [ ] **Robot Reporting**: Let Juliet "live-blog" mission progress.
+
+== v0.4.0 - Social & Creative
+* [ ] **Avatar Maker**: Parametric SVG avatar generator (faces, robot parts).
+* [ ] **Classroom Chat**: Safe, local-network P2P messaging for collaborative coding.
+* [ ] **LLM Buddy**: Integration with local, quantized LLMs (e.g., Llama.jl) for safe coding help.
+
+== v0.5.0 - Physical Computing (IoT)
+* [ ] **Pi-Power**: Simple Julia macros for GPIO control on Raspberry Pi.
+* [ ] **Sensor Stream**: Ingest real-time data from sensors.
+* [ ] **IoT Robot**: Link Juliet's movements to physical servos.
+
+== v1.0.0 - Full Power Operations
+* [ ] **Social Coding**: Event sharing ("When I save, my friend's Juliet dances").
+* [ ] **Live Telemetry Dashboard**: Real-time KSP/Minecraft data visualization.
+* [ ] **Curriculum Pack**: 50+ lessons from "My First Line" to "Interplanetary Rocket Logic."
+
+== Future Horizons (v2.0+)
+
+=== Axiomatic Childhood
+* [ ] **Logic Proof Games**: Use `Axiom.jl` to turn formal proofs into puzzle games.
+* [ ] **Verified Safety Sandbox**: Formally prove that automation rules cannot cause systemic conflict.
+
+=== Interplanetary Education
+* [ ] **Lag-Resilient Coding**: Simulating light-speed delay for "Moon Control" logic.
+* [ ] **Space-Agency Partnerships**: Real-world telemetry bridges.
+
+=== Cognitive Extensions
+* [ ] **Mind-Map Synthesis**: Automatically generate a "Knowledge Graph" of learned concepts.
+* [ ] **Synthetic Peer**: A "Robot Friend" that learns alongside the child.

@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= MacroPower.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-20%25-red[20%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+
+*The Automation Engine for the Hyperpolymath Ecosystem.*
+
+MacroPower.jl is a low-code/no-code style automation tool for Julia. It allows you to define "Flows" that connect events (File System, HTTP, Time) to actions (Run Script, Send Alert, Database Write).
+
+== Quick Start
+
+[source,julia]
+----
+using MacroPower
+
+# Define a flow
+flow = @workflow "Nightly Backup" begin
+    when(time_is("02:00")) -> backup_database()
+    when(file_changed("/tmp/data")) -> process_data()
+end
+
+run_workflow(flow)
+----

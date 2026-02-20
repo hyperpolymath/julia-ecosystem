@@ -1,0 +1,16 @@
+name = "HackenbushGames"
+uuid = "01ec8bc2-77c0-4797-a5fe-db76a6b99454"
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+version = "1.0.1"
+license = "PMPL-1.0-or-later"
+
+[deps]
+
+[compat]
+julia = "1.9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

@@ -1,0 +1,26 @@
+# Julia
+/Manifest.toml
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+
+# Documentation
+/docs/build/
+
+# Generated files
+/generated/
+
+# SMT solver temporary files
+*.smt2
+*.smt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

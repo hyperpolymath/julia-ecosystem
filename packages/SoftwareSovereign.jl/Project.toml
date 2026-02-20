@@ -1,0 +1,13 @@
+name = "SoftwareSovereign"
+uuid = "f2g3h4i5-j6k7-l8m9-n0o1-p2q3r4s5t6u7"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+EzXML = "8f5d63f2-552a-5a27-8357-27bbdbec7637"
+LMDB = "2bb35030-ce43-5968-b4aa-cd2a4af637cd"
+
+[compat]
+julia = "1.10"

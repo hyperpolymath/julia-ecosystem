@@ -1,0 +1,13 @@
+name = "JuliaPackageSpitter"
+uuid = "e5f6g7h8-9i0j-1k2l-m3n4-o5p6q7r8s9t0"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+Mustache = "ffc61752-8da7-5510-adfd-99503ae90577"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+
+[compat]
+julia = "1.10"

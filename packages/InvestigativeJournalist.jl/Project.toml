@@ -1,0 +1,29 @@
+name = "InvestigativeJournalist"
+uuid = "d4e5f6g7-8h9i-0j1k-l2m3-n4o5p6q7r8s9"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+SQLite = "0aa819cd-06f1-547f-88ef-0d1bc55bc9b6"
+Dates = "ade2ca70-3891-5945-931b-dc5ea821e773"
+SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+URIs = "5c2747f8-b7ea-4ff2-ba2e-563f13b251d5"
+TextAnalysis = "7269a6d2-025d-5084-87a3-b57e157ce50b"
+Images = "916415d5-f1e6-5105-9955-3d09441eac99"
+Graphs = "86223616-38f0-11e9-10bd-bb67a441a0ed"
+MetaGraphsNext = "d17304a5-4378-4cd5-abeb-e3984efdfcf4"
+Gumbo = "708ec375-b3d6-5a57-a7cd-cd30557d44a4"
+Cascadia = "5726a348-33bc-51ea-bb77-17e1a8ae9857"
+DuckDB = "ce010024-2d86-4e57-9d7d-f65a8aedab41"
+Cliodynamics = "f7g8h9i0-1j2k-3l4m-n5o6-p7q8r9s0t1u2"
+Causals = "g8h9i0j1-2k3l-4m5n-o6p7-q8r9s0t1u2v3"
+ZeroProb = "h9i0j1k2-3l4m-5n6o-p7q8-r9s0t1u2v3w4"
+VideoIO = "d4502882-a78b-591f-b43d-b53969391115"
+DSP = "71ca2064-5399-5116-aad6-929351178d99"
+Wavelets = "31055133-4a4d-569a-8f33-fca36cf7702d"
+
+[compat]
+julia = "1.10"

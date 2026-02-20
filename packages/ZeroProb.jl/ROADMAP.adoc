@@ -1,0 +1,182 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= ZeroProb.jl Roadmap
+Jonathan D. A. Jewell <jonathan.jewell@open.ac.uk>
+:toc:
+
+== Current Status (v0.1.0)
+
+Initial release with core functionality:
+
+* [x] Density ratio computation
+* [x] Hausdorff measure and dimension estimation
+* [x] ε-neighborhood probability analysis
+* [x] Basic API documentation
+* [x] Initial test suite
+* [x] RSR compliance (AI manifest, checkpoint files, workflows)
+
+== v0.2.0 - Performance and Usability
+
+=== Performance Optimization
+* [ ] Optimize box-counting algorithm for Hausdorff dimension
+* [ ] Add caching for repeated density computations
+* [ ] Vectorized operations for batch relevance analysis
+* [ ] Benchmark suite with Criterion.jl-style reporting
+
+=== Enhanced API
+* [ ] Support for multivariate distributions
+* [ ] Conditional density ratios P(X=x|Y=y)
+* [ ] Information-theoretic measures (KL divergence, mutual information)
+* [ ] Visualization tools for density landscapes
+
+=== Documentation
+* [ ] Jupyter notebook tutorials
+* [ ] Mathematical proofs in Literate.jl format
+* [ ] API reference with DocStringExtensions.jl
+* [ ] Case studies (finance, physics, ML)
+
+== v0.3.0 - Theoretical Extensions
+
+=== Advanced Measures
+* [ ] Packing dimension (dual to Hausdorff dimension)
+* [ ] Minkowski content for sets of measure zero
+* [ ] Capacity theory for potential-theoretic measures
+* [ ] Dimension spectrum for multifractal analysis
+
+=== Stochastic Processes
+* [ ] Zero-probability events in continuous-time processes
+* [ ] Brownian motion path properties (nowhere differentiable but continuous)
+* [ ] Lévy processes and jump discontinuities
+* [ ] Martingale convergence with measure-zero exceptional sets
+
+=== Topological Methods
+* [ ] Baire category theorem applications
+* [ ] Generic properties (measure zero but topologically large)
+* [ ] Residual sets in function spaces
+
+== v0.4.0 - ECHIDNA Integration
+
+=== Premise Selection
+* [ ] Density-based premise ranking for theorem proving
+* [ ] Integration with ECHIDNA's neural ML layer
+* [ ] Proof search guidance using ε-neighborhoods
+* [ ] Multi-prover consensus with probabilistic weighting
+
+=== Anomaly Detection
+* [ ] Hausdorff-based outlier detection for proof attempts
+* [ ] Convergence rate analysis for proof search
+* [ ] Rare event simulation for edge case testing
+
+=== Neural Integration
+* [ ] Train neural density estimators on proof graphs
+* [ ] Use ZeroProb measures as neural network loss functions
+* [ ] Probabilistic proof certificates with density ratios
+
+== v1.0.0 - Stable Release
+
+=== Maturity Goals
+* [ ] Comprehensive test coverage (>95%)
+* [ ] Full API stability guarantees (semantic versioning)
+* [ ] Production deployment examples
+* [ ] Registered in Julia General registry
+
+=== Theoretical Validation
+* [ ] Formal verification of core algorithms with Idris2
+* [ ] Correctness proofs for Hausdorff dimension estimation
+* [ ] Convergence rate theorems with formal bounds
+* [ ] Cross-validation with established measure theory libraries
+
+=== Community Building
+* [ ] Tutorials at JuliaCon
+* [ ] Academic paper submission
+* [ ] Integration with Turing.jl (probabilistic programming)
+* [ ] Collaboration with SciML ecosystem
+
+== v2.0.0 - Advanced Applications
+
+=== Machine Learning
+* [ ] Anomaly detection in high-dimensional spaces
+* [ ] Rare event sampling for imbalanced datasets
+* [ ] Novelty detection using Hausdorff measures
+* [ ] Active learning with density-based acquisition functions
+
+=== Scientific Computing
+* [ ] Phase transition analysis in statistical physics
+* [ ] Bifurcation theory with measure-theoretic tools
+* [ ] Chaos theory and strange attractors (fractal dimensions)
+* [ ] Quantum mechanics (measure-zero eigenspaces)
+
+=== Financial Mathematics
+* [ ] Extreme value theory for risk management
+* [ ] Jump diffusion processes for option pricing
+* [ ] Credit risk modeling with rare default events
+* [ ] Market microstructure (zero-probability trades)
+
+== Long-Term Vision
+
+=== Formal Foundations
+* Collaborate with **Lean4 mathlib** to formalize measure-theoretic results
+* Integrate with **Coq** probability libraries for verified computations
+* Develop **Idris2** proofs of algorithm correctness
+
+=== Ecosystem Integration
+* **Turing.jl**: Bayesian inference with zero-probability priors
+* **DifferentialEquations.jl**: Rare events in stochastic ODEs/PDEs
+* **Flux.jl**: Density-aware neural network training
+* **ECHIDNA**: Probabilistic theorem proving with relevance measures
+
+=== Research Directions
+* **Computational Topology**: Persistent homology with Hausdorff measures
+* **Information Geometry**: Fisher information on measure-zero sets
+* **Ergodic Theory**: Generic properties and measure-theoretic dynamics
+* **Set-Theoretic Topology**: Descriptive set theory applications
+
+== Future Horizons (v3.0+)
+
+=== Quantum & Singular Logic
+* [ ] **Quantum Null-Space Logic**: Formalize the reasoning about measure-zero outcomes in quantum Hilbert spaces, specifically for error correction and decoherence analysis.
+* [ ] **Singularity-Aware Dynamics**: Integration with `DifferentialEquations.jl` to provide "Measure-Theoretic Regularization" for physical models approaching singular points (e.g., fluid turbulence, gravitational singularities).
+
+=== Axiomatic Risk & Tail-Safety
+* [ ] **Black Swan Invariants**: Link with `Axiom.jl` to formally prove that a risk model satisfies specific "Fat-Tail" properties, guaranteeing it cannot underestimate extreme event probabilities below a certain threshold.
+* [ ] **Verified Catastrophe Bounds**: Provide mathematically guaranteed bounds on the maximum impact of zero-probability events in high-stakes systems (finance, nuclear, aerospace).
+
+=== Meta-Probabilistic Foundations
+* [ ] **Theory Uncertainty Framework**: Support for switching between alternative axiomatic foundations (e.g., Non-Standard Analysis, Constructive Measure Theory) when standard Kolmogorov axioms lead to undecidable zero-prob scenarios.
+* [ ] **Infinite-Dimensional Measure Discovery**: Automate the discovery of relevant measures for infinite-dimensional function spaces used in functional analysis and path integrals.
+
+=== AI Safety & Robustness
+* [ ] **Impossible Input Detection**: Use Hausdorff measures to formally detect inputs that are "Topologically Impossible" for a trained model, preventing out-of-distribution hallucinations.
+* [ ] **Rare Event Loss Functions**: Develop neural network loss functions that prioritize accuracy on measure-zero or extremely low-probability "Safety Boundaries".
+
+== Contributing
+
+Interested in contributing? See link:CONTRIBUTING.md[CONTRIBUTING.md] for:
+
+* Development setup
+* Testing guidelines
+* Code style (Blue Style Guide)
+* Pull request process
+* Roadmap prioritization
+
+Priority areas for contributors:
+
+1. **Performance**: Optimize box-counting and density computations
+2. **Visualization**: Create intuitive plots for Hausdorff measures
+3. **Documentation**: Jupyter tutorials and mathematical explanations
+4. **Testing**: Edge cases and numerical stability
+
+== References
+
+Key papers and texts inspiring this roadmap:
+
+* Falconer, K. (2014). _Fractal Geometry: Mathematical Foundations and Applications_
+* Mattila, P. (1995). _Geometry of Sets and Measures in Euclidean Spaces_
+* Billingsley, P. (2012). _Probability and Measure_ (Anniversary Edition)
+* Kallenberg, O. (2021). _Foundations of Modern Probability_ (3rd Edition)
+
+== Contact
+
+Questions or suggestions? Open an issue or contact:
+
+* **Jonathan D.A. Jewell** <jonathan.jewell@open.ac.uk>
+* **GitHub Issues**: https://github.com/hyperpolymath/ZeroProb.jl/issues

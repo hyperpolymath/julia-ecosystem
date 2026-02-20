@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= MinixSDK.jl
+:toc: macro
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-15%25-red[15%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/Target-MINIX_3-red.svg[Target: MINIX 3]
+
+*Bringing Julia Logic to the World's Most Reliable Microkernel.*
+
+== Overview
+
+MinixSDK.jl is a research-grade toolkit for developing and deploying high-assurance services for the **MINIX 3 microkernel** using Julia. It provides cross-compilation bridges and IPC (Inter-Process Communication) wrappers to allow Julia-based research to run as native MINIX services.
+
+== Why MINIX?
+
+MINIX 3 is designed for high reliability and self-healing (reincarnation). By bridging Julia to MINIX, we enable:
+1. **Fault-Tolerant Drivers**: Write drivers in Julia that MINIX can automatically restart if they fail.
+2. **Verified Micro-Services**: Use the Hyperpolymath ecosystem to verify logic before deploying it to the MINIX core.
+
+== Current Status
+**Research Prototype**. Focused on C-code generation and cross-compilation stubs.

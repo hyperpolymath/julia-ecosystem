@@ -1,0 +1,14 @@
+name = "JuliaForChildren"
+uuid = "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p6"
+authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+version = "0.1.0"
+
+[deps]
+Luxor = "ae8d54c2-7cca-5de8-81d1-92b9faecda3a"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
+XLSX = "fdb9862d-a720-591d-8ad2-30741c23497a"
+
+[compat]
+julia = "1.10"
+Luxor = "3.0"

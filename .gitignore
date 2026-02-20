@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Build artifacts
+target/
+zig-cache/
+zig-out/
+_build/
+build/
+deps/
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# Editor
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Crash captures
+ai-cli-crash-capture/
+sync_report*.txt

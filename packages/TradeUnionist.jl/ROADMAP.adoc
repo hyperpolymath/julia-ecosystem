@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= TradeUnionist.jl Roadmap
+
+== v0.1.0 - Organizing Core (Current)
+* [x] Core data models (`Worksite`, `MemberRecord`, `GrievanceCase`).
+* [x] Membership registry and basic sentiment tracking.
+* [x] Workplace map schema (Departments/Shifts).
+* [x] CSV export for member lists.
+
+== v0.2.0 - Grievance & Enforcement
+* [ ] Grievance lifecycle workflow (Intake -> Step 1 -> Arbitration).
+* [ ] Evidence locker (linking documents to cases).
+* [ ] Automated deadline alerts for contract violations.
+* [ ] Reporting dashboard for "Grievance Density" by department.
+
+=== Advanced Mapping & Analytics
+* [ ] **Mapping Mashups**: Integration with external GeoJSON data (Census/District maps).
+* [ ] **Strike Propensity Model**: Predictive modeling based on sentiment and bargaining impasse.
+* [ ] **Gender/Racial Wage Gap**: Specialized audit tools for pay equity.
+
+=== Future Horizons (v2.0+)
+
+==== Data Sovereignty & Privacy
+* [ ] **Member-Owned Data Vaults**: Frameworks for workers to host and control their own organizing data, providing the union with revocable access.
+* [ ] **Redaction-by-Default**: Automated PII (Personally Identifiable Information) masking for shared research datasets to protect workers from surveillance.
+
+==== Algorithmic Accountability
+* [ ] **Algorithmic Bias Monitor**: Tools to detect and prove bias in employer-used scheduling or performance algorithms (linking to `Axiology.jl`).
+* [ ] **Counter-Surveillance Tools**: Log and analyze employer anti-union messaging patterns to prepare legal rebuttals.
+
+==== Automated Mobilization & Solidarity
+* [ ] **Mobilization Forecasting**: Use Monte Carlo simulations to predict turnout for rallies based on previous engagement and geographic distribution.
+* [ ] **Global Solidarity Bridge**: Secure protocol for cross-border bargaining coordination between international locals of the same multinational employer.
+* [ ] Mobilization planner (Turnout targets, volunteer assignments).
+* [ ] Strike fund simulator and management.
+* [ ] Immutable audit log for all sensitive data access.
+
+== Future Horizons (v2.0+)
+
+=== Labor Intelligence
+* [ ] **Causal Organizing Models**: Use `Causals.jl` to identify the most effective organizing interventions for specific workforce demographics.
+* [ ] **Automated Power Mapping**: Use network analysis to identify "Natural Leaders" based on communication patterns and sentiment (linking to `PostDisciplinary.jl`).
+
+=== Verified Bargaining
+* [ ] **Axiomatic Contract Proofs**: Use `Axiom.jl` to formally prove that a proposed contract change doesn't violate specific "Floor" standards or equitable distribution rules.
+* [ ] **Economic Impact Verification**: Link with `Cliometrics.jl` to provide historical context and verified economic impact reports for labor negotiations.
+
+=== Decentralized Solidarity
+* [ ] **Secure Member Voting**: Implement zero-knowledge, verifiable voting protocols for contract ratifications and strike votes.
+* [ ] **Solidarity Gossip Protocol**: Enable secure, encrypted communication between different union locals using `Skein.jl` federated search concepts.

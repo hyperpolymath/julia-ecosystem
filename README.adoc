@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Hyperpolymath Julia Ecosystem
+:toc: macro
+:toclevels: 2
+:icons: font
+
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
+
+*A unified framework for post-disciplinary research, organizing, and verified computing.*
+
+toc::[]
+
+== Overview
+
+This is the central monorepo for the **Hyperpolymath Julia Ecosystem**. It consolidates 20+ specialized libraries into a single, cohesive research and development environment. From formal logic and cryptography to historical dynamics and labor organizing, this ecosystem provides the "Post-Disciplinary Glue" to tackle complex global challenges.
+
+== Repository Map
+
+=== 🧠 Logic & Verification
+* link:packages/Axiom.jl[Axiom.jl]: Provably correct machine learning and formal verification.
+* link:packages/SMTLib.jl[SMTLib.jl]: Julia interface for SMT solvers (Z3, CVC5).
+* link:packages/PolyglotFormalisms.jl[PolyglotFormalisms.jl]: Formally verified cross-language common library.
+* link:packages/ZeroProb.jl[ZeroProb.jl]: Reasoning about measure-zero events and black swans.
+
+=== 🛡️ Security & Forensics
+* link:packages/ProvenCrypto.jl[ProvenCrypto.jl]: Formally verified PQC and cryptographic protocols.
+* link:packages/InvestigativeJournalist.jl[InvestigativeJournalist.jl]: High-intelligence forensics and secure evidence lockers.
+
+=== 🏛️ History & Social Science
+* link:packages/Cliodynamics.jl[Cliodynamics.jl]: Mathematical modeling of historical dynamics (DST).
+* link:packages/Cliometrics.jl[Cliometrics.jl]: Quantitative economic history and convergence analysis.
+* link:packages/Axiology.jl[Axiology.jl]: Formal value theory and ethical alignment for ML.
+* link:packages/ViableSystems.jl[ViableSystems.jl]: Organizational cybernetics (VSM) and Soft Systems Methodology (SSM).
+
+=== ✊ Organizing & Action
+* link:packages/TradeUnionist.jl[TradeUnionist.jl]: Data-driven labor organizing and spatial power mapping.
+* link:packages/PRComms.jl[PRComms.jl]: High-integrity strategic communications and crisis management.
+* link:packages/Exnovation.jl[Exnovation.jl]: Systematic phase-out of legacy practices and structures.
+* link:packages/BowtieRisk.jl[BowtieRisk.jl]: Structured hazard analysis and barrier modeling.
+
+=== 🎨 Mathematics & Play
+* link:packages/JuliaKids.jl[JuliaKids.jl]: Joyful visual coding for children with Minecraft/KSP interop.
+* link:packages/KnotTheory.jl[KnotTheory.jl]: Computational knot theory and invariants.
+* link:packages/Skein.jl[Skein.jl]: Persistence layer for knot-theoretic data.
+* link:packages/HackenbushGames.jl[HackenbushGames.jl]: Combinatorial game theory toolkit.
+* link:packages/Cladistics.jl[Cladistics.jl]: Phylogenetic analysis and evolutionary relationships.
+
+=== ⚙️ Orchestration & Meta
+* link:packages/PostDisciplinary.jl[PostDisciplinary.jl]: The universal graph linking all disciplinary modules.
+* link:packages/JuliaPackage-Reuse-Audit.jl[JuliaPackageSpitter.jl]: Automated scaffolding for new ecosystem libraries.
+* link:packages/MacroPower.jl[MacroPower.jl]: Low-code automation and workflow engine.
+* link:packages/ShellIntegration.jl[ShellIntegration.jl]: Unified shell interface (PowerShell & Valence).
+* link:packages/MinixSDK.jl[MinixSDK.jl]: Research foundation for Julia-to-MINIX 3 microkernel development.
+* link:packages/SoftwareSovereign.jl[SoftwareSovereign.jl]: Universal software policy engine and license-aware discovery.
+
+=== 🔌 The Metal Layer (Subdivided LowLevel)
+* link:packages/LowLevel.jl[LowLevel.jl]: The meta-orchestrator for high-integrity hardware control.
+* link:packages/SiliconCore.jl[SiliconCore.jl]: Multi-arch Assembly, CPUID, and manual memory arenas.
+* link:packages/AcceleratorGate.jl[AcceleratorGate.jl]: GPU, NPU, and TPU driver dispatch.
+* link:packages/QuantumCircuit.jl[QuantumCircuit.jl]: QPU abstraction and reversible computing.
+* link:packages/HardwareResilience.jl[HardwareResilience.jl]: Self-healing, diagnostics, and fault-recovery.
+* link:packages/FirmwareAudit.jl[FirmwareAudit.jl]: BIOS, UEFI, ACPI, and RAID telemetry.
+
+== Development in the Monorepo
+
+To work on a specific package within this repo:
+
+[source,bash]
+----
+# Example: Testing PRComms.jl
+cd packages/PRComms.jl
+julia --project=. -e 'using Pkg; Pkg.test()'
+----
+
+=== Registration
+When registering these packages, use the `subdir` argument:
+`@JuliaRegistrator register subdirectory=packages/PackageName.jl`
+
+== License
+
+All packages in this ecosystem are licensed under the **Palimpsest-MPL-1.0 License** (PMPL-1.0-or-later). See the LICENSE file in the root and in each package subdirectory for details.
+
+'''
+_Synthesis is the ultimate discipline._

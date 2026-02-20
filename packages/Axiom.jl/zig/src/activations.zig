@@ -81,6 +81,90 @@ pub fn relu6(input: []const f32, output: []f32) void {
     }
 }
 
+/// Sigmoid in-place
+pub fn sigmoid_inplace(data: []f32) void {
+    const one_vec: Vec = @splat(1.0);
+    const zero_vec: Vec = @splat(0.0);
+    const n = data.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = data[i..][0..VEC_SIZE].*;
+        const neg_x = zero_vec - x_vec;
+        data[i..][0..VEC_SIZE].* = one_vec / (one_vec + @exp(neg_x));
+    }
+
+    while (i < n) : (i += 1) {
+        data[i] = 1.0 / (1.0 + @exp(-data[i]));
+    }
+}
+
+/// Tanh in-place
+pub fn tanh_inplace(data: []f32) void {
+    const one_vec: Vec = @splat(1.0);
+    const two_vec: Vec = @splat(2.0);
+    const n = data.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = data[i..][0..VEC_SIZE].*;
+        const exp_2x = @exp(two_vec * x_vec);
+        data[i..][0..VEC_SIZE].* = (exp_2x - one_vec) / (exp_2x + one_vec);
+    }
+
+    while (i < n) : (i += 1) {
+        const exp_2x = @exp(2.0 * data[i]);
+        data[i] = (exp_2x - 1.0) / (exp_2x + 1.0);
+    }
+}
+
+/// GELU in-place
+pub fn gelu_inplace(data: []f32) void {
+    const sqrt_2_over_pi_vec: Vec = @splat(0.7978845608028654);
+    const coeff_vec: Vec = @splat(0.044715);
+    const half_vec: Vec = @splat(0.5);
+    const one_vec: Vec = @splat(1.0);
+    const two_vec: Vec = @splat(2.0);
+    const n = data.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = data[i..][0..VEC_SIZE].*;
+        const x3 = x_vec * x_vec * x_vec;
+        const inner = sqrt_2_over_pi_vec * (x_vec + coeff_vec * x3);
+        const exp_2inner = @exp(two_vec * inner);
+        const tanh_val = one_vec - two_vec / (exp_2inner + one_vec);
+        data[i..][0..VEC_SIZE].* = half_vec * x_vec * (one_vec + tanh_val);
+    }
+
+    while (i < n) : (i += 1) {
+        const x = data[i];
+        const x3 = x * x * x;
+        const inner = 0.7978845608028654 * (x + 0.044715 * x3);
+        const exp_2i = @exp(2.0 * inner);
+        data[i] = 0.5 * x * (1.0 + (1.0 - 2.0 / (exp_2i + 1.0)));
+    }
+}
+
+/// Swish in-place
+pub fn swish_inplace(data: []f32) void {
+    const one_vec: Vec = @splat(1.0);
+    const zero_vec: Vec = @splat(0.0);
+    const n = data.len;
+
+    var i: usize = 0;
+    while (i + VEC_SIZE <= n) : (i += VEC_SIZE) {
+        const x_vec: Vec = data[i..][0..VEC_SIZE].*;
+        const neg_x = zero_vec - x_vec;
+        const sig = one_vec / (one_vec + @exp(neg_x));
+        data[i..][0..VEC_SIZE].* = x_vec * sig;
+    }
+
+    while (i < n) : (i += 1) {
+        data[i] = data[i] / (1.0 + @exp(-data[i]));
+    }
+}
+
 // ============================================================================
 // GELU (Gaussian Error Linear Unit)
 // ============================================================================

@@ -370,6 +370,45 @@ function backend_softplus(::ZigBackend, x::Array{Float32})
 end
 
 # ============================================================================
+# In-place Activation Functions (zero-allocation inference)
+# ============================================================================
+
+"""ReLU in-place via Zig."""
+function backend_relu!(::ZigBackend, x::Array{Float32})
+    zig_available() || return (x .= max.(zero(Float32), x))
+    @zig_call axiom_relu_inplace Cvoid (Ptr{Float32}, Csize_t) x length(x)
+    x
+end
+
+"""Sigmoid in-place via Zig."""
+function backend_sigmoid!(::ZigBackend, x::Array{Float32})
+    zig_available() || return (x .= 1 ./ (1 .+ exp.(-x)))
+    @zig_call axiom_sigmoid_inplace Cvoid (Ptr{Float32}, Csize_t) x length(x)
+    x
+end
+
+"""Tanh in-place via Zig."""
+function backend_tanh!(::ZigBackend, x::Array{Float32})
+    zig_available() || return (x .= tanh.(x))
+    @zig_call axiom_tanh_inplace Cvoid (Ptr{Float32}, Csize_t) x length(x)
+    x
+end
+
+"""GELU in-place via Zig."""
+function backend_gelu!(::ZigBackend, x::Array{Float32})
+    zig_available() || return (x .= gelu(x))
+    @zig_call axiom_gelu_inplace Cvoid (Ptr{Float32}, Csize_t) x length(x)
+    x
+end
+
+"""Swish in-place via Zig."""
+function backend_swish!(::ZigBackend, x::Array{Float32})
+    zig_available() || return (x .= swish(x))
+    @zig_call axiom_swish_inplace Cvoid (Ptr{Float32}, Csize_t) x length(x)
+    x
+end
+
+# ============================================================================
 # Convolution
 # ============================================================================
 

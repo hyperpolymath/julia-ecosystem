@@ -289,6 +289,30 @@ function backend_log_softmax(sb::SmartBackend, x::Array{Float32}, dim::Int)
     end
 end
 
+# ============================================================================
+# In-place SmartBackend dispatch
+# ============================================================================
+
+function backend_relu!(sb::SmartBackend, x::Array{Float32})
+    backend_relu!(_smart_zig_or_julia(sb), x)
+end
+
+function backend_sigmoid!(sb::SmartBackend, x::Array{Float32})
+    backend_sigmoid!(_smart_zig_or_julia(sb), x)
+end
+
+function backend_tanh!(sb::SmartBackend, x::Array{Float32})
+    backend_tanh!(_smart_zig_or_julia(sb), x)
+end
+
+function backend_gelu!(sb::SmartBackend, x::Array{Float32})
+    backend_gelu!(_smart_zig_or_julia(sb), x)
+end
+
+function backend_swish!(sb::SmartBackend, x::Array{Float32})
+    backend_swish!(_smart_zig_or_julia(sb), x)
+end
+
 # Global current backend
 const _current_backend = Ref{AbstractBackend}(JuliaBackend())
 

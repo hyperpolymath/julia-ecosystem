@@ -157,6 +157,31 @@ function backend_rmsnorm(
 end
 
 # ============================================================================
+# In-place Activations (mutate input, zero allocation)
+# ============================================================================
+
+function backend_relu!(::JuliaBackend, x::AbstractArray{T}) where T
+    x .= max.(zero(T), x)
+end
+
+function backend_sigmoid!(::JuliaBackend, x::AbstractArray{T}) where T
+    x .= one(T) ./ (one(T) .+ exp.(-x))
+end
+
+function backend_tanh!(::JuliaBackend, x::AbstractArray)
+    x .= tanh.(x)
+end
+
+function backend_gelu!(::JuliaBackend, x::AbstractArray{T}) where T
+    c = T(sqrt(2 / π))
+    x .= T(0.5) .* x .* (one(T) .+ tanh.(c .* (x .+ T(0.044715) .* x .^ 3)))
+end
+
+function backend_swish!(::JuliaBackend, x::AbstractArray{T}) where T
+    x .= x .* (one(T) ./ (one(T) .+ exp.(-x)))
+end
+
+# ============================================================================
 # Normalization
 # ============================================================================
 

@@ -6,7 +6,7 @@
       ((version . "1.0.0")
        (schema-version . "1")
        (created . "2026-01-10T13:47:48+00:00")
-       (updated . "2026-02-20T14:30:00+00:00")
+       (updated . "2026-02-20T15:10:00+00:00")
        (project . "Axiom.jl")
        (repo . "Axiom.jl")))
 
@@ -49,7 +49,12 @@
           "backend-aware-layernorm-rmsnorm-forward"
           "multi-threaded-dispatch-4-threads-64k-threshold"
           "rust-backend-removed-zig-sole-native"
-          "external-benchmarks-axiom-flux-pytorch"))))
+          "external-benchmarks-axiom-flux-pytorch"
+          "simd-swish-elu-selu-softplus-mish-softmax-layernorm"
+          "batch-parallel-threading-softmax-layernorm-rmsnorm"
+          "row-major-ffi-conversion-correct"
+          "inplace-activations-relu-sigmoid-tanh-gelu-swish-zero-alloc"
+          "36-zig-ffi-exports-400kb"))))
 
     (route-to-mvp
       ((milestones

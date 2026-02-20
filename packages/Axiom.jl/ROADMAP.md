@@ -5,7 +5,7 @@
 Axiom.jl provides:
 - Core tensor/layer pipeline in Julia
 - Verification checks (`@ensure`, property checks, certificates)
-- Optional Rust backend integration hooks
+- High-performance Zig backend with SIMD vectorization and multi-threaded dispatch
 - GPU extension hooks for CUDA/ROCm/Metal
 
 Current focus is stabilization: production-grade build/test/runtime reliability, accurate docs, and explicit feature status.
@@ -13,7 +13,7 @@ Current focus is stabilization: production-grade build/test/runtime reliability,
 ## Near-Term Plan
 
 ### Must
-- [x] Complete backend parity and reliability for CPU + Rust + GPU extension paths.
+- [x] Complete backend parity and reliability for CPU + Zig + GPU extension paths.
 - [x] Harden verification/certificate workflows for repeatable CI and artifact integrity.
 - [x] Keep README/wiki claims aligned with tested behavior.
 
@@ -23,7 +23,7 @@ Must execution order (sorted):
 3. README/wiki claim alignment sweep - Completed (2026-02-16).
 
 Must completion gates:
-- [x] Core-op parity tests pass on CPU Julia and Rust backend (matmul, dense, conv, normalization, activations) with documented tolerance budgets.
+- [x] Core-op parity tests pass on CPU Julia and Zig backend (matmul, dense, conv, normalization, activations) with documented tolerance budgets.
 - [x] GPU extension paths (CUDA/ROCm/Metal) have deterministic CI jobs where hardware is available, and explicit fallback-behavior tests where it is not.
 - [x] `instantiate/build/precompile/test` succeeds in CI on supported Julia versions without manual steps.
 - [x] Runtime smoke tests for documented examples pass on CPU and at least one accelerated backend.
@@ -47,7 +47,7 @@ Must progress snapshot (2026-02-16):
 - [ ] Strengthen release automation and compatibility testing.
 
 Should completion gates:
-- [ ] Baseline benchmark suite published for CPU Julia, Rust, and GPU extension paths with trend tracking.
+- [ ] Baseline benchmark suite published for CPU Julia, Zig, and GPU extension paths with trend tracking.
 - [ ] Verification diagnostics include actionable counterexample metadata and failure categorization.
 - [ ] Compatibility matrix is validated across OS/Julia combinations used by supported deployments.
 - [ ] Release process produces versioned artifacts and changelog validation automatically.

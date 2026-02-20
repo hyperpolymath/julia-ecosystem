@@ -144,6 +144,9 @@ export MaxPool2d, AvgPool2d, GlobalAvgPool, Flatten
 # Activation functions (lowercase)
 export relu, sigmoid, tanh, softmax, gelu, leaky_relu
 
+# In-place backend activations (zero-allocation inference)
+export backend_relu!, backend_sigmoid!, backend_tanh!, backend_gelu!, backend_swish!
+
 # Activation layers (capitalized)
 export ReLU, Sigmoid, Tanh, Softmax, GELU, LeakyReLU
 

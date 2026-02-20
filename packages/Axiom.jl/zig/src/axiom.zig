@@ -9,7 +9,8 @@
 //! - 8-wide f32 SIMD vectorization for all activations
 //! - Multi-threaded dispatch (4 threads, 64K threshold for element-wise ops)
 //! - Batch-parallel threading for softmax/layernorm/rmsnorm
-//! - 32 FFI exports, ~340KB compiled .so
+//! - In-place activation variants (zero-allocation inference)
+//! - 36 FFI exports, ~400KB compiled .so
 
 const std = @import("std");
 const math = std.math;
@@ -94,6 +95,22 @@ export fn axiom_relu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {
 
 export fn axiom_relu_inplace(x_ptr: [*]f32, n: usize) void {
     activations.relu_inplace(x_ptr[0..n]);
+}
+
+export fn axiom_sigmoid_inplace(x_ptr: [*]f32, n: usize) void {
+    activations.sigmoid_inplace(x_ptr[0..n]);
+}
+
+export fn axiom_tanh_inplace(x_ptr: [*]f32, n: usize) void {
+    activations.tanh_inplace(x_ptr[0..n]);
+}
+
+export fn axiom_gelu_inplace(x_ptr: [*]f32, n: usize) void {
+    activations.gelu_inplace(x_ptr[0..n]);
+}
+
+export fn axiom_swish_inplace(x_ptr: [*]f32, n: usize) void {
+    activations.swish_inplace(x_ptr[0..n]);
 }
 
 export fn axiom_gelu(x_ptr: [*]const f32, y_ptr: [*]f32, n: usize) void {

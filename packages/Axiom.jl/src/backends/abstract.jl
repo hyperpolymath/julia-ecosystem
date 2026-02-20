@@ -4,6 +4,7 @@
 # Interface for different computation backends.
 
 using Libdl
+using LinearAlgebra: I
 
 """
     AbstractBackend
@@ -52,6 +53,15 @@ end
 GPU acceleration via Metal (Apple Silicon).
 """
 struct MetalBackend <: AbstractBackend
+    device::Int
+end
+
+"""
+    ROCmBackend
+
+GPU acceleration via ROCm (AMD GPUs).
+"""
+struct ROCmBackend <: AbstractBackend
     device::Int
 end
 
@@ -743,27 +753,203 @@ function optimize_model(model, target::CompilationTarget)
     optimized
 end
 
+"""
+    fold_batchnorm(model) -> model
+
+Fold BatchNorm parameters into preceding Dense/Conv layers for inference.
+
+For a Dense+BatchNorm pair:
+  y = γ * (Wx + b - μ) / √(σ² + ε) + β
+  = (γ/√(σ²+ε)) * W * x + (γ/√(σ²+ε)) * (b - μ) + β
+  = W_folded * x + b_folded
+
+This eliminates the BatchNorm as a separate operation.
+"""
+function fold_batchnorm(model::Pipeline)
+    layers = collect(model.layers)
+    new_layers = AbstractLayer[]
+    i = 1
+
+    while i <= length(layers)
+        if i < length(layers) && layers[i+1] isa BatchNorm && !layers[i+1].training
+            bn = layers[i+1]
+            layer = layers[i]
+
+            if layer isa Dense && bn.affine && bn.num_features == layer.out_features
+                # Fold BN into Dense
+                folded = _fold_bn_into_dense(layer, bn)
+                push!(new_layers, folded)
+                i += 2  # Skip the BatchNorm
+                continue
+            elseif layer isa Conv2d && bn.affine
+                # Fold BN into Conv2d
+                folded = _fold_bn_into_conv(layer, bn)
+                push!(new_layers, folded)
+                i += 2
+                continue
+            end
+        end
+
+        push!(new_layers, layers[i])
+        i += 1
+    end
+
+    length(new_layers) == length(layers) ? model : Pipeline(Tuple(new_layers))
+end
+
 function fold_batchnorm(model)
-    # For pipelines, the optimization is already handled in optimize_pipeline
-    model
+    model  # Non-pipeline models: nothing to fold
+end
+
+function _fold_bn_into_dense(dense::Dense, bn::BatchNorm)
+    inv_std = 1.0f0 ./ sqrt.(bn.running_var .+ bn.eps)
+    scale = bn.γ .* inv_std
+
+    # W_folded = diag(scale) * W (scale each output row)
+    new_weight = dense.weight .* scale'
+
+    # b_folded = scale * (b - μ) + β
+    b = dense.bias !== nothing ? dense.bias : zeros(Float32, dense.out_features)
+    new_bias = scale .* (b .- bn.running_mean) .+ bn.β
+
+    folded = Dense(dense.in_features, dense.out_features, dense.activation)
+    folded.weight .= new_weight
+    folded.bias .= new_bias
+    folded
+end
+
+function _fold_bn_into_conv(conv::Conv2d, bn::BatchNorm)
+    inv_std = 1.0f0 ./ sqrt.(bn.running_var .+ bn.eps)
+    scale = bn.γ .* inv_std
+
+    # Scale each output channel's weights
+    # conv.weight shape: (kH, kW, in_channels, out_channels)
+    new_weight = copy(conv.weight)
+    for c in 1:length(scale)
+        new_weight[:, :, :, c] .*= scale[c]
+    end
+
+    new_bias = if conv.bias !== nothing
+        scale .* (conv.bias .- bn.running_mean) .+ bn.β
+    else
+        scale .* (.-bn.running_mean) .+ bn.β
+    end
+
+    folded = Conv2d(conv.in_channels, conv.out_channels, conv.kernel_size,
+                    stride=conv.stride, padding=conv.padding)
+    folded.weight .= new_weight
+    if folded.bias !== nothing
+        folded.bias .= new_bias
+    end
+    folded
+end
+
+"""
+    fold_constants(model) -> model
+
+Pre-evaluate constant subexpressions in the model graph.
+For Pipelines: collapse adjacent Dense layers with identity activation
+(Dense(A) → Dense(B) = Dense(B*A)) when no activation is applied.
+"""
+function fold_constants(model::Pipeline)
+    layers = collect(model.layers)
+    new_layers = AbstractLayer[]
+    i = 1
+
+    while i <= length(layers)
+        if i < length(layers) &&
+           layers[i] isa Dense && layers[i].activation === identity &&
+           layers[i+1] isa Dense && layers[i+1].activation === identity &&
+           layers[i].out_features == layers[i+1].in_features
+            # Fuse two adjacent linear layers: y = W2 * W1 * x + W2*b1 + b2
+            d1, d2 = layers[i], layers[i+1]
+            fused_weight = d1.weight * d2.weight  # (in1, out1) * (out1, out2) = (in1, out2)
+            fused_bias = if d1.bias !== nothing && d2.bias !== nothing
+                d2.weight' * d1.bias .+ d2.bias  # W2^T * b1 + b2
+            elseif d2.bias !== nothing
+                d2.bias
+            elseif d1.bias !== nothing
+                d2.weight' * d1.bias
+            else
+                nothing
+            end
+
+            fused = Dense(d1.in_features, d2.out_features)
+            fused.weight .= fused_weight
+            if fused_bias !== nothing && fused.bias !== nothing
+                fused.bias .= fused_bias
+            end
+            push!(new_layers, fused)
+            i += 2
+            continue
+        end
+
+        push!(new_layers, layers[i])
+        i += 1
+    end
+
+    length(new_layers) == length(layers) ? model : Pipeline(Tuple(new_layers))
 end
 
 function fold_constants(model)
-    # No-op for most models - constants are evaluated at definition time in Julia
     model
+end
+
+"""
+    eliminate_dead_code(model) -> model
+
+Remove layers that have no effect on the output:
+- Dense layers that are identity transforms (weight ≈ I, bias ≈ 0)
+- Dropout layers in inference mode (dropout rate = 0 or training = false)
+"""
+function eliminate_dead_code(model::Pipeline)
+    layers = collect(model.layers)
+    new_layers = AbstractLayer[]
+
+    for layer in layers
+        if _is_dead_layer(layer)
+            continue
+        end
+        push!(new_layers, layer)
+    end
+
+    length(new_layers) == length(layers) ? model : Pipeline(Tuple(new_layers))
 end
 
 function eliminate_dead_code(model)
-    # In Julia, unused code is typically not compiled anyway
     model
 end
 
+function _is_dead_layer(layer::Dense)
+    # Check if Dense is approximately identity: W ≈ I and b ≈ 0
+    layer.in_features != layer.out_features && return false
+    layer.activation !== identity && return false
+
+    w_is_identity = isapprox(layer.weight, Matrix{Float32}(I, layer.in_features, layer.out_features), atol=1e-6)
+    b_is_zero = layer.bias === nothing || all(abs.(layer.bias) .< 1e-6)
+
+    w_is_identity && b_is_zero
+end
+
+function _is_dead_layer(layer)
+    # Check for Dropout with 0 rate or in eval mode
+    if hasproperty(layer, :p) && hasproperty(layer, :training)
+        return layer.p == 0 || !layer.training
+    end
+    false
+end
+
 function apply_aggressive_optimizations(model, target::CompilationTarget)
-    # Aggressive optimizations that may affect numerical precision
-    # - Fuse more operations
-    # - Use approximate math functions
-    # - Enable auto-vectorization hints
-    model
+    # Run fold passes iteratively until convergence
+    prev = model
+    for _ in 1:3
+        optimized = fold_batchnorm(prev)
+        optimized = fold_constants(optimized)
+        optimized = eliminate_dead_code(optimized)
+        optimized === prev && break
+        prev = optimized
+    end
+    prev
 end
 
 function to_float16(model)
@@ -1321,6 +1507,232 @@ select_device!(::FPGABackend, device::Int) = FPGABackend(device)
 select_device!(::VPUBackend, device::Int) = VPUBackend(device)
 select_device!(::QPUBackend, device::Int) = QPUBackend(device)
 select_device!(::CryptoBackend, device::Int) = CryptoBackend(device)
+
+# ============================================================================
+# Resource-Aware Hardware Dispatch
+# ============================================================================
+
+"""
+    DeviceResources
+
+Hardware resource descriptor for intelligent workload placement.
+All values in bytes (memory) or count (compute units).
+"""
+struct DeviceResources
+    total_memory::Int64      # Total device memory in bytes
+    available_memory::Int64  # Currently available memory
+    compute_units::Int       # Number of cores/SMs/CUs
+    clock_mhz::Int           # Clock speed in MHz
+    bandwidth_gbps::Float64  # Memory bandwidth in GB/s
+end
+
+"""
+    query_device_resources(backend::AbstractBackend) -> Union{DeviceResources, Nothing}
+
+Query hardware resources for a given backend. Returns `nothing` if
+resource information is unavailable (e.g., no driver or env vars).
+"""
+function query_device_resources(::JuliaBackend)
+    mem = Sys.total_memory()
+    free = Sys.free_memory()
+    cores = Sys.CPU_THREADS
+    DeviceResources(mem, free, cores, 0, 0.0)
+end
+
+function query_device_resources(backend::AbstractBackend)
+    # Read from environment variables (set by driver wrappers)
+    key = _resource_env_prefix(backend)
+    total_mem = _env_int64("$(key)_TOTAL_MEMORY", 0)
+    avail_mem = _env_int64("$(key)_AVAILABLE_MEMORY", total_mem)
+    compute = _env_int("$(key)_COMPUTE_UNITS", 0)
+    clock = _env_int("$(key)_CLOCK_MHZ", 0)
+    bw = _env_float("$(key)_BANDWIDTH_GBPS", 0.0)
+
+    total_mem == 0 && return nothing
+    DeviceResources(total_mem, avail_mem, compute, clock, bw)
+end
+
+function _resource_env_prefix(::CUDABackend)   "AXIOM_CUDA" end
+function _resource_env_prefix(::ROCmBackend)   "AXIOM_ROCM" end
+function _resource_env_prefix(::MetalBackend)  "AXIOM_METAL" end
+function _resource_env_prefix(b::CoprocessorBackend)
+    "AXIOM_$(_coprocessor_label(b))"
+end
+function _resource_env_prefix(::RustBackend)   "AXIOM_RUST" end
+function _resource_env_prefix(::ZigBackend)    "AXIOM_ZIG" end
+
+function _env_int64(key::String, default::Int64)
+    raw = strip(get(ENV, key, ""))
+    isempty(raw) && return default
+    parsed = tryparse(Int64, raw)
+    parsed === nothing ? default : parsed
+end
+
+function _env_int(key::String, default::Int)
+    raw = strip(get(ENV, key, ""))
+    isempty(raw) && return default
+    parsed = tryparse(Int, raw)
+    parsed === nothing ? default : parsed
+end
+
+function _env_float(key::String, default::Float64)
+    raw = strip(get(ENV, key, ""))
+    isempty(raw) && return default
+    parsed = tryparse(Float64, raw)
+    parsed === nothing ? default : parsed
+end
+
+"""
+    estimate_model_memory(model) -> Int64
+
+Estimate memory footprint of a model in bytes.
+Counts all parameter arrays (weights, biases, running stats).
+"""
+function estimate_model_memory(model)
+    total = Int64(0)
+    if model isa Pipeline
+        for layer in model.layers
+            total += _layer_memory(layer)
+        end
+    else
+        total += _layer_memory(model)
+    end
+    total
+end
+
+function _layer_memory(layer)
+    mem = Int64(0)
+    try
+        params = parameters(layer)
+        for (_, param) in pairs(params)
+            if param isa AbstractArray
+                mem += sizeof(param)
+            end
+        end
+    catch
+    end
+    # Add running stats for BatchNorm
+    if layer isa BatchNorm
+        mem += sizeof(layer.running_mean) + sizeof(layer.running_var)
+    end
+    mem
+end
+
+"""
+    select_best_backend(model; prefer::Symbol=:auto) -> AbstractBackend
+
+Automatically select the best available backend for a model based on:
+1. Hardware availability
+2. Device memory vs model size
+3. User preference
+
+Returns JuliaBackend as fallback if no accelerator is suitable.
+"""
+function select_best_backend(model; prefer::Symbol=:auto)
+    model_bytes = estimate_model_memory(model)
+    # Add 2x overhead for activations/gradients during inference
+    required_memory = model_bytes * 2
+
+    candidates = Tuple{AbstractBackend, DeviceResources, Float64}[]
+
+    # Check GPU backends
+    for (avail_fn, count_fn, constructor) in (
+        (cuda_available, cuda_device_count, CUDABackend),
+        (rocm_available, rocm_device_count, ROCmBackend),
+        (metal_available, metal_device_count, MetalBackend),
+    )
+        if avail_fn() && count_fn() > 0
+            backend = constructor(0)
+            res = query_device_resources(backend)
+            if res !== nothing && res.available_memory >= required_memory
+                score = _compute_backend_score(res, required_memory, :gpu)
+                push!(candidates, (backend, res, score))
+            end
+        end
+    end
+
+    # Check coprocessor backends
+    for (avail_fn, count_fn, constructor) in (
+        (tpu_available,    tpu_device_count,    TPUBackend),
+        (npu_available,    npu_device_count,    NPUBackend),
+        (vpu_available,    vpu_device_count,    VPUBackend),
+        (qpu_available,    qpu_device_count,    QPUBackend),
+        (fpga_available,   fpga_device_count,   FPGABackend),
+    )
+        if avail_fn() && count_fn() > 0
+            backend = constructor(0)
+            res = query_device_resources(backend)
+            if res !== nothing && res.available_memory >= required_memory
+                score = _compute_backend_score(res, required_memory, :coprocessor)
+                push!(candidates, (backend, res, score))
+            end
+        end
+    end
+
+    # Sort by score (highest first)
+    sort!(candidates, by=x -> x[3], rev=true)
+
+    if isempty(candidates)
+        @info "No accelerator has sufficient resources, using Julia CPU backend" model_bytes required_memory
+        return JuliaBackend()
+    end
+
+    best = candidates[1]
+    @info "Selected backend" backend=typeof(best[1]) score=best[3] memory_available=best[2].available_memory model_requires=required_memory
+    best[1]
+end
+
+function _compute_backend_score(res::DeviceResources, required_memory::Int64, kind::Symbol)
+    # Score = weighted combination of compute capacity and memory headroom
+    memory_ratio = res.available_memory / max(required_memory, 1)
+    compute_score = log2(max(res.compute_units, 1))
+    bandwidth_score = res.bandwidth_gbps / 100.0  # Normalize to ~1.0 range
+
+    # GPU gets a bonus for ML workloads
+    kind_bonus = kind == :gpu ? 2.0 : 1.0
+
+    (memory_ratio * 0.3 + compute_score * 0.4 + bandwidth_score * 0.3) * kind_bonus
+end
+
+"""
+    resource_report(model) -> Dict
+
+Generate a resource utilization report for a model across all available backends.
+"""
+function resource_report(model)
+    model_bytes = estimate_model_memory(model)
+
+    backends = Dict{String, Any}()
+    for (label, constructor, avail_fn, count_fn) in (
+        ("Julia",  () -> JuliaBackend(), () -> true,  () -> 1),
+        ("CUDA",   () -> CUDABackend(0), cuda_available, cuda_device_count),
+        ("ROCm",   () -> ROCmBackend(0), rocm_available, rocm_device_count),
+        ("Metal",  () -> MetalBackend(0), metal_available, metal_device_count),
+        ("TPU",    () -> TPUBackend(0),  tpu_available, tpu_device_count),
+        ("NPU",    () -> NPUBackend(0),  npu_available, npu_device_count),
+    )
+        if avail_fn() && count_fn() > 0
+            res = query_device_resources(constructor())
+            backends[label] = Dict(
+                "resources" => res === nothing ? nothing : Dict(
+                    "total_memory" => res.total_memory,
+                    "available_memory" => res.available_memory,
+                    "compute_units" => res.compute_units,
+                ),
+                "model_fits" => res !== nothing && res.available_memory >= model_bytes * 2,
+                "utilization" => res !== nothing && res.total_memory > 0 ?
+                    round(model_bytes / res.total_memory * 100, digits=1) : nothing,
+            )
+        end
+    end
+
+    Dict(
+        "model_memory_bytes" => model_bytes,
+        "model_memory_mb" => round(model_bytes / 1024^2, digits=2),
+        "recommended_backend" => string(typeof(select_best_backend(model))),
+        "backends" => backends,
+    )
+end
 
 """
     RustCompiledModel

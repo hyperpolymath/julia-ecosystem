@@ -6,14 +6,7 @@
 #
 # Refs: Issue #12 - GPU abstraction hooks
 
-"""
-    ROCmBackend
-
-GPU acceleration via ROCm (AMD GPUs).
-"""
-struct ROCmBackend <: AbstractBackend
-    device::Int
-end
+# ROCmBackend struct is defined in abstract.jl alongside CUDABackend/MetalBackend
 
 # ============================================================================
 # GPU Detection and Initialization

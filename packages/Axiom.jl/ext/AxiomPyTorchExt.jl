@@ -142,8 +142,23 @@ function _convert_layer(name::String, params::Dict)
         end
 
         return layer
+
+    elseif haskey(params, "weight") && ndims(params["weight"]) == 1 && haskey(params, "bias") && ndims(params["bias"]) == 1
+        # LayerNorm (1D weight + 1D bias, no running stats)
+        num_features = length(params["weight"])
+        layer = LayerNorm(num_features)
+
+        if layer.γ !== nothing
+            layer.γ .= params["weight"]
+        end
+        if layer.β !== nothing
+            layer.β .= params["bias"]
+        end
+
+        return layer
     end
 
+    @debug "Skipping unrecognized layer" name
     nothing
 end
 
@@ -224,6 +239,23 @@ end
 
 function _to_pytorch_layer(::Flatten)
     nn[].Flatten()
+end
+
+function _to_pytorch_layer(layer::LayerNorm)
+    shape = layer.normalized_shape isa Int ? (layer.normalized_shape,) : layer.normalized_shape
+    pytorch_layer = nn[].LayerNorm(shape)
+    if layer.γ !== nothing
+        pytorch_layer.weight.data.copy_(torch[].from_numpy(vec(layer.γ)))
+    end
+    if layer.β !== nothing
+        pytorch_layer.bias.data.copy_(torch[].from_numpy(vec(layer.β)))
+    end
+    pytorch_layer
+end
+
+function _to_pytorch_layer(layer)
+    @warn "Unknown layer type $(typeof(layer)) for PyTorch export, wrapping as Identity"
+    nn[].Identity()
 end
 
 """

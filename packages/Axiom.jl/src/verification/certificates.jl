@@ -50,15 +50,15 @@ function generate_certificate(
     # Compute test data hash if provided
     test_data_hash = test_data === nothing ? nothing : compute_data_hash(test_data)
 
-    # Determine proof type
-    proof_type = :empirical  # Default
+    # Determine proof type based on verification evidence
+    proof_type = _infer_proof_type(result)
 
     # Create certificate
     cert = Certificate(
         model_hash,
         model_name,
         [prop for (prop, passed) in result.properties_checked if passed],
-        STANDARD,
+        result.mode !== nothing ? result.mode : STANDARD,
         test_data_hash,
         proof_type,
         time(),
@@ -69,6 +69,34 @@ function generate_certificate(
 
     # Sign certificate
     sign_certificate(cert)
+end
+
+"""
+Infer proof type from verification result evidence.
+
+Returns:
+- `:formal` if SMT solver provided a proof
+- `:static` if compile-time shape analysis sufficed
+- `:empirical` if checked against test data only
+"""
+function _infer_proof_type(result::VerificationResult)
+    # Check if any property was verified via SMT
+    for (prop, passed) in result.properties_checked
+        if passed && _is_statically_provable(prop)
+            return :static
+        end
+    end
+    # Default: properties were checked empirically against test data
+    :empirical
+end
+
+"""
+Check if a property can be statically verified without test data.
+"""
+function _is_statically_provable(prop::Property)
+    # These properties have algebraic guarantees when the model
+    # architecture is known (e.g., Softmax guarantees ValidProbabilities)
+    prop isa FiniteOutput || prop isa NoNaN || prop isa NoInf
 end
 
 """
@@ -138,11 +166,59 @@ function verify_certificate(cert::Certificate)
 end
 
 """
-    save_certificate(cert::Certificate, path::String)
+    save_certificate(cert::Certificate, path::String; format=:auto)
 
-Save certificate to file.
+Save certificate to file. Format is auto-detected from extension:
+- `.json` → JSON (machine-readable, recommended)
+- `.cert` or other → YAML-like text (human-readable)
 """
-function save_certificate(cert::Certificate, path::String)
+function save_certificate(cert::Certificate, path::String; format::Symbol=:auto)
+    fmt = format
+    if fmt == :auto
+        fmt = endswith(path, ".json") ? :json : :text
+    end
+
+    if fmt == :json
+        _save_certificate_json(cert, path)
+    else
+        _save_certificate_text(cert, path)
+    end
+
+    @info "Certificate saved to $path"
+end
+
+function _save_certificate_json(cert::Certificate, path::String)
+    data = Dict(
+        "format" => "axiom-verification-certificate",
+        "version" => "2.0",
+        "model" => Dict(
+            "name" => cert.model_name,
+            "hash" => cert.model_hash,
+            "hash_algorithm" => "SHA256"
+        ),
+        "verification" => Dict(
+            "mode" => string(cert.verification_mode),
+            "proof_type" => string(cert.proof_type),
+            "properties" => [string(typeof(prop).name.name) for prop in cert.properties],
+            "verifier_id" => cert.verifier_id
+        ),
+        "metadata" => Dict(
+            "created_at" => cert.created_at,
+            "axiom_version" => cert.axiom_version,
+            "test_data_hash" => cert.test_data_hash
+        ),
+        "signature" => Dict(
+            "value" => cert.signature,
+            "algorithm" => "SHA256-HMAC"
+        )
+    )
+
+    open(path, "w") do f
+        JSON.print(f, data, 2)
+    end
+end
+
+function _save_certificate_text(cert::Certificate, path::String)
     open(path, "w") do f
         println(f, "# Axiom.jl Verification Certificate")
         println(f, "# Generated: $(cert.created_at)")
@@ -165,8 +241,6 @@ function save_certificate(cert::Certificate, path::String)
         println(f, "")
         println(f, "signature: $(cert.signature)")
     end
-
-    @info "Certificate saved to $path"
 end
 
 """

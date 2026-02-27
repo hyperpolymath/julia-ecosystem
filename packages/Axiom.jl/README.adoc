@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
+// (PMPL-1.0-or-later preferred; MPL-2.0 required for Julia General registry)
 = Axiom.jl
 :toc: macro
 :toclevels: 2
 :icons: font
 :source-highlighter: rouge
 
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: MPL-2.0,link="https://www.mozilla.org/en-US/MPL/2.0/"]
 image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia,link="https://julialang.org/"]
 image:https://img.shields.io/badge/Zig-Backend-F7A41D?logo=zig[Zig,link="https://ziglang.org/"]
 
@@ -343,7 +344,9 @@ export AXIOM_SMT_SOLVER=z3
 
 == License
 
-Palimpsest-MPL-1.0 License - see link:LICENSE[LICENSE] for details.
+Licensed under the https://www.mozilla.org/en-US/MPL/2.0/[Mozilla Public License 2.0 (MPL-2.0)].
+
+This project's philosophy of sharing is guided by the https://github.com/hyperpolymath/palimpsest-license[Palimpsest License (PMPL-1.0)] -- a next-generation, quantum-safe, AI-aware copyleft license designed for the post-quantum era, with built-in provisions for machine learning model governance, reproducible builds, and ethical compute. The Palimpsest License is currently in development and undergoing community review. Until it achieves full SPDX recognition, Axiom.jl is distributed under MPL-2.0, on which the Palimpsest License is based. The spirit is the same: share improvements, keep the ecosystem open, and give downstream users the freedom to build on verified foundations.
 
 == Acknowledgments
 

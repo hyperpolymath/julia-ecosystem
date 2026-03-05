@@ -1,0 +1,83 @@
+["0 - 0.1.1"]
+SHA = "0.7"
+
+["0 - 0.1.11"]
+LiveServer = "1.2.0-1"
+PlutoLinks = "0.1.6-0.1"
+PlutoUI = "0.7.55-0.7"
+julia = "1.6.0-1"
+
+["0 - 0.1.6"]
+Pluto = "0.19.38-0.19"
+PlutoSliderServer = "0.3.28-0.3"
+
+["0 - 0.1.7"]
+CommonMark = "0.8"
+
+["0 - 1"]
+BetterFileWatching = "0.1"
+Gumbo = "0.8"
+InteractiveUtils = "1"
+Logging = "1"
+Markdown = "1"
+MarkdownLiteral = "0.1"
+ProgressLogging = "0.1"
+RelocatableFolders = "1"
+ThreadsX = "0.1"
+Unicode = "1"
+YAML = "0.4"
+
+["0 - 1.0.2"]
+HypertextLiteral = "0.9"
+PlutoHooks = "0.0.5"
+
+["0.1.1 - 1"]
+Pkg = "1"
+
+["0.1.12 - 0"]
+Pluto = "0.19.38 - 0.20"
+PlutoSliderServer = ["0.3.28 - 0.3", "1"]
+julia = "1.6.0 - 1"
+
+["0.1.12 - 1"]
+LiveServer = "1.2.0 - 1"
+PlutoLinks = "0.1.6 - 0.1"
+PlutoUI = "0.7.55 - 0.7"
+
+["0.1.12 - 1.0.1"]
+CommonMark = "0.8 - 0.9"
+
+["0.1.2 - 0"]
+JSON = "0.21"
+
+["0.1.2 - 1"]
+Malt = "1"
+SHA = ["0.7", "1"]
+
+["0.1.7 - 0.1.11"]
+Pluto = "0.19.38-0.20"
+PlutoSliderServer = ["0.3.28-0.3", "1"]
+
+["0.1.8 - 0.1.11"]
+CommonMark = "0.8-0.9"
+
+[1]
+Pluto = "0.20"
+PlutoSliderServer = "1"
+julia = "1.10.0 - 1"
+
+["1.0.0"]
+JSON = "0.21"
+
+["1.0.1 - 1"]
+JSON = "1"
+
+["1.0.2 - 1.0.3"]
+CommonMark = "0.8 - 0.10"
+
+["1.0.3 - 1"]
+HypertextLiteral = ["0.9", "1"]
+PlutoHooks = ["0.0.5", "0.1"]
+
+["1.0.4 - 1"]
+CommonMark = ["0.8 - 0.10", "1"]

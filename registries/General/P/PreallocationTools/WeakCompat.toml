@@ -1,0 +1,26 @@
+["0.4.13 - 0.4.24"]
+ReverseDiff = "1"
+
+["0.4.15"]
+Symbolics = "5.12.0-5"
+
+["0.4.25 - 0.4.27"]
+ReverseDiff = "1.15.3-1"
+SparseConnectivityTracer = "0.6.12-0.6"
+
+["0.4.28"]
+SparseConnectivityTracer = "0.6.12 - 0.6"
+
+["0.4.28 - 0.4.30"]
+ReverseDiff = "1.15.3 - 1"
+
+["0.4.29 - 0.4.30"]
+SparseConnectivityTracer = ["0.6.12 - 0.6", "1"]
+
+["0.4.30"]
+ForwardDiff = "1.0.1 - 1"
+
+["0.4.31 - 1"]
+ForwardDiff = ["0.10.38 - 0.10", "1.0.1 - 1"]
+ReverseDiff = "1.16.0 - 1"
+SparseConnectivityTracer = "1"

@@ -1,0 +1,35 @@
+[0]
+ChooseOptimizer = "0.3"
+JuMP = "1"
+Test = "1"
+julia = "1"
+
+["0 - 0.0.2"]
+DataFrames = "1"
+LinearAlgebra = "1"
+SimpleDrawing = "0.2"
+SimpleDrawingObjects = "0.1"
+
+["0.0.3 - 0"]
+LatexPrint = "1"
+LinearAlgebraX = "0.2"
+
+["0.0.3 - 0.2.0"]
+PrettyTables = "2"
+
+["0.0.4 - 0"]
+Combinatorics = "1"
+LinearAlgebra = "1"
+
+["0.0.5 - 0"]
+Crayons = "4"
+
+["0.2.1 - 0"]
+PrettyTables = "3"
+
+["0.4.2 - 0"]
+Printf = "1"
+
+["0.4.3 - 0"]
+SimpleDrawing = "0.2"
+SimpleDrawingObjects = "0.1"

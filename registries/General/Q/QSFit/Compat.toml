@@ -1,0 +1,106 @@
+[0]
+CMPFit = "0.3"
+Cosmology = "1"
+Dierckx = "0.5"
+DustExtinction = "0.11"
+FITSIO = "0.17"
+Polyester = "0.7"
+
+["0 - 0.3.0"]
+GModelFit = "0.3.2-0.3"
+GModelFitViewer = "0.2.1-0.2"
+
+["0 - 0.3.1"]
+DelimitedFiles = "1.9.0-1"
+Gnuplot = "1.6.0-1"
+SortMerge = "1.4.0-1"
+SpecialFunctions = "2.3.0-2"
+Unitful = "1.19.0-1"
+UnitfulAstro = "1.2.0-1"
+julia = "1.8.0-1"
+
+["0 - 0.5"]
+DataStructures = "0.18"
+TextParse = "1"
+
+["0.3.1"]
+GModelFitViewer = "0.2.2-0.2"
+
+["0.3.1 - 0.3"]
+GModelFit = "0.4"
+
+["0.3.2 - 0.3"]
+DelimitedFiles = "1.9.0 - 1"
+GModelFitViewer = "0.2.2 - 0.2"
+Gnuplot = "1.6.0 - 1"
+SortMerge = "1.4.0 - 1"
+SpecialFunctions = "2.3.0 - 2"
+Unitful = "1.19.0 - 1"
+UnitfulAstro = "1.2.0 - 1"
+julia = "1.8.0 - 1"
+
+["0.4"]
+DelimitedFiles = "1.9.0-1"
+GModelFit = "0.5.4-0.5"
+GModelFitViewer = "0.2.3-0.2"
+Gnuplot = "1.6.0-1"
+SortMerge = "1.4.0-1"
+SpecialFunctions = "2.5.0-2"
+Unitful = "1.22.0-1"
+UnitfulAstro = "1.2.0-1"
+julia = "1.8.0-1"
+
+["0.5"]
+GModelFit = "0.6"
+Gnuplot = "1.6.0 - 1"
+
+["0.5 - 0"]
+DelimitedFiles = "1.9.0 - 1"
+SortMerge = "1.4.0 - 1"
+SparseArrays = "1.11.0 - 1"
+UnitfulAstro = "1.2.0 - 1"
+
+["0.5 - 0.5.2"]
+GModelFitViewer = "0.3"
+
+["0.5 - 0.7.3"]
+SpecialFunctions = "2.5.0 - 2"
+
+["0.5.0"]
+Unitful = "1.22.0 - 1"
+julia = "1.8.0 - 1"
+
+["0.5.1 - 0"]
+Unitful = "1.25.0 - 1"
+
+["0.5.1 - 0.7.3"]
+julia = "1.11.0 - 1"
+
+["0.5.3 - 0.7.2"]
+GModelFitViewer = "0.4"
+
+["0.6 - 0"]
+DataStructures = "0.19"
+Gnuplot = "1.7.0 - 1"
+
+["0.6 - 0.7.2"]
+GModelFit = "0.7"
+
+["0.7 - 0"]
+StatsBase = "0.34"
+
+["0.7 - 0.7.2"]
+GZip = "0.6"
+JSON = "1.2.0 - 1"
+
+["0.7.3"]
+TypedJSON = "0.1.1 - 0.1"
+
+["0.7.3 - 0"]
+GModelFit = "0.8"
+GModelFitViewer = "0.5"
+
+["0.7.4 - 0"]
+SpecialFunctions = "2.6.0 - 2"
+TypedJSON = "0.1"
+julia = "1.12.0 - 1"

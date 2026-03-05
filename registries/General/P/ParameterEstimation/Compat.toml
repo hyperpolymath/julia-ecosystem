@@ -1,0 +1,78 @@
+[0]
+DifferentialEquations = "7"
+HomotopyContinuation = "2"
+OrderedCollections = "1"
+ProgressMeter = "1"
+TestSetExtensions = "2"
+
+["0 - 0.1"]
+Symbolics = "4"
+
+["0 - 0.2"]
+Groebner = "0.2-0.3"
+LinearSolve = "1"
+Oscar = "0.10-0.11"
+SIAN = "1"
+TaylorSeries = "0.12-0.13"
+julia = "1"
+
+["0 - 0.3"]
+ModelingToolkit = "8"
+
+["0.2"]
+BenchmarkTools = "1"
+StructuralIdentifiability = "0.4"
+
+["0.2 - 0.4.0"]
+Symbolics = "4-5"
+
+["0.3"]
+Groebner = "0.2-0.5"
+Oscar = "0.10-0.20"
+SIAN = "1-1.5.10"
+StructuralIdentifiability = "0.4.9-0.5.30"
+julia = "1.9.0-1"
+
+["0.3 - 0"]
+BaryRational = "1"
+ForwardDiff = "0.10"
+PrecompileTools = "1"
+Suppressor = "0.2"
+TaylorDiff = "0.2"
+
+["0.3 - 0.4.1"]
+ArbNumerics = "1"
+
+["0.3 - 0.4.3"]
+LinearSolve = "2"
+TaylorSeries = "0.12-0.30"
+
+["0.4 - 0.4.3"]
+ModelingToolkit = "9"
+Test = "1.10.0-1"
+
+["0.4.0"]
+Groebner = "0.6-0.7"
+Nemo = "0.40-0.43"
+SIAN = "1.5.0-1"
+StructuralIdentifiability = "0.5.7-0.5"
+julia = "1.10.0-1"
+
+["0.4.1 - 0"]
+StructuralIdentifiability = "0.5"
+julia = "1"
+
+["0.4.1 - 0.4.3"]
+Groebner = "0.6-0.8"
+Nemo = "0.40-0.48"
+SIAN = "1.6.0-1"
+Symbolics = "4-6"
+
+["0.4.4 - 0"]
+Groebner = "0.9"
+LinearSolve = "3"
+ModelingToolkit = "10"
+Nemo = "0.40 - 0.52"
+SIAN = "1.7.0 - 1"
+TaylorSeries = "0.12 - 0.30"
+Test = "1.10.0 - 1"

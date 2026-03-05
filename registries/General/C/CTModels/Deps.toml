@@ -1,0 +1,26 @@
+[0]
+CTBase = "54762871-cc72-4466-b8e8-f6c8b58076cd"
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+MLStyle = "d8e11817-5142-5d16-987a-aa16d5891078"
+MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+
+["0.2 - 0"]
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+["0.2 - 0.6.4"]
+PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
+
+["0.2.2 - 0"]
+RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+
+["0.3 - 0"]
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+
+["0.7 - 0"]
+ADNLPModels = "54578032-b7ea-4c30-94aa-7cbd1cce6c9a"
+ExaModels = "1037b233-b668-4ce9-9b63-f9f681f55dd2"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
+SolverCore = "ff4d7338-4cf1-434d-91df-b86cb86fb843"

@@ -1,0 +1,168 @@
+["0.1.0"]
+git-tree-sha1 = "7e44e750ca869aafb202864e342e70dd385403a1"
+
+["0.2.0"]
+git-tree-sha1 = "e4d54daf6077225298873f002fba607fec8d4d29"
+
+["0.2.1"]
+git-tree-sha1 = "c7040ae54a035e2e329bd5b6b15181c4bf3ba7e8"
+
+["0.2.2"]
+git-tree-sha1 = "728566931577fb803884ad383c60bddfaad660eb"
+
+["0.2.3"]
+git-tree-sha1 = "9ebc10792c7682fc933a84c0b5578b464aa2a2bd"
+
+["0.2.4"]
+git-tree-sha1 = "9ae3c43f77a36972923de983b45a3976c953861e"
+
+["0.3.0"]
+git-tree-sha1 = "641f8b5d15185c29b0a409adb9f59c01b48ee0e4"
+
+["0.4.0"]
+git-tree-sha1 = "11fc5fe515bec02581ab67fbd55cd87f244244af"
+
+["0.4.1"]
+git-tree-sha1 = "3aa0b6e06ed7dca9127dc20d3f47a09bb12e0bca"
+
+["0.4.2"]
+git-tree-sha1 = "f2a0034162d37e4a5c6aa883031709e42e710c8a"
+
+["0.4.3"]
+git-tree-sha1 = "57fd096cc70654dd224abde07aed244c016b00ec"
+
+["0.5.0"]
+git-tree-sha1 = "629cc10bd37dc75918f384072727def291dc7b45"
+
+["0.5.1"]
+git-tree-sha1 = "6eba01820e0adc8a89c7d65e049e910e8af2c882"
+
+["0.5.2"]
+git-tree-sha1 = "e3b85665cdb69ce1f3c107fd6917046912cc8ee3"
+
+["0.5.3"]
+git-tree-sha1 = "1899fe5f03ac028852b482dfc098efa9e6b1fb92"
+
+["0.5.4"]
+git-tree-sha1 = "5ff021e1e2bbc3cd26ee988e96f367164f1b5ca7"
+
+["0.5.5"]
+git-tree-sha1 = "24d603655e6c4042cfe5267b20ddee03833581e8"
+
+["0.5.6"]
+git-tree-sha1 = "6bcec1b15109635241054f6c143f307a3c6a7c0c"
+
+["0.5.7"]
+git-tree-sha1 = "c3908e40ce6443363e654d020cb79d348728eaa0"
+
+["0.5.8"]
+git-tree-sha1 = "e218d058e1da4adbd6c749352afba123beb54de0"
+
+["0.5.9"]
+git-tree-sha1 = "711759ac9ba8d41300c99f34935dd319faa97898"
+
+["0.5.10"]
+git-tree-sha1 = "aca1ad81d01d0dbcc8722b5cddb7de490fd4b491"
+
+["0.5.11"]
+git-tree-sha1 = "6b30a0c3e75949e242f7709a81d8f34482c95766"
+yanked = true
+
+["0.5.12"]
+git-tree-sha1 = "0ce0cf0cd33084ad56e8b23a6fdbb4f50efbba81"
+
+["0.6.0"]
+git-tree-sha1 = "2d862073aef458e6d435707bc5a27c33a69db88a"
+
+["0.6.1"]
+git-tree-sha1 = "ca0d6ae3f8f7ae20511ae8c384737334b32bf03b"
+
+["0.7.0"]
+git-tree-sha1 = "e522df726aab92a461ff9b745ccf01756e9f5240"
+
+["0.7.1"]
+git-tree-sha1 = "52987367caf8b72da20d881aa9ecb0ac62995229"
+
+["0.7.2"]
+git-tree-sha1 = "082d9c5ebbd53c904d7c9a4ce465201433b70139"
+
+["0.7.3"]
+git-tree-sha1 = "e15cdc66f3e4d1c174189413bd1740b1bfefc314"
+
+["0.7.4"]
+git-tree-sha1 = "16bda53b87334063ebc4a09f305b8084b7ecfa63"
+
+["0.7.5"]
+git-tree-sha1 = "976b2ead8cfc724d69216146acf9019590e51d66"
+
+["0.7.6"]
+git-tree-sha1 = "0f92a8261a708cb4c3ff3bd1a4009ddef3b16de7"
+
+["0.7.7"]
+git-tree-sha1 = "7656e9aad4f00ba7ebfad5ad262de1a5253890bf"
+
+["0.8.0"]
+git-tree-sha1 = "3b071d7244d24125bc0c717f6caa5f51bb0eea74"
+
+["0.8.1"]
+git-tree-sha1 = "f75242ea5e66e6749f3c0a2cd380b11a598ad96e"
+
+["0.8.2"]
+git-tree-sha1 = "9da77eefe880085fd515e77b89365161f71dc804"
+
+["0.8.3"]
+git-tree-sha1 = "651a430a33903ffade725a173dcd0a9a572ddafe"
+
+["0.8.4"]
+git-tree-sha1 = "9f8378e384c27e8a677e6157c4783df005d27c23"
+
+["0.8.5"]
+git-tree-sha1 = "2dcaa5c6511566c16ce19a7004fcb2a1793190d4"
+
+["0.8.6"]
+git-tree-sha1 = "82a924fe774f2cdfebf21e13e6d6173b0d7b8e52"
+
+["0.8.7"]
+git-tree-sha1 = "15b228e8a19efedd32e3229e5528dd68ae8ce00b"
+
+["0.8.8"]
+git-tree-sha1 = "74e7e84e8d4aec570c263782cd9a71b2ed492909"
+
+["0.8.9"]
+git-tree-sha1 = "b3bcb99073d0c76373dd35920737d704f8509312"
+
+["0.8.10"]
+git-tree-sha1 = "9426d7bdf2f155021b2aacbf0a514137208fbbb2"
+
+["0.8.11"]
+git-tree-sha1 = "2a5287a2b56c04d4082292e9a22984ee08ce0f2b"
+
+["0.8.12"]
+git-tree-sha1 = "225d2bb82992eaaca7709914e8896e7523c63c20"
+
+["0.8.13"]
+git-tree-sha1 = "2f6486c1213e29b216b3d0ba9a52261075c2123d"
+
+["0.8.14"]
+git-tree-sha1 = "be262c6211bd448599c5aee57d405f114d569027"
+
+["0.8.15"]
+git-tree-sha1 = "15cdfdbd2f26dda3f1c1bff777979ca985d6bbf0"
+
+["0.8.16"]
+git-tree-sha1 = "bd0829e9c50a818621e8dd3a61511d8cf61a192b"
+
+["0.8.17"]
+git-tree-sha1 = "1b0b49e90756c783c9c2f4064e9c4c4be8285b0d"
+
+["0.8.18"]
+git-tree-sha1 = "56ee69c882fd7d73569c5b8edf6e50a698fde232"
+
+["0.8.19"]
+git-tree-sha1 = "5a99c41e7c9e89bda5cb9f31db9e2fe9013271ea"
+
+["0.8.20"]
+git-tree-sha1 = "d4ccd6a8694405630f22dc3e7082d326600b34c9"
+
+["0.8.21"]
+git-tree-sha1 = "9a72d174ce33d847392849b41638d4a2b9a051ed"

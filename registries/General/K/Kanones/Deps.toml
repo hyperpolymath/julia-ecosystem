@@ -1,0 +1,50 @@
+[0]
+AtticGreek = "330c8319-f7ed-461a-8c52-cee5da4c0892"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CitableObject = "e2b2f5ea-1cd8-4ce8-9b2b-05dad64c2a57"
+CitableParserBuilder = "c834cb9d-35b9-419a-8ff8-ecaeea9e2a2a"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+Orthography = "0b4c9448-09b0-4e78-95ea-3eb3328be36d"
+PolytonicGreek = "72b824a7-2b4a-40fa-944c-ac4f345dc63a"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
+
+["0.1.1-0"]
+CitableBase = "d6f014bd-995c-41bd-9893-703339864534"
+CitableCorpus = "cf5ac11a-93ef-4a1a-97a3-f6af101603b5"
+CitableText = "41e66566-473b-49d4-85b7-da83b66615d8"
+
+["0.10-0"]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+
+["0.10-0.23"]
+SplitApplyCombine = "03a91e81-4c3e-53e1-a0a4-9c0c8f19dd66"
+
+["0.14-0"]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Query = "1a8c2f83-1ff3-5112-b086-8aa67b057ba1"
+
+["0.16-0"]
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+
+["0.16.5-0"]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+["0.17-0.23"]
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+["0.20.1-0"]
+CitableCollection = "7b95b006-44c5-4794-afff-00ccebff52d7"
+Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
+
+["0.25-0"]
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+["0.3-0"]
+Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
+TestSetExtensions = "98d24dd4-01ad-11ea-1b02-c9a08f80db04"

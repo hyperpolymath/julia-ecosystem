@@ -1,0 +1,1110 @@
+["0 - 0.2"]
+DiffEqBase = "0-5"
+SpecialFunctions = "0.0.0-0.9"
+
+["0 - 0.8"]
+DiffRules = "0.0.0-0.1"
+MacroTools = "0.0.0-0.5"
+NaNMath = "0.0.0-0.3"
+StaticArrays = "0.0.0-0.12"
+
+["0.0"]
+julia = ["0.7", "1"]
+
+["0.1"]
+julia = "1"
+
+["0.10 - 3"]
+GeneralizedGenerated = "0.1.4-0.2"
+
+["0.2"]
+julia = "1.1-1"
+
+["0.4 - 0.8"]
+DiffEqBase = "0.0.0-6"
+DocStringExtensions = "0.0.0-0.8"
+SpecialFunctions = "0.0.0-0.8"
+
+["0.4 - 1.1"]
+julia = "1"
+
+["0.7 - 0.8"]
+GeneralizedGenerated = "0.0.0-0.2"
+
+["0.9"]
+GeneralizedGenerated = "0.1.4-0.1"
+
+["0.9 - 0"]
+DiffRules = "0.1"
+SpecialFunctions = "0.7-0.8"
+
+["0.9 - 1.2.6"]
+Latexify = "0.11-0.12"
+
+["0.9 - 2"]
+DiffEqBase = "6"
+
+["0.9 - 4.0.6"]
+StaticArrays = "0.10-0.12"
+
+["0.9 - 8"]
+MacroTools = "0.5"
+
+["0.9 - 8.12"]
+DocStringExtensions = "0.7-0.8"
+
+["0.9 - 8.4"]
+NaNMath = "0.3"
+
+["1 - 1.1.2"]
+SpecialFunctions = "0.7-0.9"
+
+["1.0"]
+DiffRules = "0.1"
+
+["1.1 - 10"]
+DiffRules = ["0.1", "1"]
+
+["1.1.3 - 4.0.6"]
+SpecialFunctions = "0.7-0.10"
+
+["1.2 - 7"]
+julia = "1.2.0-1"
+
+["1.2.7 - 3.17"]
+Latexify = "0.11-0.13"
+
+["10 - 10.2"]
+SciMLBase = "2.91.1-2"
+
+["10 - 10.4"]
+ADTypes = "1.14.0-1"
+AbstractTrees = "0.3-0.4"
+ArrayInterface = "6-7"
+BlockArrays = "1.1.0-1"
+CommonSolve = "0.2.4-0.2"
+Compat = "3.42.0-4"
+DataStructures = "0.17-0.18"
+DiffEqBase = "6.170.1-6"
+DiffEqCallbacks = "2.16.0-4"
+DifferentiationInterface = "0.6.47-0.6"
+Distributions = "0.23-0.25"
+DocStringExtensions = "0.7-0.9"
+DomainSets = "0.6-0.7"
+DynamicQuantities = ["0.11.2-0.13", "1"]
+EnumX = "1.0.4-1"
+ExprTools = "0.1.10-0.1"
+ForwardDiff = "0.10.3-0.10"
+FunctionWrappers = "1.1.0-1"
+Graphs = "1.5.2-1"
+ImplicitDiscreteSolve = "0.1.2-0.1"
+JuliaFormatter = "1.0.47-2"
+JumpProcesses = "9.13.1-9"
+Latexify = "0.11-0.16"
+MLStyle = "0.4.17-0.4"
+NonlinearSolve = "4.3.0-4"
+OrdinaryDiffEqCore = "1.15.0-1"
+RecursiveArrayTools = "3.26.0-3"
+RuntimeGeneratedFunctions = "0.5.9-0.5"
+SciMLStructures = "1.7.0-1"
+Setfield = ["0.7-0.8", "1"]
+SimpleNonlinearSolve = ["0.1", "1-2"]
+SpecialFunctions = ["0.7-0.10", "1-2"]
+StaticArrays = ["0.10-0.12", "1"]
+SymbolicIndexingInterface = "0.3.39-0.3"
+SymbolicUtils = "3.26.1-3"
+Symbolics = "6.40.0-6"
+Unitful = "1.1.0-1"
+julia = "1.9.0-1"
+
+["10 - 11"]
+SciMLPublic = "1"
+
+["10.13 - 10.14"]
+SciMLBase = "2.104.0 - 2"
+
+["10.14 - 10"]
+SpecialFunctions = "1 - 2"
+
+["10.14 - 11"]
+ForwardDiff = ["0.10.3 - 0.10", "1"]
+
+["10.15"]
+SciMLBase = "2.106.0 - 2"
+
+["10.16 - 10.21"]
+SciMLBase = "2.108.0 - 2"
+
+["10.17 - 10"]
+ImplicitDiscreteSolve = ["0.1.2 - 0.1", "1"]
+SymbolicUtils = "3.30.0 - 3"
+
+["10.18 - 11"]
+StaticArrays = "1.9.14 - 1"
+
+["10.18 - 11.5"]
+SCCNonlinearSolve = "1.4.0 - 1"
+
+["10.22 - 10"]
+JumpProcesses = "9.19.0 - 9"
+
+["10.22 - 10.29"]
+SciMLBase = "2.115.0 - 2"
+
+["10.22 - 10.31.1"]
+OrdinaryDiffEqCore = "1.34.0 - 1"
+
+["10.22 - 11"]
+DiffEqBase = "6.189.1 - 6"
+
+["10.25 - 11.4"]
+DataStructures = "0.17 - 0.19"
+
+["10.28 - 10.31"]
+PreallocationTools = "0.4.27 - 0.4"
+
+["10.28 - 11"]
+FillArrays = "1.13.0 - 1"
+
+["10.3 - 10.4"]
+SciMLBase = "2.100.0-2"
+
+["10.30 - 11.5"]
+SciMLBase = "2.125.0 - 2"
+
+["10.32 - 10"]
+PreallocationTools = ["0.4.27 - 0.4", "1"]
+
+["10.5 - 10"]
+AbstractTrees = "0.3 - 0.4"
+ArrayInterface = "6 - 7"
+BlockArrays = "1.1.0 - 1"
+Compat = "3.42.0 - 4"
+DiffEqCallbacks = "2.16.0 - 4"
+Distributions = "0.23 - 0.25"
+DomainSets = "0.6 - 0.7"
+DynamicQuantities = ["0.11.2 - 0.13", "1"]
+EnumX = "1.0.4 - 1"
+ExprTools = "0.1.10 - 0.1"
+FunctionWrappers = "1.1.0 - 1"
+JuliaFormatter = "1.0.47 - 2"
+Latexify = "0.11 - 0.16"
+MLStyle = "0.4.17 - 0.4"
+RecursiveArrayTools = "3.26.0 - 3"
+SciMLStructures = "1.7.0 - 1"
+Symbolics = "6.40.0 - 6"
+Unitful = "1.1.0 - 1"
+
+["10.5 - 10.12"]
+SciMLBase = "2.100.0 - 2"
+
+["10.5 - 10.13"]
+ForwardDiff = "0.10.3 - 0.10"
+SpecialFunctions = ["0.7 - 0.10", "1 - 2"]
+
+["10.5 - 10.14"]
+NonlinearSolve = "4.3.0 - 4"
+
+["10.5 - 10.16"]
+ImplicitDiscreteSolve = "0.1.2 - 0.1"
+SymbolicUtils = "3.26.1 - 3"
+
+["10.5 - 10.17"]
+StaticArrays = ["0.10 - 0.12", "1"]
+
+["10.5 - 10.21"]
+DiffEqBase = "6.170.1 - 6"
+JumpProcesses = "9.13.1 - 9"
+OrdinaryDiffEqCore = "1.15.0 - 1"
+
+["10.5 - 10.24"]
+DataStructures = "0.17 - 0.18"
+
+["10.5 - 10.7"]
+DifferentiationInterface = "0.6.47 - 0.6"
+
+["10.5 - 11"]
+ADTypes = "1.14.0 - 1"
+CommonSolve = "0.2.4 - 0.2"
+Graphs = "1.5.2 - 1"
+Setfield = ["0.7 - 0.8", "1"]
+SimpleNonlinearSolve = ["0.1", "1 - 2"]
+SymbolicIndexingInterface = "0.3.39 - 0.3"
+julia = "1.9.0 - 1"
+
+["10.5 - 11.4"]
+DocStringExtensions = "0.7 - 0.9"
+RuntimeGeneratedFunctions = "0.5.9 - 0.5"
+
+["10.8 - 11"]
+DifferentiationInterface = "0.6.47 - 0.7"
+
+[11]
+BipartiteGraphs = "0.1.2 - 0.1"
+BlockArrays = "1.9.3 - 1"
+REPL = "1"
+Symbolics = "7"
+
+["11 - 11.2"]
+ModelingToolkitBase = "1"
+
+["11 - 11.4"]
+PreallocationTools = "0.4.27 - 0.4"
+
+["11.0"]
+ModelingToolkitTearing = "1"
+StateSelection = "1"
+SymbolicUtils = "4.5.1 - 4"
+
+["11.1 - 11"]
+StateSelection = "1.1.1 - 1"
+
+["11.1 - 11.2"]
+ModelingToolkitTearing = "1.0.2 - 1"
+
+["11.1 - 11.7.1"]
+SymbolicUtils = "4.7.1 - 4"
+
+["11.11 - 11"]
+ModelingToolkitBase = "1.14.0 - 1"
+
+["11.3 - 11.4"]
+ModelingToolkitBase = "1.2.0 - 1"
+
+["11.3 - 11.5"]
+ModelingToolkitTearing = "1.1.0 - 1"
+
+["11.5"]
+ModelingToolkitBase = "1.4.0 - 1"
+
+["11.5 - 11"]
+DataStructures = "0.18 - 0.19"
+DocStringExtensions = "0.8 - 0.9"
+Moshi = "0.3.6 - 0.3"
+PreallocationTools = ["0.4.27 - 0.4", "1"]
+PrecompileTools = "1.2.1 - 1"
+RuntimeGeneratedFunctions = "0.5.12 - 0.5"
+
+["11.6 - 11"]
+SCCNonlinearSolve = "1.8.1 - 1"
+SciMLBase = "2.132.0 - 2"
+
+["11.6 - 11.7.1"]
+ModelingToolkitBase = "1.5.3 - 1"
+
+["11.6 - 11.9.0"]
+ModelingToolkitTearing = "1.2.1 - 1"
+
+["11.7.2 - 11.7"]
+ModelingToolkitBase = "1.6.3 - 1"
+
+["11.7.2 - 11.8"]
+SymbolicUtils = "4.11.0 - 4"
+
+["11.8"]
+ModelingToolkitBase = "1.7.0 - 1"
+
+["11.9 - 11"]
+SymbolicCompilerPasses = "0.1"
+SymbolicUtils = "4.13.0 - 4"
+
+["11.9.0"]
+ModelingToolkitBase = "1.8.1 - 1"
+
+["11.9.1 - 11"]
+ModelingToolkitTearing = "1.2.5 - 1"
+
+["11.9.1 - 11.10"]
+ModelingToolkitBase = "1.12.0 - 1"
+
+["2 - 5.13"]
+TreeViews = "0.3"
+
+["2 - 8.5.4"]
+SafeTestsets = "0.0.1"
+
+["2 - 9.80"]
+Unitful = "1.1.0-1"
+
+["3 - 3.1"]
+UnPack = "0.1"
+
+["3 - 3.9"]
+DiffEqBase = "6.28.0-6"
+
+["3 - 5.1"]
+ArrayInterface = "2.8.0-2"
+
+["3.10 - 3.20"]
+DiffEqBase = "6.38.0-6"
+
+["3.11 - 3.12"]
+SymbolicUtils = "0.4.1-0.4"
+
+["3.11 - 5.4"]
+Requires = "1"
+
+["3.12 - 3.12.1"]
+LabelledArrays = "1.2.0-1"
+
+["3.12.2 - 9.33"]
+LabelledArrays = "1.3.0-1"
+
+["3.13 - 3.15"]
+SymbolicUtils = "0.4.3-0.4"
+
+["3.16 - 3"]
+SymbolicUtils = "0.5"
+
+["3.17 - 9.80"]
+DataStructures = "0.17-0.18"
+
+["3.18 - 5.13"]
+Latexify = "0.11-0.14"
+
+["3.2 - 11"]
+UnPack = ["0.1", "1"]
+
+["3.2 - 3.3"]
+DiffEqJump = "6.6.2-6"
+SymbolicUtils = "0.3"
+
+["3.20 - 9.1"]
+IfElse = "0.1"
+
+["3.21 - 3"]
+DiffEqBase = "6.48.0-6"
+
+["3.3 - 8.73"]
+RecursiveArrayTools = "2.3.0-2"
+
+["3.4 - 3.8"]
+SymbolicUtils = "0.3.2-0.3"
+
+["3.4 - 5.25"]
+DiffEqJump = "6.7.5-6"
+
+["3.4 - 6"]
+LightGraphs = "1.3.0-1"
+
+["3.6.2 - 3.16"]
+DataStructures = "0.17"
+
+["3.9 - 3.10"]
+SymbolicUtils = "0.3.3-0.3"
+
+[4]
+DiffEqBase = "6.48.1-6"
+SymbolicUtils = "0.6"
+
+["4 - 4.4"]
+RuntimeGeneratedFunctions = "0.4"
+
+["4.0.7 - 7"]
+SpecialFunctions = ["0.7-0.10", "1"]
+
+["4.0.7 - 9.80"]
+StaticArrays = ["0.10-0.12", "1"]
+
+["4.3 - 5.3"]
+Distributions = "0.24"
+
+["4.5 - 5.6.0"]
+RuntimeGeneratedFunctions = "0.4-0.5"
+
+["5 - 5.2.0"]
+SymbolicUtils = "0.7.4-0.7"
+
+["5 - 6.5.0"]
+Setfield = "0.7"
+
+["5.0"]
+DiffEqBase = "6.48.1-6"
+
+["5.1 - 8.1"]
+DiffEqBase = "6.54.0-6"
+
+["5.10 - 5.11"]
+SymbolicUtils = "0.8.3-0.8"
+
+["5.10.0"]
+Symbolics = "0.1"
+
+["5.10.1 - 5.12"]
+Symbolics = "0.1.2-0.1"
+
+["5.12 - 5.14.0"]
+SymbolicUtils = "0.8.3-0.9"
+
+["5.13 - 5.13.1"]
+Symbolics = "0.1.7-0.1"
+
+["5.13.2 - 5.14.0"]
+Symbolics = "0.1.8-0.1"
+
+["5.14 - 8.14.0"]
+AbstractTrees = "0.3"
+
+["5.14 - 8.54"]
+Latexify = "0.11-0.15"
+
+["5.14.1"]
+SymbolicUtils = "0.10"
+
+["5.14.1 - 5.14.3"]
+Symbolics = "0.1.14-0.1"
+
+["5.14.2"]
+SymbolicUtils = "0.10.1-0.10"
+
+["5.14.3 - 5.20"]
+SymbolicUtils = "0.11"
+
+["5.14.4 - 5.20"]
+Symbolics = "0.1.21-0.1"
+
+["5.17 - 5.20"]
+JuliaFormatter = "0.12-0.13"
+
+["5.17 - 9.80"]
+Distributions = "0.23-0.25"
+
+["5.18 - 8.50"]
+DomainSets = "0.5"
+
+["5.2 - 6"]
+ArrayInterface = "2.8.0-3"
+
+["5.2.1 - 5.6.0"]
+SymbolicUtils = "0.7.4-0.8"
+
+["5.2.1 - 8.4"]
+SciMLBase = "1.3.0-1"
+
+["5.21 - 5.22"]
+JuliaFormatter = "0.12-0.14"
+
+["5.21 - 5.24"]
+Symbolics = "1"
+
+["5.21 - 6.4.7"]
+SymbolicUtils = "0.12-0.13"
+
+["5.23 - 6.5.0"]
+JuliaFormatter = "0.12-0.15"
+
+["5.25 - 5"]
+Symbolics = "1.4.1-1"
+
+["5.25 - 8"]
+DiffEqCallbacks = "2.16.0-2"
+
+["5.26 - 6"]
+DiffEqJump = "7"
+
+["5.3 - 5.5"]
+Reexport = "1"
+
+["5.4 - 5.16"]
+Distributions = "0.23-0.24"
+
+["5.5"]
+Requires = ["0.2", "1"]
+
+["5.6 - 11"]
+Reexport = ["0.2", "1"]
+
+["5.6 - 8.14"]
+Requires = "1"
+
+["5.6.1 - 5.9"]
+SymbolicUtils = "0.8"
+
+["5.6.1 - 8.57"]
+RuntimeGeneratedFunctions = "0.4.3-0.5"
+
+["5.6.2 - 10"]
+ConstructionBase = "1"
+
+["5.9 - 8.34"]
+NonlinearSolve = "0.3.8-0.3"
+
+["6.0"]
+Symbolics = "2"
+
+["6.1 - 6.3"]
+Symbolics = "3"
+
+["6.4 - 6.4.8"]
+Symbolics = "3.1.0-3"
+
+["6.4.8"]
+SymbolicUtils = "0.13.4-0.13"
+
+["6.4.9 - 6.4"]
+SymbolicUtils = ["0.13.4-0.13", "0.15"]
+Symbolics = "3.2"
+
+["6.5 - 6.6"]
+SymbolicUtils = "0.16"
+Symbolics = "3.3.0-3"
+
+["6.5.1 - 6.5"]
+JuliaFormatter = "0.12-0.16"
+
+["6.5.1 - 8.12"]
+Setfield = "0.7-0.8"
+
+["6.6"]
+JuliaFormatter = "0.12-0.17"
+
+["6.7 - 6"]
+SymbolicUtils = "0.16-0.17"
+Symbolics = "3.5.0-3"
+
+["6.7 - 7.1.1"]
+JuliaFormatter = "0.12-0.18"
+
+[7]
+ArrayInterface = "3.1.39-3"
+SymbolicUtils = "0.18"
+
+["7 - 8.4.0"]
+Graphs = "1.4.0-1"
+
+["7 - 8.5"]
+Symbolics = "4"
+
+["7.0"]
+DiffEqJump = "7"
+
+["7.1 - 8.14"]
+DiffEqJump = "7-8"
+
+["7.1.2 - 7"]
+JuliaFormatter = "0.12-0.19"
+
+["8 - 8.3.1"]
+SymbolicUtils = "0.18-0.19"
+
+["8 - 8.72"]
+julia = "1.6.0-1"
+
+["8 - 9.80"]
+SpecialFunctions = ["0.7-0.10", "1-2"]
+
+["8.0"]
+ArrayInterface = "3.1.39-3"
+JuliaFormatter = "0.12-0.20"
+
+["8.1 - 8.3"]
+JuliaFormatter = "0.12-0.21"
+
+["8.1 - 8.5.1"]
+ArrayInterface = "3.1.39-4"
+
+["8.11.1 - 8.15.1"]
+Symbolics = "4.5.0-4"
+
+["8.12"]
+JuliaFormatter = "0.12-0.23"
+
+["8.12 - 8.47"]
+ArrayInterfaceCore = "0.1.1-0.1"
+
+["8.13 - 8"]
+JuliaFormatter = "1"
+
+["8.13 - 9.80"]
+DocStringExtensions = "0.7-0.9"
+Setfield = ["0.7-0.8", "1"]
+
+["8.14.1 - 8.21"]
+DiffEqBase = "6.83.0-6"
+
+["8.14.1 - 9.80"]
+AbstractTrees = "0.3-0.4"
+
+["8.15 - 8.18.3"]
+JumpProcesses = "9"
+
+["8.15.2 - 8.15"]
+Symbolics = "4.5-4.8"
+
+["8.15.2 - 9.80"]
+ForwardDiff = "0.10.3-0.10"
+
+["8.16 - 8.46"]
+Symbolics = "4.9.0-4"
+
+["8.18.4 - 9.30.0"]
+JumpProcesses = "9.1.0-9"
+
+["8.19 - 8.21"]
+SciMLBase = "1.49.0-1"
+
+["8.2 - 8.14.0"]
+DiffEqBase = "6.81.0-6"
+
+["8.20 - 10"]
+FunctionWrappersWrappers = "0.1"
+
+["8.22 - 9.44"]
+DiffEqBase = "6.103.0-6"
+
+["8.22.0"]
+SciMLBase = "1.54.0-1"
+
+["8.22.1 - 8.22"]
+SciMLBase = "1.56.1-1"
+
+["8.23 - 8.30"]
+SciMLBase = "1.58.0-1"
+
+["8.24 - 8.29.0"]
+SimpleWeightedGraphs = "1"
+
+["8.3.2 - 8.46"]
+SymbolicUtils = "0.19"
+
+["8.31"]
+SciMLBase = "1.60.0-1"
+
+["8.31 - 9.80"]
+Compat = "3.42.0-4"
+
+["8.32 - 8.33"]
+SciMLBase = "1.70.0-1"
+
+["8.34 - 8.35.1"]
+SciMLBase = "1.72.0-1"
+
+["8.35 - 8.73.1"]
+SimpleNonlinearSolve = "0.1"
+
+["8.35.2 - 8.35"]
+SciMLBase = "1.75.0-1"
+
+["8.36 - 8.70"]
+SciMLBase = "1.76.1-1"
+
+["8.37"]
+SymbolicIndexingInterface = "0.1"
+
+["8.38 - 8.73"]
+SymbolicIndexingInterface = "0.1-0.2"
+
+["8.4 - 8.11"]
+JuliaFormatter = "0.12-0.22"
+
+["8.4.1 - 9.80"]
+Graphs = "1.5.2-1"
+
+["8.47 - 8.73.0"]
+Symbolics = "5"
+
+["8.47 - 8.75"]
+SymbolicUtils = "1"
+
+["8.48 - 9.80"]
+ArrayInterface = "6-7"
+
+["8.5 - 10"]
+NaNMath = ["0.3", "1"]
+
+["8.5 - 8.18"]
+SciMLBase = "1.26.2-1"
+
+["8.5.2 - 8.11"]
+ArrayInterface = "3.1.39-5"
+
+["8.51 - 8"]
+DomainSets = "0.6"
+
+["8.55 - 9.80"]
+Latexify = "0.11-0.16"
+
+["8.57 - 9.80"]
+MLStyle = "0.4.17-0.4"
+
+["8.58"]
+RuntimeGeneratedFunctions = "0.5.10-0.5"
+
+["8.59.0"]
+RuntimeGeneratedFunctions = "0.5.9"
+
+["8.59.1 - 9.80"]
+RuntimeGeneratedFunctions = "0.5.9-0.5"
+
+["8.6 - 8.11.0"]
+Symbolics = "4.3.0-4"
+
+["8.60 - 10"]
+URIs = "1"
+
+["8.65 - 9.1"]
+OrdinaryDiffEq = "6"
+
+["8.69 - 11.4"]
+PrecompileTools = "1"
+
+["8.71 - 9.1"]
+SciMLBase = "2.0.1-2"
+
+["8.73 - 10"]
+Distributed = "1"
+
+["8.73 - 11"]
+InteractiveUtils = "1"
+Libdl = "1"
+LinearAlgebra = "1"
+Serialization = "1"
+SparseArrays = "1"
+
+["8.73 - 9.80"]
+julia = "1.9.0-1"
+
+["8.73.1 - 8"]
+Symbolics = "5.7.0-5"
+
+["8.73.2 - 9.49"]
+SimpleNonlinearSolve = ["0.1", "1"]
+
+["8.74"]
+SymbolicIndexingInterface = "0.3"
+
+["8.74 - 9.26"]
+RecursiveArrayTools = "2.3.0-3"
+
+["8.75 - 9.5"]
+SymbolicIndexingInterface = "0.3.1-0.3"
+
+["8.76 - 8"]
+SymbolicUtils = "1.0-1.5.1"
+
+["8.9 - 11"]
+Combinatorics = "1"
+
+["9 - 11"]
+FindFirstFunctions = "1"
+
+["9 - 9.15"]
+SymbolicUtils = "1"
+
+["9 - 9.3"]
+DynamicQuantities = "0.11.2-0.11"
+
+["9 - 9.4"]
+Symbolics = "5.20.1-5"
+
+["9 - 9.64"]
+SciMLStructures = "1"
+
+["9 - 9.74"]
+JuliaFormatter = "1.0.47-1"
+
+["9 - 9.80"]
+DomainSets = "0.6-0.7"
+ExprTools = "0.1.10-0.1"
+
+["9.0"]
+DiffEqCallbacks = "2.16.0-2"
+
+["9.1 - 9.41"]
+DiffEqCallbacks = "2.16.0-3"
+
+["9.12.2 - 11"]
+OrderedCollections = "1"
+
+["9.16 - 9.19"]
+SymbolicUtils = "2"
+
+["9.16 - 9.20"]
+Symbolics = "5.30.1-5"
+
+["9.17"]
+OrdinaryDiffEq = "6.82.0-6"
+
+["9.18 - 9.32"]
+NonlinearSolve = "3.12.0-3"
+
+["9.18.0"]
+ComponentArrays = "0.15"
+
+["9.2"]
+OrdinaryDiffEq = "6.72.0-6"
+
+["9.2 - 9.26"]
+SciMLBase = "2.28.0-2"
+
+["9.20 - 9.32"]
+SymbolicUtils = "2.1.0-2"
+
+["9.21 - 9.32"]
+Symbolics = "5.32.0-5"
+
+["9.26 - 10"]
+DiffEqNoiseProcess = "5"
+
+["9.27 - 9.32"]
+SymbolicIndexingInterface = "0.3.26-0.3"
+
+["9.27 - 9.36"]
+SciMLBase = "2.46.0-2"
+
+["9.27 - 9.64"]
+Expronicon = "0.8"
+
+["9.27 - 9.80"]
+RecursiveArrayTools = "3.26.0-3"
+
+["9.3 - 9.16"]
+OrdinaryDiffEq = "6.73.0-6"
+
+["9.30.1 - 9.80"]
+JumpProcesses = "9.13.1-9"
+
+["9.33"]
+Symbolics = "6"
+
+["9.33 - 9.36"]
+SymbolicIndexingInterface = "0.3.28-0.3"
+
+["9.33 - 9.49"]
+NonlinearSolve = "3.14.0-3"
+
+["9.33.0"]
+SymbolicUtils = "3.1.2-3"
+
+["9.33.1 - 9.40.0"]
+SymbolicUtils = "3.2.0-3"
+
+["9.34 - 9.40.0"]
+Symbolics = "6.3.0-6"
+
+["9.34 - 9.80"]
+BlockArrays = "1.1.0-1"
+
+["9.36 - 9.80"]
+DynamicQuantities = ["0.11.2-0.13", "1"]
+
+["9.37 - 9.41"]
+SciMLBase = "2.52.1-2"
+SymbolicIndexingInterface = "0.3.29-0.3"
+
+["9.4 - 9.6"]
+DynamicQuantities = "0.11.2-0.12"
+
+["9.40.1 - 9.45"]
+Symbolics = "6.12.0-6"
+
+["9.40.1 - 9.60"]
+SymbolicUtils = "3.7.0-3"
+
+["9.40.1 - 9.80"]
+FunctionWrappers = "1.1.0-1"
+
+["9.42 - 9.44"]
+SciMLBase = "2.55.0-2"
+
+["9.42 - 9.50"]
+SymbolicIndexingInterface = "0.3.31-0.3"
+
+["9.42 - 9.80"]
+DiffEqCallbacks = "2.16.0-4"
+
+["9.43 - 11"]
+OffsetArrays = "1"
+
+["9.45 - 9.48"]
+SciMLBase = "2.56.1-2"
+
+["9.45 - 9.67"]
+DiffEqBase = "6.157.0-6"
+
+["9.46"]
+Symbolics = "6.14.0-6"
+
+["9.47 - 9.49"]
+Symbolics = "6.15.2-6"
+
+["9.47 - 9.80"]
+CommonSolve = "0.2.4-0.2"
+
+["9.49 - 9.54"]
+SciMLBase = "2.57.1-2"
+
+["9.5 - 9.7"]
+Symbolics = "5.24.0-5"
+
+["9.50 - 9.51"]
+Symbolics = "6.15.4-6"
+
+["9.50 - 9.59"]
+NonlinearSolve = "3.14.0-4"
+
+["9.50 - 9.80"]
+SimpleNonlinearSolve = ["0.1", "1-2"]
+
+["9.51 - 9.59"]
+SymbolicIndexingInterface = "0.3.35-0.3"
+
+["9.51 - 9.80"]
+EnumX = "1.0.4-1"
+
+["9.52 - 9.60"]
+Symbolics = "6.19.0-6"
+
+["9.55"]
+SciMLBase = "2.64.0-2"
+
+["9.56 - 10.17"]
+SCCNonlinearSolve = "1"
+
+["9.56 - 9.59"]
+SciMLBase = "2.66.0-2"
+
+["9.6 - 9.8"]
+SymbolicIndexingInterface = "0.3.11-0.3"
+
+["9.60"]
+SciMLBase = "2.68.1-2"
+
+["9.60 - 9.61"]
+SymbolicIndexingInterface = "0.3.36-0.3"
+
+["9.60 - 9.80"]
+NonlinearSolve = "4.3.0-4"
+
+["9.61"]
+SciMLBase = "2.71.1-2"
+SymbolicUtils = "3.10.0-3"
+Symbolics = "6.22.1-6"
+
+["9.62"]
+SciMLBase = "2.72.1-2"
+SymbolicUtils = "3.10.1-3"
+Symbolics = "6.25.0-6"
+
+["9.62 - 9.72"]
+SymbolicIndexingInterface = "0.3.37-0.3"
+
+["9.63 - 9.64"]
+SciMLBase = "2.73.0-2"
+
+["9.63 - 9.64.0"]
+Symbolics = "6.29.0-6"
+
+["9.63 - 9.70"]
+SymbolicUtils = "3.14.0-3"
+
+["9.64.1 - 9.69"]
+Symbolics = "6.29.1-6"
+
+["9.65 - 11.4"]
+Moshi = "0.3"
+
+["9.65 - 9.73"]
+SciMLBase = "2.75.0-2"
+
+["9.65 - 9.80"]
+SciMLStructures = "1.7.0-1"
+
+["9.68 - 9.75"]
+DiffEqBase = "6.165.1-6"
+
+["9.69 - 9.80"]
+ADTypes = "1.14.0-1"
+DifferentiationInterface = "0.6.47-0.6"
+
+["9.7 - 9.35"]
+DynamicQuantities = "0.11.2-0.13"
+
+["9.70"]
+Symbolics = "6.29.2-6"
+
+["9.71"]
+Symbolics = "6.36.0-6"
+
+["9.71 - 9.73"]
+SymbolicUtils = "3.25.1-3"
+
+["9.72 - 9.80"]
+Symbolics = "6.37.0-6"
+
+["9.73 - 9.80"]
+SymbolicIndexingInterface = "0.3.39-0.3"
+
+["9.74 - 9.79"]
+SciMLBase = "2.84.0-2"
+
+["9.74 - 9.80"]
+SymbolicUtils = "3.26.1-3"
+
+["9.75 - 9.80"]
+JuliaFormatter = "1.0.47-2"
+
+["9.76 - 9.80"]
+DiffEqBase = "6.170.1-6"
+
+["9.8 - 9.15"]
+Symbolics = "5.26.0-5"
+
+["9.80"]
+SciMLBase = "2.91.1-2"
+
+["9.80 - 10"]
+ChainRulesCore = "1"
+
+["9.81 - 9"]
+ADTypes = "1.14.0 - 1"
+AbstractTrees = "0.3 - 0.4"
+ArrayInterface = "6 - 7"
+BlockArrays = "1.1.0 - 1"
+CommonSolve = "0.2.4 - 0.2"
+Compat = "3.42.0 - 4"
+DataStructures = "0.17 - 0.18"
+DiffEqBase = "6.170.1 - 6"
+DiffEqCallbacks = "2.16.0 - 4"
+Distributions = "0.23 - 0.25"
+DocStringExtensions = "0.7 - 0.9"
+DomainSets = "0.6 - 0.7"
+DynamicQuantities = ["0.11.2 - 0.13", "1"]
+EnumX = "1.0.4 - 1"
+ExprTools = "0.1.10 - 0.1"
+FunctionWrappers = "1.1.0 - 1"
+Graphs = "1.5.2 - 1"
+JuliaFormatter = "1.0.47 - 2"
+JumpProcesses = "9.13.1 - 9"
+Latexify = "0.11 - 0.16"
+MLStyle = "0.4.17 - 0.4"
+NonlinearSolve = "4.3.0 - 4"
+RecursiveArrayTools = "3.26.0 - 3"
+RuntimeGeneratedFunctions = "0.5.9 - 0.5"
+SciMLBase = "2.91.1 - 2"
+SciMLStructures = "1.7.0 - 1"
+Setfield = ["0.7 - 0.8", "1"]
+SimpleNonlinearSolve = ["0.1", "1 - 2"]
+StaticArrays = ["0.10 - 0.12", "1"]
+SymbolicIndexingInterface = "0.3.39 - 0.3"
+SymbolicUtils = "3.26.1 - 3"
+Symbolics = "6.37.0 - 6"
+Unitful = "1.1.0 - 1"
+julia = "1.9.0 - 1"
+
+["9.81 - 9.82"]
+ForwardDiff = "0.10.3 - 0.10"
+SpecialFunctions = ["0.7 - 0.10", "1 - 2"]
+
+["9.81 - 9.83"]
+DifferentiationInterface = "0.6.47 - 0.6"
+
+["9.83 - 9"]
+ForwardDiff = ["0.10.3 - 0.10", "1"]
+SpecialFunctions = "1 - 2"
+
+["9.84 - 9"]
+DifferentiationInterface = "0.6.47 - 0.7"
+
+["9.9 - 9.26"]
+SymbolicIndexingInterface = "0.3.12-0.3"

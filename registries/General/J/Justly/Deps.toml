@@ -1,0 +1,18 @@
+[0]
+AudioSchedules = "0990df78-ca1d-4d03-ab92-318744ee3999"
+PortAudio = "80ea8bcb-4634-5cb3-8ee8-a132660d1d2d"
+QML = "2db162a6-7e43-52c3-8d84-290c1c42d82a"
+Qt5QuickControls2_jll = "bf3ac11c-603e-589e-b4b7-e696ac65aa4a"
+SampledSignals = "bd7594eb-a658-542f-9e75-4c4d8908c167"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+["0-0.1"]
+YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
+
+["0.2-0"]
+Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
+
+["0.3-0"]
+FunctionWrappers = "069b7b12-0de2-55c6-9aab-29f3d0a68a2e"
+YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"

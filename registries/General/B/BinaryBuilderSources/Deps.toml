@@ -1,0 +1,16 @@
+[0]
+BinaryBuilderGitUtils = "654d7472-7548-7361-4832-74694762694c"
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+Git = "d7ba0133-e1db-5d97-8f8c-041e4b3a1eb2"
+JLLPrefixes = "afc68a34-7891-4c5a-9da1-1c62935e7b0d"
+MultiHashParsing = "73786568-6863-756d-6873-6168796e616d"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+Scratch = "6c6a2e73-6563-6170-7368-637461726353"
+TreeArchival = "216c6a2e-6c61-7669-6863-726165657274"
+
+["0.2 - 0"]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"

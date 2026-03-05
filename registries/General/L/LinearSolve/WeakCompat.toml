@@ -1,0 +1,235 @@
+["1.33.1 - 3.12.0"]
+HYPRE = "1.4.0-1"
+
+["2 - 2.12"]
+IterativeSolvers = "0.9.2-0.9"
+
+["2 - 2.16"]
+KrylovKit = "0.5-0.6"
+
+["2.11 - 2.20"]
+RecursiveArrayTools = "2"
+
+["2.11 - 2.22"]
+BandedMatrices = "1"
+
+["2.13 - 3.12.0"]
+IterativeSolvers = "0.9.3-0.9"
+
+["2.17 - 2.29.1"]
+KrylovKit = "0.6"
+
+["2.20.1 - 2.21"]
+Enzyme = "0.11"
+EnzymeCore = "0.6"
+
+["2.20.1 - 2.26"]
+Metal = "0.5"
+
+["2.20.1 - 2.30.1"]
+Pardiso = "0.5"
+
+["2.20.1 - 3.28"]
+CUDA = "5"
+FastAlmostBandedMatrices = "0.1"
+
+["2.21"]
+RecursiveArrayTools = "2-3"
+
+["2.22"]
+Enzyme = "0.11.10-0.11"
+EnzymeCore = "0.6.2-0.6"
+RecursiveArrayTools = "2.38.0-3"
+
+["2.22 - 3.4"]
+BlockDiagonals = "0.1.42-0.1"
+
+["2.23 - 2"]
+RecursiveArrayTools = "3.8.0-3"
+
+["2.23 - 2.23.3"]
+Enzyme = "0.11.14-0.11"
+
+["2.23 - 2.29"]
+EnzymeCore = "0.6.5-0.6"
+
+["2.23 - 2.34"]
+KernelAbstractions = "0.9.16-0.9"
+
+["2.23 - 3.12.0"]
+BandedMatrices = "1.5.0-1"
+
+["2.23.4 - 2.29"]
+Enzyme = "0.11.15-0.11"
+
+["2.27 - 3.28"]
+Metal = "1"
+
+["2.29 - 2.30.0"]
+CUDSS = "0.1"
+
+["2.29.2 - 2.30.1"]
+KrylovKit = "0.6-0.7"
+
+["2.30 - 2.34"]
+Enzyme = "0.11.15-0.12"
+EnzymeCore = "0.6.5-0.7"
+
+["2.30.1 - 2.30"]
+CUDSS = "0.1-0.2"
+
+["2.30.2 - 2.38"]
+KrylovKit = "0.8"
+Pardiso = "0.5.7-0.5"
+
+["2.31 - 2.38"]
+CUDSS = "0.1-0.3"
+
+["2.35 - 3.12.0"]
+EnzymeCore = "0.8.1-0.8"
+KernelAbstractions = "0.9.27-0.9"
+
+["2.39 - 3.12.0"]
+CUDSS = "0.1-0.4"
+KrylovKit = "0.8-0.9"
+Pardiso = ["0.5.7-0.5", "1"]
+
+["2.6 - 2.21"]
+BlockDiagonals = "0.1"
+
+["2.6 - 2.22"]
+KernelAbstractions = "0.9"
+
+["3 - 3.12.0"]
+RecursiveFactorization = "0.2.14-0.2"
+Sparspak = "0.3.6-0.3"
+
+["3 - 3.28"]
+FastLapackInterface = "2"
+
+["3.0"]
+RecursiveArrayTools = "3.8.0-3"
+
+["3.12.1 - 3.12"]
+BandedMatrices = "1.5.0 - 1"
+BlockDiagonals = "0.1.42 - 0.2"
+CUDSS = "0.1 - 0.4"
+EnzymeCore = "0.8.1 - 0.8"
+HYPRE = "1.4.0 - 1"
+IterativeSolvers = "0.9.3 - 0.9"
+KernelAbstractions = "0.9.27 - 0.9"
+KrylovKit = "0.8 - 0.9"
+Pardiso = ["0.5.7 - 0.5", "1"]
+RecursiveFactorization = "0.2.14 - 0.2"
+SparseArrays = "1.10.0 - 1"
+Sparspak = "0.3.6 - 0.3"
+
+["3.13 - 3.18.0"]
+BandedMatrices = "1.5.0-1"
+BlockDiagonals = "0.1.42-0.2"
+CUDSS = "0.1-0.4"
+EnzymeCore = "0.8.1-0.8"
+HYPRE = "1.4.0-1"
+IterativeSolvers = "0.9.3-0.9"
+KernelAbstractions = "0.9.27-0.9"
+KrylovKit = "0.8-0.9"
+Pardiso = ["0.5.7-0.5", "1"]
+RecursiveFactorization = "0.2.14-0.2"
+SparseArrays = "1.10.0-1"
+Sparspak = "0.3.6-0.3"
+
+["3.18.0"]
+ForwardDiff = ["0.10.36-0.10", "1"]
+
+["3.18.1 - 3"]
+SparseArrays = "1.10.0 - 1"
+
+["3.18.1 - 3.18"]
+CUDSS = "0.1 - 0.4"
+
+["3.18.1 - 3.24"]
+KrylovKit = "0.8 - 0.9"
+
+["3.18.1 - 3.26"]
+BlockDiagonals = "0.1.42 - 0.2"
+
+["3.18.1 - 3.28"]
+BandedMatrices = "1.5.0 - 1"
+EnzymeCore = "0.8.1 - 0.8"
+ForwardDiff = ["0.10.36 - 0.10", "1"]
+HYPRE = "1.4.0 - 1"
+IterativeSolvers = "0.9.3 - 0.9"
+KernelAbstractions = "0.9.27 - 0.9"
+Pardiso = ["0.5.7 - 0.5", "1"]
+RecursiveFactorization = "0.2.14 - 0.2"
+Sparspak = "0.3.6 - 0.3"
+
+["3.19 - 3.23"]
+CUDSS = "0.1 - 0.5"
+
+["3.24 - 3.26"]
+CUDSS = "0.1 - 0.4"
+
+["3.25 - 3"]
+CUSOLVERRF = "0.2.6 - 0.2"
+LAPACK_jll = "3"
+blis_jll = "0.9"
+
+["3.25 - 3.26"]
+KrylovKit = "0.8 - 0.10"
+
+["3.27 - 3"]
+BlockDiagonals = "0.2"
+KrylovKit = "0.10"
+
+["3.27 - 3.44"]
+CUDSS = "0.4"
+
+["3.28"]
+AMDGPU = "1"
+
+["3.29"]
+ForwardDiff = "0.10.38 - 0.10"
+
+["3.29 - 3"]
+AMDGPU = "1.2.0 - 2"
+BandedMatrices = "1.8.0 - 1"
+CUDA = "5.5.0 - 5"
+CliqueTrees = "1.11.0 - 1"
+EnzymeCore = "0.8.5 - 0.8"
+FastAlmostBandedMatrices = "0.1.4 - 0.1"
+FastLapackInterface = "2.0.4 - 2"
+HYPRE = "1.7.0 - 1"
+IterativeSolvers = "0.9.4 - 0.9"
+KernelAbstractions = "0.9.30 - 0.9"
+Metal = "1.4.0 - 1"
+Pardiso = "1"
+Sparspak = "0.3.9 - 0.3"
+
+["3.29 - 3.46"]
+RecursiveFactorization = "0.2.23 - 0.2"
+
+["3.30 - 3"]
+ForwardDiff = ["0.10.38 - 0.10", "1"]
+
+["3.4 - 3.12.0"]
+SparseArrays = "1.10.0-1"
+
+["3.44 - 3.57"]
+Mooncake = "0.4"
+
+["3.45 - 3.48"]
+CUDSS = ["0.4", "0.6.1 - 0.6"]
+
+["3.47 - 3"]
+RecursiveFactorization = "0.2.26 - 0.2"
+
+["3.49 - 3"]
+CUDSS = "0.6.3 - 0.6"
+
+["3.5 - 3.12.0"]
+BlockDiagonals = "0.1.42-0.2"
+
+["3.58 - 3"]
+Mooncake = "0.4 - 0.5"
+PETSc = "0.4.2 - 0.4"

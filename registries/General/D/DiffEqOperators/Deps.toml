@@ -1,0 +1,58 @@
+["2-3.4"]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[2-4]
+DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+["3-3.4"]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+["3.1-4"]
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+["3.5-3"]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+
+["3.5-4"]
+SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
+
+[4]
+BandedMatrices = "aae01518-5342-5314-be14-df237901396f"
+NNlib = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
+
+["4.1-4"]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+
+["4.11-4"]
+LazyBandedMatrices = "d7e5e226-e90b-4449-9968-0f923699bf6f"
+
+["4.16-4"]
+RuntimeGeneratedFunctions = "7e49a35a-f44a-4d26-94aa-eba1b4ca6b47"
+
+["4.2-4"]
+BlockBandedMatrices = "ffab5731-97b5-5995-9138-79e8c1846df0"
+LazyArrays = "5078a376-72f3-5289-bfd5-ec5146d43c02"
+
+["4.2-4.36"]
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
+
+["4.24-4"]
+SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
+
+["4.26-4.36"]
+SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
+
+["4.27-4"]
+DomainSets = "5b8099bc-c8ec-5219-889f-1d9e522a28bf"
+
+["4.29-4.43"]
+NonlinearSolve = "8913a72c-1f9b-4ce2-8d82-65094dcecaec"
+
+["4.31-4"]
+LoopVectorization = "bdcacae8-1622-11e9-2a5c-532679323890"
+
+["4.34-4"]
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"

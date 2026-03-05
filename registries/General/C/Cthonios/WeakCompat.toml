@@ -1,0 +1,20 @@
+["0 - 0.1"]
+AbstractDifferentiation = "0.6"
+Adapt = "3"
+
+["0.1.1"]
+Enzyme = "0.11"
+
+["0.2.0"]
+Enzyme = "0.12"
+
+["0.2.1"]
+Adapt = "3-4"
+KernelAbstractions = "0.9"
+
+["0.3.0"]
+AMDGPU = "1"
+
+["0.3.1 - 0"]
+AMDGPU = "2"
+Adapt = "4"

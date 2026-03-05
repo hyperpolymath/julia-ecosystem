@@ -1,0 +1,34 @@
+["3 - 4"]
+SymEngine = "123dc426-2d89-5057-bbad-38513e3affd8"
+
+["3 - 4.1"]
+SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+["3 - 5"]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+["3.7.2 - 4.1"]
+InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+
+[5]
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
+
+["5.1 - 5"]
+Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
+
+["5.10 - 5"]
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+
+["5.22 - 5"]
+ModelingToolkitBase = "7771a370-6774-4173-bd38-47e70ca0b839"
+SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
+Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
+
+["5.4 - 5"]
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+
+["5.9 - 5"]
+SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"

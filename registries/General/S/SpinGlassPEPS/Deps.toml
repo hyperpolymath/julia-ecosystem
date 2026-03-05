@@ -1,0 +1,16 @@
+[0]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
+[0-1]
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+SpinGlassEngine = "0563570f-ea1b-4080-8a64-041ac6565a4e"
+SpinGlassNetworks = "b7f6bd3e-55dc-4da6-96a9-ef9dbec6ac19"
+SpinGlassTensors = "7584fc6a-5a23-4eeb-8277-827aab0146ea"
+
+[1]
+SpinGlassExhaustive = "a894d7c4-7f54-4100-9d77-d00d924adeb3"
+
+["1.5-1"]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterTools = "35a29f4d-8980-5a13-9543-d66fff28ecb8"

@@ -1,0 +1,37 @@
+[0]
+FileIO = "1"
+Parameters = "0.12"
+Reexport = "1"
+
+["0 - 0.1.0"]
+DiffEqCallbacks = "2"
+FillArrays = "0.12"
+LazyArrays = "0.22"
+OrdinaryDiffEq = "5"
+RecursiveArrayTools = "2"
+julia = "1.6.0-1"
+
+["0 - 0.1.1"]
+FFTW = "1"
+JLD2 = "0.4"
+PaddedViews = "0.5.1-0.5"
+ProgressMeter = "1"
+
+["0.1.1"]
+DiffEqCallbacks = "2-3"
+LazyArrays = "1"
+OrdinaryDiffEq = "6"
+julia = "1.9.0-1"
+
+["0.1.1 - 0"]
+FillArrays = "1"
+RecursiveArrayTools = "3"
+
+["0.1.2 - 0"]
+DiffEqCallbacks = "4"
+FFTW = "1.9.0 - 1"
+JLD2 = "0.6.1 - 0.6"
+LazyArrays = "2.6.2 - 2"
+OrdinaryDiffEq = "6.102.0 - 6"
+PaddedViews = "0.5"
+julia = "1.9.0 - 1"

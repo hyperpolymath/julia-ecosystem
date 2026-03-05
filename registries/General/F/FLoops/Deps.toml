@@ -1,0 +1,16 @@
+[0]
+Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
+JuliaVariables = "b14d175d-62b4-44ba-8fb7-3064adc8c3ec"
+MLStyle = "d8e11817-5142-5d16-987a-aa16d5891078"
+Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
+Transducers = "28d57a85-8fef-5791-bfe6-a80928e7c999"
+
+["0.1.10-0"]
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+
+["0.1.12-0"]
+BangBang = "198e06fe-97b7-11e9-32a5-e1d131e6ad66"
+InitialValues = "22cec73e-a1b8-11e9-2c92-598750a2cf9c"
+
+["0.1.4-0"]
+FLoopsBase = "b9860ae5-e623-471e-878b-f6a53c775ea6"

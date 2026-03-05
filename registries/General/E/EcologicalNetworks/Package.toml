@@ -1,0 +1,3 @@
+name = "EcologicalNetworks"
+uuid = "f03a62fe-f8ab-5b77-a061-bb599b765229"
+repo = "https://github.com/EcoJulia/EcologicalNetworks.jl.git"

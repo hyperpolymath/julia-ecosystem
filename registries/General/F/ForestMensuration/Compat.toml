@@ -1,0 +1,25 @@
+[1]
+ColorTypes = "0.11.5-0.11"
+GLM = "1.9.0-1"
+Kaleido_jll = "0.1"
+PlotlyKaleido = "2.2.5-2"
+Plots = "1.40.8-1"
+RecipesPipeline = "0.6.12-0.6"
+
+[1-2]
+CategoricalArrays = "0.10.8-0.10"
+DataFrames = "1.7.0-1"
+Distributions = "0.25.113-0.25"
+HypothesisTests = "0.11.3-0.11"
+LinearAlgebra = "1.11.0-1"
+PlotlyJS = "0.18.14-0.18"
+Reexport = "1.2.2-1"
+Revise = "3.6.4-3"
+ScientificTypes = "3.0.2-3"
+StatsBase = "0.34.3-0.34"
+StatsModels = "0.7.4-0.7"
+Tables = "1.12.0-1"
+julia = "1.11.1-1"
+
+[2]
+PlotUtils = "1.4.3-1"

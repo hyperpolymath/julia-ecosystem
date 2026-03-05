@@ -1,0 +1,17 @@
+[0]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+FieldDefaults = "49426c49-986f-5969-8844-d5cc96441cfc"
+FieldMetadata = "bf96fef3-21d2-5d20-8afa-0e7d4c32a885"
+PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+["0.1.4-0"]
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+TravelingSalesmanHeuristics = "8c8f4381-2cdd-507c-846c-be2bcff6f45f"
+
+["0.2-0"]
+RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+
+["0.2.1-0.2.7"]
+UnitfulRecipes = "42071c24-d89e-48dd-8a24-8a12d9b8861f"

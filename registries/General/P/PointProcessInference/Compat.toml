@@ -1,0 +1,31 @@
+["0-0.1"]
+DataDeps = "0.0.0-0.7"
+DelimitedFiles = ["0.7", "1"]
+Distributions = "0.0.0-0.21"
+Optim = "0.0.0-0.19"
+SpecialFunctions = "0.0.0-0.8"
+Statistics = ["0.7", "1"]
+julia = ["0.7", "1"]
+
+["0.2-0"]
+DataDeps = "0.7"
+DataFrames = "0.19-0.20"
+DelimitedFiles = "1"
+HTTP = "0.8"
+Statistics = "1"
+julia = "1"
+
+["0.2.0"]
+Distributions = "0.21"
+Optim = "0.19"
+SpecialFunctions = "0.8"
+
+["0.2.1"]
+Distributions = "0.21-0.22"
+
+["0.2.1-0"]
+Optim = "0.19-0.20"
+SpecialFunctions = "0.8-0.10"
+
+["0.2.2-0"]
+Distributions = "0.21-0.23"

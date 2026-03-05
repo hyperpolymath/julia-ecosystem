@@ -1,0 +1,64 @@
+["0.25 - 0.25.6"]
+Makie = "0.19"
+
+["0.25.7 - 0.27.2"]
+Makie = "0.19-0.20"
+
+["0.27.3 - 0.27"]
+Makie = "0.19-0.21"
+
+["0.27.3 - 0.29.19"]
+CategoricalArrays = "0.10"
+
+["0.28 - 0.29.6"]
+Makie = "0.20-0.21"
+
+["0.28.4 - 0.29.11"]
+AlgebraOfGraphics = "0.8"
+
+["0.29 - 0"]
+StatsBase = "0.34"
+
+["0.29.1 - 0.29.17"]
+DiskArrays = "0.3-0.4"
+
+["0.29.12 - 0.29.14"]
+AlgebraOfGraphics = "0.8-0.9"
+
+["0.29.13 - 0"]
+NearestNeighbors = "0.4"
+
+["0.29.15 - 0.29.17"]
+AlgebraOfGraphics = "0.8-0.10"
+
+["0.29.18"]
+Makie = "0.20 - 0.23"
+
+["0.29.18 - 0"]
+DiskArrays = "0.3 - 0.4"
+
+["0.29.18 - 0.29.25"]
+AlgebraOfGraphics = "0.8 - 0.11"
+
+["0.29.19 - 0"]
+Makie = "0.20 - 0.24"
+
+["0.29.20 - 0"]
+AbstractFFTs = "1"
+CategoricalArrays = ["0.10", "1"]
+SparseArrays = "1"
+
+["0.29.24 - 0"]
+ChainRulesCore = "1"
+
+["0.29.26 - 0"]
+Adapt = "2 - 4"
+AlgebraOfGraphics = "0.8 - 0.12"
+ArrayInterface = "7"
+RecipesBase = ["0.7 - 0.8", "1"]
+
+["0.29.7 - 0"]
+PythonCall = "0.9"
+
+["0.29.7 - 0.29.17"]
+Makie = "0.20-0.22"

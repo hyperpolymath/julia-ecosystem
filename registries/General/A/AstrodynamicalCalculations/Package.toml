@@ -1,0 +1,4 @@
+name = "AstrodynamicalCalculations"
+uuid = "c0cf9fb7-f496-4999-a425-c50785d1b88b"
+repo = "https://github.com/JuliaAstro/GeneralAstrodynamics.jl.git"
+subdir = "lib/AstrodynamicalCalculations"

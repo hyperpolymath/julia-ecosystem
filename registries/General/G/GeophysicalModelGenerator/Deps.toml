@@ -1,0 +1,50 @@
+[0]
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+GeoParams = "e018b62d-d9de-4a26-8697-af89c310ae38"
+Geodesy = "0ef565a4-170c-5f04-8de2-149903a85f3d"
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+MeshIO = "7269a6da-0436-5bbc-96c2-40638cbb6118"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+WriteVTK = "64499a7a-5c06-52f2-abe2-ccb03c286192"
+
+["0.3.12 - 0"]
+Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
+
+["0.3.3 - 0"]
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
+
+["0.3.7 - 0.5.8"]
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
+["0.4.2"]
+GMT = "5752ebe1-31b9-557e-87aa-f909b540aa54"
+
+["0.5 - 0.5.4"]
+GMT = "5752ebe1-31b9-557e-87aa-f909b540aa54"
+
+["0.5.4 - 0"]
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+
+["0.5.9 - 0"]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+["0.6 - 0"]
+FFMPEG = "c87230d0-a227-11e9-1b43-d7ebe4e7570a"
+LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+["0.7.5 - 0"]
+GDAL_jll = "a7073274-a066-55f0-b90d-d619367d196c"
+WhereTheWaterFlows = "ea906314-1493-4d22-a0af-f886a20c9fba"
+
+["0.7.8 - 0"]
+NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"

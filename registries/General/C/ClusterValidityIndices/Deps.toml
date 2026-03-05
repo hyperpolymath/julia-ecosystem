@@ -1,0 +1,23 @@
+[0]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+["0.1.1-0"]
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+ProgressBars = "49802e3a-d2f1-5c88-81d8-b72133a6f568"
+
+["0.1.3-0"]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+["0.4-0"]
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+
+["0.5-0"]
+NumericalTypeAliases = "be9b823e-291e-41a1-b8ce-806204e78f92"
+
+["0.6.1-0"]
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+
+["0.6.4-0"]
+ElasticArrays = "fdbdab4c-e67f-52f5-8c3f-e7b388dad3d4"
+PrecompileSignatures = "91cefc8d-f054-46dc-8f8c-26e11d7c5411"

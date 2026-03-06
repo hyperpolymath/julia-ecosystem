@@ -11,8 +11,12 @@
        (repo . "Axiom.jl")))
 
     (current-position
-      ((phase . "Release Candidate")
-       (overall-completion . 98)
+      ((phase . "Beta")
+       (overall-completion . 88)
+       ;; HONESTY NOTE (2026-03-06): Adjusted from 98% to 88%.
+       ;; Core ML framework, Zig FFI, 283 tests all real and working.
+       ;; Coprocessor backends (9 types) are skeleton/detection only.
+       ;; HuggingFace builders untested at scale. abstract.jl monolithic.
        (working-features
          ("tensor-types" "dense-layer" "conv2d-layer" "activations"
           "normalization-layers" "pooling-layers" "sequential-pipeline"

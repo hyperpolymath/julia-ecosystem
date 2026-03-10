@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 name = "FirmwareAudit"
 uuid = "e6a7b8c9-d0e1-4f2a-ab3c-4d5e6f7a8b9c"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [deps]
 SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"

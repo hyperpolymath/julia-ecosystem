@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 name = "Causals"
 uuid = "c4a8b6d2-f9e3-4c1a-b8d7-9f2e3c4d5e6f"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.2.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [deps]
 AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"

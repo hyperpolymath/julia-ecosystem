@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 name = "Hyperpolymath"
 uuid = "a0b1c2d3-e4f5-6a7b-8c9d-0e1f2a3b4c5d"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [deps]
 AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"

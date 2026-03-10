@@ -1,7 +1,7 @@
 name = "AxiomBenchmarks"
 
 [deps]
-Axiom = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+Axiom = "bbd403f8-dcc5-405a-84eb-8de9d358675c"
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"

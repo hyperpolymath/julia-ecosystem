@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 name = "SMTLib"
 uuid = "7d3f9a2c-8b4e-5c1f-a6d0-9e8f7b2c3d4e"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.2.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [deps]
 AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"

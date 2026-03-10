@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 name = "HardwareResilience"
 uuid = "d5f6a7b8-c9d0-4e1f-9a2b-3c4d5e6f7a8b"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [compat]
 julia = "1.10"

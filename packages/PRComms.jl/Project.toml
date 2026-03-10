@@ -2,15 +2,15 @@ name = "PRComms"
 uuid = "2dde2a48-bffb-456d-9be4-0a16c25066d3"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-JSON3 = "0f5b860d-d184-4516-a1c6-1744e9610e04"
-SQLite = "0aa819cd-06f1-547f-88ef-0d1bc55bc9b6"
-Mustache = "ffc61752-8da7-5510-adfd-99503ae90577"
-Dates = "ade2ca70-3891-5945-931b-dc5ea821e773"
-Luxor = "ae8d54c2-7cca-5de8-81d1-92b9faecda3a"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
+Mustache = "ffc61752-8dc7-55ee-8c37-f3e9cdd09e70"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 
 [compat]
 julia = "1.10"

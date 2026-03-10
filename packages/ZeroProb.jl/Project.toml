@@ -1,7 +1,7 @@
 name = "ZeroProb"
 uuid = "f9e8c2e0-8b4a-4d5f-9a3c-1e2d3c4b5a6f"
 version = "0.1.0"
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 
 [deps]

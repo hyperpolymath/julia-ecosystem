@@ -1,3 +1,36 @@
+================================================================================
+LICENSING NOTICE
+================================================================================
+
+SPDX-License-Identifier: MPL-2.0
+
+The legal license for this software is the Mozilla Public License 2.0 (MPL-2.0).
+The full MPL-2.0 text is available at: https://www.mozilla.org/en-US/MPL/2.0/
+
+VOLUNTARY ADOPTION: Palimpsest-MPL (PMPL-1.0-or-later)
+-------------------------------------------------------
+In addition to the MPL-2.0 legal obligations, the author voluntarily adopts the
+Palimpsest-MPL License (PMPL-1.0-or-later), which extends MPL-2.0 with
+provisions for:
+
+  - Post-quantum cryptographic provenance (quantum-safe signatures for
+    attribution chains that remain verifiable in a post-quantum world)
+  - Ethical use requirements (emotional lineage preservation, non-interpretive
+    system disclosure, good-faith commercial use)
+  - AI-age protections (documentation requirements when software is used as
+    input to automated/AI systems without preserving its narrative context)
+
+These PMPL provisions are voluntary commitments by the author and do not alter
+the legal enforceability of the MPL-2.0 base license. Users who wish to honour
+only MPL-2.0 may do so. Users who wish to additionally honour the PMPL
+provisions are encouraged to do so as a matter of principle.
+
+For the PMPL specification: https://github.com/hyperpolymath/palimpsest-license
+
+================================================================================
+FULL LICENSE TEXT FOLLOWS (Palimpsest-MPL 1.0, incorporating MPL-2.0 by reference)
+================================================================================
+
 SPDX-License-Identifier: MPL-2.0-or-later
 SPDX-FileCopyrightText: 2025 Palimpsest Stewardship Council
 

@@ -226,6 +226,15 @@ function backend_ntt_transform(backend::AbstractCryptoBackend, args...)
 end
 
 """
+    backend_ntt_inverse_transform(backend::AbstractCryptoBackend, args...)
+
+Inverse NTT on the given backend. GPU extensions override this.
+"""
+function backend_ntt_inverse_transform(backend::AbstractCryptoBackend, args...)
+    throw(MethodError(backend_ntt_inverse_transform, (backend, args...)))
+end
+
+"""
     backend_polynomial_multiply(backend::AbstractCryptoBackend, args...)
 """
 function backend_polynomial_multiply(backend::AbstractCryptoBackend, args...)

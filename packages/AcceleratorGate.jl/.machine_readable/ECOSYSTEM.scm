@@ -1,0 +1,19 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.scm for AcceleratorGate.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "AcceleratorGate.jl")
+  (type "julia-package")
+  (purpose "Shared coprocessor dispatch infrastructure for the hyperpolymath Julia ecosystem")
+
+  (position-in-ecosystem
+    (domain "hardware-acceleration")
+    (role "Unified dispatch layer for GPU, FPGA, and other coprocessor backends")
+    (maturity "alpha"))
+
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

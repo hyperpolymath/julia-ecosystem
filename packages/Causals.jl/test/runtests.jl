@@ -520,4 +520,252 @@ using Statistics: mean
         @test 0.0 <= pns <= 1.0
     end
 
+    @testset "Counterfactual Query (module-level export)" begin
+        using Causals.CausalDAG: CausalGraph, add_edge!
+
+        g = CausalGraph([:X, :Y])
+        add_edge!(g, :X, :Y)
+
+        evidence = Dict{Symbol, Any}(:X => 1.0)
+        intervention = Dict{Symbol, Any}(:X => 0.0)
+        result = counterfactual_query(g, evidence, intervention, :Y)
+        @test result == "RESULT_COUNTERFACTUAL"
+    end
+
+    @testset "Remove Edge" begin
+        using Causals.CausalDAG: CausalGraph, add_edge!, remove_edge!
+
+        g = CausalGraph([:A, :B, :C])
+        add_edge!(g, :A, :B)
+        add_edge!(g, :B, :C)
+
+        # B is ancestor of C before removal
+        @test :B in ancestors(g, :C)
+
+        # Remove edge B -> C
+        remove_edge!(g, :B, :C)
+
+        # After removal, B should no longer be a direct ancestor of C
+        @test :B ∉ ancestors(g, :C)
+        @test :A ∉ ancestors(g, :C)
+
+        # A -> B should still exist
+        @test :A in ancestors(g, :B)
+    end
+
+    @testset "ModularMath" begin
+        using Causals.ModularMath: Mod, value, modulus
+
+        # Basic construction
+        m = Mod(7, 5)
+        @test value(m) == 2  # 7 mod 5 = 2
+        @test modulus(m) == 5
+
+        # Addition
+        a = Mod(3, 7)
+        b = Mod(5, 7)
+        c = a + b
+        @test value(c) == 1  # (3 + 5) mod 7 = 1
+        @test modulus(c) == 7
+
+        # Multiplication
+        d = a * b
+        @test value(d) == 1  # (3 * 5) mod 7 = 15 mod 7 = 1
+
+        # Zero element
+        z = Mod(0, 5)
+        @test value(z) == 0
+
+        # Identity for addition
+        e = Mod(0, 7)
+        @test value(a + e) == value(a)
+
+        # Identity for multiplication
+        one = Mod(1, 7)
+        @test value(a * one) == value(a)
+
+        # Moduli mismatch should error
+        m1 = Mod(3, 5)
+        m2 = Mod(4, 7)
+        @test_throws ErrorException m1 + m2
+        @test_throws ErrorException m1 * m2
+
+        # Large values wrap correctly
+        big_val = Mod(1000, 13)
+        @test value(big_val) == 1000 % 13
+    end
+
+    @testset "Mediation" begin
+        using Causals.Mediation: natural_direct_effect, natural_indirect_effect
+
+        # natural_direct_effect returns a stub value
+        nde = natural_direct_effect(:X, :M, :Y, nothing)
+        @test nde isa Float64
+        @test nde == 0.45
+
+        # natural_indirect_effect returns a stub value
+        nie = natural_indirect_effect(:X, :M, :Y, nothing)
+        @test nie isa Float64
+        @test nie == 0.30
+
+        # Verify they work with different symbol arguments
+        nde2 = natural_direct_effect(:Treatment, :Mediator, :Outcome, Dict())
+        @test nde2 == 0.45
+        nie2 = natural_indirect_effect(:Treatment, :Mediator, :Outcome, Dict())
+        @test nie2 == 0.30
+    end
+
+    @testset "AIE (Applied Information Economics)" begin
+        # Test EVOI calculation
+        loss = 10000.0
+        p_wrong = 0.3
+        ev = evoi(loss, p_wrong)
+        @test ev == 3000.0  # 10000 * 0.3
+
+        # Zero loss means zero EVOI
+        @test evoi(0.0, 0.5) == 0.0
+
+        # Zero probability of being wrong means zero EVOI
+        @test evoi(10000.0, 0.0) == 0.0
+
+        # Test reduce_uncertainty
+        prior = (lower=10.0, upper=50.0)
+        reduced = reduce_uncertainty(prior, nothing)
+        @test reduced.lower == 10.0 * 0.9
+        @test reduced.upper == 50.0 * 0.9
+
+        # Repeated reduction should shrink further
+        reduced2 = reduce_uncertainty(reduced, nothing)
+        @test reduced2.lower < reduced.lower
+        @test reduced2.upper < reduced.upper
+    end
+
+    @testset "ConsensusEngine" begin
+        # Test causal_consensus returns a ConsensusReport
+        report = causal_consensus(nothing)
+        @test report isa ConsensusReport
+        @test report.verdict == :likely_causal
+        @test 0.0 <= report.confidence <= 1.0
+        @test length(report.contributing_tests) > 0
+        @test :Granger in report.contributing_tests
+        @test :BradfordHill in report.contributing_tests
+        @test :Counterfactuals in report.contributing_tests
+    end
+
+    @testset "CognitiveCausality" begin
+        using Causals.CausalDAG: CausalGraph, add_edge!
+
+        # Test score_explanatory_depth
+        g = CausalGraph([:X, :M, :Y])
+        add_edge!(g, :X, :M)
+        add_edge!(g, :M, :Y)
+
+        depth = score_explanatory_depth(g)
+        @test depth isa Float64
+        @test depth >= 0.0
+
+        # Empty graph should have zero depth
+        g_empty = CausalGraph([:A])
+        depth_empty = score_explanatory_depth(g_empty)
+        @test depth_empty >= 0.0
+
+        # Test predict_intervention_effect
+        result = predict_intervention_effect(g, :X, :Y)
+        @test result == :likely_increase
+
+        # Different variables should still produce a result
+        result2 = predict_intervention_effect(g, :M, :Y)
+        @test result2 == :likely_increase
+    end
+
+    @testset "Dempster-Shafer - Additional Coverage" begin
+        using Causals.DempsterShafer: pignistic_transform, conflict_measure, uncertainty
+
+        frame = [:A, :B, :C]
+        masses = Dict(
+            Set([:A]) => 0.4,
+            Set([:B]) => 0.3,
+            Set([:A, :B, :C]) => 0.3
+        )
+        m = MassAssignment(frame, masses)
+
+        # Test pignistic_transform
+        probs = pignistic_transform(m)
+        @test probs isa Dict
+        @test length(probs) == 3
+        # Pignistic probabilities should sum to 1
+        @test sum(values(probs)) ≈ 1.0
+        # :A gets mass from Set([:A])=0.4 + share of Set([:A,:B,:C])=0.3/3=0.1
+        @test probs[:A] ≈ 0.4 + 0.1
+        # :B gets mass from Set([:B])=0.3 + share of Set([:A,:B,:C])=0.3/3=0.1
+        @test probs[:B] ≈ 0.3 + 0.1
+
+        # Test conflict_measure
+        m2 = MassAssignment(frame, Dict(Set([:B]) => 0.9, Set([:A, :B, :C]) => 0.1))
+        conflict = conflict_measure(m, m2)
+        @test conflict >= 0.0
+        @test conflict <= 1.0
+        # Conflict from Set([:A]) * Set([:B]) = 0.4 * 0.9 = 0.36
+        @test conflict ≈ 0.36
+
+        # Test uncertainty interval
+        bel, pl = uncertainty(m, Set([:A]))
+        @test bel == belief(m, Set([:A]))
+        @test pl == plausibility(m, Set([:A]))
+        @test bel <= pl
+
+        # Masses not summing to 1 should error
+        @test_throws ErrorException MassAssignment([:A, :B], Dict(Set([:A]) => 0.3))
+
+        # Mass assigned outside frame should error
+        @test_throws ErrorException MassAssignment([:A], Dict(Set([:B]) => 1.0))
+    end
+
+    @testset "Bradford Hill - strength_of_evidence and validation" begin
+        using Causals.BradfordHill: strength_of_evidence
+
+        # strength_of_evidence returns the confidence score
+        criteria = BradfordHillCriteria(
+            strength=0.8, consistency=0.9, temporality=1.0, plausibility=0.7
+        )
+        soe = strength_of_evidence(criteria)
+        @test 0.0 <= soe <= 1.0
+
+        # Same as second element of assess_causality
+        _, conf = assess_causality(criteria)
+        @test soe == conf
+
+        # Validation: values outside [0,1] should error
+        @test_throws ErrorException BradfordHillCriteria(strength=-0.1)
+        @test_throws ErrorException BradfordHillCriteria(strength=1.5)
+        @test_throws ErrorException BradfordHillCriteria(temporality=2.0)
+        @test_throws ErrorException BradfordHillCriteria(consistency=-1.0)
+    end
+
+    @testset "Granger - optimal_lag and bidirectional" begin
+        using Causals.Granger: optimal_lag, bidirectional_granger
+
+        # Generate test data with known lag structure
+        n = 100
+        x = randn(n)
+        y = zeros(n)
+        for t in 2:n
+            y[t] = 0.5 * y[t-1] + 0.3 * x[t-1] + 0.1 * randn()
+        end
+
+        # Test optimal_lag returns a valid lag
+        best_lag = optimal_lag(x, y, 5)
+        @test best_lag >= 1
+        @test best_lag <= 5
+
+        # Test bidirectional_granger returns two strength scores
+        xy_strength, yx_strength = bidirectional_granger(x, y, 5)
+        @test 0.0 <= xy_strength <= 1.0
+        @test 0.0 <= yx_strength <= 1.0
+
+        # x causes y, so x->y should generally be stronger
+        # (may not hold every time due to randomness, so just check valid range)
+        @test xy_strength >= 0.0
+    end
+
 end

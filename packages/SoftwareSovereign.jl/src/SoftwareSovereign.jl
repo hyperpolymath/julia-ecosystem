@@ -1,4 +1,25 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    SoftwareSovereign
+
+Software sovereignty assessment and digital autonomy metrics. Audits installed
+software against configurable policies covering allowed licenses, blocked
+organisations, architecture constraints, open-source requirements, and telemetry
+controls. Includes license classification, redundancy checking, and a TUI dashboard.
+
+# Key Features
+- Policy-based system audit across DNF, Flatpak, and ASDF package managers
+- License category database with sovereignty-aware groupings
+- Application redundancy detection and reporting
+- Interactive terminal dashboard via `launch_dashboard`
+
+# Example
+```julia
+using SoftwareSovereign
+policy = SoftwarePolicy("strict", ["MIT", "MPL-2.0"], [], [], true, true)
+violations = audit_system(policy)
+```
+"""
 module SoftwareSovereign
 
 using DataFrames

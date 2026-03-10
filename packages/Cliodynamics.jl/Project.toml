@@ -1,7 +1,8 @@
 name = "Cliodynamics"
 uuid = "8d2f3e70-4c6b-5e9c-a3d1-2f8e9c0b1d2e"
-authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "1.0.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"

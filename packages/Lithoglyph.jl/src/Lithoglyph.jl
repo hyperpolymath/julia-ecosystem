@@ -1,4 +1,23 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    Lithoglyph
+
+Julia bindings for the LithoGlyph database engine. Provides a client for registering
+and searching glyphs (symbolic data with tags and provenance) in the federated
+LithoGlyph store, plus an FFI bridge to the core Zig/Forth normaliser.
+
+# Key Features
+- `Glyph` type with id, data, tags, and provenance tracking
+- HTTP-based client for glyph registration and symbolic search
+- FFI bridge to `liblithoglyph_core.so` for text normalisation
+
+# Example
+```julia
+using Lithoglyph
+client = LithoglyphClient("https://litho.example.com", "token")
+results = search_glyphs(client, "cuneiform")
+```
+"""
 module Lithoglyph
 
 using HTTP

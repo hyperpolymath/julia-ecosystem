@@ -1,10 +1,36 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    KnotTheory
+
+Mathematical knot theory library implementing planar diagram representations,
+polynomial invariants, Reidemeister move simplification, and braid word conversion.
+Includes a built-in knot table and Seifert circle computation.
+
+# Key Features
+- Planar diagram and DT code representations for knots and links
+- Jones, Alexander, Conway, and HOMFLY polynomial invariants
+- Reidemeister moves (R1, R2, R3) for diagram simplification
+- Seifert matrix and signature computation
+- Knot table lookup and braid word interconversion
+
+# Example
+```julia
+using KnotTheory
+k = trefoil()
+jones_polynomial(k)
+crossing_number(k)
+```
+"""
 module KnotTheory
 
 using JSON3
 using LinearAlgebra
 using Graphs
 using Polynomials
+using AcceleratorGate: current_backend, JuliaBackend
+
+# Backend abstraction (coprocessor dispatch hooks)
+include("backends/abstract.jl")
 
 # ---------------------------------------------------------------------------
 # Exports
@@ -766,6 +792,14 @@ function _poly_det(M::Matrix{Vector{Int}}, n::Int)
     if n == 0
         return [1]
     end
+    # Attempt coprocessor-accelerated matrix determinant for non-trivial sizes
+    if n >= 2
+        backend = current_backend()
+        if !(backend isa JuliaBackend)
+            result = backend_matrix_det(backend, M, n)
+            result !== nothing && return result
+        end
+    end
     if n == 1
         return M[1, 1]
     end
@@ -885,6 +919,13 @@ function alexander_polynomial(pd::PlanarDiagram)
     n = length(pd.crossings)
     if n == 0
         return Dict(0 => 1)
+    end
+
+    # Dispatch to coprocessor backend if available
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_alexander_polynomial(backend, pd)
+        result !== nothing && return result
     end
 
     gen_map, n_gens = _wirtinger_generators(pd)
@@ -1195,13 +1236,24 @@ WARNING: Exponential time complexity O(2^n). Limited to n <= $MAX_CROSSINGS_FOR_
 """
 function jones_polynomial(pd::PlanarDiagram; wr::Int=0)
     n = length(pd.crossings)
+    if n == 0
+        return Dict(0 => 1)
+    end
+
+    # Dispatch to coprocessor backend if available.
+    # The exponential state enumeration (2^n) benefits greatly from GPU/coprocessor
+    # parallelism, so we attempt backend dispatch before the crossing limit check.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_jones_invariant(backend, pd, wr)
+        result !== nothing && return result
+    end
+
+    # Pure-Julia fallback: enforce crossing limit for exponential-time bracket
     if n > MAX_CROSSINGS_FOR_BRACKET
         throw(ArgumentError(
             "Jones polynomial via bracket requires <=$MAX_CROSSINGS_FOR_BRACKET crossings (got $n)"
         ))
-    end
-    if n == 0
-        return Dict(0 => 1)
     end
 
     # Build arc positions for pairings.
@@ -1574,17 +1626,18 @@ function to_polynomial(dict::Dict{Int, Int})
 end
 
 # ---------------------------------------------------------------------------
-# Plotting stub
+# Plotting (requires CairoMakie package extension)
 # ---------------------------------------------------------------------------
 
 """
     plot_pd(pd::PlanarDiagram)
 
-Plot a planar diagram using CairoMakie if available. This stub throws an
-error directing the user to install the CairoMakie extension.
+Plot a planar diagram. Requires the CairoMakie extension to be loaded.
+Install CairoMakie and load it (`using CairoMakie`) to enable this function.
+The extension overrides this method with a full graphical implementation.
 """
 function plot_pd(pd::PlanarDiagram)
-    error("plot_pd requires CairoMakie; add it to your environment to enable plotting.")
+    error("plot_pd requires CairoMakie; add it to your environment and load it to enable plotting.")
 end
 
 # ---------------------------------------------------------------------------

@@ -1,7 +1,8 @@
 name = "Lithoglyph"
 uuid = "f1e2d3c4-b5a6-4b7c-8d9e-0f1a2b3c4d5e"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
@@ -10,3 +11,11 @@ Libdl = "8f399da3-3557-5675-b5ff-fb832c9795de"
 
 [compat]
 julia = "1.10"
+HTTP = "1"
+JSON3 = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

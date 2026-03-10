@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name = "QuantumCircuit"
+uuid = "b3d4e5f6-a7b8-4c9d-ae0f-1a2b3c4d5e6f"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
+version = "0.1.0"
+license = "PMPL-1.0-or-later"
+
+[deps]
+AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[weakdeps]
+AMDGPU = "21141c5a-9bdb-4563-92ae-f87d6854732e"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
+
+[extensions]
+# GPU backends (require hardware-specific packages + KernelAbstractions)
+QuantumCircuitCUDAExt = ["CUDA", "KernelAbstractions"]
+QuantumCircuitMetalExt = ["Metal", "KernelAbstractions"]
+QuantumCircuitROCmExt = ["AMDGPU", "KernelAbstractions"]
+# Coprocessor backends (triggered by AcceleratorGate, which defines all backend types)
+QuantumCircuitQPUExt = "AcceleratorGate"
+QuantumCircuitTPUExt = "AcceleratorGate"
+QuantumCircuitFPGAExt = "AcceleratorGate"
+QuantumCircuitNPUExt = "AcceleratorGate"
+QuantumCircuitVPUExt = "AcceleratorGate"
+QuantumCircuitDSPExt = "AcceleratorGate"
+QuantumCircuitMathExt = "AcceleratorGate"
+QuantumCircuitCryptoExt = "AcceleratorGate"
+QuantumCircuitPPUExt = "AcceleratorGate"
+
+[compat]
+julia = "1.10"
+AcceleratorGate = "0.1"
+AMDGPU = "1"
+CUDA = "5"
+KernelAbstractions = "0.9"
+Metal = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

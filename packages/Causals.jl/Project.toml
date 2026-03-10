@@ -1,22 +1,66 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 name = "Causals"
 uuid = "c4a8b6d2-f9e3-4c1a-b8d7-9f2e3c4d5e6f"
-authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.2.0"
 license = "PMPL-1.0-or-later"
 
 [deps]
+AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
+[weakdeps]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
+AMDGPU = "21141c5a-9bdb-4563-92ae-f87d6854732e"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+TPUCompute = "11111111-1111-1111-1111-111111111111"
+NPUAccel = "22222222-2222-2222-2222-222222222222"
+DSPLibs = "33333333-3333-3333-3333-333333333333"
+FPGASynthesis = "44444444-4444-4444-4444-444444444444"
+VPURuntime = "55555555-5555-5555-5555-555555555555"
+QPUInterface = "66666666-6666-6666-6666-666666666666"
+PPUCompute = "77777777-7777-7777-7777-777777777777"
+MathAccel = "88888888-8888-8888-8888-888888888888"
+CryptoAccel = "99999999-9999-9999-9999-999999999999"
+
+[extensions]
+CausalsCUDAExt = ["CUDA", "KernelAbstractions"]
+CausalsMetalExt = ["Metal", "KernelAbstractions"]
+CausalsROCmExt = ["AMDGPU", "KernelAbstractions"]
+CausalsTPUExt = "TPUCompute"
+CausalsNPUExt = "NPUAccel"
+CausalsDSPExt = "DSPLibs"
+CausalsFPGAExt = "FPGASynthesis"
+CausalsVPUExt = "VPURuntime"
+CausalsQPUExt = "QPUInterface"
+CausalsPPUExt = "PPUCompute"
+CausalsMathExt = "MathAccel"
+CausalsCryptoExt = "CryptoAccel"
+
 [compat]
+AcceleratorGate = "0.1"
 julia = "1.9"
 Distributions = "0.25"
 Graphs = "1"
 StatsBase = "0.34"
+CUDA = "5"
+Metal = "1"
+AMDGPU = "1"
+KernelAbstractions = "0.9"
+TPUCompute = "0.1"
+NPUAccel = "0.1"
+DSPLibs = "0.1"
+FPGASynthesis = "0.1"
+VPURuntime = "0.1"
+QPUInterface = "0.1"
+PPUCompute = "0.1"
+MathAccel = "0.1"
+CryptoAccel = "0.1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

@@ -1,4 +1,24 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+
+"""
+    JuliaForChildren
+
+Educational Julia programming toolkit for children aged 7-14. Provides
+simplified interfaces for drawing, robotics, Minecraft modding, KSP
+mission planning, game development, and collaborative coding.
+
+# Key Features
+- Mission-based learning with progressive difficulty
+- Turtle graphics and Luxor drawing integration
+- Minecraft and KSP automation interfaces
+- Accessibility-first design with screen reader support
+
+# Example
+```julia
+using JuliaForChildren
+mission = create_mission("Draw a Star", difficulty=:beginner)
+```
+"""
 module JuliaForChildren
 
 include("missions.jl")

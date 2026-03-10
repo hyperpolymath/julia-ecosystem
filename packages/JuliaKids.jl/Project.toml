@@ -1,7 +1,8 @@
 name = "JuliaForChildren"
-uuid = "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p6"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+uuid = "c1c96f90-3ae4-433d-aa60-06e66792fdf1"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 Luxor = "ae8d54c2-7cca-5de8-81d1-92b9faecda3a"
@@ -11,4 +12,13 @@ XLSX = "fdb9862d-a720-591d-8ad2-30741c23497a"
 
 [compat]
 julia = "1.10"
-Luxor = "3.0"
+Luxor = "3, 4"
+DataFrames = "1"
+JSON3 = "1"
+XLSX = "0.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

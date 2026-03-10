@@ -1,4 +1,26 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    PRComms
+
+Public relations and communications management toolkit. Covers message pillar
+creation, press release drafting, crisis communications, stakeholder surveys,
+brand equity modelling, and multi-level communications planning (strategic,
+tactical, operational).
+
+# Key Features
+- Message pillars with audience-specific variants
+- Press release lifecycle (draft, review, publish)
+- Crisis playbook activation and holding statements
+- NPS calculation, share-of-voice analysis, and survey builder
+- Specialist modules for internal comms, personal PR, and public groups
+
+# Example
+```julia
+using PRComms
+pillar = create_pillar("Sustainability", "Our green commitments")
+release = draft_release("Launch Event", pillar)
+```
+"""
 module PRComms
 
 include("types.jl")

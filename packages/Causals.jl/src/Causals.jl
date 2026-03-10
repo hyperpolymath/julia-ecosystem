@@ -1,6 +1,29 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    Causals
+
+Causal inference framework providing do-calculus, counterfactual reasoning, mediation
+analysis, and multiple causal assessment methods. Integrates Dempster-Shafer belief
+functions, Bradford-Hill criteria, Granger causality, and propensity score matching.
+
+# Key Features
+- DAG-based causal graphs with d-separation and backdoor criterion
+- Do-calculus interventions and effect identification
+- Counterfactual queries (probability of necessity/sufficiency)
+- Natural direct/indirect effects (mediation analysis)
+- Applied Information Economics (EVOI, uncertainty reduction)
+
+# Example
+```julia
+using Causals
+g = CausalGraph([:X, :Y, :Z])
+add_edge!(g, :X, :Y)
+d_separation(g, :X, :Z, [:Y])
+```
+"""
 module Causals
 
+include("backends/abstract.jl")
 include("CausalDAG.jl")
 include("DoCalculus.jl")
 include("Counterfactuals.jl")

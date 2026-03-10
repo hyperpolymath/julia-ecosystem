@@ -248,6 +248,18 @@ function hausdorff_dimension(set_indicator::Function, dim::Int;
                               scales::Vector{Float64}=Float64[])
     @assert dim >= 1 "Ambient dimension must be at least 1"
 
+    # Try backend-accelerated path for Monte Carlo box-counting sampling.
+    # The backend can parallelise the random point generation and set membership
+    # testing across many scales simultaneously.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_sampling(backend, set_indicator, dim, n_boxes)
+        if result !== nothing
+            return result
+        end
+        # Backend returned nothing -- fall through to pure-Julia path.
+    end
+
     # Default scales: logarithmically spaced from 0.01 to 1.0
     if isempty(scales)
         scales = exp.(range(log(0.01), log(1.0), length=20))
@@ -599,6 +611,18 @@ function conditional_density(event::ContinuousZeroProbEvent, condition::Function
     dist = event.distribution
     x = event.point
 
+    # Try backend-accelerated path for the Simpson's rule integration.
+    # The backend can parallelise evaluation of f(t) * condition(t) at all
+    # quadrature points, then reduce to compute the normalising integral.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_marginalize(backend, event, condition)
+        if result !== nothing
+            return result
+        end
+        # Backend returned nothing -- fall through to pure-Julia path.
+    end
+
     # Numerator: f(x) * condition(x)
     numerator = pdf(dist, x) * condition(x)
 
@@ -735,6 +759,18 @@ tv = total_variation_distance(Normal(-10, 0.1), Normal(10, 0.1))
 """
 function total_variation_distance(P::Distribution, Q::Distribution;
                                    n_points::Int=10000)
+    # Try backend-accelerated path for parallel numerical integration.
+    # The backend can evaluate |f_P(x) - f_Q(x)| at all quadrature points
+    # simultaneously using backend_marginalize.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_marginalize(backend, P, Q, n_points)
+        if result !== nothing
+            return result
+        end
+        # Backend returned nothing -- fall through to pure-Julia path.
+    end
+
     # Determine integration range from both distributions
     lower = min(quantile(P, 0.00001), quantile(Q, 0.00001))
     upper = max(quantile(P, 0.99999), quantile(Q, 0.99999))
@@ -790,6 +826,18 @@ kl = kl_divergence(Normal(0, 1), Normal(1, 1))
 ```
 """
 function kl_divergence(P::Distribution, Q::Distribution; n_points::Int=10000)
+    # Try backend-accelerated path for parallel PDF evaluation.
+    # The backend can evaluate log(f_P / f_Q) across all quadrature points
+    # simultaneously, which is embarrassingly parallel.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_log_likelihood(backend, P, Q, n_points)
+        if result !== nothing
+            return result
+        end
+        # Backend returned nothing -- fall through to pure-Julia path.
+    end
+
     # Integration range based on P's support (where f_P > 0)
     lower = quantile(P, 0.00001)
     upper = quantile(P, 0.99999)
@@ -855,6 +903,18 @@ fi = fisher_information(Normal(0, 1), :std)
 """
 function fisher_information(dist::Distribution, param::Symbol; delta::Float64=1e-5)
     n_samples = 5000
+
+    # Try backend-accelerated path for parallel Monte Carlo sampling.
+    # The backend can generate samples and compute score functions in
+    # parallel across all sample points.
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_sampling(backend, dist, param, n_samples, delta)
+        if result !== nothing
+            return result
+        end
+        # Backend returned nothing -- fall through to pure-Julia path.
+    end
 
     # Generate samples from the distribution
     samples = rand(dist, n_samples)

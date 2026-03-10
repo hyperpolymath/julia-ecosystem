@@ -17,4 +17,7 @@ using LinearAlgebra
     include("test_new_types.jl")
     include("test_new_measures.jl")
     include("test_new_paradoxes.jl")
+
+    # Coverage gap tests (display methods, relevance_score, extended type handlers)
+    include("test_coverage_gaps.jl")
 end

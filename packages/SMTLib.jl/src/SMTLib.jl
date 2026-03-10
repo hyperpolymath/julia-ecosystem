@@ -2358,4 +2358,21 @@ function get_unsat_core(ctx::SMTContext)
     error("Use get_unsat_core(result) instead, or implement last_result tracking in SMTContext.")
 end
 
+# ============================================================================
+# Backend Abstraction (AcceleratorGate coprocessor dispatch)
+# ============================================================================
+
+include("backends/abstract.jl")
+
+# Coprocessor extensions (overload hooks from abstract.jl)
+include("coprocessors/tpu.jl")
+include("coprocessors/npu.jl")
+include("coprocessors/fpga.jl")
+include("coprocessors/vpu.jl")
+include("coprocessors/qpu.jl")
+include("coprocessors/dsp.jl")
+include("coprocessors/ppu.jl")
+include("coprocessors/math.jl")
+include("coprocessors/crypto.jl")
+
 end # module

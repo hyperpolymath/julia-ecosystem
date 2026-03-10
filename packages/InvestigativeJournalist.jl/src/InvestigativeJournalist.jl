@@ -1,4 +1,26 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    InvestigativeJournalist
+
+Investigative journalism toolkit for OSINT, data analysis, source management, and
+storytelling. Covers the full investigative pipeline from document ingestion and
+claim extraction through network intelligence, media forensics, and publication.
+
+# Key Features
+- Source document ingestion, claim extraction, and evidence linking
+- Network intelligence graphs and "crazy wall" string boards
+- Media forensics (image integrity, AI artifact detection, audio enhancement)
+- Secure evidence transfer with cryptographic signing
+- Story templates (longform, news bulletin, thread) and branching timelines
+
+# Example
+```julia
+using InvestigativeJournalist
+doc = ingest_source("leaked_report.pdf")
+claims = extract_claim(doc)
+report = corroboration_report(claims)
+```
+"""
 module InvestigativeJournalist
 
 include("types.jl")

@@ -1,4 +1,25 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    PostDisciplinary
+
+Post-disciplinary research methodologies and knowledge graph synthesis. Provides
+tools for linking entities across disciplines, running meta-analyses, Raft-based
+consensus, memetic evolution, mixed-methods design, and hermeneutic interpretation.
+
+# Key Features
+- `ResearchProject` knowledge graph with cross-library entity linking
+- Meta-analysis with effect size aggregation and heterogeneity testing
+- Research strategy types: multi-, inter-, trans-, and anti-disciplinary
+- Triangulation, evolutionary synthesis, and expert routing
+- VeriSimDB and LithoGlyph storage bridges
+
+# Example
+```julia
+using PostDisciplinary
+project = ResearchProject("Climate-Justice Nexus")
+synthesis = generate_synthesis(project)
+```
+"""
 module PostDisciplinary
 
 using Graphs

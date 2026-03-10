@@ -1,7 +1,8 @@
 name = "TradeUnionist"
-uuid = "c3d4e5f6-7g8h-9i0j-k1l2-m3n4o5p6q7r8"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+uuid = "28827ff7-c05d-49d1-8ea0-4ff47f2d6875"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -13,9 +14,25 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 LibGEOS = "d921b63e-47ff-5d4a-934a-e24339b2057b"
 GeoInterface = "cf35f861-3891-596d-8f2e-e2afcf0c11f7"
 DuckDB = "ce010024-2d86-4e57-9d7d-f65a8aedab41"
-PRComms = "b2c3d4e5-6f7g-8h9i-0j1k-l2m3n4o5p6q7"
-BowtieRisk = "d5e6f7g8-9h0i-1j2k-l3m4-n5o6p7q8r9s0"
-Exnovation = "e6f7g8h9-0i1j-2k3l-m4n5-o6p7q8r9s0t1"
+PRComms = "2dde2a48-bffb-456d-9be4-0a16c25066d3"
+BowtieRisk = "f4857c2c-646e-44f8-8901-46c9ace85fa6"
+Exnovation = "eb535ea2-a284-4d5f-a499-9e884733dc08"
 
 [compat]
 julia = "1.10"
+DataFrames = "1"
+JSON3 = "1"
+SQLite = "1"
+StatsBase = "0.34"
+LibGEOS = "0.8"
+GeoInterface = "1"
+DuckDB = "1"
+PRComms = "0.1"
+BowtieRisk = "1"
+Exnovation = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

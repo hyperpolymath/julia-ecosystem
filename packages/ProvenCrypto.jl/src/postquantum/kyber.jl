@@ -279,5 +279,6 @@ function encode_pk(pk::KyberPublicKey)
     return bytes
 end
 
-# Stub for NTT inverse (implemented in backends/hardware.jl)
-backend_ntt_inverse_transform(backend, poly, q) = poly  # Placeholder
+# NOTE: backend_ntt_inverse_transform is declared in backends/hardware.jl with
+# proper MethodError dispatch and CPUBackend implementation. GPU backends
+# implement it in their respective ext/ extensions. No stub needed here.

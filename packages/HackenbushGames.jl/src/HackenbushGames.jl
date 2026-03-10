@@ -9,6 +9,9 @@ export mex, nim_sum, green_stalk_nimber, green_grundy
 export simple_stalk, to_graphviz, to_ascii
 export GameForm, canonical_game, simplify_game, game_value
 
+# Backend abstraction for coprocessor dispatch
+include("backends/abstract.jl")
+
 @enum EdgeColor Blue Red Green
 
 """
@@ -104,6 +107,13 @@ end
 Generate all legal moves for a given player (:left or :right).
 """
 function moves(graph::HackenbushGraph, player::Symbol)
+    # Coprocessor dispatch — move generation over large edge lists
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_move_gen(backend, graph, player)
+        result !== nothing && return result
+    end
+
     options = HackenbushGraph[]
     for (i, e) in enumerate(graph.edges)
         if _edge_allowed(e, player)
@@ -209,6 +219,13 @@ end
 Compute the Grundy number for a small green Hackenbush graph.
 """
 function green_grundy(graph::HackenbushGraph)
+    # Coprocessor dispatch — Grundy number computation over game tree
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_grundy_number(backend, graph)
+        result !== nothing && return result
+    end
+
     for e in graph.edges
         if e.color != Green
             error("green_grundy expects only Green edges")
@@ -285,6 +302,13 @@ end
 Build the canonical game form {L|R} for small graphs.
 """
 function canonical_game(graph::HackenbushGraph; max_depth::Int=6)
+    # Coprocessor dispatch — game tree evaluation is compute-intensive
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_game_tree_eval(backend, graph, max_depth)
+        result !== nothing && return result
+    end
+
     function eval_game(g::HackenbushGraph, depth::Int)
         if isempty(g.edges) || depth <= 0
             return GameForm(Rational{Int}[], Rational{Int}[])
@@ -332,6 +356,32 @@ end
 Compute a numeric value for small dyadic games.\nReturns nothing when non-numeric options are present.
 """
 function game_value(graph::HackenbushGraph; max_depth::Int=6)
+    # Coprocessor dispatch — full game evaluation via backend
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_game_tree_eval(backend, graph, max_depth)
+        if result !== nothing
+            # Backend may return a GameForm or a numeric value directly
+            if result isa GameForm
+                left = result.left
+                right = result.right
+                if isempty(left) && isempty(right)
+                    return 0//1
+                elseif isempty(right)
+                    return maximum(left) + 1
+                elseif isempty(left)
+                    return minimum(right) - 1
+                end
+                lmax = maximum(left)
+                rmin = minimum(right)
+                lmax < rmin || return nothing
+                return simplest_dyadic_between(lmax, rmin)
+            else
+                return result
+            end
+        end
+    end
+
     form = canonical_game(graph; max_depth=max_depth)
     left = form.left
     right = form.right

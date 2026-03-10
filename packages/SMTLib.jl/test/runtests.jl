@@ -1236,4 +1236,343 @@ using SMTLib
         end
     end
 
+    # ========================================================================
+    # Unicode Operator Conversions
+    # ========================================================================
+    @testset "Unicode Operator Conversions" begin
+        @test SMTLib.julia_op_to_smt(Symbol("≠")) == "distinct"
+        @test SMTLib.julia_op_to_smt(Symbol("≤")) == "<="
+        @test SMTLib.julia_op_to_smt(Symbol("≥")) == ">="
+        @test SMTLib.julia_op_to_smt(Symbol("¬")) == "not"
+        @test SMTLib.julia_op_to_smt(Symbol("∧")) == "and"
+        @test SMTLib.julia_op_to_smt(Symbol("∨")) == "or"
+        @test SMTLib.julia_op_to_smt(Symbol("⟹")) == "=>"
+        @test SMTLib.julia_op_to_smt(Symbol("⟺")) == "="
+        @test SMTLib.julia_op_to_smt(Symbol("∀")) == "forall"
+        @test SMTLib.julia_op_to_smt(Symbol("∃")) == "exists"
+    end
+
+    # ========================================================================
+    # String and Regex Operator Conversions
+    # ========================================================================
+    @testset "String Operator Conversions" begin
+        @test SMTLib.julia_op_to_smt(:str_len) == "str.len"
+        @test SMTLib.julia_op_to_smt(:str_concat) == "str.++"
+        @test SMTLib.julia_op_to_smt(:str_at) == "str.at"
+        @test SMTLib.julia_op_to_smt(:str_contains) == "str.contains"
+        @test SMTLib.julia_op_to_smt(:str_prefixof) == "str.prefixof"
+        @test SMTLib.julia_op_to_smt(:str_suffixof) == "str.suffixof"
+        @test SMTLib.julia_op_to_smt(:str_replace) == "str.replace"
+        @test SMTLib.julia_op_to_smt(:str_substr) == "str.substr"
+        @test SMTLib.julia_op_to_smt(:str_to_int) == "str.to_int"
+        @test SMTLib.julia_op_to_smt(:int_to_str) == "str.from_int"
+        @test SMTLib.julia_op_to_smt(:str_in_re) == "str.in_re"
+        @test SMTLib.julia_op_to_smt(:re_star) == "re.*"
+        @test SMTLib.julia_op_to_smt(:re_plus) == "re.+"
+        @test SMTLib.julia_op_to_smt(:re_union) == "re.union"
+        @test SMTLib.julia_op_to_smt(:str_to_re) == "str.to_re"
+
+        # to_smtlib with string operator expressions
+        @test to_smtlib(:(str_len(s))) == "(str.len s)"
+        @test to_smtlib(:(str_contains(s, t))) == "(str.contains s t)"
+    end
+
+    # ========================================================================
+    # Extract Variables
+    # ========================================================================
+    @testset "Extract Variables" begin
+        vars = SMTLib.extract_variables(:(x + y > z))
+        @test haskey(vars, :x)
+        @test haskey(vars, :y)
+        @test haskey(vars, :z)
+        @test vars[:x] == Int  # default type
+        @test !haskey(vars, :+)  # operators excluded
+        @test !haskey(vars, :>)  # operators excluded
+
+        # Nested expression
+        vars2 = SMTLib.extract_variables(:((a + b) * (c - d) == 0))
+        @test haskey(vars2, :a)
+        @test haskey(vars2, :b)
+        @test haskey(vars2, :c)
+        @test haskey(vars2, :d)
+        @test !haskey(vars2, :*)
+
+        # No variables (literal only)
+        vars3 = SMTLib.extract_variables(42)
+        @test isempty(vars3)
+    end
+
+    # ========================================================================
+    # Chained Comparisons
+    # ========================================================================
+    @testset "Chained Comparisons" begin
+        # a < b < c produces (and (< a b) (< b c))
+        expr = Expr(:comparison, :a, :<, :b, :<, :c)
+        result = to_smtlib(expr)
+        @test occursin("and", result)
+        @test occursin("(< a b)", result)
+        @test occursin("(< b c)", result)
+
+        # Single comparison: a <= b
+        expr2 = Expr(:comparison, :a, :<=, :b)
+        result2 = to_smtlib(expr2)
+        @test result2 == "(<= a b)"
+    end
+
+    # ========================================================================
+    # BitVecLiteral Equality and Hash
+    # ========================================================================
+    @testset "BitVecLiteral equality and hash" begin
+        bv1 = bv(42, 8)
+        bv2 = bv(42, 8)
+        bv3 = bv(42, 16)
+        bv4 = bv(0, 8)
+
+        @test bv1 == bv2
+        @test bv1 != bv3  # different width
+        @test bv1 != bv4  # different value
+
+        # String equality
+        @test bv1 == "(_ bv42 8)"
+        @test "(_ bv42 8)" == bv1
+
+        # Hash consistency
+        @test hash(bv1) == hash(bv2)
+    end
+
+    # ========================================================================
+    # get_unsat_core from SMTResult
+    # ========================================================================
+    @testset "get_unsat_core from SMTResult" begin
+        # With core labels
+        core_labels = [:pos, :neg, :bound]
+        result = SMTResult(:unsat, Dict{Symbol,Any}(), core_labels, Dict{String,Any}(), "")
+        core = get_unsat_core(result)
+        @test core == core_labels
+        @test :pos in core
+        @test :neg in core
+
+        # Empty core
+        result_empty = SMTResult(:unsat, Dict{Symbol,Any}(), Symbol[], Dict{String,Any}(), "")
+        @test isempty(get_unsat_core(result_empty))
+
+        # Sat result (core should be empty)
+        result_sat = SMTResult(:sat, Dict{Symbol,Any}(:x => 5), Symbol[], Dict{String,Any}(), "")
+        @test isempty(get_unsat_core(result_sat))
+    end
+
+    # ========================================================================
+    # optimize function
+    # ========================================================================
+    @testset "optimize function" begin
+        solvers = available_solvers()
+        if !isempty(solvers)
+            solver = first(solvers)
+            if solver.kind == :z3
+                ctx = SMTContext(solver=solver, logic=:QF_LIA)
+                declare(ctx, :x, Int)
+                assert!(ctx, :(x > 0))
+                assert!(ctx, :(x < 100))
+                minimize!(ctx, :x)
+
+                result = optimize(ctx)
+                @test result.status in (:sat, :unknown)
+                if result.status == :sat && haskey(result.model, :x)
+                    @test result.model[:x] == 1
+                end
+            end
+        end
+    end
+
+    # ========================================================================
+    # from_smtlib: let expressions and ite
+    # ========================================================================
+    @testset "from_smtlib: let and ite advanced" begin
+        # if-then-else
+        result_ite = from_smtlib("(ite (> x 0) x (- x))")
+        @test result_ite isa Expr
+        @test result_ite.args[1] == :ifelse
+
+        # Nested ite
+        result_nested = from_smtlib("(ite (> x 0) (+ x 1) (- x 1))")
+        @test result_nested isa Expr
+        @test result_nested.args[1] == :ifelse
+        @test result_nested.args[2] isa Expr  # condition
+        @test result_nested.args[3] isa Expr  # then branch
+
+        # Bitvector comparisons
+        result_bv = from_smtlib("(bvult a b)")
+        @test result_bv.args[1] == :bvult
+
+        result_bvsle = from_smtlib("(bvsle a b)")
+        @test result_bvsle.args[1] == :bvsle
+    end
+
+    # ========================================================================
+    # Bitvector comparison operators
+    # ========================================================================
+    @testset "Bitvector Comparison Operators" begin
+        @test to_smtlib(:(bvult(a, b))) == "(bvult a b)"
+        @test to_smtlib(:(bvugt(a, b))) == "(bvugt a b)"
+        @test to_smtlib(:(bvule(a, b))) == "(bvule a b)"
+        @test to_smtlib(:(bvuge(a, b))) == "(bvuge a b)"
+        @test to_smtlib(:(bvslt(a, b))) == "(bvslt a b)"
+        @test to_smtlib(:(bvsgt(a, b))) == "(bvsgt a b)"
+        @test to_smtlib(:(bvsle(a, b))) == "(bvsle a b)"
+        @test to_smtlib(:(bvsge(a, b))) == "(bvsge a b)"
+        @test to_smtlib(:(concat(a, b))) == "(concat a b)"
+    end
+
+    # ========================================================================
+    # Math function operators (nonlinear)
+    # ========================================================================
+    @testset "Math Function Operators" begin
+        @test to_smtlib(:(sqrt(x))) == "(sqrt x)"
+        @test to_smtlib(:(sin(x))) == "(sin x)"
+        @test to_smtlib(:(cos(x))) == "(cos x)"
+        @test to_smtlib(:(tan(x))) == "(tan x)"
+        @test to_smtlib(:(exp(x))) == "(exp x)"
+        @test to_smtlib(:(log(x))) == "(log x)"
+    end
+
+    # ========================================================================
+    # SMT_OP_TO_JULIA_MAP reverse mapping
+    # ========================================================================
+    @testset "SMT_OP_TO_JULIA_MAP reverse correctness" begin
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["="] == :(==)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["distinct"] == :(!=)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["not"] == :!
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["and"] == :&&
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["or"] == :||
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["=>"] == :implies
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["ite"] == :ifelse
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["<"] == :(<)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP[">"] == :(>)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["<="] == :(<=)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP[">="] == :(>=)
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["true"] == Symbol("true")
+        @test SMTLib.SMT_OP_TO_JULIA_MAP["false"] == Symbol("false")
+    end
+
+    # ========================================================================
+    # get_unsat_core(ctx) error
+    # ========================================================================
+    @testset "get_unsat_core context error" begin
+        solvers = available_solvers()
+        if !isempty(solvers)
+            ctx = SMTContext(solver=first(solvers), logic=:QF_LIA)
+            @test_throws ErrorException get_unsat_core(ctx)
+        end
+    end
+
+    # ========================================================================
+    # Solver Integration: optimization with constraints
+    # ========================================================================
+    @testset "Solver Integration: Z3 optimization" begin
+        solvers = available_solvers()
+        z3_solver = nothing
+        for s in solvers
+            if s.kind == :z3
+                z3_solver = s
+                break
+            end
+        end
+
+        if z3_solver !== nothing
+            @testset "maximize with bounds" begin
+                ctx = SMTContext(solver=z3_solver, logic=:QF_LIA)
+                declare(ctx, :x, Int)
+                assert!(ctx, :(x > 0))
+                assert!(ctx, :(x < 50))
+                maximize!(ctx, :x)
+
+                result = optimize(ctx)
+                @test result.status in (:sat, :unknown)
+                if result.status == :sat && haskey(result.model, :x)
+                    @test result.model[:x] == 49
+                end
+            end
+
+            @testset "minimize with expression" begin
+                ctx = SMTContext(solver=z3_solver, logic=:QF_LIA)
+                declare(ctx, :x, Int)
+                declare(ctx, :y, Int)
+                assert!(ctx, :(x > 0))
+                assert!(ctx, :(y > 0))
+                assert!(ctx, :(x + y == 10))
+                minimize!(ctx, :(x * x + y * y))
+
+                result = optimize(ctx)
+                @test result.status in (:sat, :unknown)
+            end
+        end
+    end
+
+    # ========================================================================
+    # to_smtlib: iff and xor operators
+    # ========================================================================
+    @testset "Logical: iff and xor" begin
+        @test to_smtlib(:(iff(x, y))) == "(= x y)"
+        @test to_smtlib(:(xor(x, y))) == "(xor x y)"
+        @test to_smtlib(:(implies(x, y))) == "(=> x y)"
+    end
+
+    # ========================================================================
+    # Roundtrip: to_smtlib -> from_smtlib for more complex cases
+    # ========================================================================
+    @testset "Roundtrip: complex expressions" begin
+        # Logical operators
+        @test to_smtlib(from_smtlib("(not x)")) == "(not x)"
+        @test to_smtlib(from_smtlib("(and x y)")) == "(and x y)"
+        @test to_smtlib(from_smtlib("(or x y)")) == "(or x y)"
+
+        # Nested arithmetic
+        @test to_smtlib(from_smtlib("(* (+ a b) (- c d))")) == "(* (+ a b) (- c d))"
+
+        # Bitvector
+        @test to_smtlib(from_smtlib("(bvadd x y)")) == "(bvadd x y)"
+    end
+
+    # ========================================================================
+    # parse_smt_value: additional edge cases
+    # ========================================================================
+    @testset "parse_smt_value: additional patterns" begin
+        # Large bitvector hex
+        @test SMTLib.parse_smt_value("#xFFFF") == 0xFFFF
+        @test SMTLib.parse_smt_value("#x0000") == 0
+
+        # Large bitvector binary
+        @test SMTLib.parse_smt_value("#b10101010") == 0xAA
+
+        # Zero rational
+        @test SMTLib.parse_smt_value("(/ 0 1)") == 0//1
+
+        # Negative number in parentheses
+        @test SMTLib.parse_smt_value("(- 100)") == -100
+    end
+
+    # ========================================================================
+    # parse_unsat_core: various formats
+    # ========================================================================
+    @testset "parse_unsat_core: formats" begin
+        # Standard format
+        core = SMTLib.parse_unsat_core("unsat\n(a b c)")
+        @test :a in core
+        @test :b in core
+        @test :c in core
+        @test length(core) == 3
+
+        # Single label
+        core2 = SMTLib.parse_unsat_core("unsat\n(single)")
+        @test core2 == [:single]
+
+        # No core section
+        core3 = SMTLib.parse_unsat_core("unsat")
+        @test isempty(core3)
+
+        # Error line should be skipped
+        core4 = SMTLib.parse_unsat_core("unsat\n(error \"some error\")\n(a b)")
+        @test :a in core4
+    end
+
 end

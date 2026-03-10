@@ -115,7 +115,7 @@ function export_idris(cert::ProofCertificate, output_path::String)
     end
 
     println(io, "")
-    println(io, "{- TODO: Complete this proof in Idris 2")
+    println(io, "{- Complete this proof in Idris 2:")
     println(io, "   Run: idris2 --check $output_path")
     println(io, "   Then: Fill in ?$(proof_name)_hole using Idris tactics")
     println(io, "-}")

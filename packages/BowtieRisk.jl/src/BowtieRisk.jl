@@ -1,8 +1,33 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    BowtieRisk
+
+Bow-tie risk analysis with barrier assessment and Monte Carlo simulation. Models
+hazards, threats, top events, consequences, and barriers (preventive/mitigative)
+with support for escalation factors, barrier degradation, and dependency handling.
+
+# Key Features
+- Full bow-tie model construction with threat and consequence paths
+- Monte Carlo simulation with configurable barrier distributions
+- Sensitivity tornado analysis for barrier effectiveness
+- Mermaid and GraphViz diagram generation
+- JSON serialisation/deserialisation and built-in templates
+
+# Example
+```julia
+using BowtieRisk
+model = template_model(:process_safety)
+summary = evaluate(model)
+summary.top_event_probability
+```
+"""
 module BowtieRisk
 
 using JSON3
 using Distributions
+using LinearAlgebra
+
+include("backends/abstract.jl")
 
 export Hazard, Threat, TopEvent, Consequence, Barrier, EscalationFactor
 export ProbabilityModel, ThreatPath, ConsequencePath, BowtieModel
@@ -280,7 +305,7 @@ end
 """
 Run a Monte Carlo simulation with barrier effectiveness distributions.
 """
-function simulate(model::BowtieModel; samples::Int=1000, barrier_dists::Dict{Symbol, BarrierDistribution}=Dict())
+function simulate(model::BowtieModel; samples::Int=1000, barrier_dists::Dict{Symbol, BarrierDistribution}=Dict{Symbol, BarrierDistribution}())
     top_vals = Float64[]
     cons_vals = Dict{Symbol, Vector{Float64}}()
     for path in model.consequence_paths

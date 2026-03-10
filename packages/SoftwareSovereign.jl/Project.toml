@@ -1,7 +1,8 @@
 name = "SoftwareSovereign"
-uuid = "f2g3h4i5-j6k7-l8m9-n0o1-p2q3r4s5t6u7"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+uuid = "cc72cefe-1ea1-4255-93cd-1af1078aa475"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -11,3 +12,13 @@ LMDB = "2bb35030-ce43-5968-b4aa-cd2a4af637cd"
 
 [compat]
 julia = "1.10"
+DataFrames = "1"
+JSON3 = "1"
+EzXML = "1"
+LMDB = "0.2"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

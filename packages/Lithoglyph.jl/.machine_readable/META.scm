@@ -1,0 +1,15 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; META.scm for Lithoglyph.jl
+
+(define meta
+  '((project-meta
+     (name . "Lithoglyph.jl")
+     (tagline . "Native Julia client for the Lithoglyph symbolic database")
+     (category . "databases")
+     (license . "PMPL-1.0-or-later")
+     (inception-date . "2026")
+     (repository . "https://github.com/hyperpolymath/Lithoglyph.jl"))
+
+    (development-practices
+     (versioning-scheme . "SemVer 2.0.0")
+     (contribution-model . "RSR-compliant"))))

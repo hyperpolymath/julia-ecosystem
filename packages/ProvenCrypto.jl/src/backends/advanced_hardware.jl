@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 """
 Advanced hardware feature detection for high-end processors.
 
@@ -132,8 +133,8 @@ function detect_x86_features()
         aes_ni, sha_ext, pclmulqdq, rdrand, rdseed,
         sgx, sev, sev_snp, false, false,  # TrustZone, Secure Enclave = x86 only
         qat, sev, false,  # PSP same as SEV for detection, no Neural Engine
-        amx, false, false,  # AMD matrix cores TODO, no Tensor cores
-        false, false,  # HBM/Optane detection TODO
+        amx, detect_amd_matrix_cores(), detect_nvidia_tensor_cores(),
+        detect_hbm_memory(), detect_persistent_memory(),
         l3_cache_mb, l2_cache_kb, smart_cache, game_cache,
         simd
     )
@@ -178,14 +179,182 @@ function detect_arm_features()
         aes_ni, sha_ext, true, true, true,  # ARM crypto standard
         false, false, false, trustzone, secure_enclave,
         false, false, neural_engine,
-        false, false, false,  # No AMX/matrix cores
-        false, false,         # HBM/Optane detection TODO
+        false, false, false,  # No AMX/matrix/tensor cores on ARM
+        detect_hbm_memory(), false,  # HBM possible on ARM servers; no Optane
         l3_cache_mb, l2_cache_kb, false, false,
         simd
     )
 end
 
-# Helper functions
+# ---------------------------------------------------------------------------
+# Hardware detection helpers for matrix cores, HBM, and persistent memory
+# ---------------------------------------------------------------------------
+
+"""
+    detect_amd_matrix_cores() -> Bool
+
+Detect AMD matrix core support by checking for MFMA (Matrix Fused Multiply-Add)
+instructions in CPUID flags. Available on AMD CDNA architecture (MI100+) and
+some RDNA3 GPUs.
+"""
+function detect_amd_matrix_cores()
+    if !Sys.islinux()
+        return false
+    end
+    try
+        cpuinfo = read("/proc/cpuinfo", String)
+        # AMD matrix cores appear as MFMA support in ROCm-capable devices
+        # Also check for AMD GPU compute devices in sysfs
+        has_mfma = occursin("mfma", lowercase(cpuinfo))
+        if has_mfma
+            return true
+        end
+        # Check for AMD GPU with matrix core support via sysfs
+        kfd_path = "/sys/class/kfd/kfd/topology/nodes"
+        if isdir(kfd_path)
+            for node in readdir(kfd_path)
+                props_path = joinpath(kfd_path, node, "properties")
+                if isfile(props_path)
+                    props = read(props_path, String)
+                    # gfx908 (MI100), gfx90a (MI200), gfx942 (MI300) have matrix cores
+                    if any(arch -> occursin(arch, props), ["gfx908", "gfx90a", "gfx940", "gfx941", "gfx942"])
+                        return true
+                    end
+                end
+            end
+        end
+        return false
+    catch
+        return false
+    end
+end
+
+"""
+    detect_nvidia_tensor_cores() -> Bool
+
+Detect NVIDIA Tensor Cores by checking for CUDA-capable GPUs with compute
+capability >= 7.0 (Volta and newer architectures).
+"""
+function detect_nvidia_tensor_cores()
+    if !Sys.islinux()
+        return false
+    end
+    try
+        # Check for NVIDIA GPU via nvidia-smi
+        nvidia_output = read(`nvidia-smi --query-gpu=compute_cap --format=csv,noheader`, String)
+        for line in split(strip(nvidia_output), '\n')
+            cap = tryparse(Float64, strip(line))
+            if cap !== nothing && cap >= 7.0
+                return true
+            end
+        end
+        return false
+    catch
+        # nvidia-smi not available or no NVIDIA GPU
+        return false
+    end
+end
+
+"""
+    detect_hbm_memory() -> Bool
+
+Detect High Bandwidth Memory (HBM/HBM2/HBM2E/HBM3) presence. HBM is found
+on high-end GPUs (AMD MI-series, NVIDIA A100/H100) and some specialized
+CPU packages (Intel Xeon Max with HBM).
+"""
+function detect_hbm_memory()
+    if !Sys.islinux()
+        return false
+    end
+    try
+        # Method 1: Check NVIDIA GPUs known to have HBM
+        if isfile("/usr/bin/nvidia-smi") || isfile("/usr/local/bin/nvidia-smi")
+            nvidia_out = read(`nvidia-smi --query-gpu=name --format=csv,noheader`, String)
+            hbm_gpus = ["A100", "H100", "H200", "V100", "A30", "MI100", "MI200", "MI250", "MI300"]
+            for gpu_name in hbm_gpus
+                if occursin(gpu_name, nvidia_out)
+                    return true
+                end
+            end
+        end
+
+        # Method 2: Check AMD ROCm devices with HBM
+        kfd_path = "/sys/class/kfd/kfd/topology/nodes"
+        if isdir(kfd_path)
+            for node in readdir(kfd_path)
+                props_path = joinpath(kfd_path, node, "properties")
+                if isfile(props_path)
+                    props = read(props_path, String)
+                    if occursin("hbm", lowercase(props))
+                        return true
+                    end
+                end
+            end
+        end
+
+        # Method 3: Intel Xeon Max (Sapphire Rapids HBM) check via DMI
+        if isfile("/sys/devices/virtual/dmi/id/product_name")
+            product = read("/sys/devices/virtual/dmi/id/product_name", String)
+            if occursin("HBM", product) || occursin("Xeon Max", product)
+                return true
+            end
+        end
+
+        return false
+    catch
+        return false
+    end
+end
+
+"""
+    detect_persistent_memory() -> Bool
+
+Detect Intel Optane Persistent Memory (DCPMM) or compatible persistent memory
+via Linux NVDIMM subsystem (libnvdimm / ndctl).
+"""
+function detect_persistent_memory()
+    if !Sys.islinux()
+        return false
+    end
+    try
+        # Method 1: Check ndctl for NVDIMMs
+        ndctl_path = "/sys/bus/nd/devices"
+        if isdir(ndctl_path)
+            devices = readdir(ndctl_path)
+            for dev in devices
+                if startswith(dev, "nmem") || startswith(dev, "region")
+                    return true
+                end
+            end
+        end
+
+        # Method 2: Check /dev/pmem* devices
+        for dev in readdir("/dev")
+            if startswith(dev, "pmem")
+                return true
+            end
+        end
+
+        # Method 3: Check ipmctl (Intel Persistent Memory Control)
+        try
+            ipmctl_out = read(`ipmctl show -dimm`, String)
+            if occursin("Healthy", ipmctl_out) || occursin("Intel", ipmctl_out)
+                return true
+            end
+        catch
+            # ipmctl not installed
+        end
+
+        return false
+    catch
+        return false
+    end
+end
+
+# ---------------------------------------------------------------------------
+# Original helper functions
+# ---------------------------------------------------------------------------
+
 function parse_cpuinfo_x86(cpuinfo::String)
     features = Dict{String,Bool}()
     for line in split(cpuinfo, '\n')

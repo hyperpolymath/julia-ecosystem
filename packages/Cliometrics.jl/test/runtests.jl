@@ -265,4 +265,213 @@ using Statistics
         result_parallel = estimate_treatment_effect(data_parallel, :gdp, :treated, 1995)
         @test abs(result_parallel.treatment_effect) < 0.1  # Should be near zero
     end
+
+    @testset "Quantify Institutions with period filter" begin
+        data = DataFrame(
+            year = repeat(2000:2009, 2),
+            country = repeat(["A", "B"], inner=10),
+            rule_of_law = vcat(
+                collect(0.5:0.05:0.95),  # A improving
+                collect(0.8:-0.03:0.53)   # B deteriorating
+            )
+        )
+
+        # Filter to first 5 years only
+        result = quantify_institutions(data, :country, [:rule_of_law]; period=(2000, 2004))
+        @test nrow(result) == 2
+
+        # Full range
+        result_full = quantify_institutions(data, :country, [:rule_of_law])
+        @test nrow(result_full) == 2
+
+        # Country A should be improving in both cases
+        row_a = result[result.country .== "A", :]
+        @test row_a.direction[1] == "improving"
+    end
+
+    @testset "Institutional Quality Index with custom weights" begin
+        data = DataFrame(
+            country = ["A", "B", "C"],
+            ind1 = [1.0, 0.5, 0.0],
+            ind2 = [0.0, 0.5, 1.0]
+        )
+
+        # Equal weights (default)
+        idx_equal = institutional_quality_index(data, [:ind1, :ind2])
+        @test length(idx_equal) == 3
+        @test idx_equal[2] ≈ 0.5 atol=1e-6  # B is at midpoint for both
+
+        # Custom weights: heavily favour ind1
+        idx_weighted = institutional_quality_index(data, [:ind1, :ind2]; weights=[0.9, 0.1])
+        @test idx_weighted[1] > idx_weighted[3]  # A strong in ind1 should score higher
+    end
+
+    @testset "Clean Historical Series with NaN values" begin
+        # NaN in middle
+        data_nan = [100.0, NaN, NaN, 130.0, 140.0]
+        cleaned = clean_historical_series(data_nan, method=:linear)
+        @test all(isfinite.(cleaned))
+        @test cleaned[2] ≈ 110.0 atol=1e-6
+        @test cleaned[3] ≈ 120.0 atol=1e-6
+
+        # Forward fill with NaN
+        cleaned_ff = clean_historical_series(data_nan, method=:forward_fill)
+        @test cleaned_ff[2] ≈ 100.0  # forward fill from previous valid
+        @test cleaned_ff[3] ≈ 100.0
+    end
+
+    @testset "Clean Historical Series error on invalid method" begin
+        @test_throws ErrorException clean_historical_series([1.0, 2.0], method=:invalid)
+    end
+
+    @testset "Calculate Growth Rates error on invalid method" begin
+        data = DataFrame(year=[2000, 2001], gdp=[100.0, 110.0])
+        @test_throws ErrorException calculate_growth_rates(data, :gdp, method=:invalid)
+    end
+
+    @testset "Interpolate Missing Years preserves other columns" begin
+        df = DataFrame(
+            year = [2000, 2003, 2005],
+            gdp = [100.0, 130.0, 150.0],
+            region = ["A", "A", "A"]
+        )
+        result = interpolate_missing_years(df, :gdp)
+
+        @test nrow(result) == 6  # 2000-2005
+        @test "region" in names(result)
+        @test result.region[1] == "A"
+        # Interpolated years should have missing region
+        @test ismissing(result.region[2])  # year 2001 not in original
+    end
+
+    @testset "Interpolate Missing Years error cases" begin
+        # Missing year column
+        df_no_year = DataFrame(value=[1.0, 2.0])
+        @test_throws ErrorException interpolate_missing_years(df_no_year, :value)
+
+        # Missing variable column
+        df_no_var = DataFrame(year=[2000, 2001])
+        @test_throws ErrorException interpolate_missing_years(df_no_var, :nonexistent)
+    end
+
+    @testset "Convergence Analysis: non-converging case" begin
+        # Countries with parallel growth (no convergence)
+        data = DataFrame(
+            country = ["A", "B", "C", "D"],
+            gdp_1950 = [1000.0, 2000.0, 4000.0, 8000.0],
+            growth_rate = [0.03, 0.03, 0.03, 0.03]  # same growth for all
+        )
+
+        result = convergence_analysis(data, :gdp_1950, :growth_rate)
+        @test result.beta ≈ 0.0 atol=1e-6  # No relationship
+        @test result.converging == false
+        @test result.half_life == Inf
+    end
+
+    @testset "Compare Historical Trajectories: detailed statistics" begin
+        data = DataFrame(
+            year = repeat(1950:1954, 2),
+            region = repeat(["Fast", "Slow"], inner=5),
+            gdp_per_capita = vcat(
+                [100.0, 110.0, 121.0, 133.1, 146.41],  # 10% growth
+                [100.0, 103.0, 106.09, 109.27, 112.55]  # 3% growth
+            )
+        )
+
+        comparison = compare_historical_trajectories(data, ["Fast", "Slow"])
+        @test nrow(comparison) == 2
+
+        fast = comparison[comparison.region .== "Fast", :]
+        slow = comparison[comparison.region .== "Slow", :]
+
+        # Check cumulative growth
+        @test fast.cumulative_growth[1] > slow.cumulative_growth[1]
+        @test fast.cumulative_growth[1] ≈ (146.41 / 100.0 - 1) atol=1e-6
+
+        # std_growth should be finite
+        @test isfinite(fast.std_growth[1])
+        @test isfinite(slow.std_growth[1])
+
+        # initial and final levels
+        @test fast.initial_level[1] ≈ 100.0
+        @test fast.final_level[1] ≈ 146.41
+    end
+
+    @testset "Counterfactual Scenario error cases" begin
+        data = DataFrame(year=2000:2004, gdp=[100.0, 110.0, 121.0, 133.1, 146.41])
+
+        # Invalid break year
+        @test_throws ErrorException counterfactual_scenario(data, :gdp, 1999)
+
+        # Invalid method
+        @test_throws ErrorException counterfactual_scenario(data, :gdp, 2002, method=:invalid)
+
+        # Missing variable column
+        @test_throws ErrorException counterfactual_scenario(data, :nonexistent, 2002)
+    end
+
+    @testset "Load Historical Data with capital Year column" begin
+        test_file = tempname() * ".csv"
+        test_data = DataFrame(Year=[1950, 1960, 1970], gdp=[100, 150, 200])
+        CSV.write(test_file, test_data)
+
+        loaded = load_historical_data(test_file)
+        @test "year" in names(loaded)  # Should be renamed to lowercase
+        @test nrow(loaded) == 3
+
+        rm(test_file)
+    end
+
+    @testset "Estimate Treatment Effect error cases" begin
+        data = DataFrame(
+            year = repeat(1990:1994, 2),
+            treated = repeat([true, false], inner=5),
+            gdp = collect(1.0:10.0)
+        )
+
+        # Missing year column
+        data_no_year = select(data, Not(:year))
+        @test_throws ErrorException estimate_treatment_effect(data_no_year, :gdp, :treated, 1992)
+
+        # Missing variable column
+        @test_throws ErrorException estimate_treatment_effect(data, :nonexistent, :treated, 1992)
+
+        # Missing group column
+        @test_throws ErrorException estimate_treatment_effect(data, :gdp, :nonexistent, 1992)
+    end
+
+    @testset "Solow Residual: growth accounting identity" begin
+        # With alpha=0.3, TFP = g_Y - 0.3*g_K - 0.7*g_L
+        output = [100.0, 110.0, 121.0]
+        capital = [200.0, 210.0, 220.5]
+        labor = [50.0, 52.0, 54.08]
+
+        tfp = solow_residual(output, capital, labor, alpha=0.3)
+
+        # Verify the identity: g_Y = alpha*g_K + (1-alpha)*g_L + TFP
+        g_Y = [log(output[i] / output[i-1]) for i in 2:length(output)]
+        g_K = [log(capital[i] / capital[i-1]) for i in 2:length(capital)]
+        g_L = [log(labor[i] / labor[i-1]) for i in 2:length(labor)]
+
+        for i in 1:length(tfp)
+            reconstructed = 0.3 * g_K[i] + 0.7 * g_L[i] + tfp[i]
+            @test reconstructed ≈ g_Y[i] atol=1e-10
+        end
+    end
+
+    @testset "Counterfactual Scenario: additive method preserves changes" begin
+        data = DataFrame(year=2000:2004, gdp=[100.0, 110.0, 121.0, 133.1, 146.41])
+        result = counterfactual_scenario(data, :gdp, 2002, adjustment=-20.0, method=:additive)
+
+        # Before break year, counterfactual should equal actual
+        @test result.counterfactual[1] ≈ result.actual[1]
+        @test result.counterfactual[2] ≈ result.actual[2]
+
+        # At break year, shift by adjustment
+        @test result.counterfactual[3] ≈ 121.0 - 20.0 atol=1e-6
+
+        # After break year, absolute changes from actual are applied to cf base
+        actual_change_3_to_4 = result.actual[4] - result.actual[3]
+        @test result.counterfactual[4] ≈ result.counterfactual[3] + actual_change_3_to_4 atol=1e-6
+    end
 end

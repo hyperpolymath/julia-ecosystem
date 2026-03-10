@@ -128,8 +128,54 @@ const HARDWARE_BACKEND = Ref{AbstractCryptoBackend}()
 
 function __init__()
     init_ffi()
+
+    # Load coprocessor extensions conditionally based on AcceleratorGate detection.
+    # These do not have external Julia package triggers, so we include them
+    # when their respective backends are detected via environment flags.
+    _load_coprocessor_extensions()
+
     HARDWARE_BACKEND[] = detect_hardware()
     @info "ProvenCrypto.jl initialized" backend=HARDWARE_BACKEND[]
+end
+
+"""
+    _load_coprocessor_extensions()
+
+Conditionally load coprocessor backend extensions based on AcceleratorGate
+availability detection. Each extension is loaded when its corresponding
+AXIOM_*_AVAILABLE environment flag is set, or unconditionally if the
+extension file exists and the backend type is defined in AcceleratorGate.
+"""
+function _load_coprocessor_extensions()
+    ext_dir = joinpath(dirname(@__DIR__), "ext")
+
+    # Map: (extension filename, AcceleratorGate availability function)
+    coprocessor_exts = [
+        ("ProvenCryptoTPUExt.jl",    :tpu_available),
+        ("ProvenCryptoFPGAExt.jl",   :fpga_available),
+        ("ProvenCryptoCryptoExt.jl", :crypto_available),
+        ("ProvenCryptoNPUExt.jl",    :npu_available),
+        ("ProvenCryptoDSPExt.jl",    :dsp_available),
+        ("ProvenCryptoVPUExt.jl",    :vpu_available),
+        ("ProvenCryptoQPUExt.jl",    :qpu_available),
+        ("ProvenCryptoPPUExt.jl",    :ppu_available),
+        ("ProvenCryptoMathExt.jl",   :math_available),
+    ]
+
+    for (filename, avail_fn) in coprocessor_exts
+        ext_path = joinpath(ext_dir, filename)
+        if isfile(ext_path)
+            try
+                # Load if the coprocessor is detected as available
+                if getfield(AcceleratorGate, avail_fn)()
+                    include(ext_path)
+                    @debug "Loaded coprocessor extension" file=filename
+                end
+            catch e
+                @warn "Failed to load coprocessor extension" file=filename exception=e
+            end
+        end
+    end
 end
 
 end # module

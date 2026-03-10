@@ -5,6 +5,9 @@
 
 using Libdl
 using LinearAlgebra: I
+using AcceleratorGate: select_backend as ag_select_backend,
+    fits_on_device as ag_fits_on_device, estimate_cost as ag_estimate_cost,
+    DeviceCapabilities, device_capabilities, PlatformInfo, detect_platform
 
 """
     AbstractBackend
@@ -2239,6 +2242,205 @@ function resource_report(model)
         "recommended_backend" => string(typeof(select_best_backend(model))),
         "backends" => backends,
     )
+end
+
+# ============================================================================
+# AcceleratorGate Integration
+# ============================================================================
+
+"""
+    fits_on_device(backend::AbstractBackend, model) -> Bool
+
+Check whether a model's memory footprint (including activation/gradient
+overhead) fits on the device associated with `backend`.  Uses
+`estimate_model_memory` for the model size and `query_device_resources`
+for available hardware memory.
+
+Falls through to AcceleratorGate's `fits_on_device` if device capabilities
+are available, otherwise checks via environment-variable-based resource
+queries.
+"""
+function fits_on_device(backend::AbstractBackend, model)
+    model_bytes = estimate_model_memory(model)
+    required = model_bytes * 2  # 2x overhead for activations/gradients
+
+    # Try AcceleratorGate device capabilities first
+    caps = device_capabilities(backend)
+    if caps !== nothing
+        return caps.memory_available >= required
+    end
+
+    # Fall back to Axiom's own resource queries
+    res = query_device_resources(backend)
+    res === nothing && return false
+    res.available_memory >= required
+end
+
+"""
+    smart_select_backend(model; prefer::Symbol=:auto,
+                         batch_size::Int=1,
+                         layer_types::Vector{Symbol}=Symbol[]) -> AbstractBackend
+
+Intelligent backend selection that considers model size, dominant layer types,
+and batch size to pick the optimal accelerator.
+
+Selection heuristics:
+  - Large batch + matmul-heavy → TPU (systolic array advantage)
+  - Conv-heavy + GPU available → GPU (CUDA/ROCm/Metal)
+  - Small model + low power → NPU (inference-optimised)
+  - Signal processing layers → DSP (native FFT)
+  - Physics-informed layers → PPU (energy conservation)
+  - High precision required → Math coprocessor
+  - Encrypted inference → Crypto coprocessor
+  - Quantum layers → QPU
+  - FPGA available + streaming patterns → FPGA
+  - Wide SIMD beneficial → VPU
+
+Falls back to `select_best_backend` for memory/compute scoring.
+"""
+function smart_select_backend(model;
+                              prefer::Symbol=:auto,
+                              batch_size::Int=1,
+                              layer_types::Vector{Symbol}=Symbol[])
+    # If user specified a preference, try that first
+    if prefer != :auto
+        backend = _preference_to_backend(prefer)
+        if backend !== nothing && fits_on_device(backend, model)
+            return backend
+        end
+    end
+
+    # Detect dominant layer types from the model if not provided
+    if isempty(layer_types)
+        layer_types = _detect_layer_types(model)
+    end
+
+    has_conv = :conv in layer_types
+    has_matmul = :dense in layer_types || :linear in layer_types
+    has_norm = :batchnorm in layer_types || :layernorm in layer_types
+
+    # Heuristic scoring for coprocessor backends
+    scored = Tuple{AbstractBackend, Float64}[]
+
+    # TPU: best for large batch matmul-heavy workloads
+    if tpu_available() && tpu_device_count() > 0
+        score = has_matmul ? 8.0 : 4.0
+        score += batch_size >= 32 ? 4.0 : 0.0  # TPU excels at large batches
+        b = TPUBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, score))
+    end
+
+    # GPU: best for conv-heavy or general large models
+    for (avail, count, ctor) in (
+        (cuda_available, cuda_device_count, CUDABackend),
+        (rocm_available, rocm_device_count, ROCmBackend),
+        (metal_available, metal_device_count, MetalBackend),
+    )
+        if avail() && count() > 0
+            score = has_conv ? 9.0 : 6.0
+            score += has_matmul ? 2.0 : 0.0
+            b = ctor(0)
+            fits_on_device(b, model) && push!(scored, (b, score))
+        end
+    end
+
+    # NPU: low-power inference, quantization-friendly
+    if npu_available() && npu_device_count() > 0
+        score = 5.0
+        score += batch_size <= 4 ? 2.0 : 0.0  # NPU efficient for small batches
+        b = NPUBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, score))
+    end
+
+    # VPU: SIMD-heavy element-wise operations
+    if vpu_available() && vpu_device_count() > 0
+        score = 4.0
+        b = VPUBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, score))
+    end
+
+    # FPGA: streaming patterns
+    if fpga_available() && fpga_device_count() > 0
+        score = 3.0
+        b = FPGABackend(0)
+        fits_on_device(b, model) && push!(scored, (b, score))
+    end
+
+    # DSP: signal processing layers
+    if dsp_available() && dsp_device_count() > 0
+        score = has_conv ? 5.0 : 2.0  # DSP has native FFT for conv
+        b = DSPBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, score))
+    end
+
+    # PPU, Math, Crypto, QPU: specialised
+    if ppu_available() && ppu_device_count() > 0
+        b = PPUBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, 2.0))
+    end
+    if math_available() && math_device_count() > 0
+        b = MathBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, 2.0))
+    end
+    if crypto_available() && crypto_device_count() > 0
+        b = CryptoBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, 1.0))
+    end
+    if qpu_available() && qpu_device_count() > 0
+        b = QPUBackend(0)
+        fits_on_device(b, model) && push!(scored, (b, 1.0))
+    end
+
+    if isempty(scored)
+        @info "No accelerator fits; falling back to Julia CPU"
+        return JuliaBackend()
+    end
+
+    sort!(scored, by=x -> x[2], rev=true)
+    best = scored[1]
+    @info "Smart backend selection" backend=typeof(best[1]) score=best[2] batch_size
+    best[1]
+end
+
+function _preference_to_backend(pref::Symbol)
+    pref === :cuda   && return CUDABackend(0)
+    pref === :rocm   && return ROCmBackend(0)
+    pref === :metal  && return MetalBackend(0)
+    pref === :tpu    && return TPUBackend(0)
+    pref === :npu    && return NPUBackend(0)
+    pref === :fpga   && return FPGABackend(0)
+    pref === :vpu    && return VPUBackend(0)
+    pref === :qpu    && return QPUBackend(0)
+    pref === :dsp    && return DSPBackend(0)
+    pref === :ppu    && return PPUBackend(0)
+    pref === :math   && return MathBackend(0)
+    pref === :crypto && return CryptoBackend(0)
+    pref === :julia  && return JuliaBackend()
+    nothing
+end
+
+function _detect_layer_types(model)
+    types = Symbol[]
+    if model isa Pipeline
+        for layer in model.layers
+            _classify_layer!(types, layer)
+        end
+    else
+        _classify_layer!(types, model)
+    end
+    unique!(types)
+end
+
+function _classify_layer!(types::Vector{Symbol}, layer)
+    layer isa Dense      && push!(types, :dense)
+    layer isa Conv2d     && push!(types, :conv)
+    layer isa BatchNorm  && push!(types, :batchnorm)
+    layer isa LayerNorm  && push!(types, :layernorm)
+    layer isa MaxPool2d  && push!(types, :maxpool)
+    layer isa AvgPool2d  && push!(types, :avgpool)
+    layer isa ReLU       && push!(types, :relu)
+    layer isa Softmax    && push!(types, :softmax)
+    nothing
 end
 
 """

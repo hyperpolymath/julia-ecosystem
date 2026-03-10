@@ -1,7 +1,8 @@
 name = "InvestigativeJournalist"
-uuid = "d4e5f6g7-8h9i-0j1k-l2m3-n4o5p6q7r8s9"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+uuid = "379a7c0a-3675-4b32-b948-cb4760c6e442"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -18,12 +19,36 @@ MetaGraphsNext = "d17304a5-4378-4cd5-abeb-e3984efdfcf4"
 Gumbo = "708ec375-b3d6-5a57-a7cd-cd30557d44a4"
 Cascadia = "5726a348-33bc-51ea-bb77-17e1a8ae9857"
 DuckDB = "ce010024-2d86-4e57-9d7d-f65a8aedab41"
-Cliodynamics = "f7g8h9i0-1j2k-3l4m-n5o6-p7q8r9s0t1u2"
-Causals = "g8h9i0j1-2k3l-4m5n-o6p7-q8r9s0t1u2v3"
-ZeroProb = "h9i0j1k2-3l4m-5n6o-p7q8-r9s0t1u2v3w4"
+Cliodynamics = "8d2f3e70-4c6b-5e9c-a3d1-2f8e9c0b1d2e"
+Causals = "c4a8b6d2-f9e3-4c1a-b8d7-9f2e3c4d5e6f"
+ZeroProb = "f9e8c2e0-8b4a-4d5f-9a3c-1e2d3c4b5a6f"
 VideoIO = "d4502882-a78b-591f-b43d-b53969391115"
 DSP = "71ca2064-5399-5116-aad6-929351178d99"
 Wavelets = "31055133-4a4d-569a-8f33-fca36cf7702d"
 
 [compat]
 julia = "1.10"
+DataFrames = "1"
+JSON3 = "1"
+SQLite = "1"
+HTTP = "1"
+URIs = "1"
+TextAnalysis = "0.7"
+Images = "0.26"
+Graphs = "1"
+MetaGraphsNext = "0.7"
+Gumbo = "0.8"
+Cascadia = "1"
+DuckDB = "1"
+Cliodynamics = "1"
+Causals = "0.2"
+ZeroProb = "0.1"
+VideoIO = "1"
+DSP = "0.7"
+Wavelets = "0.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

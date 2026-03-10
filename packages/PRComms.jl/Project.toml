@@ -1,7 +1,8 @@
 name = "PRComms"
-uuid = "b2c3d4e5-6f7g-8h9i-0j1k-l2m3n4o5p6q7"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+uuid = "2dde2a48-bffb-456d-9be4-0a16c25066d3"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -13,3 +14,14 @@ Luxor = "ae8d54c2-7cca-5de8-81d1-92b9faecda3a"
 
 [compat]
 julia = "1.10"
+DataFrames = "1"
+JSON3 = "1"
+SQLite = "1"
+Mustache = "1"
+Luxor = "3, 4"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

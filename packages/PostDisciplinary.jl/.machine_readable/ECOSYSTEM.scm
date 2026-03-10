@@ -1,0 +1,17 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.scm for PostDisciplinary.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "PostDisciplinary.jl")
+  (type "julia-package")
+  (purpose "Meta-framework for post-disciplinary research synthesis")
+  (position-in-ecosystem
+    (domain "research")
+    (role "Cross-discipline research integration and synthesis")
+    (maturity "alpha"))
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name = "SiliconCore"
+uuid = "c4e5f6a7-b8c9-4d0e-8f1a-2b3c4d5e6f7a"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
+version = "0.1.0"
+license = "PMPL-1.0-or-later"
+
+[compat]
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

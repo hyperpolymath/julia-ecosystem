@@ -881,4 +881,245 @@ using Random
         close(db)
     end
 
+    @testset "Gauss serialisation round-trip" begin
+        gc = GaussCode([1, -2, 3, -1, 2, -3])
+        s = Skein.serialise_gauss(gc)
+        @test s == "[1,-2,3,-1,2,-3]"
+
+        gc2 = Skein.deserialise_gauss(s)
+        @test gc2 == gc
+
+        # Empty Gauss code
+        gc_empty = GaussCode(Int[])
+        s_empty = Skein.serialise_gauss(gc_empty)
+        @test Skein.deserialise_gauss(s_empty) == gc_empty
+    end
+
+    @testset "Bulk import with metadata" begin
+        db = SkeinDB(":memory:")
+
+        knots = [
+            ("trefoil_m", GaussCode([1, -2, 3, -1, 2, -3])),
+            ("fig8_m", GaussCode([1, -2, 3, -4, 2, -1, 4, -3])),
+        ]
+        metadata = Dict(
+            "trefoil_m" => Dict("family" => "torus", "source" => "test"),
+            "fig8_m" => Dict("family" => "twist"),
+        )
+
+        bulk_import!(db, knots; metadata = metadata)
+        @test Skein.count_knots(db) == 2
+
+        t = fetch_knot(db, "trefoil_m")
+        @test t.metadata["family"] == "torus"
+        @test t.metadata["source"] == "test"
+
+        f = fetch_knot(db, "fig8_m")
+        @test f.metadata["family"] == "twist"
+
+        close(db)
+    end
+
+    @testset "Query pagination (limit/offset)" begin
+        db = SkeinDB(":memory:")
+        import_knotinfo!(db)
+
+        # Limit results
+        results_limited = query(db, crossing_number = 7, limit = 3)
+        @test length(results_limited) == 3
+
+        # Offset results
+        results_offset = query(db, crossing_number = 7, limit = 3, offset = 3)
+        @test length(results_offset) >= 1
+
+        # No overlap between limit and offset pages
+        names_page1 = Set(r.name for r in results_limited)
+        names_page2 = Set(r.name for r in results_offset)
+        @test isempty(intersect(names_page1, names_page2))
+
+        close(db)
+    end
+
+    @testset "list_knots pagination" begin
+        db = SkeinDB(":memory:")
+        store!(db, "k1", GaussCode(Int[]))
+        store!(db, "k2", GaussCode([1, -2, 3, -1, 2, -3]))
+        store!(db, "k3", GaussCode([1, -2, 3, -4, 2, -1, 4, -3]))
+
+        all_knots = list_knots(db; limit = 100)
+        @test length(all_knots) == 3
+
+        page1 = list_knots(db; limit = 2, offset = 0)
+        @test length(page1) == 2
+
+        page2 = list_knots(db; limit = 2, offset = 2)
+        @test length(page2) == 1
+
+        close(db)
+    end
+
+    @testset "Composable predicates: writhe_eq and name_like" begin
+        db = SkeinDB(":memory:")
+        store!(db, "trefoil", GaussCode([1, -2, 3, -1, 2, -3]))
+        store!(db, "figure-eight", GaussCode([1, -2, 3, -4, 2, -1, 4, -3]))
+        store!(db, "unknot", GaussCode(Int[]))
+
+        # writhe_eq predicate
+        trefoil_rec = fetch_knot(db, "trefoil")
+        w = trefoil_rec.writhe
+        results_w = query(db, writhe_eq(w))
+        @test any(r -> r.name == "trefoil", results_w)
+
+        # name_like predicate
+        results_n = query(db, name_like("trefoil"))
+        @test length(results_n) == 1
+        @test results_n[1].name == "trefoil"
+
+        # name_like with pattern
+        results_pattern = query(db, name_like(".*eight.*"))
+        @test length(results_pattern) == 1
+        @test results_pattern[1].name == "figure-eight"
+
+        # meta_eq predicate standalone
+        store!(db, "torus_knot", GaussCode([1, -2, 3, -1, 2, -3]);
+               metadata = Dict("family" => "torus"))
+        results_meta = query(db, meta_eq("family", "torus"))
+        @test length(results_meta) == 1
+        @test results_meta[1].name == "torus_knot"
+
+        close(db)
+    end
+
+    @testset "Composable predicates: range and OR composition" begin
+        db = SkeinDB(":memory:")
+        import_knotinfo!(db)
+
+        # crossing with range
+        results_range = query(db, crossing(5:6))
+        @test all(r -> r.crossing_number in 5:6, results_range)
+        @test length(results_range) == 5  # 5_1, 5_2, 6_1, 6_2, 6_3
+
+        # genus_eq with OR
+        results_or = query(db, genus_eq(0) | genus_eq(1))
+        @test all(r -> r.genus == 0 || r.genus == 1, results_or)
+
+        # Predicate pagination
+        results_paged = query(db, crossing(7); limit = 3, offset = 0)
+        @test length(results_paged) == 3
+
+        close(db)
+    end
+
+    @testset "Statistics on empty database" begin
+        db = SkeinDB(":memory:")
+        stats = Skein.statistics(db)
+        @test stats.total_knots == 0
+        @test stats.min_crossings === nothing
+        @test stats.max_crossings === nothing
+        @test isempty(stats.crossing_distribution)
+        close(db)
+    end
+
+    @testset "Export CSV with query kwargs" begin
+        db = SkeinDB(":memory:")
+        import_knotinfo!(db)
+
+        tmpfile = tempname() * ".csv"
+        n = Skein.export_csv(db, tmpfile; crossing_number = 3)
+        @test n == 1  # only trefoil
+
+        content = read(tmpfile, String)
+        @test occursin("3_1", content)
+        @test !occursin("4_1", content)
+
+        rm(tmpfile)
+        close(db)
+    end
+
+    @testset "Export JSON with query kwargs" begin
+        db = SkeinDB(":memory:")
+        import_knotinfo!(db)
+
+        tmpfile = tempname() * ".json"
+        n = Skein.export_json(db, tmpfile; crossing_number = 3)
+        @test n == 1
+
+        content = read(tmpfile, String)
+        @test occursin("3_1", content)
+        @test occursin("crossing_number", content)
+
+        rm(tmpfile)
+        close(db)
+    end
+
+    @testset "Simplify combined R1+R2" begin
+        # R2 bigon that remains after R1 removal
+        code_r2 = GaussCode([1, 2, -1, -2])
+        s = simplify(code_r2)
+        @test crossing_number(s) == 0
+
+        # Trefoil is already minimal
+        trefoil = GaussCode([1, -2, 3, -1, 2, -3])
+        @test simplify(trefoil) == trefoil
+
+        # Multiple kinks + R2
+        kinked_r2 = GaussCode([3, -3, 1, 2, -1, -2])
+        s2 = simplify(kinked_r2)
+        @test crossing_number(s2) == 0
+    end
+
+    @testset "Laurent polynomial: serialise/deserialise edge cases" begin
+        # Single term
+        p = LaurentPoly(3 => 5)
+        @test deserialise_laurent(serialise_laurent(p)) == p
+
+        # Negative exponents
+        p2 = LaurentPoly(-3 => 2, -1 => -1)
+        @test deserialise_laurent(serialise_laurent(p2)) == p2
+
+        # lpoly_mul non-trivial
+        a = LaurentPoly(1 => 1, -1 => 1)  # A + A^-1
+        b = LaurentPoly(1 => 1, -1 => -1)  # A - A^-1
+        product = Skein.lpoly_mul(a, b)
+        @test product[2] == 1   # A^2
+        @test product[-2] == -1  # -A^-2
+        @test get(product, 0, 0) == 0  # A^0 terms cancel
+    end
+
+    @testset "DT-to-Gauss: 5-crossing knots" begin
+        # 5_1 torus knot
+        g51 = dt_to_gauss([6, 8, 10, 2, 4])
+        @test crossing_number(g51) == 5
+        @test length(g51) == 10
+
+        # 5_2 twist knot
+        g52 = dt_to_gauss([4, 8, 10, 2, 6])
+        @test crossing_number(g52) == 5
+
+        # 5_1 and 5_2 should be different knots
+        @test gauss_hash(g51) != gauss_hash(g52)
+    end
+
+    @testset "Query with Vector{Int} crossing numbers" begin
+        db = SkeinDB(":memory:")
+        import_knotinfo!(db)
+
+        results = query(db, crossing_number = [3, 5])
+        @test all(r -> r.crossing_number in [3, 5], results)
+        @test length(results) == 3  # 3_1, 5_1, 5_2
+
+        close(db)
+    end
+
+    @testset "is_equivalent: relabelled + rotated" begin
+        # Trefoil with both rotation and relabelling
+        g1 = GaussCode([1, -2, 3, -1, 2, -3])
+        # Rotate by 3, then relabel (1->10, 2->20, 3->30)
+        g2 = GaussCode([-10, 20, -30, 10, -20, 30])
+        @test is_equivalent(g1, g2)
+
+        # Self-equivalence
+        @test is_equivalent(g1, g1)
+    end
+
 end

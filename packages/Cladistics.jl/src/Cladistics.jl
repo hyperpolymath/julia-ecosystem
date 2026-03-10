@@ -59,6 +59,9 @@ export distance_matrix, upgma, neighbor_joining, maximum_parsimony,
        PhylogeneticTree, TreeNode, calculate_parsimony_score, root_tree,
        tree_to_newick, parse_newick, parsimony_informative_sites
 
+# Backend abstraction for coprocessor dispatch
+include("backends/abstract.jl")
+
 # Data structures
 
 """
@@ -124,6 +127,13 @@ dmat = distance_matrix(seqs, method=:hamming)
 ```
 """
 function distance_matrix(sequences::Vector{String}; method=:hamming)
+    # Coprocessor dispatch — large sequence sets benefit from GPU parallelism
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_distance_matrix(backend, sequences, method)
+        result !== nothing && return result
+    end
+
     n = length(sequences)
     dmat = zeros(Float64, n, n)
 
@@ -299,6 +309,13 @@ tree = neighbor_joining(dmat, taxa_names=["A", "B", "C"])
 ```
 """
 function neighbor_joining(dmat::Matrix{Float64}; taxa_names=nothing)
+    # Coprocessor dispatch — large distance matrices benefit from parallel Q-matrix computation
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_neighbor_join(backend, dmat, taxa_names)
+        result !== nothing && return result
+    end
+
     n = size(dmat, 1)
     names = taxa_names === nothing ? ["T$i" for i in 1:n] : taxa_names
 
@@ -594,6 +611,13 @@ score = calculate_parsimony_score(tree, character_state_matrix(seqs))
 ```
 """
 function calculate_parsimony_score(tree::PhylogeneticTree, char_matrix::Matrix{Char})
+    # Coprocessor dispatch — Fitch algorithm across many characters is embarrassingly parallel
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_parsimony_score(backend, tree, char_matrix)
+        result !== nothing && return result
+    end
+
     # Fitch algorithm for each character
     total_score = 0
 
@@ -650,6 +674,13 @@ support = bootstrap_support(sequences, replicates=100, method=:nj)
 ```
 """
 function bootstrap_support(sequences::Vector{String}; replicates=1000, method=:upgma)
+    # Coprocessor dispatch — each bootstrap replicate is independent, ideal for GPU parallelism
+    backend = current_backend()
+    if !(backend isa JuliaBackend)
+        result = backend_bootstrap_replicate(backend, sequences, replicates, method)
+        result !== nothing && return result
+    end
+
     n_sites = length(sequences[1])
     original_tree = if method == :upgma
         upgma(distance_matrix(sequences))

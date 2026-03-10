@@ -1,62 +1,52 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-module ProvenCryptoAMDGPUExt
-using ..ProvenCrypto, AMDGPU
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ProvenCrypto AMDGPU Extension (compatibility shim)
+#
+# This extension provides the AMDGPU.jl package trigger entry point.
+# The actual GPU kernel implementations for AMD GPUs live in
+# ProvenCryptoROCmExt.jl, which is also triggered by AMDGPU.jl.
+#
+# This extension ONLY provides the backend creation helper and availability
+# check. It does NOT redefine the NTT/lattice/sampling methods -- those are
+# all defined in ProvenCryptoROCmExt to avoid method redefinition conflicts.
 
-# Override the default availability check
-ProvenCrypto.rocm_available() = true
+module ProvenCryptoAMDGPUExt
+
+using AMDGPU
+using ..ProvenCrypto
+
+# ============================================================================
+# Backend availability and creation (alias for ROCm)
+# ============================================================================
+
+# Note: ProvenCryptoROCmExt also sets rocm_available() = true, which is fine
+# since both are triggered by the same AMDGPU weakdep.
+ProvenCrypto.rocm_available() = AMDGPU.functional()
 
 """
     create_amdgpu_backend() -> ProvenCrypto.ROCmBackend
 
-Create a ROCm backend for AMD GPUs.
+Create a ROCm backend for AMD GPUs. This is an alias entry point;
+the actual GPU kernels are provided by ProvenCryptoROCmExt.
 """
 function ProvenCrypto.create_amdgpu_backend()
-    device_id = 0  # Default device
-    # TODO: Add more specific AMD GPU detection logic
-    return ProvenCrypto.ROCmBackend(device_id, false, 0)
+    device_id = 0
+    has_matrix = false
+    gcn_arch = "unknown"
+    try
+        agent = AMDGPU.get_default_agent()
+        gcn_arch = string(AMDGPU.device_id(agent))
+        has_matrix = occursin(r"gfx9[0-9]{2}", gcn_arch)
+    catch
+        # Fallback if device query fails
+    end
+    return ProvenCrypto.ROCmBackend(device_id, has_matrix, gcn_arch)
 end
 
-"""
-    backend_lattice_multiply(backend::ProvenCrypto.ROCmBackend, A::AbstractMatrix, x::AbstractVector)
+# All backend_ntt_transform, backend_ntt_inverse_transform,
+# backend_lattice_multiply, backend_polynomial_multiply, and
+# backend_sampling methods for ROCmBackend are defined in
+# ProvenCryptoROCmExt.jl to avoid duplicate method definitions.
 
-ROCm-specific implementation for lattice multiplication.
-"""
-function ProvenCrypto.backend_lattice_multiply(backend::ProvenCrypto.ROCmBackend, A::AbstractMatrix, x::AbstractVector)
-    # Placeholder: Implement ROCm-accelerated lattice multiplication
-    @warn "ROCm lattice multiplication not yet implemented; falling back to CPU"
-    return ProvenCrypto.backend_lattice_multiply(ProvenCrypto.CPUBackend(:zen, Threads.nthreads()), A, x)
-end
-
-"""
-    backend_ntt_transform(backend::ProvenCrypto.ROCmBackend, poly::AbstractVector, modulus::Integer)
-
-ROCm-specific implementation for Number Theoretic Transform (NTT).
-"""
-function ProvenCrypto.backend_ntt_transform(backend::ProvenCrypto.ROCmBackend, poly::AbstractVector, modulus::Integer)
-    # Placeholder: Implement ROCm-accelerated NTT
-    @warn "ROCm NTT not yet implemented; falling back to CPU"
-    return ProvenCrypto.backend_ntt_transform(ProvenCrypto.CPUBackend(:zen, Threads.nthreads()), poly, modulus)
-end
-
-"""
-    backend_polynomial_multiply(backend::ProvenCrypto.ROCmBackend, a::AbstractVector, b::AbstractVector, modulus::Integer)
-
-ROCm-specific implementation for polynomial multiplication.
-"""
-function ProvenCrypto.backend_polynomial_multiply(backend::ProvenCrypto.ROCmBackend, a::AbstractVector, b::AbstractVector, modulus::Integer)
-    # Placeholder: Implement ROCm-accelerated polynomial multiplication
-    @warn "ROCm polynomial multiplication not yet implemented; falling back to CPU"
-    return ProvenCrypto.backend_polynomial_multiply(ProvenCrypto.CPUBackend(:zen, Threads.nthreads()), a, b, modulus)
-end
-
-"""
-    backend_sampling(backend::ProvenCrypto.ROCmBackend, distribution::Symbol, params...)
-
-ROCm-specific implementation for cryptographic sampling.
-"""
-function ProvenCrypto.backend_sampling(backend::ProvenCrypto.ROCmBackend, distribution::Symbol, params...)
-    # Placeholder: Implement ROCm-accelerated sampling
-    @warn "ROCm sampling not yet implemented; falling back to CPU"
-    return ProvenCrypto.backend_sampling(ProvenCrypto.CPUBackend(:zen, Threads.nthreads()), distribution, params...)
-end
-end
+end # module ProvenCryptoAMDGPUExt

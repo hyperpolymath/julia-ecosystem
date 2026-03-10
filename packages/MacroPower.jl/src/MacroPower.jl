@@ -1,4 +1,24 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    MacroPower
+
+Macroeconomic power analysis and modelling through trigger-action automation
+workflows. Define workflows with conditional triggers and executable actions
+using the `@workflow` macro, then run them with `run_workflow`.
+
+# Key Features
+- `Trigger` and `Action` types for composable workflow logic
+- `@workflow` macro for declarative workflow definition
+- `run_workflow` to evaluate triggers and execute matching actions
+
+# Example
+```julia
+using MacroPower
+wf = Workflow("daily_check", [Trigger("market_open", () -> true)],
+              [Action("report", () -> println("Market open"))])
+run_workflow(wf)
+```
+"""
 module MacroPower
 
 using Dates

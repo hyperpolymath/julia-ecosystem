@@ -420,4 +420,187 @@ using Statistics
         @test length(tree5.taxa) == 3
     end
 
+    # =========================================================================
+    # Point-to-point gap tests
+    # =========================================================================
+
+    @testset "Maximum parsimony quality" begin
+        # Test MP produces reasonable trees for known data
+        # Compare parsimony score against manual calculation
+        seqs = ["ATCGATCG", "ATCGATCC", "ATCAATCG", "TTCGATCG", "TTCAATCC"]
+        tree = maximum_parsimony(seqs; taxa_names=["A","B","C","D","E"])
+        cm = character_state_matrix(seqs)
+        score = calculate_parsimony_score(tree, cm)
+        # Score should be > 0 (there are differences) but reasonable
+        @test score > 0
+        @test score <= 8  # At most 8 character changes for 8 positions
+    end
+
+    @testset "Bootstrap with all methods" begin
+        seqs = ["ATCGATCGATCG", "ATCGATCCATCG", "ATCAATCGATCA", "TTCGATCGATCG"]
+        # Test with :upgma
+        boot_upgma = bootstrap_support(seqs; replicates=50, method=:upgma)
+        @test all(0 <= v <= 1 for v in values(boot_upgma))
+        # Test with :nj
+        boot_nj = bootstrap_support(seqs; replicates=50, method=:nj)
+        @test all(0 <= v <= 1 for v in values(boot_nj))
+    end
+
+    @testset "Root tree edge cases" begin
+        # Root an already-rooted tree
+        seqs = ["ATCG", "TTCG", "AACG"]
+        dmat = distance_matrix(seqs)
+        tree = upgma(dmat; taxa_names=["A","B","C"])
+        rooted = root_tree(tree, "A")
+        @test "A" in rooted.taxa
+        @test "B" in rooted.taxa
+        @test "C" in rooted.taxa
+    end
+
+    @testset "Newick round-trip comprehensive" begin
+        # Round-trip with 5 taxa
+        seqs = ["ATCGATCG", "ATCGATCC", "ATCAATCG", "TTCGATCG", "TTCAATCC"]
+        dmat = distance_matrix(seqs)
+        tree = neighbor_joining(dmat; taxa_names=["A","B","C","D","E"])
+        newick = tree_to_newick(tree)
+        reparsed = parse_newick(newick)
+        @test Set(reparsed.taxa) == Set(["A","B","C","D","E"])
+    end
+
+    @testset "Tree comparison - different topologies" begin
+        seqs = ["ATCGATCG", "ATCGATCC", "ATCAATCG", "TTCGATCG"]
+        dmat = distance_matrix(seqs)
+        tree1 = upgma(dmat; taxa_names=["A","B","C","D"])
+        tree2 = neighbor_joining(dmat; taxa_names=["A","B","C","D"])
+        rf = tree_distance(tree1, tree2)
+        @test rf >= 0  # Non-negative
+        @test isa(rf, Int)
+    end
+
+    @testset "Distance matrix - all methods consistency" begin
+        seqs = ["ATCGATCG", "TTCGATCG", "AACGATCG"]
+        for method in [:hamming, :p_distance, :jc69, :k2p]
+            dmat = distance_matrix(seqs; method=method)
+            @test size(dmat) == (3, 3)
+            @test all(dmat[i,i] == 0.0 for i in 1:3)  # Diagonal zero
+            @test all(dmat .>= 0)  # Non-negative
+            @test dmat ≈ dmat'  # Symmetric
+        end
+    end
+
+    # =========================================================================
+    # End-to-end workflow test
+    # =========================================================================
+
+    @testset "End-to-end: Complete Phylogenetic Analysis" begin
+        # 1. Define realistic DNA sequences (8 taxa, 20bp)
+        sequences = [
+            "ATCGATCGATCGATCGATCG",  # Taxon A
+            "ATCGATCGATCGATCGATCC",  # Taxon B (1 change from A)
+            "ATCGATCGATCAATCGATCG",  # Taxon C (1 change from A)
+            "TTCGATCGATCGATCGATCG",  # Taxon D (1 change from A)
+            "TTCGATCGATCGATCGATCC",  # Taxon E (2 changes from A)
+            "ATCAATCGATCGATCGATCG",  # Taxon F (1 change from A)
+            "ATCAATCGATCAATCGATCG",  # Taxon G (2 changes from A)
+            "TTCAATCGATCGATCGATCG",  # Taxon H (2 changes from A)
+        ]
+        taxa = ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+        # 2. Compute distances with multiple methods
+        dmat_hamming = distance_matrix(sequences; method=:hamming)
+        dmat_jc = distance_matrix(sequences; method=:jc69)
+        dmat_k2p = distance_matrix(sequences; method=:k2p)
+        @test size(dmat_hamming) == (8, 8)
+        @test all(dmat_hamming[i,i] == 0 for i in 1:8)
+
+        # 3. Build trees with all 3 methods
+        tree_upgma = upgma(dmat_jc; taxa_names=taxa)
+        tree_nj = neighbor_joining(dmat_k2p; taxa_names=taxa)
+        tree_mp = maximum_parsimony(sequences; taxa_names=taxa)
+        @test Set(tree_upgma.taxa) == Set(taxa)
+        @test Set(tree_nj.taxa) == Set(taxa)
+        @test Set(tree_mp.taxa) == Set(taxa)
+        @test tree_upgma.method == :upgma
+        @test tree_nj.method == :nj
+        @test tree_mp.method == :parsimony
+
+        # 4. Character analysis
+        cm = character_state_matrix(sequences)
+        @test size(cm) == (8, 20)
+        informative = parsimony_informative_sites(cm)
+        @test length(informative) >= 0
+
+        # 5. Parsimony scoring
+        score_mp = calculate_parsimony_score(tree_mp, cm)
+        score_upgma = calculate_parsimony_score(tree_upgma, cm)
+        @test score_mp > 0
+        # MP tree should have equal or better parsimony score
+        @test score_mp <= score_upgma + 2  # Allow small heuristic margin
+
+        # 6. Bootstrap support
+        boot = bootstrap_support(sequences; replicates=50, method=:nj)
+        @test all(0 <= v <= 1 for v in values(boot))
+
+        # 7. Identify clades with different thresholds
+        clades_strict = identify_clades(tree_nj, 0.95)
+        clades_relaxed = identify_clades(tree_nj, 0.5)
+        @test length(clades_relaxed) >= length(clades_strict)
+
+        # 8. Tree comparison
+        rf_upgma_nj = tree_distance(tree_upgma, tree_nj)
+        rf_same = tree_distance(tree_upgma, tree_upgma)
+        @test rf_same == 0
+        @test rf_upgma_nj >= 0
+
+        # 9. Root tree using outgroup
+        rooted = root_tree(tree_nj, "H")
+        @test Set(rooted.taxa) == Set(taxa)
+
+        # 10. Newick export and re-import
+        newick_str = tree_to_newick(rooted)
+        @test contains(newick_str, ";")
+        reparsed = parse_newick(newick_str)
+        @test Set(reparsed.taxa) == Set(taxa)
+
+        # Full pipeline validates: sequences -> distances -> trees -> bootstrap -> clades -> comparison -> export
+    end
+
+    # =========================================================================
+    # Performance benchmarks
+    # =========================================================================
+
+    @testset "Performance benchmarks" begin
+        # Generate larger dataset
+        n_taxa = 30
+        seq_length = 100
+        base_seq = join(rand(['A','T','C','G'], seq_length))
+        sequences = [base_seq]
+        for i in 2:n_taxa
+            s = collect(base_seq)
+            # Introduce random mutations
+            for _ in 1:rand(1:10)
+                pos = rand(1:seq_length)
+                s[pos] = rand(['A','T','C','G'])
+            end
+            push!(sequences, join(s))
+        end
+
+        # Distance matrix should be fast
+        t_dist = @elapsed distance_matrix(sequences; method=:k2p)
+        @test t_dist < 5.0
+
+        # UPGMA should complete
+        dmat = distance_matrix(sequences; method=:jc69)
+        t_upgma = @elapsed upgma(dmat)
+        @test t_upgma < 10.0
+
+        # NJ should complete
+        t_nj = @elapsed neighbor_joining(dmat)
+        @test t_nj < 10.0
+
+        # Bootstrap (fewer replicates for speed)
+        t_boot = @elapsed bootstrap_support(sequences; replicates=20, method=:nj)
+        @test t_boot < 30.0
+    end
+
 end

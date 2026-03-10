@@ -1,4 +1,26 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    TradeUnionist
+
+Trade union analytics, membership tracking, and labour economics toolkit. Covers
+worksite registration, member management, organiser conversations, grievance
+handling, collective bargaining analysis, spatial mapping, and union density metrics.
+
+# Key Features
+- Worksite and member record management with organiser conversation logging
+- Grievance case tracking with status updates
+- Contract clause comparison and proposal costing
+- Spatial member mapping and geo-mashup analysis
+- Union density, coverage, leadership ratio, and wage Gini coefficient metrics
+
+# Example
+```julia
+using TradeUnionist
+site = register_worksite("Factory A", 500)
+metrics = UnionMetrics(site)
+calc_density(metrics)
+```
+"""
 module TradeUnionist
 
 include("types.jl")

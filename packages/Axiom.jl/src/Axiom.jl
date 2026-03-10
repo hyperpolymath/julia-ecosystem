@@ -182,7 +182,11 @@ export detect_gpu, detect_coprocessor, detect_accelerator
 export cuda_available, rocm_available, metal_available
 export cuda_device_count, rocm_device_count, metal_device_count
 export tpu_available, npu_available, dsp_available, ppu_available, math_available, fpga_available
+export vpu_available, qpu_available, crypto_available
 export tpu_device_count, npu_device_count, dsp_device_count, ppu_device_count, math_device_count, fpga_device_count
+export vpu_device_count, qpu_device_count, crypto_device_count
+export estimate_model_memory, select_best_backend, smart_select_backend
+export resource_report, query_device_resources, fits_on_device
 export select_device!, gpu_capability_report, coprocessor_capability_report
 export gpu_runtime_diagnostics, reset_gpu_runtime_diagnostics!
 export coprocessor_runtime_diagnostics, reset_coprocessor_runtime_diagnostics!

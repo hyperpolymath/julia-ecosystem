@@ -1,15 +1,42 @@
 name = "ZeroProb"
 uuid = "f9e8c2e0-8b4a-4d5f-9a3c-1e2d3c4b5a6f"
 version = "0.1.0"
-authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+license = "PMPL-1.0-or-later"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 
 [deps]
+AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
+[weakdeps]
+AMDGPU = "21141c5a-9bdb-4563-92ae-f87d6854732e"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
+
+[extensions]
+ZeroProbCUDAExt = ["CUDA", "KernelAbstractions"]
+ZeroProbMetalExt = ["Metal", "KernelAbstractions"]
+ZeroProbROCmExt = ["AMDGPU", "KernelAbstractions"]
+ZeroProbTPUExt = "AcceleratorGate"
+ZeroProbNPUExt = "AcceleratorGate"
+ZeroProbFPGAExt = "AcceleratorGate"
+ZeroProbVPUExt = "AcceleratorGate"
+ZeroProbQPUExt = "AcceleratorGate"
+ZeroProbDSPExt = "AcceleratorGate"
+ZeroProbPPUExt = "AcceleratorGate"
+ZeroProbMathExt = "AcceleratorGate"
+ZeroProbCryptoExt = "AcceleratorGate"
+
 [compat]
+AcceleratorGate = "0.1"
+AMDGPU = "1"
+CUDA = "5"
 Distributions = "0.25"
+KernelAbstractions = "0.9"
+Metal = "1"
 Plots = "1.39"
 StatsBase = "0.34"
 julia = "1.9"

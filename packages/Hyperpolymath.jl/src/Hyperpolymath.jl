@@ -1,4 +1,23 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
+"""
+    Hyperpolymath
+
+Meta-package aggregating the hyperpolymath Julia ecosystem. Imports and re-exports
+all domain packages spanning logic/verification, security/forensics, history/social
+science, organising/action, mathematics/play, orchestration/meta, and the metal layer.
+
+# Key Features
+- Single entry point to the entire ecosystem (30+ packages)
+- Grouped by domain: Axiom, Causals, KnotTheory, SiliconCore, and more
+- Re-exports all public symbols from each sub-package
+
+# Example
+```julia
+using Hyperpolymath
+features = detect_cpu_features()  # from SiliconCore
+model = template_model(:process_safety)  # from BowtieRisk
+```
+"""
 module Hyperpolymath
 
 # --- 1. Logic & Verification ---

@@ -1,0 +1,19 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.scm for LowLevel.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "LowLevel.jl")
+  (type "julia-package")
+  (purpose "Meta-orchestrator for hardware abstraction layer")
+
+  (position-in-ecosystem
+    (domain "systems-programming")
+    (role "Unified hardware abstraction and orchestration across coprocessor, memory, and device subsystems")
+    (maturity "alpha"))
+
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

@@ -1,11 +1,14 @@
 name = "ProvenCrypto"
 uuid = "33678010-b125-405f-b046-d17447b3c4c1"
-authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.2"
+license = "PMPL-1.0-or-later"
 
 [deps]
+AcceleratorGate = "59f742c7-270d-4a76-95d4-a853ae16cc71"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -20,16 +23,30 @@ Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
 oneAPI = "8f75cd03-7ff8-4ecb-9b8f-daf728133b1b"
 
 [extensions]
+# GPU backends (triggered by external packages)
 ProvenCryptoAMDGPUExt = ["AMDGPU"]
 ProvenCryptoCUDAExt = ["CUDA"]
 ProvenCryptoMetalExt = ["Metal"]
 ProvenCryptoOneAPIExt = ["oneAPI"]
+ProvenCryptoROCmExt = ["AMDGPU"]
+
+# Coprocessor backends (loaded conditionally via AcceleratorGate detection)
+# These extensions are loaded at init time when their respective coprocessors
+# are detected via AcceleratorGate environment flags (AXIOM_*_AVAILABLE=1).
+# No external Julia package trigger exists yet for these backends.
+# Extension files: ext/ProvenCrypto{TPU,FPGA,Crypto,NPU,DSP,VPU,QPU,PPU,Math}Ext.jl
 
 [compat]
+AcceleratorGate = "0.1"
 Dates = "1"
 JSON = "0.21, 1"
+KernelAbstractions = "0.9"
 SHA = "0.7, 1"
 julia = "1.10"
+AMDGPU = "1"
+CUDA = "5"
+Metal = "1"
+oneAPI = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

@@ -110,6 +110,7 @@ export plot_zero_probability, plot_continuum_paradox,
 
 # Include submodules
 include("types.jl")
+include("backends/abstract.jl")
 include("measures.jl")
 include("paradoxes.jl")
 include("applications.jl")

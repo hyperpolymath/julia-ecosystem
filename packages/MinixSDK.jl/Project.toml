@@ -1,10 +1,17 @@
 name = "MinixSDK"
 uuid = "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a"
-authors = ["Hyperpolymath <jonathan.jewell@open.ac.uk>"]
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 version = "0.1.0"
+license = "PMPL-1.0-or-later"
 
 [deps]
 Libdl = "8f399da3-3557-5675-b5ff-fb832c9795de"
 
 [compat]
 julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

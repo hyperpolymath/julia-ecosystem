@@ -22,13 +22,13 @@ by Julia's `Pkg.generate`).
 4. Do NOT mark done unless verification passes.
 5. Update `.machines_readable/6scm/STATE.scm` with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Cladistics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Cladistics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Fix `fitch_score` inconsistent return type (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/src/Cladistics.jl` lines 474-492
+**Files:** `/var$REPOS_DIR/Cladistics.jl/src/Cladistics.jl` lines 474-492
 
 **Problem:** `fitch_score` has an inconsistent return type that will crash at runtime.
 
@@ -60,7 +60,7 @@ line 485 calls `reduce(intersect, child_sets)` which will fail because you canno
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 using Cladistics
 
@@ -79,7 +79,7 @@ println("TASK 1 PASS: parsimony score = $score")
 
 ## TASK 2: Fix Kimura 2-parameter operator precedence bug (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/src/Cladistics.jl` line 187
+**Files:** `/var$REPOS_DIR/Cladistics.jl/src/Cladistics.jl` line 187
 
 **Problem:** Line 187 reads:
 
@@ -118,7 +118,7 @@ package. Use explicit `2.0 * P` and `2.0 * Q` for clarity.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 using Cladistics
 
@@ -142,7 +142,7 @@ println("TASK 2 PASS: K2P operator precedence fixed")
 
 ## TASK 3: Implement `root_tree` (stub removal) (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/src/Cladistics.jl` lines 665-673
+**Files:** `/var$REPOS_DIR/Cladistics.jl/src/Cladistics.jl` lines 665-673
 
 **Problem:** `root_tree` is exported and documented but is a stub. Lines 670-672:
 
@@ -172,7 +172,7 @@ This is silently wrong -- callers expect a rerooted tree but get the original.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 using Cladistics
 
@@ -212,7 +212,7 @@ println("TASK 3 PASS: root_tree properly reroots on outgroup")
 
 ## TASK 4: Implement `maximum_parsimony` (exported but missing) (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/src/Cladistics.jl` line 57
+**Files:** `/var$REPOS_DIR/Cladistics.jl/src/Cladistics.jl` line 57
 
 **Problem:** `maximum_parsimony` is listed in the `export` statement on line 57 but has
 no function definition anywhere in the file. Calling `maximum_parsimony(...)` will throw
@@ -234,7 +234,7 @@ no function definition anywhere in the file. Calling `maximum_parsimony(...)` wi
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 using Cladistics
 
@@ -258,7 +258,7 @@ println("TASK 4 PASS: maximum_parsimony returns valid tree with score=$score")
 
 ## TASK 5: Generate valid Project.toml UUID (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/Project.toml` line 2
+**Files:** `/var$REPOS_DIR/Cladistics.jl/Project.toml` line 2
 
 **Problem:** The UUID `9e3g4f80-5d7c-6f0d-b4e2-3g9f0d1c2e3f` is invalid. UUIDs use
 hexadecimal digits (0-9, a-f) only. This UUID contains `g` characters, which are not valid
@@ -275,7 +275,7 @@ hex digits. Julia's package manager will reject this.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 toml_text = read("Project.toml", String)
 uuid_match = match(r"uuid = \"([^\"]+)\"", toml_text)
 uuid_str = uuid_match.captures[1]
@@ -314,7 +314,7 @@ license identifier.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 for f in readdir(".", join=true)
     isfile(f) || continue
     endswith(f, ".adoc") && basename(f) == "RSR_OUTLINE.adoc" && continue
@@ -391,7 +391,7 @@ META.scm has no architecture decisions relevant to a Julia phylogenetics package
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 for f in readdir(".machines_readable/6scm", join=true)
     content = read(f, String)
     if occursin("rsr-template-repo", content)
@@ -412,10 +412,10 @@ println("TASK 7 PASS: All SCM files customized for Cladistics.jl")
 ## TASK 8: Customize AI manifest and docs -- replace template placeholders (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cladistics.jl/0-AI-MANIFEST.a2ml` (lines 7, 51, 56-57, 112-114)
-- `/var/mnt/eclipse/repos/Cladistics.jl/AI.a2ml` (line 5 and throughout)
-- `/var/mnt/eclipse/repos/Cladistics.jl/docs/CITATIONS.adoc` (entire file)
-- `/var/mnt/eclipse/repos/Cladistics.jl/ROADMAP.adoc` (entire file)
+- `/var$REPOS_DIR/Cladistics.jl/0-AI-MANIFEST.a2ml` (lines 7, 51, 56-57, 112-114)
+- `/var$REPOS_DIR/Cladistics.jl/AI.a2ml` (line 5 and throughout)
+- `/var$REPOS_DIR/Cladistics.jl/docs/CITATIONS.adoc` (entire file)
+- `/var$REPOS_DIR/Cladistics.jl/ROADMAP.adoc` (entire file)
 
 **Problem:**
 
@@ -457,7 +457,7 @@ println("TASK 7 PASS: All SCM files customized for Cladistics.jl")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 manifest = read("0-AI-MANIFEST.a2ml", String)
 @assert !occursin("[YOUR-REPO-NAME]", manifest) "Manifest still has placeholder"
 @assert !occursin("[DATE]", manifest) "Manifest still has [DATE]"
@@ -482,7 +482,7 @@ println("TASK 8 PASS: All template placeholders replaced")
 
 ## TASK 9: Add test for `maximum_parsimony` and fix test for `calculate_parsimony_score` (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/Cladistics.jl/test/runtests.jl`
 
 **Problem:** The existing test suite has no test for `maximum_parsimony` (which did not
 exist before Task 4). The existing test for `calculate_parsimony_score` (which would be
@@ -508,7 +508,7 @@ file) is absent. The existing tests will also fail until Task 1 is completed bec
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 Pkg.test()
 println("TASK 9 PASS: All tests pass including new ones")
@@ -518,7 +518,7 @@ println("TASK 9 PASS: All tests pass including new ones")
 
 ## TASK 10: Add Newick parser (`parse_newick`) (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Cladistics.jl/src/Cladistics.jl`
+**Files:** `/var$REPOS_DIR/Cladistics.jl/src/Cladistics.jl`
 
 **Problem:** The package can export trees to Newick format (`tree_to_newick`) but cannot
 read them back. A phylogenetics package without a Newick parser is incomplete. Users
@@ -542,7 +542,7 @@ cannot import trees from other tools (FigTree, MEGA, RAxML, etc.).
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 using Cladistics
 
@@ -573,7 +573,7 @@ println("TASK 10 PASS: Newick parser works with round-trip")
 After all tasks are complete, run this comprehensive check:
 
 ```julia
-cd("/var/mnt/eclipse/repos/Cladistics.jl")
+cd("/var$REPOS_DIR/Cladistics.jl")
 using Pkg; Pkg.activate(".")
 
 # 1. Full test suite must pass

@@ -24,25 +24,25 @@ contradicts Project.toml version (1.0.0).
 4. Do NOT mark done unless verification passes.
 5. Update STATE.scm with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Fix Manifest.toml version mismatch (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/Manifest.toml`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/Manifest.toml`
 
 **Problem:** Line 9 says `version = "0.1.0"` but `Project.toml` line 4 says
 `version = "1.0.0"`. The Manifest is machine-generated and stale.
 
 **What to do:**
 1. Delete `Manifest.toml` entirely.
-2. Regenerate it: `cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.instantiate()'`
+2. Regenerate it: `cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.instantiate()'`
 3. Verify the regenerated `Manifest.toml` shows `version = "1.0.0"` for HackenbushGames.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && grep 'version = "1.0.0"' Manifest.toml
+cd /var$REPOS_DIR/HackenbushGames.jl && grep 'version = "1.0.0"' Manifest.toml
 ```
 
 ---
@@ -50,16 +50,16 @@ cd /var/mnt/eclipse/repos/HackenbushGames.jl && grep 'version = "1.0.0"' Manifes
 ## TASK 2: Create .machine_readable/ directory with SCM files (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/STATE.scm` (create)
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm` (create)
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/META.scm` (create)
+- `/var$REPOS_DIR/HackenbushGames.jl/.machine_readable/STATE.scm` (create)
+- `/var$REPOS_DIR/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm` (create)
+- `/var$REPOS_DIR/HackenbushGames.jl/.machine_readable/META.scm` (create)
 
 **Problem:** The repo has no `.machine_readable/` directory at all. This is mandatory for
 every hyperpolymath repo per CLAUDE.md. The AI.a2ml file on line 9 references
 `.machines_readable/6scm/STATE.scm` which is both a different path AND does not exist.
 
 **What to do:**
-1. Create the directory: `mkdir -p /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable`
+1. Create the directory: `mkdir -p /var$REPOS_DIR/HackenbushGames.jl/.machine_readable`
 2. Create `STATE.scm` with content reflecting actual project state:
    - Phase: implementation
    - Maturity: beta (core Julia code works, but template artifacts are unfinished)
@@ -73,16 +73,16 @@ every hyperpolymath repo per CLAUDE.md. The AI.a2ml file on line 9 references
 
 **Verification:**
 ```bash
-ls /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/STATE.scm \
-   /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm \
-   /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/META.scm
+ls /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/STATE.scm \
+   /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm \
+   /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/META.scm
 ```
 
 ---
 
 ## TASK 3: Replace all {{PLACEHOLDER}} tokens in CONTRIBUTING.md (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/CONTRIBUTING.md`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/CONTRIBUTING.md`
 
 **Problem:** Lines 2, 3, 9, 10, 20, 89, 90, 91, 92 all contain raw `{{FORGE}}`,
 `{{OWNER}}`, `{{REPO}}` template placeholders.
@@ -95,14 +95,14 @@ ls /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/STATE.scm \
 
 **Verification:**
 ```bash
-grep -c '{{' /var/mnt/eclipse/repos/HackenbushGames.jl/CONTRIBUTING.md && echo "FAIL: placeholders remain" || echo "PASS"
+grep -c '{{' /var$REPOS_DIR/HackenbushGames.jl/CONTRIBUTING.md && echo "FAIL: placeholders remain" || echo "PASS"
 ```
 
 ---
 
 ## TASK 4: Replace all {{PLACEHOLDER}} tokens in CODE_OF_CONDUCT.md (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/CODE_OF_CONDUCT.md`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/CODE_OF_CONDUCT.md`
 
 **Problem:** Lines 7-14, 313 contain `{{PLACEHOLDER}}`, `{{OWNER}}`, `{{REPO}}`,
 `{{FORGE}}`, `{{PROJECT_NAME}}`, `{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`,
@@ -121,14 +121,14 @@ grep -c '{{' /var/mnt/eclipse/repos/HackenbushGames.jl/CONTRIBUTING.md && echo "
 
 **Verification:**
 ```bash
-grep -c '{{' /var/mnt/eclipse/repos/HackenbushGames.jl/CODE_OF_CONDUCT.md && echo "FAIL: placeholders remain" || echo "PASS"
+grep -c '{{' /var$REPOS_DIR/HackenbushGames.jl/CODE_OF_CONDUCT.md && echo "FAIL: placeholders remain" || echo "PASS"
 ```
 
 ---
 
 ## TASK 5: Replace all {{PLACEHOLDER}} tokens in SECURITY.md (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/SECURITY.md`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/SECURITY.md`
 
 **Problem:** Lines 7-16, 43, 61-73, 206, 325, 374, 386-387, 402, 406 contain
 `{{OWNER}}`, `{{REPO}}`, `{{PROJECT_NAME}}`, `{{SECURITY_EMAIL}}`,
@@ -147,14 +147,14 @@ template tokens.
 
 **Verification:**
 ```bash
-grep -c '{{' /var/mnt/eclipse/repos/HackenbushGames.jl/SECURITY.md && echo "FAIL: placeholders remain" || echo "PASS"
+grep -c '{{' /var$REPOS_DIR/HackenbushGames.jl/SECURITY.md && echo "FAIL: placeholders remain" || echo "PASS"
 ```
 
 ---
 
 ## TASK 6: Fix CITATIONS.adoc (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/docs/CITATIONS.adoc`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/docs/CITATIONS.adoc`
 
 **Problem:** The entire file (lines 1-36) references `rsr-template-repo` instead of
 `HackenbushGames.jl`. The author is listed as `Polymath, Hyper` instead of
@@ -173,7 +173,7 @@ grep -c '{{' /var/mnt/eclipse/repos/HackenbushGames.jl/SECURITY.md && echo "FAIL
 
 **Verification:**
 ```bash
-grep -c 'rsr-template-repo\|RSR-template-repo\|AGPL\|Polymath, Hyper' /var/mnt/eclipse/repos/HackenbushGames.jl/docs/CITATIONS.adoc && echo "FAIL" || echo "PASS"
+grep -c 'rsr-template-repo\|RSR-template-repo\|AGPL\|Polymath, Hyper' /var$REPOS_DIR/HackenbushGames.jl/docs/CITATIONS.adoc && echo "FAIL" || echo "PASS"
 ```
 
 ---
@@ -181,16 +181,16 @@ grep -c 'rsr-template-repo\|RSR-template-repo\|AGPL\|Polymath, Hyper' /var/mnt/e
 ## TASK 7: Fix Documenter.jl — missing api.md page (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/docs/make.jl` (line 12)
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/api.md` (create)
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/index.md` (line 17)
+- `/var$REPOS_DIR/HackenbushGames.jl/docs/make.jl` (line 12)
+- `/var$REPOS_DIR/HackenbushGames.jl/docs/src/api.md` (create)
+- `/var$REPOS_DIR/HackenbushGames.jl/docs/src/index.md` (line 17)
 
 **Problem:** `docs/make.jl` line 12 references `"API" => "api.md"` but `docs/src/api.md`
 does not exist. Also, `docs/src/index.md` line 17 says `# Examples coming soon` which is
 a placeholder.
 
 **What to do:**
-1. Create `/var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/api.md` with proper
+1. Create `/var$REPOS_DIR/HackenbushGames.jl/docs/src/api.md` with proper
    Documenter.jl autodoc blocks for all exported symbols:
    - `EdgeColor`, `Edge`, `HackenbushGraph`, `GameForm`
    - `Blue`, `Red`, `Green`
@@ -229,8 +229,8 @@ a placeholder.
 
 **Verification:**
 ```bash
-test -f /var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/api.md && echo "PASS: api.md exists" || echo "FAIL"
-grep -c 'coming soon' /var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/index.md && echo "FAIL: placeholder remains" || echo "PASS"
+test -f /var$REPOS_DIR/HackenbushGames.jl/docs/src/api.md && echo "PASS: api.md exists" || echo "FAIL"
+grep -c 'coming soon' /var$REPOS_DIR/HackenbushGames.jl/docs/src/index.md && echo "FAIL: placeholder remains" || echo "PASS"
 ```
 
 ---
@@ -238,8 +238,8 @@ grep -c 'coming soon' /var/mnt/eclipse/repos/HackenbushGames.jl/docs/src/index.m
 ## TASK 8: Remove irrelevant example files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/examples/SafeDOMExample.res` (delete)
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/examples/web-project-deno.json` (delete)
+- `/var$REPOS_DIR/HackenbushGames.jl/examples/SafeDOMExample.res` (delete)
+- `/var$REPOS_DIR/HackenbushGames.jl/examples/web-project-deno.json` (delete)
 
 **Problem:** These are RSR template boilerplate files for a ReScript web project. They have
 nothing to do with a Julia Hackenbush game theory library. `SafeDOMExample.res` line 1 also
@@ -258,16 +258,16 @@ has `SPDX-License-Identifier: AGPL-3.0-or-later` (wrong license).
 
 **Verification:**
 ```bash
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/examples/SafeDOMExample.res && echo "PASS: res deleted" || echo "FAIL"
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/examples/web-project-deno.json && echo "PASS: json deleted" || echo "FAIL"
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. examples/basic_usage.jl
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/examples/SafeDOMExample.res && echo "PASS: res deleted" || echo "FAIL"
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/examples/web-project-deno.json && echo "PASS: json deleted" || echo "FAIL"
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. examples/basic_usage.jl
 ```
 
 ---
 
 ## TASK 9: Replace ROADMAP.adoc template content (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.adoc`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/ROADMAP.adoc`
 
 **Problem:** The entire file is the RSR template boilerplate (`YOUR Template Repo Roadmap`,
 `Core functionality`, `To be determined`). `ROADMAP.md` exists with real content but
@@ -280,8 +280,8 @@ cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. examples/basic
 
 **Verification:**
 ```bash
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.adoc && echo "PASS: template roadmap removed" || echo "FAIL"
-test -f /var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.md && echo "PASS: real roadmap exists" || echo "FAIL"
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/ROADMAP.adoc && echo "PASS: template roadmap removed" || echo "FAIL"
+test -f /var$REPOS_DIR/HackenbushGames.jl/ROADMAP.md && echo "PASS: real roadmap exists" || echo "FAIL"
 ```
 
 ---
@@ -289,13 +289,13 @@ test -f /var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.md && echo "PASS: real
 ## TASK 10: Remove or customize ABI/FFI template files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/src/abi/Types.idr`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/src/abi/Layout.idr`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/src/abi/Foreign.idr`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/ffi/zig/build.zig`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/ffi/zig/src/main.zig`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/ffi/zig/test/integration_test.zig`
-- `/var/mnt/eclipse/repos/HackenbushGames.jl/ABI-FFI-README.md`
+- `/var$REPOS_DIR/HackenbushGames.jl/src/abi/Types.idr`
+- `/var$REPOS_DIR/HackenbushGames.jl/src/abi/Layout.idr`
+- `/var$REPOS_DIR/HackenbushGames.jl/src/abi/Foreign.idr`
+- `/var$REPOS_DIR/HackenbushGames.jl/ffi/zig/build.zig`
+- `/var$REPOS_DIR/HackenbushGames.jl/ffi/zig/src/main.zig`
+- `/var$REPOS_DIR/HackenbushGames.jl/ffi/zig/test/integration_test.zig`
+- `/var$REPOS_DIR/HackenbushGames.jl/ABI-FFI-README.md`
 
 **Problem:** All 7 files are unmodified RSR template boilerplate with `{{PROJECT}}` and
 `{{project}}` placeholders throughout (hundreds of occurrences). They define generic
@@ -312,17 +312,17 @@ This is a pure Julia library with zero FFI needs.
 
 **Verification:**
 ```bash
-test ! -d /var/mnt/eclipse/repos/HackenbushGames.jl/src/abi && echo "PASS: abi removed" || echo "FAIL"
-test ! -d /var/mnt/eclipse/repos/HackenbushGames.jl/ffi && echo "PASS: ffi removed" || echo "FAIL"
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/ABI-FFI-README.md && echo "PASS: abi readme removed" || echo "FAIL"
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'
+test ! -d /var$REPOS_DIR/HackenbushGames.jl/src/abi && echo "PASS: abi removed" || echo "FAIL"
+test ! -d /var$REPOS_DIR/HackenbushGames.jl/ffi && echo "PASS: ffi removed" || echo "FAIL"
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/ABI-FFI-README.md && echo "PASS: abi readme removed" || echo "FAIL"
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
 ---
 
 ## TASK 11: Fix AI.a2ml to reference correct paths (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/AI.a2ml`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/AI.a2ml`
 
 **Problem:** Line 1 says this is `rsr-template-repo`. Line 6 says obey Rhodium policies
 and keep `.machines_readable/6scm/` authoritative (wrong path -- should be
@@ -337,14 +337,14 @@ and keep `.machines_readable/6scm/` authoritative (wrong path -- should be
 
 **Verification:**
 ```bash
-grep -c 'rsr-template-repo\|machines_readable\|6scm' /var/mnt/eclipse/repos/HackenbushGames.jl/AI.a2ml && echo "FAIL" || echo "PASS"
+grep -c 'rsr-template-repo\|machines_readable\|6scm' /var$REPOS_DIR/HackenbushGames.jl/AI.a2ml && echo "FAIL" || echo "PASS"
 ```
 
 ---
 
 ## TASK 12: Fix CodeQL workflow language matrix (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/codeql.yml`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/.github/workflows/codeql.yml`
 
 **Problem:** Line 24-25 configures CodeQL to scan `javascript-typescript` language. This is
 a pure Julia repository with no JavaScript or TypeScript files. CodeQL does not support
@@ -356,15 +356,15 @@ Julia, so this workflow should either scan `actions` (workflow files only) or be
 
 **Verification:**
 ```bash
-grep 'javascript-typescript' /var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/codeql.yml && echo "FAIL" || echo "PASS"
-grep 'actions' /var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/codeql.yml && echo "PASS" || echo "FAIL"
+grep 'javascript-typescript' /var$REPOS_DIR/HackenbushGames.jl/.github/workflows/codeql.yml && echo "FAIL" || echo "PASS"
+grep 'actions' /var$REPOS_DIR/HackenbushGames.jl/.github/workflows/codeql.yml && echo "PASS" || echo "FAIL"
 ```
 
 ---
 
 ## TASK 13: Fix quality.yml TODO scanner to include Julia files (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/quality.yml`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/.github/workflows/quality.yml`
 
 **Problem:** Line 31 scans for TODOs in `*.rs`, `*.res`, `*.py`, `*.ex` files only. This
 is a Julia project; it should scan `*.jl` files.
@@ -376,14 +376,14 @@ is a Julia project; it should scan `*.jl` files.
 
 **Verification:**
 ```bash
-grep '\.jl' /var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/quality.yml && echo "PASS" || echo "FAIL"
+grep '\.jl' /var$REPOS_DIR/HackenbushGames.jl/.github/workflows/quality.yml && echo "PASS" || echo "FAIL"
 ```
 
 ---
 
 ## TASK 14: Add more comprehensive tests (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/test/runtests.jl`
 
 **Problem:** The test suite has only 7 test cases. Key behaviors are untested:
 - `prune_disconnected` is never directly tested.
@@ -412,14 +412,14 @@ grep '\.jl' /var/mnt/eclipse/repos/HackenbushGames.jl/.github/workflows/quality.
 
 **Verification:**
 ```julia
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
 ---
 
 ## TASK 15: Fix README.adoc template content (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/README.adoc`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/README.adoc`
 
 **Problem:** This is the RSR template README (`see RSR_OUTLINE.adoc in root`, `This is
 your repo - don't forget to rename me!`, SafeDOM examples). It conflicts with the real
@@ -432,15 +432,15 @@ README.md. A Julia Hackenbush library does not need ReScript web dependency inst
 
 **Verification:**
 ```bash
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/README.adoc && echo "PASS" || echo "FAIL"
-test -f /var/mnt/eclipse/repos/HackenbushGames.jl/README.md && echo "PASS" || echo "FAIL"
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/README.adoc && echo "PASS" || echo "FAIL"
+test -f /var$REPOS_DIR/HackenbushGames.jl/README.md && echo "PASS" || echo "FAIL"
 ```
 
 ---
 
 ## TASK 16: Fix RSR_OUTLINE.adoc template content (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/RSR_OUTLINE.adoc`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/RSR_OUTLINE.adoc`
 
 **Problem:** This is a generic RSR standard description file not specific to this project.
 It references `RSR-template-repo`, `139 repos`, `justfile`, `guix.scm`, `STATE.scm` in
@@ -454,14 +454,14 @@ is specific to HackenbushGames.jl. Line 212 says `SPDX-License-Identifier: PMPL-
 
 **Verification:**
 ```bash
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/RSR_OUTLINE.adoc && echo "PASS" || echo "FAIL"
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/RSR_OUTLINE.adoc && echo "PASS" || echo "FAIL"
 ```
 
 ---
 
 ## TASK 17: Clean up ROADMAP.md false claims (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.md`
+**Files:** `/var$REPOS_DIR/HackenbushGames.jl/ROADMAP.md`
 
 **Problem:** Lines 5-13 claim "Production-ready" and "Complete with security hardening and
 comprehensive test coverage." It also claims "Game comparison (>, <, =, ||)" (line 9) which
@@ -478,7 +478,7 @@ comparison operators. It also claims "Basic game operations (negation, addition)
 
 **Verification:**
 ```bash
-grep -c 'Production-ready\|Game comparison' /var/mnt/eclipse/repos/HackenbushGames.jl/ROADMAP.md && echo "FAIL: false claims remain" || echo "PASS"
+grep -c 'Production-ready\|Game comparison' /var$REPOS_DIR/HackenbushGames.jl/ROADMAP.md && echo "FAIL: false claims remain" || echo "PASS"
 ```
 
 ---
@@ -489,27 +489,27 @@ After all 17 tasks are complete, run the following sequence to confirm everythin
 
 ```bash
 # 1. Full test suite
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.test()'
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.test()'
 
 # 2. No template placeholders remain in any file
-grep -r '{{' /var/mnt/eclipse/repos/HackenbushGames.jl --include='*.md' --include='*.adoc' --include='*.yml' --include='*.idr' --include='*.zig' --include='*.a2ml' --include='*.djot' --include='*.res' --include='*.json' | grep -v '.git/' | grep -v 'node_modules' && echo "FAIL: template tokens remain" || echo "PASS: no template tokens"
+grep -r '{{' /var$REPOS_DIR/HackenbushGames.jl --include='*.md' --include='*.adoc' --include='*.yml' --include='*.idr' --include='*.zig' --include='*.a2ml' --include='*.djot' --include='*.res' --include='*.json' | grep -v '.git/' | grep -v 'node_modules' && echo "FAIL: template tokens remain" || echo "PASS: no template tokens"
 
 # 3. No AGPL references remain (old license, replaced by PMPL)
-grep -r 'AGPL' /var/mnt/eclipse/repos/HackenbushGames.jl --include='*.jl' --include='*.zig' --include='*.idr' --include='*.res' --include='*.adoc' | grep -v '.git/' && echo "FAIL: AGPL references remain" || echo "PASS: no AGPL"
+grep -r 'AGPL' /var$REPOS_DIR/HackenbushGames.jl --include='*.jl' --include='*.zig' --include='*.idr' --include='*.res' --include='*.adoc' | grep -v '.git/' && echo "FAIL: AGPL references remain" || echo "PASS: no AGPL"
 
 # 4. SCM files exist in correct location
-ls /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/STATE.scm \
-   /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm \
-   /var/mnt/eclipse/repos/HackenbushGames.jl/.machine_readable/META.scm && echo "PASS: SCM files exist" || echo "FAIL"
+ls /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/STATE.scm \
+   /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/ECOSYSTEM.scm \
+   /var$REPOS_DIR/HackenbushGames.jl/.machine_readable/META.scm && echo "PASS: SCM files exist" || echo "FAIL"
 
 # 5. No irrelevant template files remain
-test ! -f /var/mnt/eclipse/repos/HackenbushGames.jl/examples/SafeDOMExample.res && \
-test ! -d /var/mnt/eclipse/repos/HackenbushGames.jl/src/abi && \
-test ! -d /var/mnt/eclipse/repos/HackenbushGames.jl/ffi && \
+test ! -f /var$REPOS_DIR/HackenbushGames.jl/examples/SafeDOMExample.res && \
+test ! -d /var$REPOS_DIR/HackenbushGames.jl/src/abi && \
+test ! -d /var$REPOS_DIR/HackenbushGames.jl/ffi && \
 echo "PASS: template artifacts removed" || echo "FAIL"
 
 # 6. Docs build check (optional, needs Documenter.jl installed)
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=docs -e '
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=docs -e '
   using Pkg
   Pkg.develop(PackageSpec(path="."))
   Pkg.instantiate()
@@ -517,5 +517,5 @@ cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=docs -e '
 ' 2>&1 | tail -5
 
 # 7. Example runs without error
-cd /var/mnt/eclipse/repos/HackenbushGames.jl && julia --project=. examples/basic_usage.jl
+cd /var$REPOS_DIR/HackenbushGames.jl && julia --project=. examples/basic_usage.jl
 ```

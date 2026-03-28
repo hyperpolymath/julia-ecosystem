@@ -21,13 +21,13 @@ directory contains unrelated files, and `verify_value` is a trivial stub.
 4. Do NOT mark done unless verification passes.
 5. Update STATE.scm with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Axiology.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Axiology.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Remove duplicate orphan code blocks in fairness.jl (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/src/fairness.jl`
+**Files:** `/var$REPOS_DIR/Axiology.jl/src/fairness.jl`
 
 **Problem:** Every function in this file has a complete, documented implementation that ends
 with `end`, immediately followed by an orphan duplicate of the function body (without the
@@ -56,7 +56,7 @@ Also: duplicate SPDX header on lines 1-2 and 4-5.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 # This must not error:
 include("src/types.jl")
@@ -74,7 +74,7 @@ println("TASK 1 PASSED")
 
 ## TASK 2: Remove duplicate orphan code blocks in welfare.jl (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/src/welfare.jl`
+**Files:** `/var$REPOS_DIR/Axiology.jl/src/welfare.jl`
 
 **Problem:** Three functions have orphan duplicate bodies after their `end`:
 
@@ -93,7 +93,7 @@ Also: duplicate SPDX header on lines 1-2 and 4-5.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 include("src/types.jl")
 include("src/fairness.jl")  # Must work after Task 1
@@ -109,7 +109,7 @@ println("TASK 2 PASSED")
 
 ## TASK 3: Remove duplicate SPDX header in optimization.jl (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/src/optimization.jl`
+**Files:** `/var$REPOS_DIR/Axiology.jl/src/optimization.jl`
 
 **Problem:** Duplicate SPDX header on lines 1-2 and 4-5.
 
@@ -118,7 +118,7 @@ println("TASK 2 PASSED")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 # Full module load test:
 using Axiology
@@ -143,7 +143,7 @@ the 45 tests listed in `test/runtests.jl` all pass.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 Pkg.test()
 # All tests must pass with 0 failures, 0 errors.
@@ -155,8 +155,8 @@ println("TASK 4 PASSED")
 ## TASK 5: Remove unrelated example files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Axiology.jl/examples/SafeDOMExample.res`
-- `/var/mnt/eclipse/repos/Axiology.jl/examples/web-project-deno.json`
+- `/var$REPOS_DIR/Axiology.jl/examples/SafeDOMExample.res`
+- `/var$REPOS_DIR/Axiology.jl/examples/web-project-deno.json`
 
 **Problem:** `SafeDOMExample.res` is a ReScript file for DOM manipulation that has nothing to do
 with Axiology.jl. It also uses an `AGPL-3.0-or-later` SPDX header, which violates the project's
@@ -164,9 +164,9 @@ license policy. `web-project-deno.json` is an unrelated Deno project config. Bot
 copy-paste artifacts from the RSR template or another project.
 
 **What to do:**
-1. Delete `/var/mnt/eclipse/repos/Axiology.jl/examples/SafeDOMExample.res`.
-2. Delete `/var/mnt/eclipse/repos/Axiology.jl/examples/web-project-deno.json`.
-3. Create a real example file at `/var/mnt/eclipse/repos/Axiology.jl/examples/basic_usage.jl` that demonstrates:
+1. Delete `/var$REPOS_DIR/Axiology.jl/examples/SafeDOMExample.res`.
+2. Delete `/var$REPOS_DIR/Axiology.jl/examples/web-project-deno.json`.
+3. Create a real example file at `/var$REPOS_DIR/Axiology.jl/examples/basic_usage.jl` that demonstrates:
    - Creating Fairness, Welfare, Profit, Efficiency, and Safety values
    - Using `satisfy` to check value satisfaction
    - Using `maximize` to compute value scores
@@ -178,7 +178,7 @@ copy-paste artifacts from the RSR template or another project.
 **Verification:**
 ```julia
 # Run the example:
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 include("examples/basic_usage.jl")
 # Must complete without errors and print meaningful output.
 println("TASK 5 PASSED")
@@ -188,7 +188,7 @@ println("TASK 5 PASSED")
 
 ## TASK 6: Fix STATE.scm to reflect honest completion (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/.machine_readable/STATE.scm`
+**Files:** `/var$REPOS_DIR/Axiology.jl/.machine_readable/STATE.scm`
 
 **Problem:** STATE.scm claims `overall-completion 100` and `phase "production-ready"`. This is
 dishonest. After Tasks 1-4, the core library works, but:
@@ -211,8 +211,8 @@ dishonest. After Tasks 1-4, the core library works, but:
 **Verification:**
 ```bash
 # Check that STATE.scm is valid Scheme and contains updated values:
-grep 'overall-completion 65' /var/mnt/eclipse/repos/Axiology.jl/.machine_readable/STATE.scm
-grep 'phase "alpha"' /var/mnt/eclipse/repos/Axiology.jl/.machine_readable/STATE.scm
+grep 'overall-completion 65' /var$REPOS_DIR/Axiology.jl/.machine_readable/STATE.scm
+grep 'phase "alpha"' /var$REPOS_DIR/Axiology.jl/.machine_readable/STATE.scm
 echo "TASK 6 PASSED"
 ```
 
@@ -220,7 +220,7 @@ echo "TASK 6 PASSED"
 
 ## TASK 7: Fix README.adoc false claims (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/README.adoc`
+**Files:** `/var$REPOS_DIR/Axiology.jl/README.adoc`
 
 **Problem:** Multiple false claims and advertised-but-nonexistent API:
 
@@ -253,11 +253,11 @@ echo "TASK 6 PASSED"
 **Verification:**
 ```bash
 # Verify no mention of nonexistent functions:
-! grep -q 'select_solution' /var/mnt/eclipse/repos/Axiology.jl/README.adoc
-! grep -q 'echidna_verify' /var/mnt/eclipse/repos/Axiology.jl/README.adoc
-! grep -q 'fairlearn_constraint' /var/mnt/eclipse/repos/Axiology.jl/README.adoc
-! grep -q 'flux_loss' /var/mnt/eclipse/repos/Axiology.jl/README.adoc
-! grep -q 'Production Ready' /var/mnt/eclipse/repos/Axiology.jl/README.adoc
+! grep -q 'select_solution' /var$REPOS_DIR/Axiology.jl/README.adoc
+! grep -q 'echidna_verify' /var$REPOS_DIR/Axiology.jl/README.adoc
+! grep -q 'fairlearn_constraint' /var$REPOS_DIR/Axiology.jl/README.adoc
+! grep -q 'flux_loss' /var$REPOS_DIR/Axiology.jl/README.adoc
+! grep -q 'Production Ready' /var$REPOS_DIR/Axiology.jl/README.adoc
 echo "TASK 7 PASSED"
 ```
 
@@ -265,7 +265,7 @@ echo "TASK 7 PASSED"
 
 ## TASK 8: Fix ROADMAP.adoc incorrect checkboxes (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/ROADMAP.adoc`
+**Files:** `/var$REPOS_DIR/Axiology.jl/ROADMAP.adoc`
 
 **Problem:** Line 14 marks "Multi-objective optimization (Pareto frontiers)" as unchecked `[ ]`,
 but `pareto_frontier`, `dominated`, `value_score`, `weighted_score`, and `normalize_scores` are
@@ -285,10 +285,10 @@ all implemented in `optimization.jl`. Lines 61-65 mark all fairness metrics as u
 
 **Verification:**
 ```bash
-grep '\[x\] Multi-objective optimization' /var/mnt/eclipse/repos/Axiology.jl/ROADMAP.adoc
-grep '\[x\] Demographic parity' /var/mnt/eclipse/repos/Axiology.jl/ROADMAP.adoc
-grep '\[x\] Equalized odds' /var/mnt/eclipse/repos/Axiology.jl/ROADMAP.adoc
-grep '\[x\] Individual fairness' /var/mnt/eclipse/repos/Axiology.jl/ROADMAP.adoc
+grep '\[x\] Multi-objective optimization' /var$REPOS_DIR/Axiology.jl/ROADMAP.adoc
+grep '\[x\] Demographic parity' /var$REPOS_DIR/Axiology.jl/ROADMAP.adoc
+grep '\[x\] Equalized odds' /var$REPOS_DIR/Axiology.jl/ROADMAP.adoc
+grep '\[x\] Individual fairness' /var$REPOS_DIR/Axiology.jl/ROADMAP.adoc
 echo "TASK 8 PASSED"
 ```
 
@@ -296,7 +296,7 @@ echo "TASK 8 PASSED"
 
 ## TASK 9: Implement real verify_value logic (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/src/welfare.jl` (lines 730-733)
+**Files:** `/var$REPOS_DIR/Axiology.jl/src/welfare.jl` (lines 730-733)
 
 **Problem:** `verify_value(value::Value, proof::Dict)::Bool` is a trivial stub that only reads
 `proof[:verified]`. It does no actual verification. The docstring (lines 694-729) describes
@@ -318,7 +318,7 @@ checking for a `:prover` key and `:details` key, but the function ignores them e
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 using Axiology
 
@@ -342,7 +342,7 @@ println("TASK 9 PASSED")
 
 ## TASK 10: Improve maximize(Efficiency) for pareto/kaldor_hicks (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/src/welfare.jl` (lines 560-574)
+**Files:** `/var$REPOS_DIR/Axiology.jl/src/welfare.jl` (lines 560-574)
 
 **Problem:** `maximize(value::Efficiency, initial_state::Dict)` returns a hardcoded `1.0` for
 `:pareto` and `:kaldor_hicks` metrics (line 570). The docstring on line 540 explicitly
@@ -361,7 +361,7 @@ return `state[:net_gain]`.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 using Axiology
 
@@ -377,7 +377,7 @@ println("TASK 10 PASSED")
 
 ## TASK 11: Add equal_opportunity to test suite (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/Axiology.jl/test/runtests.jl`
 
 **Problem:** The test suite tests `demographic_parity`, `disparate_impact`, and `individual_fairness`
 (via `satisfy`), but never directly tests `equalized_odds` or `equal_opportunity` metric
@@ -397,7 +397,7 @@ tests for completeness.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 Pkg.test()
 # Verify the new testsets appear in output and pass
@@ -408,7 +408,7 @@ println("TASK 11 PASSED")
 
 ## TASK 12: Add edge case tests (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Axiology.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/Axiology.jl/test/runtests.jl`
 
 **Problem:** No tests for edge cases or error conditions:
 - Empty vectors
@@ -433,7 +433,7 @@ println("TASK 11 PASSED")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Axiology.jl")
+cd("/var$REPOS_DIR/Axiology.jl")
 using Pkg; Pkg.activate(".")
 Pkg.test()
 println("TASK 12 PASSED")
@@ -446,7 +446,7 @@ println("TASK 12 PASSED")
 After all tasks are complete, run the following sequence:
 
 ```bash
-cd /var/mnt/eclipse/repos/Axiology.jl
+cd /var$REPOS_DIR/Axiology.jl
 
 # 1. Module loads without errors
 julia --project=. -e 'using Axiology; println("Module loaded successfully")'

@@ -26,7 +26,7 @@ and three Idris2 proofs are holes (`?`-prefixed).
 4. Do NOT mark done unless verification passes.
 5. Update STATE.scm with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
@@ -39,7 +39,7 @@ builds a `coeffs` array indexed `exp + 1`. When `exp` is negative, this
 produces an out-of-bounds index. This means Jones polynomial results cannot be
 converted to `Polynomials.Polynomial` objects.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/KnotTheory.jl`, lines 442-452
+**File:** `/var$REPOS_DIR/KnotTheory.jl/src/KnotTheory.jl`, lines 442-452
 
 **Fix:** Rewrite `to_polynomial` to handle negative exponents by using
 `min_exp` as an offset. Shift all exponents so the lowest becomes index 1.
@@ -73,7 +73,7 @@ end
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using KnotTheory
 pd = KnotTheory.pdcode([(1,2,3,4,1)])
 j = KnotTheory.jones_polynomial(pd; wr=1)
@@ -96,7 +96,7 @@ println("PASS: to_polynomial handles negative exponents")
 evaluates `det(V)` and `det(V - V')` as an approximation. This does not
 compute the actual Alexander polynomial for any non-trivial knot.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/KnotTheory.jl`, lines 263-306
+**File:** `/var$REPOS_DIR/KnotTheory.jl/src/KnotTheory.jl`, lines 263-306
 
 **Fix:** Implement a correct Alexander polynomial computation. The standard
 approach for a planar diagram:
@@ -119,7 +119,7 @@ approach for a planar diagram:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using KnotTheory
 # Trefoil knot PD code: standard positive trefoil
 # PD notation: X[1,4,2,5], X[3,6,4,1], X[5,2,6,3] with all positive crossings
@@ -147,8 +147,8 @@ ROADMAP.md refer to this as "v1.0" and "Production-ready". This is an
 early-stage library with placeholder algorithms; it is not v1.0.
 
 **Files:**
-- `/var/mnt/eclipse/repos/KnotTheory.jl/Project.toml`, line 4
-- `/var/mnt/eclipse/repos/KnotTheory.jl/ROADMAP.md`, line 3 and line 14
+- `/var$REPOS_DIR/KnotTheory.jl/Project.toml`, line 4
+- `/var$REPOS_DIR/KnotTheory.jl/ROADMAP.md`, line 3 and line 14
 
 **Fix:**
 1. Change `Project.toml` version to `"0.1.0"`.
@@ -158,7 +158,7 @@ early-stage library with placeholder algorithms; it is not v1.0.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using Pkg
 ctx = Pkg.Types.Context()
 proj = ctx.env.project
@@ -173,11 +173,11 @@ println("PASS: version is 0.1.0")
 ## TASK 4: Fix SPDX license headers -- replace AGPL-3.0-or-later with PMPL-1.0-or-later (HIGH)
 
 **Problem:** Five files use the banned `AGPL-3.0-or-later` SPDX identifier:
-1. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/build.zig` (line 2)
-2. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/src/main.zig` (line 6)
-3. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/test/integration_test.zig` (line 2)
-4. `/var/mnt/eclipse/repos/KnotTheory.jl/examples/SafeDOMExample.res` (line 1)
-5. `/var/mnt/eclipse/repos/KnotTheory.jl/docs/CITATIONS.adoc` (line 13, in BibTeX block)
+1. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/build.zig` (line 2)
+2. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/src/main.zig` (line 6)
+3. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/test/integration_test.zig` (line 2)
+4. `/var$REPOS_DIR/KnotTheory.jl/examples/SafeDOMExample.res` (line 1)
+5. `/var$REPOS_DIR/KnotTheory.jl/docs/CITATIONS.adoc` (line 13, in BibTeX block)
 
 Per CLAUDE.md: "NEVER use AGPL-3.0".
 
@@ -185,7 +185,7 @@ Per CLAUDE.md: "NEVER use AGPL-3.0".
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   ! grep -r "AGPL" --include="*.zig" --include="*.res" --include="*.adoc" . && \
   echo "PASS: No AGPL references remain"
 ```
@@ -200,16 +200,16 @@ cd /var/mnt/eclipse/repos/KnotTheory.jl && \
 `{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{MAIN_BRANCH}}`,
 and `{{LICENSE}}` markers from the RSR template. These files are:
 
-1. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/build.zig` -- `{{PROJECT}}`, `{{project}}`
-2. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/src/main.zig` -- `{{PROJECT}}`, `{{project}}`
-3. `/var/mnt/eclipse/repos/KnotTheory.jl/ffi/zig/test/integration_test.zig` -- `{{PROJECT}}`, `{{project}}`
-4. `/var/mnt/eclipse/repos/KnotTheory.jl/src/abi/Types.idr` -- `{{PROJECT}}`
-5. `/var/mnt/eclipse/repos/KnotTheory.jl/src/abi/Layout.idr` -- `{{PROJECT}}`
-6. `/var/mnt/eclipse/repos/KnotTheory.jl/src/abi/Foreign.idr` -- `{{PROJECT}}`, `{{project}}`
-7. `/var/mnt/eclipse/repos/KnotTheory.jl/ABI-FFI-README.md` -- `{{PROJECT}}`, `{{project}}`, `{{LICENSE}}`
-8. `/var/mnt/eclipse/repos/KnotTheory.jl/SECURITY.md` -- `{{OWNER}}`, `{{REPO}}`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`, `{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{CURRENT_YEAR}}`, `{{PROJECT_NAME}}`
-9. `/var/mnt/eclipse/repos/KnotTheory.jl/CODE_OF_CONDUCT.md` -- `{{PROJECT_NAME}}`, `{{OWNER}}`, `{{REPO}}`, `{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{CURRENT_YEAR}}`, `{{FORGE}}`
-10. `/var/mnt/eclipse/repos/KnotTheory.jl/CONTRIBUTING.md` -- `{{FORGE}}`, `{{OWNER}}`, `{{REPO}}`, `{{MAIN_BRANCH}}`
+1. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/build.zig` -- `{{PROJECT}}`, `{{project}}`
+2. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/src/main.zig` -- `{{PROJECT}}`, `{{project}}`
+3. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/test/integration_test.zig` -- `{{PROJECT}}`, `{{project}}`
+4. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Types.idr` -- `{{PROJECT}}`
+5. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Layout.idr` -- `{{PROJECT}}`
+6. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Foreign.idr` -- `{{PROJECT}}`, `{{project}}`
+7. `/var$REPOS_DIR/KnotTheory.jl/ABI-FFI-README.md` -- `{{PROJECT}}`, `{{project}}`, `{{LICENSE}}`
+8. `/var$REPOS_DIR/KnotTheory.jl/SECURITY.md` -- `{{OWNER}}`, `{{REPO}}`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`, `{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{CURRENT_YEAR}}`, `{{PROJECT_NAME}}`
+9. `/var$REPOS_DIR/KnotTheory.jl/CODE_OF_CONDUCT.md` -- `{{PROJECT_NAME}}`, `{{OWNER}}`, `{{REPO}}`, `{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{CURRENT_YEAR}}`, `{{FORGE}}`
+10. `/var$REPOS_DIR/KnotTheory.jl/CONTRIBUTING.md` -- `{{FORGE}}`, `{{OWNER}}`, `{{REPO}}`, `{{MAIN_BRANCH}}`
 
 **Fix:** Replace with these values:
 - `{{PROJECT}}` -> `KnotTheory`
@@ -233,7 +233,7 @@ Also delete the HTML comment blocks that say "TEMPLATE INSTRUCTIONS (delete this
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   ! grep -r '{{' --include="*.md" --include="*.zig" --include="*.idr" --include="*.adoc" . && \
   echo "PASS: No template placeholders remain"
 ```
@@ -329,7 +329,7 @@ There are no SCM files anywhere in the repo.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   test -f .machine_readable/STATE.scm && \
   test -f .machine_readable/META.scm && \
   test -f .machine_readable/ECOSYSTEM.scm && \
@@ -409,7 +409,7 @@ end
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   test ! -f examples/SafeDOMExample.res && \
   test ! -f examples/web-project-deno.json && \
   test -f examples/basic_usage.jl && \
@@ -421,12 +421,12 @@ cd /var/mnt/eclipse/repos/KnotTheory.jl && \
 
 ## TASK 8: Fix CITATIONS.adoc to reference KnotTheory.jl instead of RSR-template-repo (MEDIUM)
 
-**Problem:** `/var/mnt/eclipse/repos/KnotTheory.jl/docs/CITATIONS.adoc`
+**Problem:** `/var$REPOS_DIR/KnotTheory.jl/docs/CITATIONS.adoc`
 still references `rsr-template-repo` everywhere and uses
 `AGPL-3.0-or-later` for the license. It also attributes authorship to
 `Polymath, Hyper` instead of the correct `Jewell, Jonathan D.A.`.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/docs/CITATIONS.adoc`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/docs/CITATIONS.adoc`
 
 **Fix:** Replace all occurrences of:
 - `rsr-template-repo` -> `KnotTheory.jl`
@@ -439,7 +439,7 @@ still references `rsr-template-repo` everywhere and uses
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   ! grep -i "rsr-template" docs/CITATIONS.adoc && \
   ! grep "AGPL" docs/CITATIONS.adoc && \
   grep "KnotTheory.jl" docs/CITATIONS.adoc > /dev/null && \
@@ -458,7 +458,7 @@ Reidemeister III (triangle move) are listed in the ROADMAP as "SHOULD" for
 v1.1 but are needed for basic diagram simplification to work on any
 non-trivial knot.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/KnotTheory.jl`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/src/KnotTheory.jl`
 
 **Fix:**
 1. Add `r2_simplify(pd::PlanarDiagram)::PlanarDiagram` -- detect pairs of
@@ -475,7 +475,7 @@ non-trivial knot.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using KnotTheory
 # Test R2: two crossings that form a bigon should cancel
 # Construct a PD with two crossings that form an R2 pair
@@ -507,7 +507,7 @@ basic happy-path tests. Missing coverage includes:
 7. No test that the Alexander polynomial produces correct results for known
    knots (will be needed after Task 2).
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/test/runtests.jl`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/test/runtests.jl`
 
 **Fix:** Add the following test sets:
 
@@ -526,7 +526,7 @@ basic happy-path tests. Missing coverage includes:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using Pkg; Pkg.test()
 ' 2>&1 | tail -5
 ```
@@ -540,7 +540,7 @@ and figure-eight. The ROADMAP lists "Knot table integration" with "10K+ knots
 up to 16 crossings" as a v1.1 goal. For a minimal viable library, at least
 the prime knots through 7 crossings should be present (15 knots total).
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/KnotTheory.jl`, lines 524-530
+**File:** `/var$REPOS_DIR/KnotTheory.jl/src/KnotTheory.jl`, lines 524-530
 
 **Fix:** Expand `knot_table()` to include all prime knots through 7 crossings
 using their DT codes. The standard Rolfsen table entries are:
@@ -567,7 +567,7 @@ ensure `lookup_knot(Symbol("5_1"))` works.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using KnotTheory
 table = knot_table()
 @assert length(table) >= 15 "Expected at least 15 knots, got $(length(table))"
@@ -586,7 +586,7 @@ println("PASS: Knot table has $(length(table)) entries including 5_1")
 title and a single Julia cell `using KnotTheory; trefoil()`. This is not
 a useful tutorial.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/tutorials/intro.ipynb`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/tutorials/intro.ipynb`
 
 **Fix:** Expand the notebook to include cells demonstrating:
 1. Installing/loading KnotTheory.jl
@@ -603,7 +603,7 @@ cell demonstrating it.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && julia --project=. -e '
+cd /var$REPOS_DIR/KnotTheory.jl && julia --project=. -e '
 using JSON3
 nb = JSON3.read(read("tutorials/intro.ipynb", String))
 cells = nb["cells"]
@@ -617,7 +617,7 @@ println("PASS: Tutorial notebook has sufficient content")
 
 ## TASK 13: Fix Idris2 proof holes in Layout.idr (LOW)
 
-**Problem:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/abi/Layout.idr`
+**Problem:** `/var$REPOS_DIR/KnotTheory.jl/src/abi/Layout.idr`
 contains three unfinished proof holes (Idris2 `?`-prefixed metavariables):
 
 1. Line 138: `?fieldsAlignedProof` in `checkCABI`
@@ -627,7 +627,7 @@ contains three unfinished proof holes (Idris2 `?`-prefixed metavariables):
 These are admitted proofs that the Idris2 compiler will accept but are not
 actually proven.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/src/abi/Layout.idr`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/src/abi/Layout.idr`
 
 **Fix:** Either:
 (a) Complete the proofs properly using Idris2 proof tactics, OR
@@ -642,7 +642,7 @@ functional connection to the knot theory code.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   grep -c "NOTE: Template proof hole" src/abi/Layout.idr | \
   xargs -I{} test {} -ge 3 && \
   echo "PASS: All proof holes annotated"
@@ -659,7 +659,7 @@ SHA `b4ffde65f46336ab88eb53be808477a3936bae11` does not match the SHA
 listed in CLAUDE.md for `actions/checkout@v4` which is
 `34e114876b0b11c390a56381ad16ebd13914f8d5`.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/.github/workflows/ci.yml`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/.github/workflows/ci.yml`
 
 **Fix:**
 1. Add `'1.12'` to the Julia version matrix.
@@ -668,7 +668,7 @@ listed in CLAUDE.md for `actions/checkout@v4` which is
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   grep "1.12" .github/workflows/ci.yml > /dev/null && \
   grep "34e114876b0b11c390a56381ad16ebd13914f8d5" .github/workflows/ci.yml > /dev/null && \
   grep "permissions:" .github/workflows/ci.yml > /dev/null && \
@@ -682,7 +682,7 @@ cd /var/mnt/eclipse/repos/KnotTheory.jl && \
 **Problem:** `docs/src/index.md` is a 14-line stub with a single trivial
 example. It does not document any of the exported functions.
 
-**File:** `/var/mnt/eclipse/repos/KnotTheory.jl/docs/src/index.md`
+**File:** `/var$REPOS_DIR/KnotTheory.jl/docs/src/index.md`
 
 **Fix:** Expand to document all exported symbols with their signatures,
 parameters, return types, and brief descriptions. Group by category:
@@ -699,7 +699,7 @@ parameters, return types, and brief descriptions. Group by category:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
   wc -l docs/src/index.md | awk '{if ($1 >= 80) print "PASS: index.md has sufficient content ("$1" lines)"; else {print "FAIL: only "$1" lines"; exit 1}}'
 ```
 
@@ -710,7 +710,7 @@ cd /var/mnt/eclipse/repos/KnotTheory.jl && \
 After all tasks are complete, run this comprehensive check:
 
 ```bash
-cd /var/mnt/eclipse/repos/KnotTheory.jl && \
+cd /var$REPOS_DIR/KnotTheory.jl && \
 echo "=== 1. Full test suite ===" && \
 julia --project=. -e 'using Pkg; Pkg.test()' && \
 echo "=== 2. No AGPL references ===" && \

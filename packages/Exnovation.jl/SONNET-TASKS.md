@@ -22,13 +22,13 @@ files add no value for a pure-Julia package.
 4. Do NOT mark done unless verification passes.
 5. Update STATE.scm with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Exnovation.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Exnovation.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Fix Version Mismatch Between Project.toml and Manifest.toml (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/Project.toml` (line 4), `/var/mnt/eclipse/repos/Exnovation.jl/Manifest.toml` (line 16)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/Project.toml` (line 4), `/var$REPOS_DIR/Exnovation.jl/Manifest.toml` (line 16)
 
 **Problem:** `Project.toml` declares `version = "1.0.0"` but `Manifest.toml` records the
 package as `version = "0.1.0"`. The `Manifest.toml` is stale from an older `Project.toml`
@@ -41,7 +41,7 @@ version. This means anyone running `Pkg.instantiate()` will get a mismatched man
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Exnovation.jl")
+cd("/var$REPOS_DIR/Exnovation.jl")
 toml = Pkg.TOML.parsefile("Project.toml")
 manifest = Pkg.TOML.parsefile("Manifest.toml")
 @assert toml["version"] == "1.0.0" "Project.toml version must be 1.0.0"
@@ -55,7 +55,7 @@ println("PASS: versions match")
 
 ## TASK 2: Add Missing `Political` Case to `debiasing_actions` (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/src/Exnovation.jl` (lines 234-249)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/src/Exnovation.jl` (lines 234-249)
 
 **Problem:** The `debiasing_actions` function handles `Cognitive`, `Emotional`, `Behavioral`,
 and `Structural` barriers but silently ignores `Political` barriers. The `BarrierType` enum
@@ -85,14 +85,14 @@ println("PASS: Political debiasing actions work")
 
 ## TASK 3: Create Missing `docs/src/api.md` (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/docs/make.jl` (line 12), `/var/mnt/eclipse/repos/Exnovation.jl/docs/src/api.md` (MISSING)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/docs/make.jl` (line 12), `/var$REPOS_DIR/Exnovation.jl/docs/src/api.md` (MISSING)
 
 **Problem:** `docs/make.jl` line 12 declares `pages = ["Home" => "index.md", "API" => "api.md"]`.
 The file `docs/src/api.md` does not exist. Running `makedocs()` will fail or produce a broken
 documentation site.
 
 **What to do:**
-1. Create `/var/mnt/eclipse/repos/Exnovation.jl/docs/src/api.md`.
+1. Create `/var$REPOS_DIR/Exnovation.jl/docs/src/api.md`.
 2. Add an SPDX header comment (use HTML comment since it is Markdown).
 3. Add a title `# API Reference`.
 4. Use Documenter.jl `@autodocs` or `@docs` blocks to auto-generate documentation
@@ -149,8 +149,8 @@ allocate_budget
 
 **Verification:**
 ```julia
-@assert isfile("/var/mnt/eclipse/repos/Exnovation.jl/docs/src/api.md") "api.md must exist"
-content = read("/var/mnt/eclipse/repos/Exnovation.jl/docs/src/api.md", String)
+@assert isfile("/var$REPOS_DIR/Exnovation.jl/docs/src/api.md") "api.md must exist"
+content = read("/var$REPOS_DIR/Exnovation.jl/docs/src/api.md", String)
 @assert contains(content, "ExnovationItem") "Must document ExnovationItem"
 @assert contains(content, "exnovation_score") "Must document exnovation_score"
 @assert contains(content, "allocate_budget") "Must document allocate_budget"
@@ -161,7 +161,7 @@ println("PASS: api.md exists and documents key exports")
 
 ## TASK 4: Update `docs/src/index.md` Placeholder (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/docs/src/index.md` (line 17)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/docs/src/index.md` (line 17)
 
 **Problem:** Line 17 says `# Examples coming soon` -- this is a placeholder. The repo
 has two complete examples in `examples/` and a full Quick Start in `README.md`.
@@ -175,7 +175,7 @@ has two complete examples in `examples/` and a full Quick Start in `README.md`.
 
 **Verification:**
 ```julia
-content = read("/var/mnt/eclipse/repos/Exnovation.jl/docs/src/index.md", String)
+content = read("/var$REPOS_DIR/Exnovation.jl/docs/src/index.md", String)
 @assert !contains(content, "coming soon") "Must remove 'coming soon' placeholder"
 @assert contains(content, "ExnovationItem") "Must include actual code example"
 println("PASS: index.md updated with real content")
@@ -186,11 +186,11 @@ println("PASS: index.md updated with real content")
 ## TASK 5: Fix AGPL-3.0 License Headers (Must Be PMPL-1.0-or-later) (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/build.zig` (line 2)
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/src/main.zig` (line 6)
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/test/integration_test.zig` (line 2)
-- `/var/mnt/eclipse/repos/Exnovation.jl/examples/SafeDOMExample.res` (line 1)
-- `/var/mnt/eclipse/repos/Exnovation.jl/docs/CITATIONS.adoc` (line 13)
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/build.zig` (line 2)
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/src/main.zig` (line 6)
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/test/integration_test.zig` (line 2)
+- `/var$REPOS_DIR/Exnovation.jl/examples/SafeDOMExample.res` (line 1)
+- `/var$REPOS_DIR/Exnovation.jl/docs/CITATIONS.adoc` (line 13)
 
 **Problem:** Five files use `SPDX-License-Identifier: AGPL-3.0-or-later`. Per
 CLAUDE.md license policy: "NEVER use AGPL-3.0 (old license, replaced by PMPL-1.0-or-later)".
@@ -204,7 +204,7 @@ The `docs/CITATIONS.adoc` also says `license = {AGPL-3.0-or-later}` in the BibTe
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 count=$(grep -r "AGPL-3.0" --include="*.zig" --include="*.res" --include="*.adoc" . | wc -l)
 if [ "$count" -eq 0 ]; then echo "PASS: no AGPL-3.0 references remain"; else echo "FAIL: $count AGPL-3.0 references found"; exit 1; fi
 ```
@@ -214,13 +214,13 @@ if [ "$count" -eq 0 ]; then echo "PASS: no AGPL-3.0 references remain"; else ech
 ## TASK 6: Remove or Customize Boilerplate ABI/FFI Template Files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Exnovation.jl/src/abi/Types.idr`
-- `/var/mnt/eclipse/repos/Exnovation.jl/src/abi/Layout.idr`
-- `/var/mnt/eclipse/repos/Exnovation.jl/src/abi/Foreign.idr`
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/build.zig`
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/src/main.zig`
-- `/var/mnt/eclipse/repos/Exnovation.jl/ffi/zig/test/integration_test.zig`
-- `/var/mnt/eclipse/repos/Exnovation.jl/ABI-FFI-README.md`
+- `/var$REPOS_DIR/Exnovation.jl/src/abi/Types.idr`
+- `/var$REPOS_DIR/Exnovation.jl/src/abi/Layout.idr`
+- `/var$REPOS_DIR/Exnovation.jl/src/abi/Foreign.idr`
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/build.zig`
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/src/main.zig`
+- `/var$REPOS_DIR/Exnovation.jl/ffi/zig/test/integration_test.zig`
+- `/var$REPOS_DIR/Exnovation.jl/ABI-FFI-README.md`
 
 **Problem:** Exnovation.jl is a pure-Julia package. It has no C FFI, no Zig build, and no
 Idris2 ABI. All 7 files above contain raw `{{PROJECT}}` / `{{project}}` template
@@ -238,7 +238,7 @@ placeholders that have never been customized. They are non-functional boilerplat
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 if [ -d "src/abi" ]; then echo "FAIL: src/abi/ still exists"; exit 1; fi
 if [ -d "ffi" ]; then echo "FAIL: ffi/ still exists"; exit 1; fi
 if [ -f "ABI-FFI-README.md" ]; then echo "FAIL: ABI-FFI-README.md still exists"; exit 1; fi
@@ -251,11 +251,11 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
 ## TASK 7: Customize RSR Template Placeholders in Markdown Files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Exnovation.jl/CONTRIBUTING.md`
-- `/var/mnt/eclipse/repos/Exnovation.jl/CODE_OF_CONDUCT.md`
-- `/var/mnt/eclipse/repos/Exnovation.jl/SECURITY.md`
-- `/var/mnt/eclipse/repos/Exnovation.jl/ROADMAP.adoc`
-- `/var/mnt/eclipse/repos/Exnovation.jl/RSR_OUTLINE.adoc`
+- `/var$REPOS_DIR/Exnovation.jl/CONTRIBUTING.md`
+- `/var$REPOS_DIR/Exnovation.jl/CODE_OF_CONDUCT.md`
+- `/var$REPOS_DIR/Exnovation.jl/SECURITY.md`
+- `/var$REPOS_DIR/Exnovation.jl/ROADMAP.adoc`
+- `/var$REPOS_DIR/Exnovation.jl/RSR_OUTLINE.adoc`
 
 **Problem:** These files are raw RSR template copies with `{{FORGE}}`, `{{OWNER}}`,
 `{{REPO}}`, `{{PROJECT_NAME}}`, `{{SECURITY_EMAIL}}`, `{{CONDUCT_EMAIL}}`,
@@ -295,7 +295,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 count=$(grep -r '{{[A-Z_]*}}' CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md RSR_OUTLINE.adoc 2>/dev/null | wc -l)
 if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders in docs"; else echo "FAIL: $count placeholders remain"; exit 1; fi
 if [ -f "ROADMAP.adoc" ]; then echo "FAIL: ROADMAP.adoc should be deleted"; exit 1; fi
@@ -306,14 +306,14 @@ echo "PASS: all template docs customized"
 
 ## TASK 8: Create `.machine_readable/` Directory with SCM Files (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/.machine_readable/` (MISSING)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/.machine_readable/` (MISSING)
 
 **Problem:** Per CLAUDE.md and the project's own `AI.djot`, every hyperpolymath repo must
 have `.machine_readable/STATE.scm`, `.machine_readable/ECOSYSTEM.scm`, and
 `.machine_readable/META.scm`. This directory does not exist.
 
 **What to do:**
-1. Create directory `/var/mnt/eclipse/repos/Exnovation.jl/.machine_readable/`.
+1. Create directory `/var$REPOS_DIR/Exnovation.jl/.machine_readable/`.
 2. Create `STATE.scm` with:
    - `(metadata (project . "Exnovation.jl") (updated . "2026-02-12"))`
    - `(position (phase . maintenance) (maturity . production))`
@@ -332,7 +332,7 @@ have `.machine_readable/STATE.scm`, `.machine_readable/ECOSYSTEM.scm`, and
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 for f in STATE.scm ECOSYSTEM.scm META.scm; do
   if [ ! -f ".machine_readable/$f" ]; then echo "FAIL: .machine_readable/$f missing"; exit 1; fi
 done
@@ -344,8 +344,8 @@ echo "PASS: .machine_readable/ directory with all SCM files"
 ## TASK 9: Remove Unrelated Example Files (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Exnovation.jl/examples/SafeDOMExample.res`
-- `/var/mnt/eclipse/repos/Exnovation.jl/examples/web-project-deno.json`
+- `/var$REPOS_DIR/Exnovation.jl/examples/SafeDOMExample.res`
+- `/var$REPOS_DIR/Exnovation.jl/examples/web-project-deno.json`
 
 **Problem:** These are RSR template examples for ReScript web projects. They have nothing
 to do with Exnovation.jl (a Julia decision-framework package). `SafeDOMExample.res` is
@@ -360,7 +360,7 @@ for ReScript projects. Both are confusing detritus.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 if [ -f "examples/SafeDOMExample.res" ]; then echo "FAIL: SafeDOMExample.res should be deleted"; exit 1; fi
 if [ -f "examples/web-project-deno.json" ]; then echo "FAIL: web-project-deno.json should be deleted"; exit 1; fi
 if [ ! -f "examples/01_basic_usage.jl" ]; then echo "FAIL: 01_basic_usage.jl must exist"; exit 1; fi
@@ -372,7 +372,7 @@ echo "PASS: only Julia examples remain"
 
 ## TASK 10: Customize `docs/CITATIONS.adoc` (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/docs/CITATIONS.adoc`
+**Files:** `/var$REPOS_DIR/Exnovation.jl/docs/CITATIONS.adoc`
 
 **Problem:** This file is a raw RSR template copy. It references `rsr-template-repo`,
 uses author `Polymath, Hyper`, year `2025`, and the wrong URL. It also references
@@ -390,7 +390,7 @@ non-existent `CITATION.cff` and `codemeta.json` files.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 content=$(cat docs/CITATIONS.adoc)
 if echo "$content" | grep -q "rsr-template-repo"; then echo "FAIL: still references rsr-template-repo"; exit 1; fi
 if echo "$content" | grep -q "AGPL"; then echo "FAIL: still references AGPL"; exit 1; fi
@@ -402,7 +402,7 @@ echo "PASS: CITATIONS.adoc customized"
 
 ## TASK 11: Pin Unpinned GitHub Actions in release.yml (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/.github/workflows/release.yml` (lines 46, 94, 108)
+**Files:** `/var$REPOS_DIR/Exnovation.jl/.github/workflows/release.yml` (lines 46, 94, 108)
 
 **Problem:** Three action references use tag-only pins (`@v4`) instead of SHA pins:
 - Line 46: `actions/upload-artifact@v4`
@@ -421,7 +421,7 @@ Per CLAUDE.md workflow standards, all actions must be SHA-pinned.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 count=$(grep -E 'uses:.*@v[0-9]+\s*$' .github/workflows/release.yml | wc -l)
 if [ "$count" -eq 0 ]; then echo "PASS: all actions SHA-pinned"; else echo "FAIL: $count actions not SHA-pinned"; exit 1; fi
 ```
@@ -430,7 +430,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: all actions SHA-pinned"; else echo "FAIL
 
 ## TASK 12: Fix `AI.a2ml` Template References (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/AI.a2ml`
+**Files:** `/var$REPOS_DIR/Exnovation.jl/AI.a2ml`
 
 **Problem:** This file references `rsr-template-repo` (line 5) and paths like
 `.machines_readable/6scm/STATE.scm` (line 9) and `.machines_readable/6scm/AGENTIC.scm`
@@ -444,7 +444,7 @@ subdirectory). The file also does not mention Exnovation.jl at all.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 content=$(cat AI.a2ml)
 if echo "$content" | grep -q "rsr-template-repo"; then echo "FAIL: still says rsr-template-repo"; exit 1; fi
 if echo "$content" | grep -q "machines_readable"; then echo "FAIL: wrong directory name (has extra s)"; exit 1; fi
@@ -456,7 +456,7 @@ echo "PASS: AI.a2ml references corrected"
 
 ## TASK 13: Add Input Validation to Public API Functions (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/src/Exnovation.jl`
+**Files:** `/var$REPOS_DIR/Exnovation.jl/src/Exnovation.jl`
 
 **Problem:** The `DecisionCriteria` struct (lines 52-57) expects weights in 0..1 but
 no validation is performed. Negative weights or weights > 1 are silently accepted.
@@ -491,7 +491,7 @@ println("PASS: out-of-range weights handled gracefully")
 
 ## TASK 14: Add `permissions: read-all` to CI Workflow (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Exnovation.jl/.github/workflows/ci.yml`
+**Files:** `/var$REPOS_DIR/Exnovation.jl/.github/workflows/ci.yml`
 
 **Problem:** Per CLAUDE.md workflow validation checklist item 4: "`permissions: read-all`
 at workflow level". The CI workflow has no `permissions` block at all.
@@ -501,7 +501,7 @@ at workflow level". The CI workflow has no `permissions` block at all.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 if grep -q "permissions:" .github/workflows/ci.yml; then echo "PASS: permissions block exists"; else echo "FAIL: no permissions block"; exit 1; fi
 ```
 
@@ -512,7 +512,7 @@ if grep -q "permissions:" .github/workflows/ci.yml; then echo "PASS: permissions
 After all tasks are complete, run:
 
 ```bash
-cd /var/mnt/eclipse/repos/Exnovation.jl
+cd /var$REPOS_DIR/Exnovation.jl
 
 echo "=== 1. Julia tests ==="
 julia --project=. -e 'using Pkg; Pkg.test()'

@@ -16,13 +16,13 @@ The Julia source code (`src/Cliometrics.jl`) has 7 implemented functions out of 
 4. Do NOT mark done unless verification passes.
 5. Update `.machines_readable/6scm/STATE.scm` with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Cliometrics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Cliometrics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Implement `interpolate_missing_years` (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** The function `interpolate_missing_years` is exported on line 44 but has NO implementation anywhere in the codebase. Any call to it will throw `UndefVarError`.
 
@@ -55,7 +55,7 @@ println("TASK 1 PASSED")
 
 ## TASK 2: Implement `quantify_institutions` (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** The function `quantify_institutions` is exported on line 52 but has NO implementation anywhere. This is distinct from `institutional_quality_index` which IS implemented (lines 285-308). `quantify_institutions` should provide a different capability: measuring institutional change over time, not just a static composite index.
 
@@ -98,7 +98,7 @@ println("TASK 2 PASSED")
 
 ## TASK 3: Implement `counterfactual_scenario` (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** The function `counterfactual_scenario` is exported on line 60 but has NO implementation. The README (line 16) claims "Counterfactual Modeling" as a feature. Zero code exists for it.
 
@@ -137,7 +137,7 @@ println("TASK 3 PASSED")
 
 ## TASK 4: Implement `estimate_treatment_effect` (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** The function `estimate_treatment_effect` is exported on line 61 but has NO implementation. This is the second part of the counterfactual modeling feature claimed in the README.
 
@@ -179,7 +179,7 @@ println("TASK 4 PASSED")
 
 ## TASK 5: Add tests for the four new functions (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/test/runtests.jl`
 
 **Problem:** The test file only tests the 7 originally implemented functions. The 4 new functions from Tasks 1-4 have no test coverage.
 
@@ -193,7 +193,7 @@ println("TASK 4 PASSED")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cliometrics.jl")
+cd("/var$REPOS_DIR/Cliometrics.jl")
 using Pkg; Pkg.test()
 # All tests including the 4 new testsets must pass
 ```
@@ -203,16 +203,16 @@ using Pkg; Pkg.test()
 ## TASK 6: Fix SPDX license headers — replace AGPL-3.0-or-later with PMPL-1.0-or-later (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/STATE.scm` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/META.scm` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/ECOSYSTEM.scm` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.gitignore` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.gitattributes` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/build.zig` (line 2)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/src/main.zig` (line 6)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/test/integration_test.zig` (line 2)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/examples/SafeDOMExample.res` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/docs/CITATIONS.adoc` (line 13, inside bibtex block)
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/STATE.scm` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/META.scm` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/ECOSYSTEM.scm` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/.gitignore` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/.gitattributes` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/build.zig` (line 2)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/src/main.zig` (line 6)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/test/integration_test.zig` (line 2)
+- `/var$REPOS_DIR/Cliometrics.jl/examples/SafeDOMExample.res` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/docs/CITATIONS.adoc` (line 13, inside bibtex block)
 
 **Problem:** These files use `AGPL-3.0-or-later` which is the OLD license. Per CLAUDE.md, the primary license is PMPL-1.0-or-later and AGPL-3.0 must NEVER be used.
 
@@ -223,7 +223,7 @@ using Pkg; Pkg.test()
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm" --include="*.zig" --include="*.res" --include="*.adoc" . | grep -v ".git/"
+cd /var$REPOS_DIR/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm" --include="*.zig" --include="*.res" --include="*.adoc" . | grep -v ".git/"
 # Should return zero lines
 ```
 
@@ -232,17 +232,17 @@ cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm
 ## TASK 7: Replace `{{PROJECT}}` / `{{REPO}}` / `{{OWNER}}` / `{{FORGE}}` template placeholders (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliometrics.jl/src/abi/Types.idr` (lines 6, 7, 11)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/src/abi/Layout.idr` (lines 8, 10)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/src/abi/Foreign.idr` (lines 9, 11, 12, and all `{{project}}` on lines 23, 35, 49, 72, 77, 98, 125, 152, 164, 185, 211)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/build.zig` (lines 1, 12, 23, 35, 36, 82)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/src/main.zig` (lines 1, 12, and all `{{project}}_` function names)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ffi/zig/test/integration_test.zig` (line 1 and all `{{project}}_` references)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/ABI-FFI-README.md` (all `{{PROJECT}}` and `{{project}}` occurrences)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/CODE_OF_CONDUCT.md` (lines 9, 10, 313)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/CONTRIBUTING.md` (lines 2, 3, 9, 10, 20, 89-92)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/SECURITY.md` (lines 9, 10, 43, 206, 325, 374, 386, 387)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/0-AI-MANIFEST.a2ml` (line 7, 56)
+- `/var$REPOS_DIR/Cliometrics.jl/src/abi/Types.idr` (lines 6, 7, 11)
+- `/var$REPOS_DIR/Cliometrics.jl/src/abi/Layout.idr` (lines 8, 10)
+- `/var$REPOS_DIR/Cliometrics.jl/src/abi/Foreign.idr` (lines 9, 11, 12, and all `{{project}}` on lines 23, 35, 49, 72, 77, 98, 125, 152, 164, 185, 211)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/build.zig` (lines 1, 12, 23, 35, 36, 82)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/src/main.zig` (lines 1, 12, and all `{{project}}_` function names)
+- `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/test/integration_test.zig` (line 1 and all `{{project}}_` references)
+- `/var$REPOS_DIR/Cliometrics.jl/ABI-FFI-README.md` (all `{{PROJECT}}` and `{{project}}` occurrences)
+- `/var$REPOS_DIR/Cliometrics.jl/CODE_OF_CONDUCT.md` (lines 9, 10, 313)
+- `/var$REPOS_DIR/Cliometrics.jl/CONTRIBUTING.md` (lines 2, 3, 9, 10, 20, 89-92)
+- `/var$REPOS_DIR/Cliometrics.jl/SECURITY.md` (lines 9, 10, 43, 206, 325, 374, 386, 387)
+- `/var$REPOS_DIR/Cliometrics.jl/0-AI-MANIFEST.a2ml` (line 7, 56)
 
 **Problem:** The entire RSR template layer was never customized. Every `{{PROJECT}}`, `{{project}}`, `{{OWNER}}`, `{{REPO}}`, and `{{FORGE}}` placeholder is still present, making the Idris2 ABI, Zig FFI, and community files non-functional.
 
@@ -257,7 +257,7 @@ cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn '{{PROJECT}}\|{{project}}\|{{OWNER}}\|{{REPO}}\|{{FORGE}}\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
+cd /var$REPOS_DIR/Cliometrics.jl && grep -rn '{{PROJECT}}\|{{project}}\|{{OWNER}}\|{{REPO}}\|{{FORGE}}\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
 # Should return zero lines
 ```
 
@@ -266,9 +266,9 @@ cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn '{{PROJECT}}\|{{project}}\|
 ## TASK 8: Update SCM files to reflect Cliometrics.jl accurately (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/STATE.scm`
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/ECOSYSTEM.scm`
-- `/var/mnt/eclipse/repos/Cliometrics.jl/.machines_readable/6scm/META.scm`
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/STATE.scm`
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/ECOSYSTEM.scm`
+- `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/META.scm`
 
 **Problem:** All three SCM files still reference `rsr-template-repo` (STATE.scm lines 5, 11, 12; ECOSYSTEM.scm lines 6, 7; META.scm line 5). STATE.scm claims 5% completion (line 22) and empty tech-stack (line 17). ECOSYSTEM.scm has `[TODO: Add specific description]` on line 24.
 
@@ -293,7 +293,7 @@ cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn '{{PROJECT}}\|{{project}}\|
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -c "rsr-template-repo" .machines_readable/6scm/STATE.scm .machines_readable/6scm/ECOSYSTEM.scm .machines_readable/6scm/META.scm
+cd /var$REPOS_DIR/Cliometrics.jl && grep -c "rsr-template-repo" .machines_readable/6scm/STATE.scm .machines_readable/6scm/ECOSYSTEM.scm .machines_readable/6scm/META.scm
 # All three should show 0
 grep "TODO" .machines_readable/6scm/ECOSYSTEM.scm
 # Should return nothing
@@ -303,7 +303,7 @@ grep "TODO" .machines_readable/6scm/ECOSYSTEM.scm
 
 ## TASK 9: Update ROADMAP.adoc from template to project-specific content (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/ROADMAP.adoc`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/ROADMAP.adoc`
 
 **Problem:** The ROADMAP.adoc is still the raw template text. Line 2 says `= YOUR Template Repo Roadmap`. All milestones are generic placeholders (`Core functionality`, `Basic documentation`). There is no mention of Cliometrics.jl or any of its actual features.
 
@@ -325,7 +325,7 @@ grep "TODO" .machines_readable/6scm/ECOSYSTEM.scm
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && head -5 ROADMAP.adoc | grep -c "YOUR Template"
+cd /var$REPOS_DIR/Cliometrics.jl && head -5 ROADMAP.adoc | grep -c "YOUR Template"
 # Should return 0
 grep -c "Cliometrics" ROADMAP.adoc
 # Should return at least 1
@@ -335,7 +335,7 @@ grep -c "Cliometrics" ROADMAP.adoc
 
 ## TASK 10: Update docs/CITATIONS.adoc from template to project-specific (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/docs/CITATIONS.adoc`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/docs/CITATIONS.adoc`
 
 **Problem:** The entire citations file references `rsr-template-repo` and uses author `Polymath, Hyper` instead of the correct `Jewell, Jonathan D.A.`. The year is 2025 instead of 2026. The license field says AGPL-3.0-or-later.
 
@@ -355,7 +355,7 @@ grep -c "Cliometrics" ROADMAP.adoc
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -c "rsr-template-repo\|RSR-template-repo\|Polymath, Hyper" docs/CITATIONS.adoc
+cd /var$REPOS_DIR/Cliometrics.jl && grep -c "rsr-template-repo\|RSR-template-repo\|Polymath, Hyper" docs/CITATIONS.adoc
 # Should return 0
 grep -c "Cliometrics.jl" docs/CITATIONS.adoc
 # Should return at least 4
@@ -368,8 +368,8 @@ grep -c "Jewell" docs/CITATIONS.adoc
 ## TASK 11: Remove irrelevant RSR template example files (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliometrics.jl/examples/SafeDOMExample.res`
-- `/var/mnt/eclipse/repos/Cliometrics.jl/examples/web-project-deno.json`
+- `/var$REPOS_DIR/Cliometrics.jl/examples/SafeDOMExample.res`
+- `/var$REPOS_DIR/Cliometrics.jl/examples/web-project-deno.json`
 
 **Problem:** These are ReScript/Deno web project examples from the RSR template. They have nothing to do with a Julia cliometrics library. `SafeDOMExample.res` is a ReScript DOM mounting example. `web-project-deno.json` is a Deno configuration file. Neither is relevant.
 
@@ -381,11 +381,11 @@ grep -c "Jewell" docs/CITATIONS.adoc
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && test ! -f examples/SafeDOMExample.res && test ! -f examples/web-project-deno.json && test -f examples/growth_decomposition.jl && echo "PASS" || echo "FAIL"
+cd /var$REPOS_DIR/Cliometrics.jl && test ! -f examples/SafeDOMExample.res && test ! -f examples/web-project-deno.json && test -f examples/growth_decomposition.jl && echo "PASS" || echo "FAIL"
 ```
 ```julia
 # Verify the example is valid Julia
-include("/var/mnt/eclipse/repos/Cliometrics.jl/examples/growth_decomposition.jl")
+include("/var$REPOS_DIR/Cliometrics.jl/examples/growth_decomposition.jl")
 println("TASK 11 PASSED")
 ```
 
@@ -393,7 +393,7 @@ println("TASK 11 PASSED")
 
 ## TASK 12: Fix `clean_historical_series` to handle `missing` values correctly (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** On line 329, `float.(data)` will fail on a `Vector{Union{Float64, Missing}}` because `float(missing)` throws a `MethodError`. The test on lines 97-98 passes `[100.0, 105.0, missing, 115.0, 120.0]` which creates a `Vector{Union{Float64, Missing}}`. The function signature on line 327 accepts `data::Vector` which includes this type, but `float.(data)` on line 329 cannot convert `missing` to a float.
 
@@ -433,7 +433,7 @@ println("TASK 12 PASSED")
 
 ## TASK 13: Fix `compare_historical_trajectories` to handle `push!` correctly (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** On line 389, `results = DataFrame()` creates an empty DataFrame with no columns. Then on line 398, `push!(results, (...))` tries to push a NamedTuple into an empty DataFrame. In DataFrames.jl, `push!` on an empty DataFrame with a NamedTuple does work (it creates columns from the NamedTuple field names), BUT only if the DataFrame truly has no columns. This is fragile and version-dependent. A more robust approach initializes the DataFrame with column types.
 
@@ -473,7 +473,7 @@ println("TASK 13 PASSED")
 
 ## TASK 14: Add `:spline` method to `clean_historical_series` (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/src/Cliometrics.jl`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/src/Cliometrics.jl`
 
 **Problem:** The docstring on line 313 lists `:spline` as a valid method option, but the implementation (lines 327-361) only handles `:linear` and `:forward_fill`. If a user calls `clean_historical_series(data, method=:spline)`, it silently returns the uncleaned data since neither branch matches.
 
@@ -508,10 +508,10 @@ end
 ## TASK 15: Fix Dustfile and Intentfile SPDX typo (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliometrics.jl/contractiles/dust/Dustfile` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/contractiles/lust/Intentfile` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/contractiles/must/Mustfile` (line 1)
-- `/var/mnt/eclipse/repos/Cliometrics.jl/contractiles/trust/Trustfile.hs` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/contractiles/dust/Dustfile` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/contractiles/lust/Intentfile` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/contractiles/must/Mustfile` (line 1)
+- `/var$REPOS_DIR/Cliometrics.jl/contractiles/trust/Trustfile.hs` (line 1)
 
 **Problem:** These files use `PLMP-1.0-or-later` which is a typo. The correct identifier is `PMPL-1.0-or-later` (Palimpsest License).
 
@@ -520,7 +520,7 @@ end
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl && grep -rn "PLMP" contractiles/
+cd /var$REPOS_DIR/Cliometrics.jl && grep -rn "PLMP" contractiles/
 # Should return zero lines
 grep -rn "PMPL" contractiles/dust/Dustfile contractiles/lust/Intentfile contractiles/must/Mustfile contractiles/trust/Trustfile.hs
 # Should return 4 lines, one per file
@@ -530,7 +530,7 @@ grep -rn "PMPL" contractiles/dust/Dustfile contractiles/lust/Intentfile contract
 
 ## TASK 16: Add README claim reconciliation — remove or implement claimed features (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Cliometrics.jl/README.md`
+**Files:** `/var$REPOS_DIR/Cliometrics.jl/README.md`
 
 **Problem:** The README.md (lines 69-84) claims the following features that have NO implementation:
 - "Sigma-convergence testing" (line 71) -- only beta-convergence exists
@@ -549,7 +549,7 @@ grep -rn "PMPL" contractiles/dust/Dustfile contractiles/lust/Intentfile contract
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl
+cd /var$REPOS_DIR/Cliometrics.jl
 # Manually verify: every feature listed in README.md has a corresponding exported function
 grep -oP '(?<=- ).*' README.md | head -20
 # Cross-reference with:
@@ -563,7 +563,7 @@ grep "^    " src/Cliometrics.jl | head -20  # exported functions
 After all tasks are complete, run the following sequence:
 
 ```bash
-cd /var/mnt/eclipse/repos/Cliometrics.jl
+cd /var$REPOS_DIR/Cliometrics.jl
 
 # 1. Full test suite
 julia --project=. -e 'using Pkg; Pkg.test()'

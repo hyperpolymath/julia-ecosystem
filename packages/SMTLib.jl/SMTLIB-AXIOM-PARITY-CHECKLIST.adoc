@@ -8,7 +8,7 @@
 Bring `SMTLib.jl` to the same release/readiness posture as `Axiom.jl` for JuliaHub + registry + security-gated CI.
 
 == Baseline Snapshot (2026-02-17)
-- Repo: `/var/mnt/eclipse/repos/SMTLib.jl` (`main`, clean working tree).
+- Repo: `/var$REPOS_DIR/SMTLib.jl` (`main`, clean working tree).
 - Package version: `Project.toml` = `0.1.0`; tag `v0.1.0` exists.
 - Workflows: `CI.yml`, `quality.yml`, `release.yml`, `codeql.yml`, `scorecard.yml`.
 - Missing parity items seen in `Axiom.jl`: `CHANGELOG.adoc`, `.github/CODEOWNERS`, `scripts/readiness-check.sh`, workflow linter gate, expanded release-readiness checks.

@@ -27,7 +27,7 @@ and there is a SPDX license violation in three files.
 
 ## TASK 1: Fix StringOps module closing comment typo (CRITICAL)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/string.jl`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/src/string.jl`
 **Line:** 390
 
 The module closing comment reads `end # module StringOpsOps` but the module is named `StringOps`.
@@ -44,7 +44,7 @@ end # module StringOps
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -n "StringOpsOps" src/string.jl
 # Expected: no output (zero matches)
 grep -n "end # module StringOps$" src/string.jl
@@ -59,12 +59,12 @@ Three files use `AGPL-3.0-or-later` instead of `PMPL-1.0-or-later`. Per CLAUDE.m
 AGPL-3.0 is the OLD license and must NEVER be used.
 
 **Files to fix:**
-1. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/src/main.zig` — line 6
-2. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/build.zig` — line 2
-3. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/test/integration_test.zig` — line 2
+1. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/src/main.zig` — line 6
+2. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/build.zig` — line 2
+3. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/test/integration_test.zig` — line 2
 
 **Also fix:**
-4. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/examples/SafeDOMExample.res` — line 1
+4. `/var$REPOS_DIR/PolyglotFormalisms.jl/examples/SafeDOMExample.res` — line 1
 
 **Action:** In each file, replace:
 ```
@@ -77,7 +77,7 @@ SPDX-License-Identifier: PMPL-1.0-or-later
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -rn "AGPL" ffi/ examples/ src/abi/
 # Expected: no output (zero matches)
 grep -rn "PMPL-1.0-or-later" ffi/ examples/
@@ -92,12 +92,12 @@ All three Idris2 ABI files and all three Zig FFI files contain unsubstituted `{{
 and `{{project}}` placeholders from rsr-template-repo. These files cannot compile.
 
 **Files with `{{PROJECT}}` or `{{project}}` placeholders:**
-1. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/abi/Types.idr` — line 11 (`{{PROJECT}}.ABI.Types`)
-2. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/abi/Layout.idr` — lines 8, 10 (`{{PROJECT}}.ABI.Layout`, `{{PROJECT}}.ABI.Types`)
-3. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/abi/Foreign.idr` — lines 9, 11, 12, 23, 35, 49, 72, 77, 98, 125, 152, 164, 185, 211 (many instances)
-4. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/src/main.zig` — lines 1, 12, 54, 73, 89, 113, 135, 148, 184, 198, 203, 215, 246, 256, 263, 267, 271
-5. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/build.zig` — lines 1, 13, 23, 34, 82
-6. `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/ffi/zig/test/integration_test.zig` — lines 1, 10-17, 24, 25, 31, 32, 34, 39, 48, 49, 51, 56, etc.
+1. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Types.idr` — line 11 (`{{PROJECT}}.ABI.Types`)
+2. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Layout.idr` — lines 8, 10 (`{{PROJECT}}.ABI.Layout`, `{{PROJECT}}.ABI.Types`)
+3. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Foreign.idr` — lines 9, 11, 12, 23, 35, 49, 72, 77, 98, 125, 152, 164, 185, 211 (many instances)
+4. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/src/main.zig` — lines 1, 12, 54, 73, 89, 113, 135, 148, 184, 198, 203, 215, 246, 256, 263, 267, 271
+5. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/build.zig` — lines 1, 13, 23, 34, 82
+6. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/test/integration_test.zig` — lines 1, 10-17, 24, 25, 31, 32, 34, 39, 48, 49, 51, 56, etc.
 
 **Action:** In all six files, perform global find-and-replace:
 - `{{PROJECT}}` -> `PolyglotFormalisms`
@@ -105,7 +105,7 @@ and `{{project}}` placeholders from rsr-template-repo. These files cannot compil
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -rn '{{PROJECT}}\|{{project}}' src/abi/ ffi/
 # Expected: no output (zero matches)
 grep -c "PolyglotFormalisms" src/abi/Types.idr
@@ -122,7 +122,7 @@ grep -c "polyglot_formalisms" ffi/zig/src/main.zig
 has `# include("collection.jl")` commented out. The module docstring (line 24) documents it.
 STATE.scm lists it at 0%. The spec requires `map`, `filter`, `fold`, `contains`.
 
-**File to create:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/collection.jl`
+**File to create:** `/var$REPOS_DIR/PolyglotFormalisms.jl/src/collection.jl`
 
 **Required functions (matching aggregate-library spec):**
 
@@ -163,7 +163,7 @@ include("collection.jl")
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 julia --project=. -e '
 using PolyglotFormalisms
 @assert Collection.map_items(x -> x * 2, [1, 2, 3]) == [2, 4, 6]
@@ -179,7 +179,7 @@ println("Collection module OK")
 
 ## TASK 5: Create Collection module tests (HIGH)
 
-**File to create:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/test/collection_tests.jl`
+**File to create:** `/var$REPOS_DIR/PolyglotFormalisms.jl/test/collection_tests.jl`
 
 **Required test sets (minimum 30 tests):**
 - `map_items`: basic mapping, identity function, composition, empty collection, type preservation
@@ -197,7 +197,7 @@ include("collection_tests.jl")
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 julia --project=. -e 'using Pkg; Pkg.test()'
 # Expected: all tests pass, including new collection tests
 ```
@@ -210,7 +210,7 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 has `# include("conditional.jl")` commented out. The module docstring (line 25) documents it.
 STATE.scm lists it at 0%. The spec requires `if_then_else`.
 
-**File to create:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/src/conditional.jl`
+**File to create:** `/var$REPOS_DIR/PolyglotFormalisms.jl/src/conditional.jl`
 
 **Required function:**
 
@@ -242,7 +242,7 @@ include("conditional.jl")
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 julia --project=. -e '
 using PolyglotFormalisms
 @assert Conditional.if_then_else(true, "yes", "no") == "yes"
@@ -257,7 +257,7 @@ println("Conditional module OK")
 
 ## TASK 7: Create Conditional module tests (HIGH)
 
-**File to create:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/test/conditional_tests.jl`
+**File to create:** `/var$REPOS_DIR/PolyglotFormalisms.jl/test/conditional_tests.jl`
 
 **Required test sets (minimum 15 tests):**
 - `if_then_else`: true condition, false condition, integer values, string values, nothing/missing values
@@ -272,7 +272,7 @@ include("conditional_tests.jl")
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 julia --project=. -e 'using Pkg; Pkg.test()'
 # Expected: all tests pass, including new conditional tests
 ```
@@ -281,7 +281,7 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 
 ## TASK 8: Update README.md to reflect actual status (MEDIUM)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/README.md`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/README.md`
 
 The README has multiple stale claims:
 
@@ -314,7 +314,7 @@ Update the Status section to reflect the actual test count (run tests first to g
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -c "Planned" README.md
 # Expected: 0 (after all modules are implemented)
 grep "Current" README.md
@@ -325,7 +325,7 @@ grep "Current" README.md
 
 ## TASK 9: Update STATE.scm to reflect actual completion (MEDIUM)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/.machine_readable/STATE.scm`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/.machine_readable/STATE.scm`
 
 STATE.scm has these inaccuracies:
 
@@ -341,7 +341,7 @@ STATE.scm has these inaccuracies:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep "overall-completion" .machine_readable/STATE.scm
 # Expected: (overall-completion 100)
 grep -A2 '"String"' .machine_readable/STATE.scm
@@ -352,7 +352,7 @@ grep -A2 '"String"' .machine_readable/STATE.scm
 
 ## TASK 10: Update ROADMAP.scm to reflect actual progress (MEDIUM)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/.machine_readable/ROADMAP.scm`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/.machine_readable/ROADMAP.scm`
 
 The ROADMAP.scm was last updated `2025-01-23` and still shows v0.2.0 as "planned" when
 it was released on 2026-01-23. After Tasks 4-7:
@@ -364,7 +364,7 @@ it was released on 2026-01-23. After Tasks 4-7:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -A3 '"0.2.0"' .machine_readable/ROADMAP.scm
 # Expected: (status . "released")
 grep -A3 '"0.3.0"' .machine_readable/ROADMAP.scm
@@ -375,7 +375,7 @@ grep -A3 '"0.3.0"' .machine_readable/ROADMAP.scm
 
 ## TASK 11: Update CHANGELOG.scm with new release entry (MEDIUM)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/.machine_readable/CHANGELOG.scm`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/.machine_readable/CHANGELOG.scm`
 
 Add entries for the work done in Tasks 1-7:
 
@@ -388,7 +388,7 @@ Add entries for the work done in Tasks 1-7:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep '"0.3.0"' .machine_readable/CHANGELOG.scm
 # Expected: at least one match
 ```
@@ -397,7 +397,7 @@ grep '"0.3.0"' .machine_readable/CHANGELOG.scm
 
 ## TASK 12: Update CrossLanguageStatus.md (LOW)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/docs/CrossLanguageStatus.md`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/docs/CrossLanguageStatus.md`
 
 Line 9 claims version `0.3.0` with `287/287` tests and "Complete" status. After Tasks 4-7,
 the test count will increase. Update line 72 with actual total test count.
@@ -406,7 +406,7 @@ Also update line 9 if the version changes.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 # Run actual test count
 julia --project=. -e 'using Pkg; Pkg.test()' 2>&1 | tail -5
 # Compare test count with what CrossLanguageStatus.md claims
@@ -416,7 +416,7 @@ julia --project=. -e 'using Pkg; Pkg.test()' 2>&1 | tail -5
 
 ## TASK 13: Fix Manifest.toml stale package name reference (LOW)
 
-**File:** `/var/mnt/eclipse/repos/PolyglotFormalisms.jl/Manifest.toml`
+**File:** `/var$REPOS_DIR/PolyglotFormalisms.jl/Manifest.toml`
 
 Lines 52-55 contain a stale reference to the old package name `aLib`:
 ```toml
@@ -431,7 +431,7 @@ at version `1.0.0`). The Manifest.toml still references the old name at version 
 
 **Action:** Regenerate Manifest.toml:
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 julia --project=. -e 'using Pkg; Pkg.resolve()'
 ```
 
@@ -440,7 +440,7 @@ and update version to `1.0.0` in the Manifest.toml.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep "aLib" Manifest.toml
 # Expected: no output (zero matches)
 grep "PolyglotFormalisms" Manifest.toml
@@ -480,7 +480,7 @@ If keeping `1.0.0`, update all references. If reverting to `0.3.0`:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 # All version references should be consistent
 grep -rn 'version.*"0\.' Project.toml .machine_readable/META.scm ffi/zig/src/main.zig
 # Expected: all show the same version
@@ -493,7 +493,7 @@ grep -rn 'version.*"0\.' Project.toml .machine_readable/META.scm ffi/zig/src/mai
 After completing all tasks, run this full verification sequence:
 
 ```bash
-cd /var/mnt/eclipse/repos/PolyglotFormalisms.jl
+cd /var$REPOS_DIR/PolyglotFormalisms.jl
 
 # 1. Full test suite passes
 julia --project=. -e 'using Pkg; Pkg.test()'

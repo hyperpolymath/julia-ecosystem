@@ -39,9 +39,9 @@ tests reference it, and template placeholders `{{PROJECT}}` are never replaced i
 ## TASK 1: Fix Module Load Crash -- Dual `__init__()` and Missing Include
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/ProvenCrypto.jl` (lines 118-121)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/primitives/ffi_wrappers.jl` (lines 237-239)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/backends/advanced_hardware.jl` (entire file -- never included)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/ProvenCrypto.jl` (lines 118-121)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/primitives/ffi_wrappers.jl` (lines 237-239)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/backends/advanced_hardware.jl` (entire file -- never included)
 
 **Problem:**
 Two `function __init__()` definitions exist. The one in `ffi_wrappers.jl` (line 237)
@@ -67,7 +67,7 @@ so the test suite will crash with `UndefVarError`.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 # Module loaded without crash
@@ -87,7 +87,7 @@ println("TASK 1 PASS")
 ## TASK 2: Fix Missing Extensions (3 Declared but No Source Files)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/Project.toml` (lines 24, 27, 28)
+- `/var$REPOS_DIR/ProvenCrypto.jl/Project.toml` (lines 24, 27, 28)
 - Missing: `ext/ProvenCryptoAMDGPUExt.jl`
 - Missing: `ext/ProvenCryptoOneAPIExt.jl`
 - Missing: `ext/ProvenCryptoSMTExt.jl`
@@ -118,7 +118,7 @@ The `ProvenCryptoOneAPIExt.jl` and `ProvenCryptoSMTExt.jl` files do not exist at
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 # Check all declared extensions have matching files
 for ext in ProvenCryptoAMDGPUExt ProvenCryptoCUDAExt ProvenCryptoMetalExt ProvenCryptoOneAPIExt ProvenCryptoSMTExt; do
   if [ -f "ext/${ext}.jl" ]; then
@@ -135,7 +135,7 @@ done
 ## TASK 3: Implement CPU NTT Backend (Blocks All Post-Quantum Algorithms)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/backends/hardware.jl` (lines 247-257)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/backends/hardware.jl` (lines 247-257)
 
 **Problem:**
 Four critical CPU backend functions are placeholders that return identity or garbage:
@@ -165,7 +165,7 @@ Four critical CPU backend functions are placeholders that return identity or gar
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 backend = CPUBackend(:avx2, 1)
@@ -194,7 +194,7 @@ println("TASK 3 PASS")
 ## TASK 4: Implement Kyber KEM Helper Functions
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/postquantum/kyber.jl` (lines 169-213)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/postquantum/kyber.jl` (lines 169-213)
 
 **Problem:**
 Seven helper functions are stubs returning garbage:
@@ -225,7 +225,7 @@ Implement each function per FIPS 203 (ML-KEM) / the Kyber specification:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -251,7 +251,7 @@ println("TASK 4 PASS")
 ## TASK 5: Implement Dilithium Signature Helper Functions
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/postquantum/dilithium.jl` (lines 211-254)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/postquantum/dilithium.jl` (lines 211-254)
 
 **Problem:**
 Nine helper functions are stubs:
@@ -281,7 +281,7 @@ has a method for `KyberPublicKey` (kyber.jl line 206). This is a `MethodError` c
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -310,7 +310,7 @@ println("TASK 5 PASS")
 ## TASK 6: Implement SPHINCS+ Helper Functions
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/postquantum/sphincs.jl` (lines 150-185)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/postquantum/sphincs.jl` (lines 150-185)
 
 **Problem:**
 Six helper functions are stubs returning empty arrays or zeros:
@@ -338,7 +338,7 @@ Implement each function per the SPHINCS+ specification (NIST SP 800-208):
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -365,9 +365,9 @@ println("TASK 6 PASS")
 ## TASK 7: Implement Protocol Stubs (Noise, Signal, TLS 1.3)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/protocols/noise.jl` (entire file -- 15 lines, empty struct)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/protocols/signal.jl` (entire file -- 14 lines, empty struct)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/protocols/tls13.jl` (entire file -- 16 lines, empty struct)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/protocols/noise.jl` (entire file -- 15 lines, empty struct)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/protocols/signal.jl` (entire file -- 14 lines, empty struct)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/protocols/tls13.jl` (entire file -- 16 lines, empty struct)
 
 **Problem:**
 All three protocol implementations are empty structs with no fields and no methods:
@@ -404,7 +404,7 @@ For each protocol, implement at minimum:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -427,8 +427,8 @@ println("TASK 7 PASS")
 ## TASK 8: Implement Zero-Knowledge Proof Systems
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/zkproofs/zksnark.jl` (entire file -- 28 lines)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/zkproofs/zkstark.jl` (entire file -- 14 lines)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/zkproofs/zksnark.jl` (entire file -- 28 lines)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/zkproofs/zkstark.jl` (entire file -- 14 lines)
 
 **Problem:**
 `zk_prove` (line 18) returns `ZKProof(UInt8[], UInt8[])` -- empty proof data.
@@ -450,7 +450,7 @@ println("TASK 7 PASS")
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -471,7 +471,7 @@ println("TASK 8 PASS")
 ## TASK 9: Implement Shamir Secret Sharing
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/threshold/shamir.jl` (lines 14-23)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/threshold/shamir.jl` (lines 14-23)
 
 **Problem:**
 `shamir_split` (line 14) returns `[UInt8[] for _ in 1:num_shares]` -- a list of empty
@@ -489,7 +489,7 @@ byte arrays. No polynomial evaluation, no GF(2^8) arithmetic, no secret encoding
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -522,7 +522,7 @@ println("TASK 9 PASS")
 ## TASK 10: Implement Real Proof-Export Spec Translators
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/verification/proof_export.jl` (lines 228-251)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/verification/proof_export.jl` (lines 228-251)
 
 **Problem:**
 All four translation functions return hardcoded example strings regardless of input:
@@ -550,7 +550,7 @@ commutativity theorem in the output file.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -575,12 +575,12 @@ println("TASK 10 PASS")
 ## TASK 11: Replace Template Placeholders in ABI/FFI Files
 
 **Files (13 files with `{{PROJECT}}` or `{{project}}` placeholders):**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/abi/Types.idr` (3 occurrences: `{{PROJECT}}.ABI.Types`, etc.)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/abi/Layout.idr` (2 occurrences: `{{PROJECT}}.ABI.Layout`, imports)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/abi/Foreign.idr` (14 occurrences: module name, all `%foreign` declarations)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/build.zig` (6 occurrences: library name, header, benchmark)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/src/main.zig` (19 occurrences: all export functions)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/test/integration_test.zig` (44 occurrences: all extern declarations and test calls)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Types.idr` (3 occurrences: `{{PROJECT}}.ABI.Types`, etc.)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Layout.idr` (2 occurrences: `{{PROJECT}}.ABI.Layout`, imports)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Foreign.idr` (14 occurrences: module name, all `%foreign` declarations)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/build.zig` (6 occurrences: library name, header, benchmark)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/src/main.zig` (19 occurrences: all export functions)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/test/integration_test.zig` (44 occurrences: all extern declarations and test calls)
 - Plus occurrences in: `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `ABI-FFI-README.md`, `.github/workflows/quality.yml`, `ci.yml`, `release.yml`
 
@@ -599,7 +599,7 @@ a nonexistent project name.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 count=$(grep -r '{{' --include='*.idr' --include='*.zig' --include='*.yml' --include='*.md' --include='*.adoc' --include='*.res' -l . 2>/dev/null | wc -l)
 if [ "$count" -eq 0 ]; then
   echo "TASK 11 PASS: No template placeholders remain"
@@ -614,11 +614,11 @@ fi
 ## TASK 12: Fix SPDX License Headers (AGPL-3.0 Must Be PMPL-1.0-or-later)
 
 **Files with wrong license:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/examples/SafeDOMExample.res` line 1: `AGPL-3.0-or-later`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/build.zig` line 2: `AGPL-3.0-or-later`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/src/main.zig` line 6: `AGPL-3.0-or-later`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ffi/zig/test/integration_test.zig` line 2: `AGPL-3.0-or-later`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/docs/CITATIONS.adoc` line 13: `license = {AGPL-3.0-or-later}`
+- `/var$REPOS_DIR/ProvenCrypto.jl/examples/SafeDOMExample.res` line 1: `AGPL-3.0-or-later`
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/build.zig` line 2: `AGPL-3.0-or-later`
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/src/main.zig` line 6: `AGPL-3.0-or-later`
+- `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/test/integration_test.zig` line 2: `AGPL-3.0-or-later`
+- `/var$REPOS_DIR/ProvenCrypto.jl/docs/CITATIONS.adoc` line 13: `license = {AGPL-3.0-or-later}`
 
 **Problem:**
 Per the CLAUDE.md license policy, hyperpolymath original code must use
@@ -630,7 +630,7 @@ Per the CLAUDE.md license policy, hyperpolymath original code must use
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 agpl_count=$(grep -r 'AGPL' --include='*.jl' --include='*.zig' --include='*.idr' --include='*.res' --include='*.adoc' . 2>/dev/null | wc -l)
 if [ "$agpl_count" -eq 0 ]; then
   echo "TASK 12 PASS: No AGPL references remain"
@@ -645,9 +645,9 @@ fi
 ## TASK 13: Fix GPU Extension Backends (All Are Fallback-Only Placeholders)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ext/ProvenCryptoCUDAExt.jl` (lines 12-14)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ext/ProvenCryptoMetalExt.jl` (lines 25-62)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/ext/ProvenCryptoROCmExt.jl` (lines 25-62)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ext/ProvenCryptoCUDAExt.jl` (lines 12-14)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ext/ProvenCryptoMetalExt.jl` (lines 25-62)
+- `/var$REPOS_DIR/ProvenCrypto.jl/ext/ProvenCryptoROCmExt.jl` (lines 25-62)
 
 **Problem:**
 All GPU backend methods are placeholders that immediately fall back to CPU:
@@ -680,7 +680,7 @@ This silently returns `nothing` instead of a matrix, which will crash any caller
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 # Verify no empty function bodies in extensions
 for ext in ext/ProvenCrypto*.jl; do
   empty=$(grep -c '^\s*end\s*$' "$ext")
@@ -696,9 +696,9 @@ done
 ## TASK 14: Add Missing .machine_readable/ Directory and SCM Files
 
 **Files (all missing):**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/.machine_readable/STATE.scm`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/.machine_readable/ECOSYSTEM.scm`
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/.machine_readable/META.scm`
+- `/var$REPOS_DIR/ProvenCrypto.jl/.machine_readable/STATE.scm`
+- `/var$REPOS_DIR/ProvenCrypto.jl/.machine_readable/ECOSYSTEM.scm`
+- `/var$REPOS_DIR/ProvenCrypto.jl/.machine_readable/META.scm`
 
 **Problem:**
 Per CLAUDE.md checkpoint file protocol, every hyperpolymath repo MUST have SCM files in
@@ -720,7 +720,7 @@ the RSR template text ("YOUR Template Repo Roadmap") and the CITATIONS.adoc refe
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 for f in .machine_readable/STATE.scm .machine_readable/ECOSYSTEM.scm .machine_readable/META.scm; do
   if [ -f "$f" ]; then
     echo "OK: $f exists ($(wc -l < "$f") lines)"
@@ -739,8 +739,8 @@ grep -q "ProvenCrypto" docs/CITATIONS.adoc && echo "CITATIONS customized" || ech
 ## TASK 15: Fix Changelog Lies and Add Missing Preferences.jl Dependency
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/CHANGELOG.md` (line 22)
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/Project.toml`
+- `/var$REPOS_DIR/ProvenCrypto.jl/CHANGELOG.md` (line 22)
+- `/var$REPOS_DIR/ProvenCrypto.jl/Project.toml`
 
 **Problem:**
 The CHANGELOG v0.1.1 entry (line 22) states:
@@ -765,7 +765,7 @@ Also:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 # Check Preferences is either used or the claim is removed
 if grep -q 'Preferences' CHANGELOG.md; then
   grep -q 'Preferences' Project.toml && echo "OK: Preferences in Project.toml" || echo "FAIL: Changelog claims Preferences but not in Project.toml"
@@ -782,7 +782,7 @@ fi
 ## TASK 16: Fix Test Suite to Actually Test Crypto Operations
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/test/runtests.jl` (lines 74-111)
+- `/var$REPOS_DIR/ProvenCrypto.jl/test/runtests.jl` (lines 74-111)
 
 **Problem:**
 The post-quantum test sections only test struct construction, not actual crypto operations:
@@ -811,7 +811,7 @@ and expanded.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e 'using Pkg; Pkg.test("ProvenCrypto")'
 # All tests must pass with zero TODO comments in test output
 grep -c 'TODO' test/runtests.jl
@@ -823,7 +823,7 @@ grep -c 'TODO' test/runtests.jl
 ## TASK 17: Fix `kdf_argon2` Fallback (SHA-256 Is Not PBKDF2)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ProvenCrypto.jl/src/primitives/ffi_wrappers.jl` (line 218)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/primitives/ffi_wrappers.jl` (line 218)
 
 **Problem:**
 When libsodium is unavailable, the fallback is:
@@ -847,7 +847,7 @@ function name are misleading.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 julia --project -e '
 using ProvenCrypto
 
@@ -875,7 +875,7 @@ println("TASK 17 PASS")
 Run this complete verification to confirm all tasks are done:
 
 ```bash
-cd /var/mnt/eclipse/repos/ProvenCrypto.jl
+cd /var$REPOS_DIR/ProvenCrypto.jl
 
 echo "=== FINAL VERIFICATION ==="
 

@@ -25,14 +25,14 @@ incorrectly. A phantom `Plots` dependency sits in Project.toml unused by source 
 4. Do NOT mark done unless verification passes.
 5. Update `.machine_readable/STATE.scm` with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Cliodynamics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Cliodynamics.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Fix SCM directory name (CRITICAL)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machines_readable/` (entire directory)
+- `/var$REPOS_DIR/Cliodynamics.jl/.machines_readable/` (entire directory)
 
 **Problem:** The SCM directory is named `.machines_readable/6scm/` but the standard requires
 `.machine_readable/` (no trailing "s", no `6scm/` subdirectory). The AI manifest at line 16
@@ -54,13 +54,13 @@ and CLAUDE.md both state SCM files MUST be in `.machine_readable/` ONLY.
 **Verification:**
 ```bash
 # All 6 SCM files exist in correct location
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/STATE.scm && \
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/META.scm && \
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm && \
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/AGENTIC.scm && \
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/NEUROSYM.scm && \
-test -f /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/PLAYBOOK.scm && \
-! test -d /var/mnt/eclipse/repos/Cliodynamics.jl/.machines_readable && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/STATE.scm && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/META.scm && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/AGENTIC.scm && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/NEUROSYM.scm && \
+test -f /var$REPOS_DIR/Cliodynamics.jl/.machine_readable/PLAYBOOK.scm && \
+! test -d /var$REPOS_DIR/Cliodynamics.jl/.machines_readable && \
 echo "PASS" || echo "FAIL"
 ```
 
@@ -69,9 +69,9 @@ echo "PASS" || echo "FAIL"
 ## TASK 2: Fix SPDX headers in all SCM files (CRITICAL)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/STATE.scm` (line 1)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/META.scm` (line 1)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm` (line 1)
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/STATE.scm` (line 1)
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/META.scm` (line 1)
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm` (line 1)
 
 **Problem:** STATE.scm, META.scm, and ECOSYSTEM.scm all have `AGPL-3.0-or-later` as their
 SPDX identifier. Per CLAUDE.md license policy, AGPL-3.0 must NEVER be used. All hyperpolymath
@@ -85,7 +85,7 @@ have the correct header.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -c "PMPL-1.0-or-later" STATE.scm META.scm ECOSYSTEM.scm AGENTIC.scm NEUROSYM.scm PLAYBOOK.scm | \
   awk -F: '{sum += $2} END {if (sum == 6) print "PASS"; else print "FAIL: only " sum " of 6 files have correct SPDX"}'
 ```
@@ -95,9 +95,9 @@ grep -c "PMPL-1.0-or-later" STATE.scm META.scm ECOSYSTEM.scm AGENTIC.scm NEUROSY
 ## TASK 3: Fix SPDX headers in Zig and Idris2 template files (CRITICAL)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/src/main.zig` (line 6)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/build.zig` (line 2)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (line 2)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/src/main.zig` (line 6)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/build.zig` (line 2)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (line 2)
 
 **Problem:** All three Zig files have `SPDX-License-Identifier: AGPL-3.0-or-later`.
 Must be `PMPL-1.0-or-later`.
@@ -109,7 +109,7 @@ Must be `PMPL-1.0-or-later`.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 grep -r "AGPL" ffi/ src/abi/ .machine_readable/ && echo "FAIL: AGPL references remain" || echo "PASS: no AGPL references"
 ```
 
@@ -118,7 +118,7 @@ grep -r "AGPL" ffi/ src/abi/ .machine_readable/ && echo "FAIL: AGPL references r
 ## TASK 4: Rewrite STATE.scm for Cliodynamics.jl (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/STATE.scm`
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/STATE.scm`
 
 **Problem:** The entire file (lines 1-65) still describes "rsr-template-repo" with 5%
 completion and generic milestones. The actual Julia source code is complete with 16 exported
@@ -141,7 +141,7 @@ functions and a full test suite.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -q "Cliodynamics" STATE.scm && \
 grep -q "90" STATE.scm && \
 ! grep -q "rsr-template-repo" STATE.scm && \
@@ -153,7 +153,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 5: Rewrite META.scm for Cliodynamics.jl (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/META.scm`
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/META.scm`
 
 **Problem:** Lines 1-47 still describe "rsr-template-repo" with generic RSR-focused ADRs
 and development practices. Should describe Cliodynamics.jl architectural decisions.
@@ -169,7 +169,7 @@ and development practices. Should describe Cliodynamics.jl architectural decisio
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -q "Cliodynamics" META.scm && \
 ! grep -q "rsr-template-repo" META.scm && \
 grep -q "Julia" META.scm && \
@@ -181,7 +181,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 6: Rewrite ECOSYSTEM.scm for Cliodynamics.jl (HIGH)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm`
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/ECOSYSTEM.scm`
 
 **Problem:** Lines 1-29 still describe "rsr-template-repo" with `[TODO: Add specific description]`
 on line 24. Must describe Cliodynamics.jl's position in the ecosystem.
@@ -198,7 +198,7 @@ on line 24. Must describe Cliodynamics.jl's position in the ecosystem.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -q "Cliodynamics" ECOSYSTEM.scm && \
 ! grep -q "rsr-template-repo" ECOSYSTEM.scm && \
 ! grep -q "TODO" ECOSYSTEM.scm && \
@@ -210,7 +210,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 7: Remove unused Plots dependency from Project.toml (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/Project.toml` (lines 12, 20)
+- `/var$REPOS_DIR/Cliodynamics.jl/Project.toml` (lines 12, 20)
 
 **Problem:** `Plots` is listed as a dependency (line 12, UUID `91a5bcdd-55d7-5caf-9e0b-520d859cae80`)
 and in compat (line 20), but it is never `using Plots` in `src/Cliodynamics.jl`. Plots is a
@@ -225,7 +225,7 @@ shows Plots in example code, but that is user-side usage, not library code.
 **Verification:**
 ```julia
 # Run from repo root
-cd("/var/mnt/eclipse/repos/Cliodynamics.jl")
+cd("/var$REPOS_DIR/Cliodynamics.jl")
 toml = read("Project.toml", String)
 @assert !occursin("Plots", toml) "FAIL: Plots still in Project.toml"
 println("PASS: Plots removed from Project.toml")
@@ -236,7 +236,7 @@ println("PASS: Plots removed from Project.toml")
 ## TASK 8: Add DataFrames and Statistics to test dependencies (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/Project.toml` (lines 22-26)
+- `/var$REPOS_DIR/Cliodynamics.jl/Project.toml` (lines 22-26)
 
 **Problem:** `test/runtests.jl` uses `using DataFrames` (line 5) and `using Statistics`
 (line 6), but neither is listed in `[extras]` or `[targets]`. Currently only `Test` is in
@@ -250,7 +250,7 @@ Actually, the current setup works because `[deps]` packages are available during
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Cliodynamics.jl")
+cd("/var$REPOS_DIR/Cliodynamics.jl")
 using Pkg
 Pkg.activate(".")
 Pkg.test()
@@ -261,8 +261,8 @@ Pkg.test()
 ## TASK 9: Remove template ReScript/Deno examples (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/examples/SafeDOMExample.res` (entire file)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/examples/web-project-deno.json` (entire file)
+- `/var$REPOS_DIR/Cliodynamics.jl/examples/SafeDOMExample.res` (entire file)
+- `/var$REPOS_DIR/Cliodynamics.jl/examples/web-project-deno.json` (entire file)
 
 **Problem:** These files are leftover from `rsr-template-repo`. A Julia cliodynamics library
 has no use for ReScript DOM mounting examples or Deno project config. They are confusing and
@@ -285,7 +285,7 @@ irrelevant.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! test -f examples/SafeDOMExample.res && \
 ! test -f examples/web-project-deno.json && \
 test -f examples/basic_usage.jl && \
@@ -296,7 +296,7 @@ echo "PASS" || echo "FAIL"
 
 ```julia
 # Verify examples are syntactically valid
-cd("/var/mnt/eclipse/repos/Cliodynamics.jl")
+cd("/var$REPOS_DIR/Cliodynamics.jl")
 include("examples/basic_usage.jl")
 include("examples/historical_analysis.jl")
 println("PASS: examples run without error")
@@ -307,7 +307,7 @@ println("PASS: examples run without error")
 ## TASK 10: Customize 0-AI-MANIFEST.a2ml (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/0-AI-MANIFEST.a2ml`
+- `/var$REPOS_DIR/Cliodynamics.jl/0-AI-MANIFEST.a2ml`
 
 **Problem:** Lines 7-8 still say `[YOUR-REPO-NAME]`. Lines 51-67 have generic placeholder
 structure. Lines 112-114 have `[DATE]`, `[YOUR-NAME/ORG]`. The manifest does not describe
@@ -336,7 +336,7 @@ the actual Cliodynamics.jl repository.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! grep -q "\[YOUR-REPO-NAME\]" 0-AI-MANIFEST.a2ml && \
 ! grep -q "\[DATE\]" 0-AI-MANIFEST.a2ml && \
 ! grep -q "\[YOUR-NAME/ORG\]" 0-AI-MANIFEST.a2ml && \
@@ -349,7 +349,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 11: Replace ROADMAP.adoc with Cliodynamics.jl-specific content (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ROADMAP.adoc`
+- `/var$REPOS_DIR/Cliodynamics.jl/ROADMAP.adoc`
 
 **Problem:** Line 2 says "YOUR Template Repo Roadmap". All milestone items are generic
 placeholders. The actual Julia code is at v0.1.0 with all core features implemented.
@@ -378,7 +378,7 @@ placeholders. The actual Julia code is at v0.1.0 with all core features implemen
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! grep -q "YOUR Template" ROADMAP.adoc && \
 grep -q "Cliodynamics" ROADMAP.adoc && \
 grep -q "v0.1.0" ROADMAP.adoc && \
@@ -390,7 +390,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 12: Replace README.adoc with Cliodynamics.jl-specific content (MEDIUM)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/README.adoc`
+- `/var$REPOS_DIR/Cliodynamics.jl/README.adoc`
 
 **Problem:** The entire file (134 lines) is the RSR template README describing ReScript,
 SafeDOM, Deno, and the ABI/FFI standard. It has nothing to do with cliodynamic modeling.
@@ -407,7 +407,7 @@ Lines 79-133: ReScript SafeDOM documentation.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 # If README.adoc was deleted:
 ! test -f README.adoc && echo "PASS: README.adoc deleted" || \
 # If README.adoc was kept:
@@ -419,9 +419,9 @@ cd /var/mnt/eclipse/repos/Cliodynamics.jl
 ## TASK 13: Customize ABI Idris2 files for Cliodynamics.jl (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/src/abi/Types.idr` (lines 11, 172-175, 198-202)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/src/abi/Layout.idr` (line 8)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/src/abi/Foreign.idr` (lines 9, 23, 35, 49, 77, 98, 125, 152, 164, 185, 211)
+- `/var$REPOS_DIR/Cliodynamics.jl/src/abi/Types.idr` (lines 11, 172-175, 198-202)
+- `/var$REPOS_DIR/Cliodynamics.jl/src/abi/Layout.idr` (line 8)
+- `/var$REPOS_DIR/Cliodynamics.jl/src/abi/Foreign.idr` (lines 9, 23, 35, 49, 77, 98, 125, 152, 164, 185, 211)
 
 **Problem:** Every Idris2 file has `{{PROJECT}}` and `{{project}}` placeholders throughout.
 Module names are `{{PROJECT}}.ABI.Types`, etc. FFI declarations reference `lib{{project}}`.
@@ -438,7 +438,7 @@ These files will not compile.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! grep -r "{{PROJECT}}" src/abi/ && \
 ! grep -r "{{project}}" src/abi/ && \
 grep -q "Cliodynamics" src/abi/Types.idr && \
@@ -452,9 +452,9 @@ echo "PASS" || echo "FAIL"
 ## TASK 14: Customize Zig FFI files for Cliodynamics.jl (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/src/main.zig` (lines 1, 12, 54, 73, 89, 113, 135, 148, 184, 198, 203, 215, 245, 256, 259, 263, 266, 271, 272)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/build.zig` (lines 1, 12, 34, 37)
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, 24-25, 31-32, 34, 39, 48-49, 51, 56, 65-66, 68-69, 75, 84, 96-97, 99, 110, 118, 129-130, 131, 138-139, 143, 145-146, 149, 158-159, 168, 174)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/src/main.zig` (lines 1, 12, 54, 73, 89, 113, 135, 148, 184, 198, 203, 215, 245, 256, 259, 263, 266, 271, 272)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/build.zig` (lines 1, 12, 34, 37)
+- `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, 24-25, 31-32, 34, 39, 48-49, 51, 56, 65-66, 68-69, 75, 84, 96-97, 99, 110, 118, 129-130, 131, 138-139, 143, 145-146, 149, 158-159, 168, 174)
 
 **Problem:** Every Zig file has `{{project}}` and `{{PROJECT}}` template placeholders.
 Function names like `{{project}}_init()`, library name `"{{project}}"`, etc. These files
@@ -469,7 +469,7 @@ will not compile.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! grep -r "{{project}}" ffi/ && \
 ! grep -r "{{PROJECT}}" ffi/ && \
 grep -q "cliodynamics" ffi/zig/src/main.zig && \
@@ -483,7 +483,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 15: Update AGENTIC.scm with Cliodynamics.jl specifics (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/AGENTIC.scm`
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/AGENTIC.scm`
 
 **Problem:** Line 7 references `claude-opus-4-5-20251101` (outdated model ID). The `languages`
 constraint on line 15 is empty. The file should reflect Julia-specific patterns.
@@ -496,7 +496,7 @@ constraint on line 15 is empty. The file should reflect Julia-specific patterns.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -q "julia" AGENTIC.scm && \
 echo "PASS" || echo "FAIL"
 ```
@@ -506,7 +506,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 16: Update PLAYBOOK.scm with Julia procedures (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable/PLAYBOOK.scm`
+- `/var$REPOS_DIR/Cliodynamics.jl/.machine_readable/PLAYBOOK.scm`
 
 **Problem:** Lines 7-9 reference `just build`, `just test`, `just release` but there is no
 `justfile` in the repository. The correct Julia commands should be used.
@@ -518,7 +518,7 @@ echo "PASS" || echo "FAIL"
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl/.machine_readable
+cd /var$REPOS_DIR/Cliodynamics.jl/.machine_readable
 grep -q "Pkg.test" PLAYBOOK.scm && \
 ! grep -q "just " PLAYBOOK.scm && \
 echo "PASS" || echo "FAIL"
@@ -529,7 +529,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 17: Remove sync report file (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/sync_report_20260210_160611.txt`
+- `/var$REPOS_DIR/Cliodynamics.jl/sync_report_20260210_160611.txt`
 
 **Problem:** This appears to be a generated sync report that should not be tracked in git.
 It is not part of the project.
@@ -540,7 +540,7 @@ It is not part of the project.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 ! test -f sync_report_20260210_160611.txt && \
 grep -q "sync_report" .gitignore && \
 echo "PASS" || echo "FAIL"
@@ -551,7 +551,7 @@ echo "PASS" || echo "FAIL"
 ## TASK 18: Add `.claude/CLAUDE.md` for project-specific instructions (LOW)
 
 **Files:**
-- `/var/mnt/eclipse/repos/Cliodynamics.jl/.claude/CLAUDE.md` (new file)
+- `/var$REPOS_DIR/Cliodynamics.jl/.claude/CLAUDE.md` (new file)
 
 **Problem:** No project-specific CLAUDE.md exists. This file should describe how to work
 with this Julia package.
@@ -568,7 +568,7 @@ with this Julia package.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 test -f .claude/CLAUDE.md && \
 grep -q "Cliodynamics" .claude/CLAUDE.md && \
 grep -q "Pkg.test" .claude/CLAUDE.md && \
@@ -582,7 +582,7 @@ echo "PASS" || echo "FAIL"
 After all tasks are complete, run this comprehensive check:
 
 ```bash
-cd /var/mnt/eclipse/repos/Cliodynamics.jl
+cd /var$REPOS_DIR/Cliodynamics.jl
 
 echo "=== 1. SCM directory structure ==="
 ls -la .machine_readable/ && ! test -d .machines_readable && echo "OK" || echo "FAIL"
@@ -623,7 +623,7 @@ test -f .claude/CLAUDE.md && echo "OK" || echo "FAIL"
 
 ```julia
 # Full Julia test suite
-cd("/var/mnt/eclipse/repos/Cliodynamics.jl")
+cd("/var$REPOS_DIR/Cliodynamics.jl")
 using Pkg
 Pkg.activate(".")
 Pkg.instantiate()

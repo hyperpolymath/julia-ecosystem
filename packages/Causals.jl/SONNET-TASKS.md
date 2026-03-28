@@ -31,13 +31,13 @@ The README claims "production-ready" and "complete with comprehensive test cover
 4. Do NOT mark done unless verification passes.
 5. Update STATE.scm with honest completion percentages after each task.
 6. Commit after each task: `fix(component): complete <description>`
-7. Run full test suite after every 3 tasks: `cd /var/mnt/eclipse/repos/Causals.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
+7. Run full test suite after every 3 tasks: `cd /var$REPOS_DIR/Causals.jl && julia --project=. -e 'using Pkg; Pkg.test()'`
 
 ---
 
 ## TASK 1: Fix d_separation to use proper Bayes-Ball algorithm (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/CausalDAG.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/CausalDAG.jl`
 
 **Problem:** The `d_separation` function at lines 60-70 is a complete stub. It always returns `true` regardless of input. The comment at line 62 says "Simplified implementation" and line 69 says `true  # Placeholder`. This makes all downstream d-separation-dependent code (backdoor criterion, frontdoor criterion, do-calculus identification) unreliable.
 
@@ -54,7 +54,7 @@ The README claims "production-ready" and "complete with comprehensive test cover
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Causals.CausalDAG: add_edge!
@@ -87,7 +87,7 @@ println("TASK 1 PASSED: d_separation works correctly")
 
 ## TASK 2: Fix frontdoor_criterion stub (CRITICAL)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/CausalDAG.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/CausalDAG.jl`
 
 **Problem:** The `frontdoor_criterion` function at lines 188-194 always returns `true`. The body is `true` with a comment saying "Simplified implementation". The three conditions listed in the docstring (lines 184-186) are never checked.
 
@@ -103,7 +103,7 @@ println("TASK 1 PASSED: d_separation works correctly")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Causals.CausalDAG: add_edge!
@@ -132,7 +132,7 @@ println("TASK 2 PASSED: frontdoor_criterion works correctly")
 
 ## TASK 3: Implement proper p-value computation in granger_test using Distributions.jl (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/Granger.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/Granger.jl`
 
 **Problem:** Lines 49-50 compute the p-value using a hardcoded critical value `critical_F = 3.0` and return fake p-values (`0.01` or `0.1`). The package already depends on `Distributions.jl` (listed in Project.toml line 11) but it is not used in this module.
 
@@ -152,7 +152,7 @@ println("TASK 2 PASSED: frontdoor_criterion works correctly")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 
@@ -182,7 +182,7 @@ println("TASK 3 PASSED: granger_test uses proper F-distribution p-values")
 
 ## TASK 4: Implement real propensity_score using logistic regression (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/PropensityScore.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/PropensityScore.jl`
 
 **Problem:** The `propensity_score` function at lines 22-31 completely ignores the `covariates` argument. It computes `p = sum(treatment) / n` (the marginal treatment probability) and returns `fill(p, n)` -- a vector of identical values. This makes all downstream methods (matching, IPW, stratification) meaningless because every unit gets the same propensity score.
 
@@ -198,7 +198,7 @@ println("TASK 3 PASSED: granger_test uses proper F-distribution p-values")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Random; Random.seed!(42)
@@ -224,7 +224,7 @@ println("TASK 4 PASSED: propensity_score uses actual logistic regression")
 
 ## TASK 5: Implement confounding_adjustment (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/DoCalculus.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/DoCalculus.jl`
 
 **Problem:** The `confounding_adjustment` function at lines 90-103 always returns `0.0` (line 102 says `0.0  # Placeholder`). The function is supposed to compute the backdoor-adjusted causal effect E[Y|do(X=1)] - E[Y|do(X=0)] using stratification over confounders.
 
@@ -240,7 +240,7 @@ println("TASK 4 PASSED: propensity_score uses actual logistic regression")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Random; Random.seed!(42)
@@ -268,7 +268,7 @@ println("TASK 5 PASSED: confounding_adjustment computes real adjusted effects")
 
 ## TASK 6: Implement do_calculus_rules (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/DoCalculus.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/DoCalculus.jl`
 
 **Problem:** The `do_calculus_rules` function at lines 78-82 is a no-op that returns its input query unchanged. The docstring describes Pearl's three rules of do-calculus but none are implemented.
 
@@ -285,7 +285,7 @@ println("TASK 5 PASSED: confounding_adjustment computes real adjusted effects")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Causals.CausalDAG: add_edge!
@@ -308,7 +308,7 @@ println("TASK 6 PASSED: do_calculus_rules implements at least basic simplificati
 
 ## TASK 7: Implement counterfactual function with structural equations (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/Counterfactuals.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/Counterfactuals.jl`
 
 **Problem:** The `counterfactual` function at lines 37-54 returns `nothing` (line 53). The three-step process described in the docstring (Abduction, Action, Prediction) is outlined in comments but not implemented. `U` is an empty Dict (line 45) and the function terminates with `nothing`.
 
@@ -324,7 +324,7 @@ println("TASK 6 PASSED: do_calculus_rules implements at least basic simplificati
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Causals.CausalDAG: add_edge!
@@ -355,7 +355,7 @@ println("TASK 7 PASSED: counterfactual computes actual counterfactual values")
 
 ## TASK 8: Implement doubly_robust estimator properly (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/PropensityScore.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/PropensityScore.jl`
 
 **Problem:** The `doubly_robust` function at lines 145-155 just calls `inverse_probability_weighting` and returns its result. The comment on line 151 says "Simplified implementation". This defeats the entire purpose of the doubly robust estimator, which should be consistent if EITHER the propensity model OR the outcome model is correct.
 
@@ -373,7 +373,7 @@ println("TASK 7 PASSED: counterfactual computes actual counterfactual values")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Random; Random.seed!(42)
@@ -404,7 +404,7 @@ println("TASK 8 PASSED: doubly_robust uses proper AIPW estimator")
 
 ## TASK 9: Fix identify_effect to try frontdoor criterion (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/src/DoCalculus.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/src/DoCalculus.jl`
 
 **Problem:** The `identify_effect` function at lines 41-51 only tries the backdoor criterion and immediately gives up if it fails (line 49-50: "Simplified: return false if backdoor fails"). The comment at lines 47-49 says it should try frontdoor but does not.
 
@@ -418,7 +418,7 @@ println("TASK 8 PASSED: doubly_robust uses proper AIPW estimator")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 using Causals
 using Causals.CausalDAG: add_edge!
@@ -453,7 +453,7 @@ println("TASK 9 PASSED: identify_effect tries frontdoor criterion")
 
 ## TASK 10: Fix example 01_basic_usage.jl API mismatches (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/examples/01_basic_usage.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/examples/01_basic_usage.jl`
 
 **Problem:** The example will not run because it uses APIs that do not match the actual source code. Specific mismatches:
 
@@ -481,9 +481,9 @@ println("TASK 9 PASSED: identify_effect tries frontdoor criterion")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
-include("/var/mnt/eclipse/repos/Causals.jl/examples/01_basic_usage.jl")
+include("/var$REPOS_DIR/Causals.jl/examples/01_basic_usage.jl")
 println("TASK 10 PASSED: example 01 runs without errors")
 ```
 
@@ -491,7 +491,7 @@ println("TASK 10 PASSED: example 01 runs without errors")
 
 ## TASK 11: Fix example 02_advanced_analysis.jl API mismatches (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/examples/02_advanced_analysis.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/examples/02_advanced_analysis.jl`
 
 **Problem:** The example will not run because it uses APIs that do not match the actual source code. Specific mismatches:
 
@@ -520,9 +520,9 @@ println("TASK 10 PASSED: example 01 runs without errors")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
-include("/var/mnt/eclipse/repos/Causals.jl/examples/02_advanced_analysis.jl")
+include("/var$REPOS_DIR/Causals.jl/examples/02_advanced_analysis.jl")
 println("TASK 11 PASSED: example 02 runs without errors")
 ```
 
@@ -530,7 +530,7 @@ println("TASK 11 PASSED: example 02 runs without errors")
 
 ## TASK 12: Remove non-Julia junk files from examples/ (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/examples/SafeDOMExample.res`, `/var/mnt/eclipse/repos/Causals.jl/examples/web-project-deno.json`
+**Files:** `/var$REPOS_DIR/Causals.jl/examples/SafeDOMExample.res`, `/var$REPOS_DIR/Causals.jl/examples/web-project-deno.json`
 
 **Problem:** The `examples/` directory contains two files that have nothing to do with Causals.jl:
 - `SafeDOMExample.res` -- a ReScript DOM mounting example (from a different project entirely)
@@ -540,13 +540,13 @@ These are RSR template leftovers that were never cleaned up.
 
 **What to do:**
 
-1. Delete `/var/mnt/eclipse/repos/Causals.jl/examples/SafeDOMExample.res`
-2. Delete `/var/mnt/eclipse/repos/Causals.jl/examples/web-project-deno.json`
+1. Delete `/var$REPOS_DIR/Causals.jl/examples/SafeDOMExample.res`
+2. Delete `/var$REPOS_DIR/Causals.jl/examples/web-project-deno.json`
 3. Verify only `01_basic_usage.jl` and `02_advanced_analysis.jl` remain in `examples/`.
 
 **Verification:**
 ```julia
-files = readdir("/var/mnt/eclipse/repos/Causals.jl/examples/")
+files = readdir("/var$REPOS_DIR/Causals.jl/examples/")
 @assert files == ["01_basic_usage.jl", "02_advanced_analysis.jl"] "examples/ should only contain Julia files, got $files"
 println("TASK 12 PASSED: examples directory is clean")
 ```
@@ -555,7 +555,7 @@ println("TASK 12 PASSED: examples directory is clean")
 
 ## TASK 13: Add missing tests for DoCalculus, Counterfactuals, matching, stratification, doubly_robust (HIGH)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/test/runtests.jl`
+**Files:** `/var$REPOS_DIR/Causals.jl/test/runtests.jl`
 
 **Problem:** The test file has no test sections for:
 - DoCalculus (no `@testset "DoCalculus"` at all)
@@ -581,7 +581,7 @@ println("TASK 12 PASSED: examples directory is clean")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg; Pkg.activate(".")
 Pkg.test()
 # Should report all test sets passing with 0 failures
@@ -591,7 +591,7 @@ Pkg.test()
 
 ## TASK 14: Create missing documentation pages referenced in docs/make.jl (MEDIUM)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/docs/src/`
+**Files:** `/var$REPOS_DIR/Causals.jl/docs/src/`
 
 **Problem:** The `docs/make.jl` file at lines 13-25 references 9 documentation pages, but only 1 exists (`index.md`). Missing pages:
 - `dempster_shafer.md`
@@ -608,7 +608,7 @@ This means `makedocs` will fail with `checkdocs = :exports`.
 
 **What to do:**
 
-1. Create each missing `.md` file in `/var/mnt/eclipse/repos/Causals.jl/docs/src/`.
+1. Create each missing `.md` file in `/var$REPOS_DIR/Causals.jl/docs/src/`.
 2. Each module page should contain:
    - A brief description of the module
    - Key concepts
@@ -619,7 +619,7 @@ This means `makedocs` will fail with `checkdocs = :exports`.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 expected = ["index.md", "dempster_shafer.md", "bradford_hill.md", "causal_dag.md",
             "granger.md", "propensity.md", "do_calculus.md", "counterfactuals.md",
             "examples.md", "api.md"]
@@ -634,19 +634,19 @@ println("TASK 14 PASSED: all documentation pages exist")
 
 ## TASK 15: Fix version inconsistency between Project.toml and Manifest.toml (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/Project.toml`, `/var/mnt/eclipse/repos/Causals.jl/Manifest.toml`
+**Files:** `/var$REPOS_DIR/Causals.jl/Project.toml`, `/var$REPOS_DIR/Causals.jl/Manifest.toml`
 
 **Problem:** `Project.toml` line 5 says `version = "1.0.0"` but `Manifest.toml` line 33 says `version = "0.1.0"`. Additionally, the git tags show both `v0.1.0` and `v1.0.0` exist. Given the actual state of the code (many stubs and placeholders), `1.0.0` is dishonest. The version should be `0.2.0` at most until all stubs are implemented.
 
 **What to do:**
 
 1. Change `Project.toml` line 5 to `version = "0.2.0"`.
-2. Delete the `Manifest.toml` file and regenerate it: `cd /var/mnt/eclipse/repos/Causals.jl && julia --project=. -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'`
+2. Delete the `Manifest.toml` file and regenerate it: `cd /var$REPOS_DIR/Causals.jl && julia --project=. -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'`
 3. The regenerated Manifest.toml will have the correct version.
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 toml = read("Project.toml", String)
 @assert occursin("version = \"0.2.0\"", toml) "Project.toml should have version 0.2.0"
 println("TASK 15 PASSED: version is honest")
@@ -656,7 +656,7 @@ println("TASK 15 PASSED: version is honest")
 
 ## TASK 16: Fix ROADMAP.md claims about non-existent modules (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/ROADMAP.md`
+**Files:** `/var$REPOS_DIR/Causals.jl/ROADMAP.md`
 
 **Problem:** Lines 7-13 of ROADMAP.md claim "Production-ready implementation of 7 causal inference methods" and list: Dempster-Shafer, Conditional Probability, Probabilistic Logic, Bayesian Networks, Fuzzy Logic, Evidential Reasoning, Belief Propagation. In reality, the codebase has 7 DIFFERENT modules: DempsterShafer, BradfordHill, CausalDAG, Granger, PropensityScore, DoCalculus, Counterfactuals. The ROADMAP lists modules that do not exist.
 
@@ -677,7 +677,7 @@ Line 14 claims "Complete with comprehensive test coverage (66 tests)" -- the act
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 roadmap = read("ROADMAP.md", String)
 @assert !occursin("Bayesian Networks", roadmap) "ROADMAP should not claim Bayesian Networks exist"
 @assert !occursin("Fuzzy Logic", roadmap) "ROADMAP should not claim Fuzzy Logic exists"
@@ -689,7 +689,7 @@ println("TASK 16 PASSED: ROADMAP is honest")
 
 ## TASK 17: Fix CITATIONS.adoc template placeholders (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/docs/CITATIONS.adoc`
+**Files:** `/var$REPOS_DIR/Causals.jl/docs/CITATIONS.adoc`
 
 **Problem:** The entire file is an unmodified RSR template. Line 1 says `= RSR-template-repo - Citation Guide`, line 8 says `rsr-template-repo_2025`, and line 14 references `AGPL-3.0-or-later` (banned license). All references point to `hyperpolymath/RSR-template-repo` instead of `hyperpolymath/Causals.jl`.
 
@@ -704,7 +704,7 @@ println("TASK 16 PASSED: ROADMAP is honest")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 citations = read("docs/CITATIONS.adoc", String)
 @assert !occursin("RSR-template-repo", citations) "Should not reference template repo"
 @assert !occursin("AGPL", citations) "Should not reference AGPL license"
@@ -717,7 +717,7 @@ println("TASK 17 PASSED: CITATIONS.adoc is properly customized")
 
 ## TASK 18: Fix ROADMAP.adoc template placeholders (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/ROADMAP.adoc`
+**Files:** `/var$REPOS_DIR/Causals.jl/ROADMAP.adoc`
 
 **Problem:** The entire file is the unmodified RSR template. Line 2 says `= YOUR Template Repo Roadmap`. All milestones are generic placeholders (`Core functionality`, `Basic documentation`, `Full feature set`).
 
@@ -729,7 +729,7 @@ println("TASK 17 PASSED: CITATIONS.adoc is properly customized")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 if isfile("ROADMAP.adoc")
     roadmap = read("ROADMAP.adoc", String)
     @assert !occursin("YOUR Template Repo", roadmap) "Should not be template placeholder"
@@ -742,7 +742,7 @@ println("TASK 18 PASSED: ROADMAP.adoc is resolved")
 
 ## TASK 19: Fix AI.a2ml to reference correct directory and project (LOW)
 
-**Files:** `/var/mnt/eclipse/repos/Causals.jl/AI.a2ml`
+**Files:** `/var$REPOS_DIR/Causals.jl/AI.a2ml`
 
 **Problem:** Line 5 says `rsr-template-repo is treated as a Rhodium Standard Repository` -- should reference Causals.jl. Line 5 also references `.machines_readable/6scm/` (wrong path -- should be `.machine_readable/`). Lines 9-10 reference `.machines_readable/6scm/STATE.scm` and `.machines_readable/6scm/AGENTIC.scm` with the wrong directory name and a nonexistent `6scm` subdirectory. There is no `.machine_readable/` directory at all in this repo.
 
@@ -755,7 +755,7 @@ println("TASK 18 PASSED: ROADMAP.adoc is resolved")
 
 **Verification:**
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 ai = read("AI.a2ml", String)
 @assert !occursin("rsr-template-repo", ai) "Should not reference template repo"
 @assert occursin("Causals.jl", ai) "Should reference Causals.jl"
@@ -770,7 +770,7 @@ println("TASK 19 PASSED: AI.a2ml is properly configured")
 After completing all tasks, run the following to verify the entire package is working:
 
 ```julia
-cd("/var/mnt/eclipse/repos/Causals.jl")
+cd("/var$REPOS_DIR/Causals.jl")
 using Pkg
 Pkg.activate(".")
 

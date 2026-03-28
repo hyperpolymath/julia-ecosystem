@@ -26,14 +26,14 @@ template with "YOUR Template Repo."
 2. Every change MUST be verified by a runnable command or test.
 3. Do NOT refactor working code. Only fix broken, missing, or misleading things.
 4. Read the full file before editing -- many issues are interconnected.
-5. Run `julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e 'using Pkg; Pkg.test()'` after every task to confirm nothing is broken.
+5. Run `julia --project=/var$REPOS_DIR/SMTLib.jl -e 'using Pkg; Pkg.test()'` after every task to confirm nothing is broken.
 
 ---
 
 ## TASK 1: Implement the 4 Exported-But-Missing Functions
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/SMTLib.jl` (lines 36, 37, 39)
+- `/var$REPOS_DIR/SMTLib.jl/src/SMTLib.jl` (lines 36, 37, 39)
 
 **Problem:**
 The module exports `push!`, `pop!`, `get_model`, and `from_smtlib` on lines
@@ -69,7 +69,7 @@ The module exports `push!`, `pop!`, `get_model`, and `from_smtlib` on lines
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 # Test push!/pop! exist and work structurally
@@ -98,8 +98,8 @@ println("TASK 1 PASSED")
 ## TASK 2: Remove Bogus Examples Directory
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/examples/SafeDOMExample.res`
-- `/var/mnt/eclipse/repos/SMTLib.jl/examples/web-project-deno.json`
+- `/var$REPOS_DIR/SMTLib.jl/examples/SafeDOMExample.res`
+- `/var$REPOS_DIR/SMTLib.jl/examples/web-project-deno.json`
 
 **Problem:**
 The `examples/` directory contains a ReScript DOM-mounting example and a Deno
@@ -119,11 +119,11 @@ which violates the license policy (should be PMPL-1.0-or-later or at least not A
 **Verification:**
 ```bash
 # Bogus files gone
-test ! -f /var/mnt/eclipse/repos/SMTLib.jl/examples/SafeDOMExample.res && echo "PASS: res removed"
-test ! -f /var/mnt/eclipse/repos/SMTLib.jl/examples/web-project-deno.json && echo "PASS: deno removed"
+test ! -f /var$REPOS_DIR/SMTLib.jl/examples/SafeDOMExample.res && echo "PASS: res removed"
+test ! -f /var$REPOS_DIR/SMTLib.jl/examples/web-project-deno.json && echo "PASS: deno removed"
 
 # New examples exist and are valid Julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e 'include("/var/mnt/eclipse/repos/SMTLib.jl/examples/basic_sat.jl")' && echo "PASS: basic_sat runs"
+julia --project=/var$REPOS_DIR/SMTLib.jl -e 'include("/var$REPOS_DIR/SMTLib.jl/examples/basic_sat.jl")' && echo "PASS: basic_sat runs"
 ```
 
 ---
@@ -131,8 +131,8 @@ julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e 'include("/var/mnt/eclipse/r
 ## TASK 3: Fix Unsat Core and Named Assertions (Documented but Nonexistent)
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/SMTLib.jl` (function `assert!` at line 400, `build_script` at line 430, `parse_result` at line 503)
-- `/var/mnt/eclipse/repos/SMTLib.jl/docs/src/examples.md` (lines 86-97)
+- `/var$REPOS_DIR/SMTLib.jl/src/SMTLib.jl` (function `assert!` at line 400, `build_script` at line 430, `parse_result` at line 503)
+- `/var$REPOS_DIR/SMTLib.jl/docs/src/examples.md` (lines 86-97)
 
 **Problem:**
 `docs/src/examples.md` lines 86-97 show `assert!(ctx, expr, name=:c1)` with
@@ -158,7 +158,7 @@ but:
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 ctx = SMTContext(logic=:QF_LIA)
@@ -182,7 +182,7 @@ println("TASK 3 PASSED")
 ## TASK 4: Fix solver_options References in Documentation
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/docs/src/solvers.md` (lines 137-146, 191)
+- `/var$REPOS_DIR/SMTLib.jl/docs/src/solvers.md` (lines 137-146, 191)
 
 **Problem:**
 The solvers documentation references `ctx.solver_options[:timeout]`,
@@ -207,7 +207,7 @@ If implementing (a):
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 ctx = SMTContext(logic=:QF_LIA)
@@ -227,12 +227,12 @@ println("TASK 4 PASSED")
 ## TASK 5: Replace All {{PLACEHOLDER}} Tokens in RSR Files
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/SECURITY.md` ({{OWNER}}, {{REPO}}, {{PROJECT_NAME}}, etc.)
-- `/var/mnt/eclipse/repos/SMTLib.jl/CONTRIBUTING.md` ({{FORGE}}, {{OWNER}}, {{REPO}})
-- `/var/mnt/eclipse/repos/SMTLib.jl/CODE_OF_CONDUCT.md` ({{OWNER}}, {{REPO}}, etc.)
-- `/var/mnt/eclipse/repos/SMTLib.jl/docs/CITATIONS.adoc` (wrong project name, AGPL license ref)
-- `/var/mnt/eclipse/repos/SMTLib.jl/ROADMAP.adoc` (says "YOUR Template Repo Roadmap")
-- `/var/mnt/eclipse/repos/SMTLib.jl/ABI-FFI-README.md` (line 1: "delete this line")
+- `/var$REPOS_DIR/SMTLib.jl/SECURITY.md` ({{OWNER}}, {{REPO}}, {{PROJECT_NAME}}, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/CONTRIBUTING.md` ({{FORGE}}, {{OWNER}}, {{REPO}})
+- `/var$REPOS_DIR/SMTLib.jl/CODE_OF_CONDUCT.md` ({{OWNER}}, {{REPO}}, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/docs/CITATIONS.adoc` (wrong project name, AGPL license ref)
+- `/var$REPOS_DIR/SMTLib.jl/ROADMAP.adoc` (says "YOUR Template Repo Roadmap")
+- `/var$REPOS_DIR/SMTLib.jl/ABI-FFI-README.md` (line 1: "delete this line")
 
 **Problem:**
 Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
@@ -270,7 +270,7 @@ Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 grep -rn '{{' --include='*.md' --include='*.adoc' . | grep -v '.git/' | grep -v 'contractiles/' | grep -v 'ABI-FFI' | head -5
 # Should return NO matches (excluding contractile templates which are allowed)
 echo "---"
@@ -287,12 +287,12 @@ echo "TASK 5 PASSED (if all above are empty/0)"
 ## TASK 6: Replace All {{PROJECT}} Placeholders in ABI/FFI Files
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/abi/Types.idr` (lines 6, 11)
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/abi/Layout.idr` (lines 8, 10)
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/abi/Foreign.idr` (lines 9, 11, 12, 23, 35, 49, etc.)
-- `/var/mnt/eclipse/repos/SMTLib.jl/ffi/zig/build.zig` (lines 1, 12, 23, 35, 36, 82)
-- `/var/mnt/eclipse/repos/SMTLib.jl/ffi/zig/src/main.zig` (lines 1, 12, 54, 73, 89, etc.)
-- `/var/mnt/eclipse/repos/SMTLib.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/src/abi/Types.idr` (lines 6, 11)
+- `/var$REPOS_DIR/SMTLib.jl/src/abi/Layout.idr` (lines 8, 10)
+- `/var$REPOS_DIR/SMTLib.jl/src/abi/Foreign.idr` (lines 9, 11, 12, 23, 35, 49, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/ffi/zig/build.zig` (lines 1, 12, 23, 35, 36, 82)
+- `/var$REPOS_DIR/SMTLib.jl/ffi/zig/src/main.zig` (lines 1, 12, 54, 73, 89, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, etc.)
 
 **Problem:**
 Every ABI and FFI file is the raw RSR template with `{{PROJECT}}` and
@@ -313,7 +313,7 @@ the SPDX headers in the Zig files say `AGPL-3.0-or-later` instead of
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 grep -rn '{{PROJECT}}\|{{project}}' src/abi/ ffi/ | head -5
 # Should return 0 matches
 grep -rn 'AGPL' src/abi/ ffi/ | head -5
@@ -326,7 +326,7 @@ echo "TASK 6 PASSED (if both empty)"
 ## TASK 7: Fix CodeQL Workflow (Scanning for Wrong Language)
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/.github/workflows/codeql.yml`
+- `/var$REPOS_DIR/SMTLib.jl/.github/workflows/codeql.yml`
 
 **Problem:**
 The CodeQL workflow (line 24-25) scans for `language: rust` with
@@ -345,7 +345,7 @@ security) or remove the workflow if no supported language is present.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 grep 'language:' .github/workflows/codeql.yml
 # Should show "actions", not "rust"
 grep 'build-mode' .github/workflows/codeql.yml
@@ -358,7 +358,7 @@ echo "TASK 7 PASSED (if actions and no build-mode)"
 ## TASK 8: Fix Scorecard Workflow (Unpinned Actions)
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/.github/workflows/scorecard.yml`
+- `/var$REPOS_DIR/SMTLib.jl/.github/workflows/scorecard.yml`
 
 **Problem:**
 Lines 18, 22, 29 use unpinned action tags (`@v4`, `@v2.3.1`, `@v3`) instead
@@ -372,7 +372,7 @@ check and is a supply-chain security risk.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 grep -E '@v[0-9]' .github/workflows/scorecard.yml
 # Should return nothing (all SHA-pinned)
 echo "TASK 8 PASSED (if empty)"
@@ -383,11 +383,11 @@ echo "TASK 8 PASSED (if empty)"
 ## TASK 9: Add Missing RSR Infrastructure Files
 
 **Files to create:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/.editorconfig`
-- `/var/mnt/eclipse/repos/SMTLib.jl/.gitignore`
-- `/var/mnt/eclipse/repos/SMTLib.jl/.machine_readable/STATE.scm`
-- `/var/mnt/eclipse/repos/SMTLib.jl/.machine_readable/ECOSYSTEM.scm`
-- `/var/mnt/eclipse/repos/SMTLib.jl/.machine_readable/META.scm`
+- `/var$REPOS_DIR/SMTLib.jl/.editorconfig`
+- `/var$REPOS_DIR/SMTLib.jl/.gitignore`
+- `/var$REPOS_DIR/SMTLib.jl/.machine_readable/STATE.scm`
+- `/var$REPOS_DIR/SMTLib.jl/.machine_readable/ECOSYSTEM.scm`
+- `/var$REPOS_DIR/SMTLib.jl/.machine_readable/META.scm`
 
 **Problem:**
 The repo is missing `.editorconfig`, `.gitignore`, and the entire
@@ -414,7 +414,7 @@ wrong directory name). There is no `.bot_directives/` directory either.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 test -f .editorconfig && echo "PASS: .editorconfig exists"
 test -f .gitignore && echo "PASS: .gitignore exists"
 test -f .machine_readable/STATE.scm && echo "PASS: STATE.scm exists"
@@ -430,7 +430,7 @@ echo "TASK 9 PASSED"
 ## TASK 10: Fix Test Coverage Gaps
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/test/runtests.jl`
+- `/var$REPOS_DIR/SMTLib.jl/test/runtests.jl`
 
 **Problem:**
 The test file has decent coverage of `to_smtlib`, type mapping, and value
@@ -467,7 +467,7 @@ may fail on Julia < 1.7 because the AST representation changed.
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using Pkg; Pkg.test()
 ' 2>&1 | tail -5
 # Should show all tests passing with expanded coverage
@@ -478,7 +478,7 @@ using Pkg; Pkg.test()
 ## TASK 11: Fix the `prove()` Function Type Inference
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/SMTLib.jl` (function `prove` at line 689, `extract_variables` at line 711)
+- `/var$REPOS_DIR/SMTLib.jl/src/SMTLib.jl` (function `prove` at line 689, `extract_variables` at line 711)
 
 **Problem:**
 The `prove()` function calls `extract_variables()` which defaults every
@@ -507,7 +507,7 @@ variable to `Int` (line 720: `vars[expr] = Int`). This means:
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 # Test that operators are not extracted as variables
@@ -527,7 +527,7 @@ println("TASK 11 PASSED")
 ## TASK 12: Fix parse_model Regex (Misses Multi-line Models)
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/SMTLib.jl` (function `parse_model` at line 539, line 544)
+- `/var$REPOS_DIR/SMTLib.jl/src/SMTLib.jl` (function `parse_model` at line 539, line 544)
 
 **Problem:**
 The model parser on line 544 uses a single-line regex:
@@ -558,7 +558,7 @@ match type names with spaces like `(_ BitVec 32)`.
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 # Multi-line model output from Z3
@@ -585,7 +585,7 @@ println("TASK 12 PASSED")
 ## TASK 13: Fix Timeout Detection in parse_result
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/src/SMTLib.jl` (function `parse_result` at line 503, line 519)
+- `/var$REPOS_DIR/SMTLib.jl/src/SMTLib.jl` (function `parse_result` at line 503, line 519)
 
 **Problem:**
 Line 519 checks `startswith(line, "timeout")` but:
@@ -608,7 +608,7 @@ checking the process exit code or using Julia's `timedwait`/`Timer`.
 
 **Verification:**
 ```julia
-julia --project=/var/mnt/eclipse/repos/SMTLib.jl -e '
+julia --project=/var$REPOS_DIR/SMTLib.jl -e '
 using SMTLib
 
 # Test that a very short timeout results in :timeout (if solver available)
@@ -640,8 +640,8 @@ println("TASK 13 PASSED")
 ## TASK 14: Add .gitignore and Remove Tracked Manifest.toml
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/Manifest.toml` (currently tracked)
-- `/var/mnt/eclipse/repos/SMTLib.jl/.gitignore` (does not exist)
+- `/var$REPOS_DIR/SMTLib.jl/Manifest.toml` (currently tracked)
+- `/var$REPOS_DIR/SMTLib.jl/.gitignore` (does not exist)
 
 **Problem:**
 `Manifest.toml` is tracked in git. For Julia libraries (not applications),
@@ -666,7 +666,7 @@ is clear: libraries should `.gitignore` their `Manifest.toml`.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 test -f .gitignore && echo "PASS: .gitignore exists"
 grep 'Manifest.toml' .gitignore && echo "PASS: Manifest.toml in .gitignore"
 git ls-files --error-unmatch Manifest.toml 2>/dev/null && echo "FAIL: still tracked" || echo "PASS: Manifest.toml untracked"
@@ -677,7 +677,7 @@ git ls-files --error-unmatch Manifest.toml 2>/dev/null && echo "FAIL: still trac
 ## TASK 15: Fix quality.yml TODO Scanner (Wrong File Extensions)
 
 **Files:**
-- `/var/mnt/eclipse/repos/SMTLib.jl/.github/workflows/quality.yml` (line 31)
+- `/var$REPOS_DIR/SMTLib.jl/.github/workflows/quality.yml` (line 31)
 
 **Problem:**
 The quality workflow scans for TODOs in `*.rs`, `*.res`, `*.py`, `*.ex` files.
@@ -693,7 +693,7 @@ extensions exist in the repo.
 
 **Verification:**
 ```bash
-grep 'include.*\.jl' /var/mnt/eclipse/repos/SMTLib.jl/.github/workflows/quality.yml && echo "TASK 15 PASSED"
+grep 'include.*\.jl' /var$REPOS_DIR/SMTLib.jl/.github/workflows/quality.yml && echo "TASK 15 PASSED"
 ```
 
 ---
@@ -703,7 +703,7 @@ grep 'include.*\.jl' /var/mnt/eclipse/repos/SMTLib.jl/.github/workflows/quality.
 After completing all tasks, run this sequence:
 
 ```bash
-cd /var/mnt/eclipse/repos/SMTLib.jl
+cd /var$REPOS_DIR/SMTLib.jl
 
 echo "=== 1. Julia tests pass ==="
 julia --project=. -e 'using Pkg; Pkg.test()' 2>&1 | tail -10

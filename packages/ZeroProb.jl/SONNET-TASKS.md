@@ -33,9 +33,9 @@ and `plot_black_swan_impact` is defined but not exported.
 ## TASK 1: Implement the 4 missing functions advertised in README.adoc
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/README.adoc` (lines 29, 76-89, 105-109, 115-128)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/ZeroProb.jl` (export list)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/measures.jl` (add implementations)
+- `/var$REPOS_DIR/ZeroProb.jl/README.adoc` (lines 29, 76-89, 105-109, 115-128)
+- `/var$REPOS_DIR/ZeroProb.jl/src/ZeroProb.jl` (export list)
+- `/var$REPOS_DIR/ZeroProb.jl/src/measures.jl` (add implementations)
 
 **Problem:**
 The README.adoc advertises these functions in code examples and the API reference:
@@ -96,8 +96,8 @@ p = epsilon_neighborhood_prob(Normal(0,1), 0.0, 0.1)
 ## TASK 2: Add `relevance()` dispatch for DiscreteZeroProbEvent
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/measures.jl`
-- `/var/mnt/eclipse/repos/ZeroProb.jl/test/test_measures.jl`
+- `/var$REPOS_DIR/ZeroProb.jl/src/measures.jl`
+- `/var$REPOS_DIR/ZeroProb.jl/test/test_measures.jl`
 
 **Problem:**
 `relevance()` is only implemented for `ContinuousZeroProbEvent` (measures.jl line 140). There is no `relevance()` method for `DiscreteZeroProbEvent`. Calling `relevance(DiscreteZeroProbEvent(...))` will throw a MethodError at runtime.
@@ -146,8 +146,8 @@ event = DiscreteZeroProbEvent(dist, -1)
 ## TASK 3: Export and test `plot_black_swan_impact`
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/ZeroProb.jl` (lines 90-91 export list)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/visualization.jl` (line 216, `plot_black_swan_impact`)
+- `/var$REPOS_DIR/ZeroProb.jl/src/ZeroProb.jl` (lines 90-91 export list)
+- `/var$REPOS_DIR/ZeroProb.jl/src/visualization.jl` (line 216, `plot_black_swan_impact`)
 
 **Problem:**
 `plot_black_swan_impact` is defined in `visualization.jl` (line 216) but is NOT in the export list in `ZeroProb.jl` (lines 90-91). The export list only exports:
@@ -173,8 +173,8 @@ using ZeroProb
 ## TASK 4: Add visualization tests
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/test/runtests.jl`
-- Create `/var/mnt/eclipse/repos/ZeroProb.jl/test/test_visualization.jl`
+- `/var$REPOS_DIR/ZeroProb.jl/test/runtests.jl`
+- Create `/var$REPOS_DIR/ZeroProb.jl/test/test_visualization.jl`
 
 **Problem:**
 There are ZERO tests for any of the 5 visualization functions:
@@ -231,7 +231,7 @@ Add `include("test_visualization.jl")` to `test/runtests.jl`.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ZeroProb.jl
+cd /var$REPOS_DIR/ZeroProb.jl
 julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 All 5 visualization tests should pass.
@@ -241,7 +241,7 @@ All 5 visualization tests should pass.
 ## TASK 5: Remove phantom dependencies from Project.toml
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/Project.toml` (lines 8, 11)
+- `/var$REPOS_DIR/ZeroProb.jl/Project.toml` (lines 8, 11)
 
 **Problem:**
 Project.toml lists two dependencies that are never used anywhere in the source code:
@@ -261,7 +261,7 @@ These add unnecessary compile-time overhead and dependency weight.
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ZeroProb.jl
+cd /var$REPOS_DIR/ZeroProb.jl
 julia --project=. -e 'using Pkg; Pkg.resolve(); using ZeroProb; println("OK")'
 ```
 Should load without error and without Makie/Zstd_jll.
@@ -271,7 +271,7 @@ Should load without error and without Makie/Zstd_jll.
 ## TASK 6: Fix the `handles_zero_prob_event` stub fallthrough
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/applications.jl` (lines 339-341)
+- `/var$REPOS_DIR/ZeroProb.jl/src/applications.jl` (lines 339-341)
 
 **Problem:**
 The catch-all branch at the bottom of `handles_zero_prob_event` (line 339-341):
@@ -317,10 +317,10 @@ model = x -> x
 ## TASK 7: Replace examples/ with actual ZeroProb.jl examples
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/examples/SafeDOMExample.res` (DELETE)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/examples/web-project-deno.json` (DELETE)
-- Create `/var/mnt/eclipse/repos/ZeroProb.jl/examples/basic_usage.jl`
-- Create `/var/mnt/eclipse/repos/ZeroProb.jl/examples/black_swan_analysis.jl`
+- `/var$REPOS_DIR/ZeroProb.jl/examples/SafeDOMExample.res` (DELETE)
+- `/var$REPOS_DIR/ZeroProb.jl/examples/web-project-deno.json` (DELETE)
+- Create `/var$REPOS_DIR/ZeroProb.jl/examples/basic_usage.jl`
+- Create `/var$REPOS_DIR/ZeroProb.jl/examples/black_swan_analysis.jl`
 
 **Problem:**
 The examples/ directory contains two files that have NOTHING to do with ZeroProb.jl:
@@ -350,7 +350,7 @@ Both files must have:
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ZeroProb.jl
+cd /var$REPOS_DIR/ZeroProb.jl
 julia --project=. examples/basic_usage.jl
 julia --project=. examples/black_swan_analysis.jl
 ```
@@ -361,13 +361,13 @@ Both should run without error and produce output.
 ## TASK 8: Fix AGPL license headers in template files
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/.gitignore` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/.gitattributes` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/ffi/zig/build.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/ffi/zig/src/main.zig` (line 6: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/ffi/zig/test/integration_test.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/docs/CITATIONS.adoc` (line 13: `license = {AGPL-3.0-or-later}`)
-- `/var/mnt/eclipse/repos/ZeroProb.jl/RSR_OUTLINE.adoc` (lines 72, 160 mention AGPL)
+- `/var$REPOS_DIR/ZeroProb.jl/.gitignore` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/.gitattributes` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/build.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/src/main.zig` (line 6: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/test/integration_test.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/docs/CITATIONS.adoc` (line 13: `license = {AGPL-3.0-or-later}`)
+- `/var$REPOS_DIR/ZeroProb.jl/RSR_OUTLINE.adoc` (lines 72, 160 mention AGPL)
 
 **Problem:**
 Per CLAUDE.md, AGPL-3.0 is the OLD license and must NEVER be used. All hyperpolymath original code must use `PMPL-1.0-or-later`. These are leftover RSR template headers that were never updated.
@@ -381,7 +381,7 @@ For `RSR_OUTLINE.adoc`, update line 72 and 160 to reference PMPL-1.0-or-later in
 
 **Verification:**
 ```bash
-cd /var/mnt/eclipse/repos/ZeroProb.jl
+cd /var$REPOS_DIR/ZeroProb.jl
 grep -r "AGPL" --include="*.jl" --include="*.zig" --include="*.adoc" --include=".git*" . | grep -v ".git/"
 ```
 Should return NO matches (zero lines).
@@ -391,7 +391,7 @@ Should return NO matches (zero lines).
 ## TASK 9: Make `hausdorff_measure` non-trivial (support dimensions > 1)
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/src/measures.jl` (lines 70-78)
+- `/var$REPOS_DIR/ZeroProb.jl/src/measures.jl` (lines 70-78)
 
 **Problem:**
 The current `hausdorff_measure` implementation is trivial:
@@ -451,7 +451,7 @@ hausdorff_measure(event, 100)
 ## TASK 10: Fix STATE.scm to reflect honest completion
 
 **Files:**
-- `/var/mnt/eclipse/repos/ZeroProb.jl/.machine_readable/STATE.scm`
+- `/var$REPOS_DIR/ZeroProb.jl/.machine_readable/STATE.scm`
 
 **Problem:**
 STATE.scm line 22 claims `(overall-completion 100)` and line 21 claims `(phase "complete")`. This is false. After completing tasks 1-9, update STATE.scm to reflect the true state.
@@ -479,7 +479,7 @@ Update STATE.scm:
 
 **Verification:**
 ```bash
-cat /var/mnt/eclipse/repos/ZeroProb.jl/.machine_readable/STATE.scm
+cat /var$REPOS_DIR/ZeroProb.jl/.machine_readable/STATE.scm
 # Verify: no "100" completion unless everything is actually done
 # Verify: updated date is 2026-02-12 or later
 # Verify: phase is not "complete" unless all tasks are done
@@ -492,7 +492,7 @@ cat /var/mnt/eclipse/repos/ZeroProb.jl/.machine_readable/STATE.scm
 After ALL tasks are completed, run this full verification sequence:
 
 ```bash
-cd /var/mnt/eclipse/repos/ZeroProb.jl
+cd /var$REPOS_DIR/ZeroProb.jl
 
 # 1. Full test suite passes
 julia --project=. -e 'using Pkg; Pkg.test()'

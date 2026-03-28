@@ -71,7 +71,7 @@ project/
 
 - Use `ai-cli-crash-capture/` for automated verification.
 - Mirror 6SCM files into `.machine_readable/`.
-- Check `/var/mnt/eclipse/repos/proven` for "unbreakable" Idris libraries.
+- Check `/var$REPOS_DIR/proven` for "unbreakable" Idris libraries.
 
 == Quick Start
 

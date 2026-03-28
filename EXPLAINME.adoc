@@ -1,27 +1,38 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
 = Julia Ecosystem — EXPLAINME
-:toc: preamble
 
-This document backs up the claims made in README with evidence and rationale.
+== "A unified framework for post-disciplinary research, organizing, and verified computing"
 
-== What Is This?
+[quote, README]
+____
+This is the central monorepo for the Hyperpolymath Julia Ecosystem. It consolidates 20+ specialized libraries into a single, cohesive research and development environment. From formal logic and cryptography to historical dynamics and labor organizing, this ecosystem provides the "Post-Disciplinary Glue" to tackle complex global challenges.
+____
 
-Julia Ecosystem is a hyperpolymath project. See README.adoc for usage.
+The monorepo holds 34 Julia packages spanning logic/verification, security, social science, organizing, mathematics, hardware, and orchestration. Each package lives under `packages/` with its own `Project.toml` and `src/` tree. See link:packages/PostDisciplinary.jl[PostDisciplinary.jl] for the universal graph linking them.
 
-== Why These Choices?
+**Caveat:** Not all 34 packages have full test suites or are registered in the Julia General registry yet. Coverage varies from scaffold to functional.
 
-=== Language
+=== Evidence
 
-The language(s) used in this project were chosen per the hyperpolymath
-language policy (see CLAUDE.md for the full list of allowed/banned languages).
+[cols="1,2", options="header"]
+|===
+| Path | Proves
 
-=== Architecture
+| `packages/`
+| 34 package directories confirm "20+ specialized libraries" claim
 
-Architecture decisions are documented in `.machine_readable/` checkpoint files.
+| `packages/Axiom.jl/src/`
+| Formal verification package has autograd, backends, DSL, and ABI layers
 
-== Alternatives Considered
+| `packages/ProvenCrypto.jl/src/`
+| Post-quantum cryptographic primitives and protocols exist
 
-(To be filled in as the project matures.)
+| `packages/PostDisciplinary.jl/`
+| The "universal graph" orchestrator linking disciplines is present
 
-== Proof of Claims
+| `packages/LowLevel.jl/`
+| Hardware/metal layer (SiliconCore, AcceleratorGate, QuantumCircuit, etc.) exists
 
-(Link formal verification results from the `proven` repo where applicable.)
+| `packages/TradeUnionist.jl/`
+| Labor organizing package backs the "organizing" claim
+|===

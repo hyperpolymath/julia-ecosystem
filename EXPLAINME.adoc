@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
 = Julia Ecosystem — EXPLAINME
 
-== "A unified framework for post-disciplinary research, organizing, and verified computing"
+== A unified framework for post-disciplinary research, organizing, and verified computing
 
 [quote, README]
 ____

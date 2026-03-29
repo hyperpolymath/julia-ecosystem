@@ -1,0 +1,44 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; 0-AI-MANIFEST.a2ml - AI Agent Entry Point for LowLevel.jl
+;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+;;
+;; This file is the FIRST file any AI agent must read when entering this repository.
+;; It defines canonical locations, critical invariants, and lifecycle hooks.
+
+(ai-manifest
+  (version "1.0")
+  (project "LowLevel.jl")
+  (description "Meta-orchestrator for hardware abstraction layer")
+
+  ;; =========================================================================
+  ;; Canonical File Locations
+  ;; =========================================================================
+  (canonical-locations
+    (scm-files ".machine_readable/"
+      (state ".machine_readable/STATE.scm")
+      (ecosystem ".machine_readable/ECOSYSTEM.scm")
+      (meta ".machine_readable/META.scm"))
+
+    (source-code "src/"
+      (main-module "src/LowLevel.jl")))
+
+  ;; =========================================================================
+  ;; Critical Invariants
+  ;; =========================================================================
+  (invariants
+    (scm-location "SCM files ONLY in .machine_readable/ — NEVER in repo root")
+    (license "PMPL-1.0-or-later")
+    (language "Julia")
+    (part-of "julia-ecosystem monorepo")
+    (no-banned-patterns "No believe_me, assert_total, Admitted, sorry, unsafeCoerce, Obj.magic"))
+
+  ;; =========================================================================
+  ;; Lifecycle Hooks
+  ;; =========================================================================
+  (lifecycle
+    (on-enter
+      (read ".machine_readable/STATE.scm")
+      (read ".machine_readable/ECOSYSTEM.scm")
+      (read ".machine_readable/META.scm"))
+    (on-exit
+      (update ".machine_readable/STATE.scm"))))

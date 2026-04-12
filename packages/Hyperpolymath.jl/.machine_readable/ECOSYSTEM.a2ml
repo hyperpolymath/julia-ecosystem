@@ -1,19 +1,20 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; ECOSYSTEM.a2ml for Hyperpolymath.jl
-;; Media Type: application/vnd.ecosystem+scm
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ECOSYSTEM.a2ml — Hyperpolymath Jl ecosystem position
+[metadata]
+version = "1.0"
+last-updated = "2026-04-11"
 
-(ecosystem
-  (version "1.0")
-  (name "Hyperpolymath.jl")
-  (type "julia-package")
-  (purpose "Metapackage aggregating the hyperpolymath Julia ecosystem")
+[project]
+name = "Hyperpolymath Jl"
+purpose = "Metapackage aggregating the hyperpolymath Julia ecosystem"
+role = "julia-package"
 
-  (position-in-ecosystem
-    (domain "meta")
-    (role "Single entry point that re-exports all hyperpolymath Julia packages")
-    (maturity "alpha"))
+[position-in-ecosystem]
+category = ""
 
-  (related-projects
-    ((name . "hyperpolymath ecosystem")
-     (relationship . part-of)
-     (nature . "Julia packages for interdisciplinary computing"))))
+[related-projects]
+projects = [
+  # No related projects recorded
+]

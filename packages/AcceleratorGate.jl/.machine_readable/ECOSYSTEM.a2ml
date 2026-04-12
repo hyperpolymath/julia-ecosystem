@@ -1,19 +1,20 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; ECOSYSTEM.a2ml for AcceleratorGate.jl
-;; Media Type: application/vnd.ecosystem+scm
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ECOSYSTEM.a2ml — AcceleratorGate Jl ecosystem position
+[metadata]
+version = "1.0"
+last-updated = "2026-04-11"
 
-(ecosystem
-  (version "1.0")
-  (name "AcceleratorGate.jl")
-  (type "julia-package")
-  (purpose "Shared coprocessor dispatch infrastructure for the hyperpolymath Julia ecosystem")
+[project]
+name = "AcceleratorGate Jl"
+purpose = "Shared coprocessor dispatch infrastructure for the hyperpolymath Julia ecosystem"
+role = "julia-package"
 
-  (position-in-ecosystem
-    (domain "hardware-acceleration")
-    (role "Unified dispatch layer for GPU, FPGA, and other coprocessor backends")
-    (maturity "alpha"))
+[position-in-ecosystem]
+category = ""
 
-  (related-projects
-    ((name . "hyperpolymath ecosystem")
-     (relationship . part-of)
-     (nature . "Julia packages for interdisciplinary computing"))))
+[related-projects]
+projects = [
+  # No related projects recorded
+]

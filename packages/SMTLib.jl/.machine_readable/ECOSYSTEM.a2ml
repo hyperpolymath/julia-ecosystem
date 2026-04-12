@@ -1,43 +1,24 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; ECOSYSTEM.a2ml for SMTLib.jl
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ECOSYSTEM.a2ml — SMTLib Jl ecosystem position
+[metadata]
+version = "1.0"
+last-updated = "2026-04-11"
 
-(ecosystem
-  (version "1.0")
-  (name "SMTLib.jl")
-  (type "julia-package")
-  (purpose "SMT solver interface and SMT-LIB2 generation")
+[project]
+name = "SMTLib Jl"
+purpose = "SMT solver interface and SMT-LIB2 generation"
+role = "julia-package"
 
-  (position-in-ecosystem
-    (domain "formal-methods")
-    (role "solver-interface")
-    (maturity "alpha")
-    (adoption "early-stage"))
+[position-in-ecosystem]
+category = ""
 
-  (related-projects
-    ((name . "Axiom.jl")
-     (relationship . complementary)
-     (nature . "Symbolic mathematics system that could use SMT backends"))
-    ((name . "Z3.jl")
-     (relationship . alternative)
-     (nature . "Direct Z3 bindings (more specialized, less portable)"))
-    ((name . "JuMP.jl")
-     (relationship . complementary)
-     (nature . "Mathematical optimization - SMT can handle discrete/logical constraints"))
-    ((name . "tangle")
-     (relationship . potential-consumer)
-     (nature . "Topological programming language - SMT-based type verification of tangle programs"))
-    ((name . "KnotTheory.jl")
-     (relationship . sibling-standard)
-     (nature . "Knot theory invariants - could use SMT to verify polynomial identities"))
-    ((name . "PolyglotFormalisms.jl")
-     (relationship . planned-dependency)
-     (nature . "Cross-language verification with SMT backend support")))
-
-  (dependencies
-    (runtime
-      ("Julia" "1.9+")
-      ("TOML" "stdlib"))
-    (external-tools
-      ("z3" "optional - SMT solver")
-      ("cvc5" "optional - SMT solver")
-      ("yices" "optional - SMT solver"))))
+[related-projects]
+projects = [
+  { name = "Julia", relationship = "1.9+" },
+  { name = "TOML", relationship = "stdlib" },
+  { name = "z3", relationship = "optional - SMT solver" },
+  { name = "cvc5", relationship = "optional - SMT solver" },
+  { name = "yices", relationship = "optional - SMT solver" },
+]

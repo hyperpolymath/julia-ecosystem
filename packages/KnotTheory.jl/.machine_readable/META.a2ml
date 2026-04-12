@@ -1,27 +1,27 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; META.a2ml for KnotTheory.jl
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# META.a2ml — KnotTheory Jl meta-level information
+[metadata]
+version = "0.1.0"
+last-updated = "2026-04-11"
 
-(define meta
-  '((project-meta
-     (name . "KnotTheory.jl")
-     (tagline . "Knot theory invariants and planar diagram analysis")
-     (category . "mathematics-topology")
-     (license . "PMPL-1.0-or-later")
-     (inception-date . "2024")
-     (repository . "https://github.com/hyperpolymath/KnotTheory.jl"))
+[project-info]
+license = "PMPL-1.0-or-later"
+author = "Jonathan D.A. Jewell (hyperpolymath)"
 
-    (architecture-decisions
-     (adr-001
-       (title . "Use Kauffman bracket for Jones polynomial")
-       (status . accepted)
-       (decision . "Implement Jones via Kauffman bracket recursion"))
-     (adr-002
-       (title . "Return Dict{Int,Int} for polynomials")
-       (status . accepted)
-       (decision . "Sparse representation with to_polynomial converter")))
+[architecture-decisions]
+decisions = [
+  # No ADRs recorded
+]
 
-    (design-rationale
-     (core-principles
-       "Exact computation (no floating point for invariants)"
-       "Recursion limits for safety"
-       "PD code as primary representation"))))
+[development-practices]
+versioning = "SemVer"
+documentation = "AsciiDoc"
+build-tool = "just"
+
+[maintenance-axes]
+scoping-first = true
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"

@@ -1,38 +1,26 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; PLAYBOOK.a2ml - Operational runbook for Axiom.jl
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# PLAYBOOK.a2ml — Operational playbook
+[metadata]
+version = "0.1.0"
+last-updated = "2026-04-11"
 
-(define playbook
-  `((version . "1.1.0")
-    (procedures
-      ((verify-readiness
-         . (("baseline" . "./scripts/readiness-check.sh")
-            ("no-rust" . "AXIOM_READINESS_RUN_RUST=0 ./scripts/readiness-check.sh")
-            ("full" . "AXIOM_READINESS_ALLOW_SKIPS=0 ./scripts/readiness-check.sh")))
-       (coprocessor
-         . (("strategy" . "julia --project=. test/ci/coprocessor_strategy.jl")
-            ("resilience" . "julia --project=. test/ci/coprocessor_resilience.jl")
-            ("strict-tpu" . "julia --project=. test/ci/tpu_required_mode.jl")
-            ("strict-npu" . "julia --project=. test/ci/npu_required_mode.jl")
-            ("strict-dsp" . "julia --project=. test/ci/dsp_required_mode.jl")))
-       (could-baselines
-         . (("package-registry" . "julia --project=. test/ci/model_package_registry.jl")
-            ("optimization" . "julia --project=. test/ci/optimization_passes.jl")
-            ("telemetry" . "julia --project=. test/ci/verification_telemetry.jl")
-            ("package-evidence" . "julia --project=. scripts/model-package-evidence.jl")
-            ("optimization-evidence" . "julia --project=. scripts/optimization-evidence.jl")
-            ("telemetry-evidence" . "julia --project=. scripts/verification-telemetry-evidence.jl")))
-       (proof-bundle
-         . (("reconcile-ci" . "julia --project=. test/ci/proof_bundle_reconciliation.jl")
-            ("evidence" . "julia --project=. scripts/proof-bundle-evidence.jl")))))
-    (alerts
-      ((hard-fail
-         . ("readiness-check reports failed checks"
-            "strict-mode test fails when backend is required"
-            "proof bundle reconciliation status regresses"))
-       (soft-fail
-         . ("performance evidence regression vs baseline"
-            "telemetry evidence missing or malformed"
-            "docs/roadmap alignment check fails"))))
-    (contacts
-      ((maintainer . "Axiom.jl maintainers")
-       (repo . "https://github.com/hyperpolymath/Axiom.jl")))))
+[deployment]
+# method = "gitops"  # gitops | manual | ci-triggered
+# target = "container"  # container | binary | library | wasm
+
+[incident-response]
+# 1. Check .machine_readable/STATE.a2ml for current status
+# 2. Review recent commits and CI results
+# 3. Run `just validate` to check compliance
+# 4. Run `just security` to audit for vulnerabilities
+
+[release-process]
+# 1. Update version in STATE.a2ml, META.a2ml
+# 2. Run `just release-preflight` (validate + quality + security + maint-hard-pass)
+# 3. Tag and push
+
+[maintenance-operations]
+# Baseline audit: just maint-audit
+# Hard release gate: just maint-hard-pass

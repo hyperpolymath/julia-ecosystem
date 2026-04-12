@@ -1,15 +1,27 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; META.a2ml for ViableSystems.jl
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# META.a2ml — ViableSystems Jl meta-level information
+[metadata]
+version = "0.1.0"
+last-updated = "2026-04-11"
 
-(define meta
-  '((project-meta
-     (name . "ViableSystems.jl")
-     (tagline . "Organizational cybernetics with VSM and SSM in Julia")
-     (category . "systems-science")
-     (license . "PMPL-1.0-or-later")
-     (inception-date . "2026")
-     (repository . "https://github.com/hyperpolymath/ViableSystems.jl"))
+[project-info]
+license = "PMPL-1.0-or-later"
+author = "Jonathan D.A. Jewell (hyperpolymath)"
 
-    (development-practices
-     (versioning-scheme . "SemVer 2.0.0")
-     (contribution-model . "RSR-compliant"))))
+[architecture-decisions]
+decisions = [
+  # No ADRs recorded
+]
+
+[development-practices]
+versioning = "SemVer"
+documentation = "AsciiDoc"
+build-tool = "just"
+
+[maintenance-axes]
+scoping-first = true
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"

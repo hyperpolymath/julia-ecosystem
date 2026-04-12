@@ -1,0 +1,25 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; STATE.a2ml for MacroPower.jl
+
+(define state
+  '((metadata
+     (project . "MacroPower.jl")
+     (version . "0.1.0")
+     (updated . "2026-03-10")
+     (maintainers . ("Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>")))
+
+    (project-context
+     (description . "Automation workflow framework with macro-based trigger/action system")
+     (domain . "automation")
+     (languages . ("Julia"))
+     (primary-purpose . "Declarative workflow automation using Julia macros for trigger/action composition"))
+
+    (current-position
+     (phase . "skeleton")
+     (overall-completion . 20))
+
+    (blockers-and-issues
+     (known-issues . ()))
+
+    (critical-next-actions
+     (immediate . ("Define core trigger/action macro API")))))

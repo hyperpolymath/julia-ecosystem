@@ -1,0 +1,19 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.a2ml for MinixSDK.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "MinixSDK.jl")
+  (type "julia-package")
+  (purpose "Cross-compilation toolkit for lowering Julia functions to MINIX 3 microkernel services")
+
+  (position-in-ecosystem
+    (domain "systems-programming")
+    (role "Bridge between Julia and MINIX 3 microkernel targets")
+    (maturity "alpha"))
+
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

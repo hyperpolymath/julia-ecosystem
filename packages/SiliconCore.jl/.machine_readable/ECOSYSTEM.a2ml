@@ -1,0 +1,19 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.a2ml for SiliconCore.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "SiliconCore.jl")
+  (type "julia-package")
+  (purpose "Hardware capability detection and low-level vector operations")
+
+  (position-in-ecosystem
+    (domain "hardware-acceleration")
+    (role "CPU feature detection and SIMD-optimised vector primitives")
+    (maturity "alpha"))
+
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

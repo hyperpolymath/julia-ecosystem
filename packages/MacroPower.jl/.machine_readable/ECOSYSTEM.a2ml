@@ -1,0 +1,19 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; ECOSYSTEM.a2ml for MacroPower.jl
+;; Media Type: application/vnd.ecosystem+scm
+
+(ecosystem
+  (version "1.0")
+  (name "MacroPower.jl")
+  (type "julia-package")
+  (purpose "Automation workflow framework with macro-based trigger/action system")
+
+  (position-in-ecosystem
+    (domain "automation")
+    (role "Declarative workflow engine using Julia metaprogramming")
+    (maturity "alpha"))
+
+  (related-projects
+    ((name . "hyperpolymath ecosystem")
+     (relationship . part-of)
+     (nature . "Julia packages for interdisciplinary computing"))))

@@ -1,4 +1,4 @@
-Contact: mailto:jonathan.jewell@gmail.com
+Contact: mailto:j.d.a.jewell@open.ac.uk
 Expires: 2026-01-23T23:59:59.000Z
 Preferred-Languages: en
 Canonical: https://github.com/hyperpolymath/PolyglotFormalisms.jl/blob/main/.well-known/security.txt

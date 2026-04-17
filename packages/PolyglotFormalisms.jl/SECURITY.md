@@ -10,7 +10,7 @@
 
 If you discover a security vulnerability in PolyglotFormalisms.jl, please report it by:
 
-1. **Email**: jonathan.jewell@gmail.com
+1. **Email**: j.d.a.jewell@open.ac.uk
 2. **GitHub Security Advisory**: Use the "Security" tab to report privately
 
 Please include:

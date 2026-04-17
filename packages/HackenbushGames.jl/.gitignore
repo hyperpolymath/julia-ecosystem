@@ -6,3 +6,14 @@
 /deps
 /build
 /docs/build
+target/
+node_modules/
+_build/
+deps/
+.elixir_ls/
+.cache/
+*.log
+*.tmp
+Thumbs.db
+build/
+dist/

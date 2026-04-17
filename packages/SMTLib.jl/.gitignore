@@ -24,3 +24,13 @@
 # OS
 .DS_Store
 Thumbs.db
+target/
+node_modules/
+_build/
+deps/
+.elixir_ls/
+.cache/
+*.log
+*.tmp
+build/
+dist/

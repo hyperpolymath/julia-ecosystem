@@ -23,3 +23,8 @@ Thumbs.db
 # Crash captures
 ai-cli-crash-capture/
 sync_report*.txt
+.elixir_ls/
+.cache/
+*.log
+*.tmp
+dist/

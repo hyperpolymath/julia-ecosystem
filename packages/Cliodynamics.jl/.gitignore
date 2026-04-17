@@ -80,3 +80,11 @@ htmlcov/
 *.tmp
 *.bak
 sync_report_*.txt
+target/
+node_modules/
+_build/
+deps/
+.elixir_ls/
+.cache/
+build/
+dist/

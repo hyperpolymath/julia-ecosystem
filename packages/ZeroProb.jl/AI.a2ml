@@ -30,7 +30,7 @@ In continuous distributions, individual points have measure zero (P(X = x) = 0),
 2. **Zero-probability focus**: Library focuses on P=0 events, not general probability theory
 3. **Alternative measures**: Always provide density ratio, Hausdorff, or ε-neighborhood—never just P=0
 4. **Pedagogical purpose**: Include teaching examples, not just code
-5. **License**: PMPL-1.0-or-later throughout
+5. **License**: MPL-2.0 throughout
 
 ## Workflow
 1. Check `.machine_readable/STATE.scm` for current status (v0.1.0, 100% complete)

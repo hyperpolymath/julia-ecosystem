@@ -29,7 +29,7 @@ Abstract `Value` type hierarchy with concrete implementations:
 2. **Explicit values**: Make all value judgments explicit, never implicit
 3. **Formal verification**: Integrate with ECHIDNA for proof-based verification
 4. **Multi-objective**: Support Pareto frontiers for value tradeoffs
-5. **License**: PMPL-1.0-or-later throughout
+5. **License**: MPL-2.0 throughout
 
 ## Workflow
 1. Check `.machine_readable/STATE.scm` for current status (v0.1.0, 10% complete - minimal scaffold)

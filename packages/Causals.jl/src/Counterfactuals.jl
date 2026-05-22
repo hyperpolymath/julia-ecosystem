@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
 Counterfactual reasoning using Structural Causal Models (SCMs).
 Enables "But-for" analysis and probability of necessity/sufficiency.

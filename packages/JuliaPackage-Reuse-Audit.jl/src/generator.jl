@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 module Generator
 
 using UUIDs
@@ -66,7 +66,7 @@ function generate_package(spec::PackageSpec, target_dir::String)
     
     # 3. Generate main entry point
     src_tpl = """
-    # SPDX-License-Identifier: PMPL-1.0-or-later
+    # SPDX-License-Identifier: MPL-2.0
     module {{name}}
 
     # Domain: {{summary}}

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 module NativeLangs
 
 export run_jtv_secure_add, load_affinescript_wasm, run_ephapax_kernel

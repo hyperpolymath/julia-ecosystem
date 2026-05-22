@@ -170,7 +170,7 @@ println("PASS: version is 0.1.0")
 
 ---
 
-## TASK 4: Fix SPDX license headers -- replace AGPL-3.0-or-later with PMPL-1.0-or-later (HIGH)
+## TASK 4: Fix SPDX license headers -- replace AGPL-3.0-or-later with MPL-2.0 (HIGH)
 
 **Problem:** Five files use the banned `AGPL-3.0-or-later` SPDX identifier:
 1. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/build.zig` (line 2)
@@ -181,7 +181,7 @@ println("PASS: version is 0.1.0")
 
 Per CLAUDE.md: "NEVER use AGPL-3.0".
 
-**Fix:** In each file, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+**Fix:** In each file, replace `AGPL-3.0-or-later` with `MPL-2.0`.
 
 **Verification:**
 ```bash
@@ -227,7 +227,7 @@ and `{{LICENSE}}` markers from the RSR template. These files are:
 - `{{CONDUCT_TEAM}}` -> `KnotTheory.jl Maintainers`
 - `{{RESPONSE_TIME}}` -> `48 hours`
 - `{{MAIN_BRANCH}}` -> `main`
-- `{{LICENSE}}` -> `PMPL-1.0-or-later`
+- `{{LICENSE}}` -> `MPL-2.0`
 
 Also delete the HTML comment blocks that say "TEMPLATE INSTRUCTIONS (delete this block before publishing)" from SECURITY.md (lines 3-19) and CODE_OF_CONDUCT.md (lines 3-21).
 
@@ -304,7 +304,7 @@ There are no SCM files anywhere in the repo.
     (development-practices
      (testing . "julia --project=. -e 'using Pkg; Pkg.test()'")
      (language . "Julia 1.9+")
-     (license . "PMPL-1.0-or-later"))))
+     (license . "MPL-2.0"))))
 ```
 
 ### `.machine_readable/ECOSYSTEM.scm`
@@ -354,7 +354,7 @@ do with knot theory:
 3. Create `examples/basic_usage.jl` with actual knot theory examples:
 
 ```julia
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Basic usage examples for KnotTheory.jl
 
 using KnotTheory
@@ -432,7 +432,7 @@ still references `rsr-template-repo` everywhere and uses
 - `rsr-template-repo` -> `KnotTheory.jl`
 - `RSR-template-repo` -> `KnotTheory.jl`
 - `Polymath, Hyper` / `Hyper Polymath` -> `Jewell, Jonathan D.A.` / `Jonathan D.A. Jewell`
-- `AGPL-3.0-or-later` -> `PMPL-1.0-or-later`
+- `AGPL-3.0-or-later` -> `MPL-2.0`
 - `2025` -> `2026` (year)
 - Fix the title line to say `= KnotTheory.jl - Citation Guide`
 - Fix URLs to point to `https://github.com/hyperpolymath/KnotTheory.jl`

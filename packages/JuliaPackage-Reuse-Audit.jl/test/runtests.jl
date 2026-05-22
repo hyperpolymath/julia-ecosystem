@@ -137,7 +137,7 @@ using Test
         @test isfile(src_path)
         src_content = read(src_path, String)
         @test contains(src_content, "module ContentCheck")
-        @test contains(src_content, "SPDX-License-Identifier: PMPL-1.0-or-later")
+        @test contains(src_content, "SPDX-License-Identifier: MPL-2.0")
         @test contains(src_content, "Verifying generated source file")
     end
 

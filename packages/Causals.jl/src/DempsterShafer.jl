@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
 Dempster-Shafer theory of evidence for combining uncertain information.
 

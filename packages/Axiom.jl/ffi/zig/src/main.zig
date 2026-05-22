@@ -5,7 +5,7 @@
 // - Host -> runtime calls (`axiom_process`, `axiom_process_array`, ...)
 // - Runtime -> host callbacks (`axiom_register_callback`, `axiom_invoke_callback`)
 //
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 
 const std = @import("std");
 const builtin = @import("builtin");

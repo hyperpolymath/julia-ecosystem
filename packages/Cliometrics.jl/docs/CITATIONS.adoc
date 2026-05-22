@@ -10,7 +10,7 @@
   title = {Cliometrics.jl: Quantitative Economic History in Julia},
   year = {2026},
   url = {https://github.com/hyperpolymath/Cliometrics.jl},
-  license = {PMPL-1.0-or-later}
+  license = {MPL-2.0}
 }
 ----
 

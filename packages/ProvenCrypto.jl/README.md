@@ -258,7 +258,7 @@ julia --project docs/make.jl
 
 ## License
 
-PMPL-1.0-or-later (Polymathematical Meta-Public License)
+MPL-2.0 (Polymathematical Meta-Public License)
 
 ## Author
 

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Basic BowtieRisk.jl Example
 # Demonstrates core features: model construction, evaluation, simulation, sensitivity, exports
 

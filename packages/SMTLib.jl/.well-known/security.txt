@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 Contact: mailto:jonathan.jewell@open.ac.uk
 Expires: 2027-02-17T00:00:00Z
 Preferred-Languages: en

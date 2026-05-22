@@ -41,7 +41,7 @@ julia --project=. -e 'using Pkg; Pkg.resolve()'
 
 ## Critical Invariants
 
-- All files must have `SPDX-License-Identifier: PMPL-1.0-or-later` header
+- All files must have `SPDX-License-Identifier: MPL-2.0` header
 - SCM files in `.machine_readable/` ONLY
 - Tests must pass before any commit
 - Author: `Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`

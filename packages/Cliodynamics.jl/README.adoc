@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 
 = Cliodynamics.jl
 :toc: macro
@@ -314,4 +314,4 @@ See link:CONTRIBUTING.md[CONTRIBUTING.md] for guidelines.
 
 Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <jonathan.jewell@open.ac.uk>
 
-This project is licensed under the Palimpsest License (PMPL-1.0-or-later). See link:LICENSE[LICENSE] for details.
+This project is licensed under the Palimpsest License (MPL-2.0). See link:LICENSE[LICENSE] for details.

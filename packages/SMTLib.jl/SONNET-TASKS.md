@@ -105,7 +105,7 @@ println("TASK 1 PASSED")
 The `examples/` directory contains a ReScript DOM-mounting example and a Deno
 project config. Neither has anything to do with SMT solving. They are leftover
 RSR template files. The SPDX header in `SafeDOMExample.res` is `AGPL-3.0-or-later`
-which violates the license policy (should be PMPL-1.0-or-later or at least not AGPL).
+which violates the license policy (should be MPL-2.0 or at least not AGPL).
 
 **What to do:**
 1. Delete `examples/SafeDOMExample.res`.
@@ -114,7 +114,7 @@ which violates the license policy (should be PMPL-1.0-or-later or at least not A
    satisfiability (can run without a solver by showing the generated SMT-LIB2
    script output).
 4. Create `examples/incremental.jl` showing push/pop usage (after TASK 1).
-5. Add SPDX header `# SPDX-License-Identifier: PMPL-1.0-or-later` to all new files.
+5. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` to all new files.
 
 **Verification:**
 ```bash
@@ -258,7 +258,7 @@ Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
    - Remove template instruction block.
 4. In CITATIONS.adoc:
    - Replace `rsr-template-repo` with `SMTLib.jl`.
-   - Replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+   - Replace `AGPL-3.0-or-later` with `MPL-2.0`.
    - Replace author `Polymath, Hyper` with `Jewell, Jonathan D.A.`
 5. In ROADMAP.adoc:
    - Replace "YOUR Template Repo" with "SMTLib.jl".
@@ -266,7 +266,7 @@ Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
 6. In ABI-FFI-README.md:
    - Delete line 1 (`{{~ Aditionally delete this line...}}`).
    - Replace `{{PROJECT}}` with `SMTLib` and `{{project}}` with `smtlib`.
-   - Replace `{{LICENSE}}` with `PMPL-1.0-or-later`.
+   - Replace `{{LICENSE}}` with `MPL-2.0`.
 
 **Verification:**
 ```bash
@@ -298,14 +298,14 @@ echo "TASK 5 PASSED (if all above are empty/0)"
 Every ABI and FFI file is the raw RSR template with `{{PROJECT}}` and
 `{{project}}` placeholders. None of these files will compile. Additionally,
 the SPDX headers in the Zig files say `AGPL-3.0-or-later` instead of
-`PMPL-1.0-or-later`.
+`MPL-2.0`.
 
 **What to do:**
 1. In all `.idr` files: replace `{{PROJECT}}` with `SMTLib`.
 2. In all `.zig` files: replace `{{PROJECT}}` with `SMTLib` and `{{project}}`
    with `smtlib`.
 3. In all `.zig` files: change SPDX from `AGPL-3.0-or-later` to
-   `PMPL-1.0-or-later`.
+   `MPL-2.0`.
 4. Consider whether the ABI/FFI layer makes sense for a pure-Julia SMT interface.
    If it does not, add a note to `ABI-FFI-README.md` explaining that the ABI/FFI
    layer is reserved for future native solver bindings, or remove it entirely

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = ZeroProb.jl
 Jonathan D. A. Jewell <jonathan.jewell@open.ac.uk>
 :toc:
@@ -275,7 +275,7 @@ See link:ROADMAP.adoc[ROADMAP.adoc] for future development plans.
 
 == License
 
-Palimpsest-MPL License v1.0 (PMPL-1.0-or-later) -- see link:LICENSE[LICENSE].
+Palimpsest-MPL License v1.0 (MPL-2.0) -- see link:LICENSE[LICENSE].
 
 == Contributing
 

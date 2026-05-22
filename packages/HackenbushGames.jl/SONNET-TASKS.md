@@ -159,14 +159,14 @@ grep -c '{{' /var$REPOS_DIR/HackenbushGames.jl/SECURITY.md && echo "FAIL: placeh
 **Problem:** The entire file (lines 1-36) references `rsr-template-repo` instead of
 `HackenbushGames.jl`. The author is listed as `Polymath, Hyper` instead of
 `Jewell, Jonathan D.A.`. The license says `AGPL-3.0-or-later` instead of
-`PMPL-1.0-or-later`. It references `CITATION.cff` and `codemeta.json` which do not exist.
+`MPL-2.0`. It references `CITATION.cff` and `codemeta.json` which do not exist.
 
 **What to do:**
 1. Replace every occurrence of `rsr-template-repo` and `RSR-template-repo` with `HackenbushGames.jl`
 2. Replace every occurrence of `RSR-template-repo` in URLs with `HackenbushGames.jl`
 3. Replace author `Polymath, Hyper` with `Jewell, Jonathan D.A.` in all citation formats
 4. Replace author `Hyper Polymath` with `Jonathan D.A. Jewell` in OSCOLA format
-5. Replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`
+5. Replace `AGPL-3.0-or-later` with `MPL-2.0`
 6. Replace year `2025` with `2026`
 7. Remove the `See Also` section referencing non-existent `CITATION.cff` and `codemeta.json`,
    OR create those files (preferred: remove the references).
@@ -254,7 +254,7 @@ has `SPDX-License-Identifier: AGPL-3.0-or-later` (wrong license).
    - Graph sum
    - Canonical game form
    - GraphViz and ASCII output
-4. Add SPDX header `# SPDX-License-Identifier: PMPL-1.0-or-later` to the new file.
+4. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` to the new file.
 
 **Verification:**
 ```bash
@@ -445,7 +445,7 @@ test -f /var$REPOS_DIR/HackenbushGames.jl/README.md && echo "PASS" || echo "FAIL
 **Problem:** This is a generic RSR standard description file not specific to this project.
 It references `RSR-template-repo`, `139 repos`, `justfile`, `guix.scm`, `STATE.scm` in
 root (violates SCM path rules), and includes a `Cookbook generation` section. None of this
-is specific to HackenbushGames.jl. Line 212 says `SPDX-License-Identifier: PMPL-1.0-or-later-or-later` (doubled suffix).
+is specific to HackenbushGames.jl. Line 212 says `SPDX-License-Identifier: MPL-2.0-or-later` (doubled suffix).
 
 **What to do:**
 1. Either delete `RSR_OUTLINE.adoc` (it is RSR framework docs, not project docs),

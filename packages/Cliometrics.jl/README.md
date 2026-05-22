@@ -185,7 +185,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-This project is licensed under the Palimpsest License (PMPL-1.0-or-later). See [LICENSE](LICENSE) for details.
+This project is licensed under the Palimpsest License (MPL-2.0). See [LICENSE](LICENSE) for details.
 
 ## References
 

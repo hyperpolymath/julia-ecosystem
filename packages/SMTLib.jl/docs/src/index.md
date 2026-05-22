@@ -95,4 +95,4 @@ apt install cvc5         # Ubuntu/Debian
 
 ## License
 
-SMTLib.jl is licensed under the [PMPL-1.0-or-later](https://github.com/hyperpolymath/palimpsest-license) license.
+SMTLib.jl is licensed under the [MPL-2.0](https://github.com/hyperpolymath/palimpsest-license) license.

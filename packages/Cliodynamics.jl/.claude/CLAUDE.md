@@ -113,11 +113,11 @@ The core implementation is in `src/Cliodynamics.jl`. Optional features use Julia
 
 ## License
 
-PMPL-1.0-or-later (Palimpsest License)
+MPL-2.0 (Palimpsest License)
 
 All files must have SPDX header:
 ```julia
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 ```
 
 ## Notes for AI Agents

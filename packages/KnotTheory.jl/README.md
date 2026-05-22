@@ -168,4 +168,4 @@ consistency, and known values from knot tables.
 
 ## License
 
-Palimpsest-MPL License v1.0 (PMPL-1.0-or-later) -- see [LICENSE](LICENSE).
+Palimpsest-MPL License v1.0 (MPL-2.0) -- see [LICENSE](LICENSE).

@@ -611,7 +611,7 @@ fi
 
 ---
 
-## TASK 12: Fix SPDX License Headers (AGPL-3.0 Must Be PMPL-1.0-or-later)
+## TASK 12: Fix SPDX License Headers (AGPL-3.0 Must Be MPL-2.0)
 
 **Files with wrong license:**
 - `/var$REPOS_DIR/ProvenCrypto.jl/examples/SafeDOMExample.res` line 1: `AGPL-3.0-or-later`
@@ -622,11 +622,11 @@ fi
 
 **Problem:**
 Per the CLAUDE.md license policy, hyperpolymath original code must use
-`PMPL-1.0-or-later`. AGPL-3.0 is the old license and must never be used.
+`MPL-2.0`. AGPL-3.0 is the old license and must never be used.
 
 **What to do:**
-1. Replace all `AGPL-3.0-or-later` SPDX identifiers with `PMPL-1.0-or-later`.
-2. Update `docs/CITATIONS.adoc` BibTeX entry from `AGPL-3.0-or-later` to `PMPL-1.0-or-later`.
+1. Replace all `AGPL-3.0-or-later` SPDX identifiers with `MPL-2.0`.
+2. Update `docs/CITATIONS.adoc` BibTeX entry from `AGPL-3.0-or-later` to `MPL-2.0`.
 
 **Verification:**
 ```bash

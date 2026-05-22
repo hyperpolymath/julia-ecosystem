@@ -287,7 +287,7 @@ println("TASK 5 PASS: UUID is valid: $uuid_str")
 
 ---
 
-## TASK 6: Fix SPDX license headers -- replace all AGPL-3.0-or-later with PMPL-1.0-or-later (MEDIUM)
+## TASK 6: Fix SPDX license headers -- replace all AGPL-3.0-or-later with MPL-2.0 (MEDIUM)
 
 **Files:** All files listed below that still contain `AGPL-3.0-or-later`:
 - `.machines_readable/6scm/STATE.scm` line 1
@@ -302,12 +302,12 @@ println("TASK 5 PASS: UUID is valid: $uuid_str")
 - `docs/CITATIONS.adoc` line 13
 
 **Problem:** Per CLAUDE.md, the AGPL-3.0-or-later license has been replaced by
-PMPL-1.0-or-later for all hyperpolymath original code. These files still use the old
+MPL-2.0 for all hyperpolymath original code. These files still use the old
 license identifier.
 
 **What to do:**
 
-1. In every file listed above, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+1. In every file listed above, replace `AGPL-3.0-or-later` with `MPL-2.0`.
 2. Do not change anything else in these files.
 3. Verify no other files still contain `AGPL-3.0-or-later` (except `RSR_OUTLINE.adoc`
    which discusses licensing policy historically and should not be changed).
@@ -445,7 +445,7 @@ println("TASK 7 PASS: All SCM files customized for Cladistics.jl")
    - Replace year `2025` with `2026`.
    - Replace author in BibTeX `author` field with `{Jewell, Jonathan D.A.}`.
    - Update URL to `https://github.com/hyperpolymath/Cladistics.jl`.
-   - Replace `license = {AGPL-3.0-or-later}` with `license = {PMPL-1.0-or-later}`.
+   - Replace `license = {AGPL-3.0-or-later}` with `license = {MPL-2.0}`.
 
 4. In `ROADMAP.adoc`:
    - Replace `YOUR Template Repo Roadmap` with `Cladistics.jl Roadmap`.

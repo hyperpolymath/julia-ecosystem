@@ -4,7 +4,7 @@
 > **Purpose:** Unambiguous instructions for Sonnet to complete all stubs, TODOs, and placeholder code.
 > **Honest completion before this file:** 35%
 
-The Julia source code (`src/Cliometrics.jl`) has 7 implemented functions out of 11 exported symbols. Four exported functions have NO implementation at all: `interpolate_missing_years`, `quantify_institutions`, `counterfactual_scenario`, and `estimate_treatment_effect`. The README claims features (sigma-convergence, outlier detection, cross-country alignment, long-run trend analysis) that have zero code behind them. The entire RSR template layer (Idris2 ABI, Zig FFI, contractiles, SCM files) is uncustomized boilerplate with `{{PROJECT}}` placeholders throughout. The SCM directory is misspelled (`.machines_readable/6scm/` instead of `.machine_readable/`). Multiple files still use AGPL-3.0-or-later instead of PMPL-1.0-or-later.
+The Julia source code (`src/Cliometrics.jl`) has 7 implemented functions out of 11 exported symbols. Four exported functions have NO implementation at all: `interpolate_missing_years`, `quantify_institutions`, `counterfactual_scenario`, and `estimate_treatment_effect`. The README claims features (sigma-convergence, outlier detection, cross-country alignment, long-run trend analysis) that have zero code behind them. The entire RSR template layer (Idris2 ABI, Zig FFI, contractiles, SCM files) is uncustomized boilerplate with `{{PROJECT}}` placeholders throughout. The SCM directory is misspelled (`.machines_readable/6scm/` instead of `.machine_readable/`). Multiple files still use AGPL-3.0-or-later instead of MPL-2.0.
 
 ---
 
@@ -200,7 +200,7 @@ using Pkg; Pkg.test()
 
 ---
 
-## TASK 6: Fix SPDX license headers — replace AGPL-3.0-or-later with PMPL-1.0-or-later (HIGH)
+## TASK 6: Fix SPDX license headers — replace AGPL-3.0-or-later with MPL-2.0 (HIGH)
 
 **Files:**
 - `/var$REPOS_DIR/Cliometrics.jl/.machines_readable/6scm/STATE.scm` (line 1)
@@ -214,12 +214,12 @@ using Pkg; Pkg.test()
 - `/var$REPOS_DIR/Cliometrics.jl/examples/SafeDOMExample.res` (line 1)
 - `/var$REPOS_DIR/Cliometrics.jl/docs/CITATIONS.adoc` (line 13, inside bibtex block)
 
-**Problem:** These files use `AGPL-3.0-or-later` which is the OLD license. Per CLAUDE.md, the primary license is PMPL-1.0-or-later and AGPL-3.0 must NEVER be used.
+**Problem:** These files use `AGPL-3.0-or-later` which is the OLD license. Per CLAUDE.md, the primary license is MPL-2.0 and AGPL-3.0 must NEVER be used.
 
 **What to do:**
-1. In each file listed above, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+1. In each file listed above, replace `AGPL-3.0-or-later` with `MPL-2.0`.
 2. For `docs/CITATIONS.adoc` line 13, also update the bibtex `license` field value.
-3. Do NOT change the SPDX headers in `src/Cliometrics.jl` or `test/runtests.jl` (they already use PMPL-1.0-or-later correctly).
+3. Do NOT change the SPDX headers in `src/Cliometrics.jl` or `test/runtests.jl` (they already use MPL-2.0 correctly).
 
 **Verification:**
 ```bash
@@ -346,7 +346,7 @@ grep -c "Cliometrics" ROADMAP.adoc
    - `title`: `{Cliometrics.jl: Quantitative Economic History in Julia}`
    - `year`: `{2026}`
    - `url`: `{https://github.com/hyperpolymath/Cliometrics.jl}`
-   - `license`: `{PMPL-1.0-or-later}`
+   - `license`: `{MPL-2.0}`
 3. Update Harvard, OSCOLA, MLA, and APA sections similarly:
    - Author: `Jewell, J.D.A.` / `Jonathan D.A. Jewell`
    - Title: `Cliometrics.jl`
@@ -376,7 +376,7 @@ grep -c "Jewell" docs/CITATIONS.adoc
 **What to do:**
 1. Delete both files.
 2. Create a new `examples/growth_decomposition.jl` example file that demonstrates the core Cliometrics.jl workflow (loading data, calculating growth rates, decomposing growth, convergence analysis).
-3. Add SPDX header `# SPDX-License-Identifier: PMPL-1.0-or-later` and author line.
+3. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` and author line.
 4. The example should be runnable (use synthetic data since we have no bundled CSV files).
 
 **Verification:**
@@ -513,10 +513,10 @@ end
 - `/var$REPOS_DIR/Cliometrics.jl/contractiles/must/Mustfile` (line 1)
 - `/var$REPOS_DIR/Cliometrics.jl/contractiles/trust/Trustfile.hs` (line 1)
 
-**Problem:** These files use `PLMP-1.0-or-later` which is a typo. The correct identifier is `PMPL-1.0-or-later` (Palimpsest License).
+**Problem:** These files use `PLMP-1.0-or-later` which is a typo. The correct identifier is `MPL-2.0` (Palimpsest License).
 
 **What to do:**
-1. In each file, replace `PLMP-1.0-or-later` with `PMPL-1.0-or-later` on line 1.
+1. In each file, replace `PLMP-1.0-or-later` with `MPL-2.0` on line 1.
 
 **Verification:**
 ```bash

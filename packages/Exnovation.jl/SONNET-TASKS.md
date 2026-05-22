@@ -183,7 +183,7 @@ println("PASS: index.md updated with real content")
 
 ---
 
-## TASK 5: Fix AGPL-3.0 License Headers (Must Be PMPL-1.0-or-later) (HIGH)
+## TASK 5: Fix AGPL-3.0 License Headers (Must Be MPL-2.0) (HIGH)
 
 **Files:**
 - `/var$REPOS_DIR/Exnovation.jl/ffi/zig/build.zig` (line 2)
@@ -193,11 +193,11 @@ println("PASS: index.md updated with real content")
 - `/var$REPOS_DIR/Exnovation.jl/docs/CITATIONS.adoc` (line 13)
 
 **Problem:** Five files use `SPDX-License-Identifier: AGPL-3.0-or-later`. Per
-CLAUDE.md license policy: "NEVER use AGPL-3.0 (old license, replaced by PMPL-1.0-or-later)".
+CLAUDE.md license policy: "NEVER use AGPL-3.0 (old license, replaced by MPL-2.0)".
 The `docs/CITATIONS.adoc` also says `license = {AGPL-3.0-or-later}` in the BibTeX block.
 
 **What to do:**
-1. In each of the 5 files listed, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+1. In each of the 5 files listed, replace `AGPL-3.0-or-later` with `MPL-2.0`.
 2. In `docs/CITATIONS.adoc`, also fix the project name from `rsr-template-repo` to
    `Exnovation.jl`, the author from `Polymath, Hyper` to `Jewell, Jonathan D.A.`, the
    year to `2026`, and the URL to `https://github.com/hyperpolymath/Exnovation.jl`.
@@ -291,7 +291,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
 4. Delete `ROADMAP.adoc` (the real roadmap is `ROADMAP.md`).
 5. In `RSR_OUTLINE.adoc`, replace the title on line 1 from `= RSR Template Repository`
    to `= Exnovation.jl RSR Outline`. Replace the SPDX identifier on line 212 from
-   `PMPL-1.0-or-later-or-later` (typo with doubled suffix) to `PMPL-1.0-or-later`.
+   `MPL-2.0-or-later` (typo with doubled suffix) to `MPL-2.0`.
 
 **Verification:**
 ```bash
@@ -326,7 +326,7 @@ have `.machine_readable/STATE.scm`, `.machine_readable/ECOSYSTEM.scm`, and
    - Purpose: `Exnovation decision framework for phase-out analysis`
    - Related projects: `(related-projects ((name . "BowtieRisk.jl") (relationship . "potential-consumer")))`
 4. Create `META.scm` with:
-   - License: `PMPL-1.0-or-later`
+   - License: `MPL-2.0`
    - Author: `Jonathan D.A. Jewell`
    - Architecture decision: single-module Julia package, no FFI needed.
 
@@ -384,7 +384,7 @@ non-existent `CITATION.cff` and `codemeta.json` files.
    `Hyper Polymath` with `Jonathan D.A. Jewell`.
 3. Replace year `2025` with `2026`.
 4. Replace the URL with `https://github.com/hyperpolymath/Exnovation.jl`.
-5. Fix the license from `AGPL-3.0-or-later` to `PMPL-1.0-or-later` (if not done in Task 5).
+5. Fix the license from `AGPL-3.0-or-later` to `MPL-2.0` (if not done in Task 5).
 6. Remove the "See Also" section referencing `CITATION.cff` and `codemeta.json` (they
    do not exist), or create those files.
 

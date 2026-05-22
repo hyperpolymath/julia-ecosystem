@@ -10,7 +10,7 @@
   title = {Exnovation.jl: Framework for measuring and accelerating legacy system retirement},
   year = {2026},
   url = {https://github.com/hyperpolymath/Exnovation.jl},
-  license = {PMPL-1.0-or-later}
+  license = {MPL-2.0}
 }
 ----
 

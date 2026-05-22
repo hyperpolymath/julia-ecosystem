@@ -1,5 +1,5 @@
 image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Causals.jl
 
 :toc: macro
@@ -289,7 +289,7 @@ See link:CONTRIBUTING.md[CONTRIBUTING.md] for development guidelines.
 
 == License
 
-Palimpsest-MPL License v1.0 (PMPL-1.0-or-later) - see link:LICENSE[LICENSE].
+Palimpsest-MPL License v1.0 (MPL-2.0) - see link:LICENSE[LICENSE].
 
 PMPL-1.0 is MPL-2.0 compatible and accepted by Julia General registry.
 

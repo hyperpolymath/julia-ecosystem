@@ -55,7 +55,7 @@ grep -n "end # module StringOps$" src/string.jl
 
 ## TASK 2: Fix SPDX license headers in ABI/FFI template files (CRITICAL)
 
-Three files use `AGPL-3.0-or-later` instead of `PMPL-1.0-or-later`. Per CLAUDE.md policy,
+Three files use `AGPL-3.0-or-later` instead of `MPL-2.0`. Per CLAUDE.md policy,
 AGPL-3.0 is the OLD license and must NEVER be used.
 
 **Files to fix:**
@@ -72,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ```
 with:
 ```
-SPDX-License-Identifier: PMPL-1.0-or-later
+SPDX-License-Identifier: MPL-2.0
 ```
 
 **Verification:**
@@ -80,7 +80,7 @@ SPDX-License-Identifier: PMPL-1.0-or-later
 cd /var$REPOS_DIR/PolyglotFormalisms.jl
 grep -rn "AGPL" ffi/ examples/ src/abi/
 # Expected: no output (zero matches)
-grep -rn "PMPL-1.0-or-later" ffi/ examples/
+grep -rn "MPL-2.0" ffi/ examples/
 # Expected: 4 matches (one per file)
 ```
 
@@ -153,7 +153,7 @@ shadowing Base functions `map`, `filter`, `foldl`, `in`.
 
 Each function MUST have:
 - Full docstring in the same style as `src/arithmetic.jl` (interface signature, behavioral semantics, mathematical properties, examples, edge cases)
-- SPDX header: `# SPDX-License-Identifier: PMPL-1.0-or-later`
+- SPDX header: `# SPDX-License-Identifier: MPL-2.0`
 - Implementation using Julia standard library (`Base.map`, `Base.filter`, `Base.foldl`, `Base.in`)
 
 **Also uncomment in `src/PolyglotFormalisms.jl` line 60:**

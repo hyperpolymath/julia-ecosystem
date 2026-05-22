@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 module KSP
 
 # This module will talk to Kerbal Space Program (via kRPC)

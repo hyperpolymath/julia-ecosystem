@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <jonathan.jewell@open.ac.uk>
 
 @manifest {
@@ -19,7 +19,7 @@
 
 @critical-invariants {
   rule: "SCM files in .machine_readable/ ONLY — never in repository root",
-  rule: "All source files must have SPDX-License-Identifier: PMPL-1.0-or-later header",
+  rule: "All source files must have SPDX-License-Identifier: MPL-2.0 header",
   rule: "All 493+ tests must pass before commit",
   rule: "KnotTheory.jl is a weakdep — never add as hard dependency"
 }

@@ -1,5 +1,5 @@
 # Julia General Registry Submissions
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 #
 # For each package, you'll need:
 #   - repo: the Git URL (HTTPS for registry)

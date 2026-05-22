@@ -10,7 +10,7 @@ real implementations with real tests. However, there are significant problems el
 the RSR template files (ABI/FFI, contractiles, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md,
 CITATIONS.adoc, examples, docs, ROADMAP.adoc) were never customized from the template and
 still contain `{{PROJECT}}`, `{{project}}`, `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}` placeholders.
-Several files use the banned AGPL-3.0 license header instead of PMPL-1.0-or-later. The
+Several files use the banned AGPL-3.0 license header instead of MPL-2.0. The
 `.machine_readable/` directory with SCM files is entirely missing. The Documenter.jl docs
 reference a non-existent `api.md`. The test suite has dead code (testing for templates and
 fields that do not exist). The examples directory contains ReScript SafeDOM code that has
@@ -30,7 +30,7 @@ nothing to do with BowtieRisk.jl.
 
 ---
 
-## TASK 1: Fix AGPL-3.0 license headers to PMPL-1.0-or-later (CRITICAL)
+## TASK 1: Fix AGPL-3.0 license headers to MPL-2.0 (CRITICAL)
 
 **Files:**
 - `/var$REPOS_DIR/BowtieRisk.jl/examples/SafeDOMExample.res` (line 1)
@@ -39,11 +39,11 @@ nothing to do with BowtieRisk.jl.
 - `/var$REPOS_DIR/BowtieRisk.jl/ffi/zig/test/integration_test.zig` (line 2)
 - `/var$REPOS_DIR/BowtieRisk.jl/docs/CITATIONS.adoc` (line 13)
 
-**Problem:** These files use `SPDX-License-Identifier: AGPL-3.0-or-later` or `license = {AGPL-3.0-or-later}`. Per CLAUDE.md license policy, AGPL-3.0 is NEVER allowed. All hyperpolymath original code must use PMPL-1.0-or-later.
+**Problem:** These files use `SPDX-License-Identifier: AGPL-3.0-or-later` or `license = {AGPL-3.0-or-later}`. Per CLAUDE.md license policy, AGPL-3.0 is NEVER allowed. All hyperpolymath original code must use MPL-2.0.
 
 **What to do:**
-1. In each file listed, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
-2. In `docs/CITATIONS.adoc` line 13, change `license = {AGPL-3.0-or-later}` to `license = {PMPL-1.0-or-later}`.
+1. In each file listed, replace `AGPL-3.0-or-later` with `MPL-2.0`.
+2. In `docs/CITATIONS.adoc` line 13, change `license = {AGPL-3.0-or-later}` to `license = {MPL-2.0}`.
 3. Also update the citation to reference `BowtieRisk.jl` instead of `RSR-template-repo` (lines 8-15) -- fix `author`, `title`, and `url` fields.
 
 **Verification:**
@@ -106,7 +106,7 @@ grep -rn '{{' /var$REPOS_DIR/BowtieRisk.jl/ --include="*.md" --include="*.adoc" 
    - Writes a markdown report
    - Exports Mermaid and GraphViz diagrams
    - Shows JSON round-trip (write_model_json / read_model_json)
-3. Add SPDX header `# SPDX-License-Identifier: PMPL-1.0-or-later` at top.
+3. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` at top.
 
 **Verification:**
 ```julia
@@ -135,7 +135,7 @@ include("examples/basic_bowtie.jl")
    - critical-next-actions: complete SONNET-TASKS
 3. Create `META.scm` with:
    - architecture-decisions: Julia structs are immutable for safety, JSON3 for serialization, Monte Carlo via Distributions.jl
-   - development-practices: test-driven, PMPL-1.0-or-later license
+   - development-practices: test-driven, MPL-2.0 license
 4. Create `ECOSYSTEM.scm` with:
    - type: julia-package
    - purpose: bowtie risk modeling framework

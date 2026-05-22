@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Hyperpolymath Julia Ecosystem
 :toc: macro
 :toclevels: 2
@@ -81,7 +81,7 @@ When registering these packages, use the `subdir` argument:
 
 == License
 
-All packages in this ecosystem are licensed under the **Palimpsest-MPL-1.0 License** (PMPL-1.0-or-later). See the LICENSE file in the root and in each package subdirectory for details.
+All packages in this ecosystem are licensed under the **Palimpsest-MPL-1.0 License** (MPL-2.0). See the LICENSE file in the root and in each package subdirectory for details.
 
 '''
 _Synthesis is the ultimate discipline._

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 using Test
 
 @testset "Hyperpolymath.jl" begin
@@ -44,7 +44,7 @@ using Test
         src_path = joinpath(@__DIR__, "..", "src", "Hyperpolymath.jl")
         first_line = readline(src_path)
         @test contains(first_line, "SPDX-License-Identifier")
-        @test contains(first_line, "PMPL-1.0-or-later")
+        @test contains(first_line, "MPL-2.0")
     end
 
 end

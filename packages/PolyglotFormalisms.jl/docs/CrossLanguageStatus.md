@@ -184,7 +184,7 @@ Cross-language verification is achieved through:
 
 ## License
 
-All implementations use PMPL-1.0-or-later (Palimpsest Meta-Public License).
+All implementations use MPL-2.0 (Palimpsest Meta-Public License).
 
 ## Contributing
 

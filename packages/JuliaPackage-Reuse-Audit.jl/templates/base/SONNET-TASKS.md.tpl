@@ -11,5 +11,5 @@
 
 ## AI Instructions
 Please implement the core domain logic for {{name}} based on the summary above.
-Maintain RSR standards and PMPL-1.0-or-later headers.
+Maintain RSR standards and MPL-2.0 headers.
 Always check the existing types in `src/types.jl` before implementation.

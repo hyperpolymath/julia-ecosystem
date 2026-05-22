@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <jonathan.jewell@open.ac.uk>
 
 = Skein.jl
@@ -11,7 +11,7 @@ image:https://img.shields.io/badge/Completion-75%25-yellow[75%,link="TOPOLOGY.md
 A knot-theoretic database for Julia. Store, index, and query knots by their topological invariants.
 
 image:https://img.shields.io/badge/Julia-1.10+-blue.svg[Julia 1.10+]
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[PMPL-1.0-or-later]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[MPL-2.0]
 
 toc::[]
 
@@ -163,4 +163,4 @@ Pkg.add(url="https://gitlab.com/hyperpolymath/Skein.jl")
 
 == Licence
 
-PMPL-1.0-or-later (Palimpsest-MPL License). See `LICENSE` for details.
+MPL-2.0 (Palimpsest-MPL License). See `LICENSE` for details.

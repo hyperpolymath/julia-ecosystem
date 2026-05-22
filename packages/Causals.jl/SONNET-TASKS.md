@@ -697,7 +697,7 @@ println("TASK 16 PASSED: ROADMAP is honest")
 
 1. Replace all occurrences of `RSR-template-repo` with `Causals.jl`.
 2. Replace `rsr-template-repo` with `causals_jl`.
-3. Replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+3. Replace `AGPL-3.0-or-later` with `MPL-2.0`.
 4. Replace `Polymath, Hyper` / `Hyper Polymath` with `Jewell, Jonathan D.A.` / `Jonathan D.A. Jewell`.
 5. Update the year to 2026 if applicable.
 6. Update URLs to point to `hyperpolymath/Causals.jl`.

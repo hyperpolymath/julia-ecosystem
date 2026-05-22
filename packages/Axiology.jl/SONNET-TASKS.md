@@ -44,7 +44,7 @@ causing errors. There are 6 orphan blocks:
 Also: duplicate SPDX header on lines 1-2 and 4-5.
 
 **What to do:**
-1. Delete line 4 (`# SPDX-License-Identifier: PMPL-1.0-or-later`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`) -- these are duplicates of lines 1-2.
+1. Delete line 4 (`# SPDX-License-Identifier: MPL-2.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`) -- these are duplicates of lines 1-2.
 2. Delete lines 101-119 (orphan `demographic_parity` body after the real function's `end` on line 100).
 3. Delete lines 201-238 (orphan `equalized_odds` body after the real function's `end` on line 200).
 4. Delete lines 313-335 (orphan `equal_opportunity` body after the real function's `end` on line 312).
@@ -114,7 +114,7 @@ println("TASK 2 PASSED")
 **Problem:** Duplicate SPDX header on lines 1-2 and 4-5.
 
 **What to do:**
-1. Delete line 4 (`# SPDX-License-Identifier: PMPL-1.0-or-later`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`).
+1. Delete line 4 (`# SPDX-License-Identifier: MPL-2.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`).
 
 **Verification:**
 ```julia
@@ -172,7 +172,7 @@ copy-paste artifacts from the RSR template or another project.
    - Using `maximize` to compute value scores
    - Using `pareto_frontier` for multi-objective optimization
    - Using `weighted_score` for aggregation
-4. The example file must use `# SPDX-License-Identifier: PMPL-1.0-or-later` header.
+4. The example file must use `# SPDX-License-Identifier: MPL-2.0` header.
 5. The example must actually run: `julia --project=. examples/basic_usage.jl`
 
 **Verification:**
@@ -233,7 +233,7 @@ echo "TASK 6 PASSED"
 - Lines 104-113: Example uses `select_solution(solutions, preference=:balanced)` -- no such function
 - Lines 119-138: Example uses `prove`, `Verified`, `verification.counterexample` -- none exist
 - Lines 238-241: Development status checkboxes are wrong (Pareto IS implemented, marked unchecked)
-- Lines 269-274: Claims dual MIT/PMPL license but project actually uses PMPL-1.0-or-later only
+- Lines 269-274: Claims dual MIT/PMPL license but project actually uses MPL-2.0 only
 
 **What to do:**
 1. Change line 10 status to: `> **Status**: Alpha - Core value system functional, integration APIs planned`
@@ -246,7 +246,7 @@ echo "TASK 6 PASSED"
    - Keep `[ ] Formal verification integration with ECHIDNA` unchecked
    - Keep `[ ] ML fairness library integration` unchecked
    - Keep `[ ] Comprehensive documentation` unchecked
-5. Fix the License section: Remove mention of MIT. The license is PMPL-1.0-or-later per the
+5. Fix the License section: Remove mention of MIT. The license is MPL-2.0 per the
    LICENSE file and SPDX headers.
 6. Update the ECHIDNA Integration section to clearly state it is PLANNED, not implemented.
 

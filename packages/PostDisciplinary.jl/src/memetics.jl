@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
 Memetics: Logic for modeling information replicators (Memes).
 Allows for post-disciplinary analysis of how ideas evolve and spread across social networks.

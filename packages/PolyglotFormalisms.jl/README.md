@@ -260,7 +260,7 @@ Contributions welcome! Please ensure:
 
 ## License
 
-PMPL-1.0-or-later (Palimpsest Meta-Public License)
+MPL-2.0 (Palimpsest Meta-Public License)
 
 ## Status
 

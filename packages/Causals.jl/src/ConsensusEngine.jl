@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
 ConsensusEngine: The Automated Inference Engine for Causals.jl.
 Orchestrates multiple causal tests (Granger, Bradford Hill, Counterfactuals)

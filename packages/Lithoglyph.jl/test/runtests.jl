@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 using Test
 
 # Lithoglyph depends on HTTP, JSON3, Libdl — load module directly if available

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Publication-Quality Analysis Examples for Cliodynamics.jl
 #
 # Demonstrates research-grade analyses replicating key results from the

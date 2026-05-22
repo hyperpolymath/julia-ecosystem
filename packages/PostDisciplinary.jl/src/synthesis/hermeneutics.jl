@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
 Hermeneutics: Computational tools for the theory of interpretation.
 Focuses on the 'Hermeneutic Circle'—interpreting parts in context of the whole.

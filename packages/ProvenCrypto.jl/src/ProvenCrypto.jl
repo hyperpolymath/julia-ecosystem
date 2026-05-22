@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 """
     ProvenCrypto
 
@@ -43,7 +43,7 @@ Use `@prove` macro from SMTLib integration for property verification.
 Export proofs to Idris, Lean, Coq, or Isabelle for long-term formalization.
 
 # License
-PMPL-1.0-or-later (Polymathematical Meta-Public License)
+MPL-2.0 (Polymathematical Meta-Public License)
 """
 module ProvenCrypto
 

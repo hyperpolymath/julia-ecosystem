@@ -189,7 +189,7 @@ The visualization module `using Plots` at the top of `visualization.jl`, but Plo
 **What to do:**
 Create `test/test_visualization.jl`:
 ```julia
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 
 using Plots
 
@@ -343,7 +343,7 @@ These are leftover RSR template files. A Julia probability library should have J
    - BettingEdgeCase expected value computation
 
 Both files must have:
-- `# SPDX-License-Identifier: PMPL-1.0-or-later` header
+- `# SPDX-License-Identifier: MPL-2.0` header
 - `# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`
 - Comments explaining each step
 - Must be runnable: `julia --project=.. examples/basic_usage.jl`
@@ -370,14 +370,14 @@ Both should run without error and produce output.
 - `/var$REPOS_DIR/ZeroProb.jl/RSR_OUTLINE.adoc` (lines 72, 160 mention AGPL)
 
 **Problem:**
-Per CLAUDE.md, AGPL-3.0 is the OLD license and must NEVER be used. All hyperpolymath original code must use `PMPL-1.0-or-later`. These are leftover RSR template headers that were never updated.
+Per CLAUDE.md, AGPL-3.0 is the OLD license and must NEVER be used. All hyperpolymath original code must use `MPL-2.0`. These are leftover RSR template headers that were never updated.
 
 **What to do:**
-Replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later` in all files listed above.
+Replace `AGPL-3.0-or-later` with `MPL-2.0` in all files listed above.
 
 For `docs/CITATIONS.adoc`, also fix the author from `Polymath, Hyper` to `Jewell, Jonathan D.A.`, the title from `RSR-template-repo` to `ZeroProb.jl`, the year from `2025` to `2026`, and the URL to `https://github.com/hyperpolymath/ZeroProb.jl`.
 
-For `RSR_OUTLINE.adoc`, update line 72 and 160 to reference PMPL-1.0-or-later instead of AGPL.
+For `RSR_OUTLINE.adoc`, update line 72 and 160 to reference MPL-2.0 instead of AGPL.
 
 **Verification:**
 ```bash

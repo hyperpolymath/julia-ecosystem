@@ -1,0 +1,132 @@
+# SPDX-License-Identifier: MPL-2.0
+# package-drift.yml — detect drift between vendored packages under
+# packages/*/ and their standalone counterparts at
+# github.com/hyperpolymath/<PackageName>.jl.
+#
+# The estate intentionally maintains both shapes (see julia-libraries
+# vs julia-ecosystem audit, 2026-05-27): standalone repos carry the
+# full scaffolding (CI, governance, contractiles, flake.nix, docs);
+# the monorepo carries package-essentials only. This workflow compares
+# *just* the package-essentials (src/, test/runtests.jl, Project.toml)
+# so scaffolding differences are correctly ignored and only meaningful
+# code drift is reported.
+#
+# Behaviour: report-only. Never fails the build, never auto-fixes,
+# never picks a canonical side. Drift summary is written to the GitHub
+# Step Summary (always visible on a run); an annotation is emitted if
+# any package drifts. Owner decides what to do with the report.
+
+name: Package Drift Detection
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'   # Mondays 06:17 UTC — off-peak, weekly cadence
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'packages/**'
+      - '.github/workflows/package-drift.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  detect-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout ecosystem
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          path: ecosystem
+
+      - name: Compare packages/* against standalone repos
+        id: drift
+        env:
+          GH_OWNER: hyperpolymath
+        run: |
+          set -u
+          cd "$GITHUB_WORKSPACE/ecosystem"
+
+          summary="$GITHUB_STEP_SUMMARY"
+          drift_count=0
+          identical_count=0
+          missing_remote=0
+
+          {
+            echo "# Package Drift Detection"
+            echo
+            echo "Comparing \`packages/*/\` against \`github.com/${GH_OWNER}/<Pkg>.jl\` HEAD."
+            echo "Only package-essentials are compared (\`src/\`, \`test/runtests.jl\`, \`Project.toml\`)."
+            echo "Scaffolding differences (\`flake.nix\`, governance docs, \`benches/\`, etc.) are intentional and ignored."
+            echo
+            echo "| Package | Status | Differing essentials |"
+            echo "|---|---|---|"
+          } >> "$summary"
+
+          tmpdir=$(mktemp -d)
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          for pkgdir in packages/*/; do
+            pkg=$(basename "$pkgdir")
+            name="${pkg%.jl}"
+            standalone="https://github.com/${GH_OWNER}/${pkg}.git"
+            clone="$tmpdir/$pkg"
+
+            if ! git clone --depth 1 --quiet "$standalone" "$clone" 2>/dev/null; then
+              missing_remote=$((missing_remote + 1))
+              echo "| \`${name}\` | ⚠️ remote unreachable | (skipped) |" >> "$summary"
+              continue
+            fi
+
+            differing=()
+            for rel in "src" "test/runtests.jl" "Project.toml"; do
+              eco="$pkgdir$rel"
+              lib="$clone/$rel"
+              if [ -e "$eco" ] || [ -e "$lib" ]; then
+                if ! diff -rq "$eco" "$lib" >/dev/null 2>&1; then
+                  differing+=("$rel")
+                fi
+              fi
+            done
+
+            if [ ${#differing[@]} -eq 0 ]; then
+              identical_count=$((identical_count + 1))
+              echo "| \`${name}\` | ✅ identical (essentials) | — |" >> "$summary"
+            else
+              drift_count=$((drift_count + 1))
+              joined=$(IFS=', '; echo "${differing[*]}")
+              echo "| \`${name}\` | 🔶 drift | $joined |" >> "$summary"
+            fi
+          done
+
+          {
+            echo
+            echo "## Totals"
+            echo
+            echo "- **Drift**: $drift_count"
+            echo "- **Identical (essentials)**: $identical_count"
+            echo "- **Remote unreachable**: $missing_remote"
+            echo
+            echo "## What to do with this"
+            echo
+            echo "Drift in package-essentials means \`src/\`, \`test/runtests.jl\`, or \`Project.toml\` diverged between this monorepo's vendored copy and the standalone repo. Pick the canonical side per package and reconcile:"
+            echo
+            echo "- If the standalone is canonical → sync standalone → monorepo by replacing the vendored copy."
+            echo "- If the monorepo is canonical → push the changed file back to the standalone repo."
+            echo
+            echo "This workflow does **not** auto-fix or open PRs; it only reports. See the [2026-05-27 drift audit](https://github.com/hyperpolymath/julia-ecosystem) for context."
+          } >> "$summary"
+
+          echo "drift_count=$drift_count" >> "$GITHUB_OUTPUT"
+          echo "identical_count=$identical_count" >> "$GITHUB_OUTPUT"
+          echo "missing_remote=$missing_remote" >> "$GITHUB_OUTPUT"
+
+      - name: Annotate drift
+        if: steps.drift.outputs.drift_count != '0'
+        run: |
+          echo "::notice title=Package drift detected::${{ steps.drift.outputs.drift_count }} package(s) have drift in essentials. See the Job Summary for the per-package table."

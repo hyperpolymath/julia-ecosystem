@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
 name: CodeQL
-permissions: read-all
 
 on:
   push:
@@ -9,6 +8,8 @@ on:
     branches: [main]
   schedule:
     - cron: '0 0 * * 0'
+
+permissions: read-all
 
 jobs:
   analyze:

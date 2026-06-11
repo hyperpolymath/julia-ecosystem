@@ -149,8 +149,8 @@ jobs:
           token: ${{ secrets.TAGBOT_TOKEN }}
           delete-branch: true
           branch: 'update_manifests/single_pr/all_manifests'
-          commit-message: '🤖 Update one or more manifest files in the `.ci` directory'
-          title: '🤖 Update one or more manifest files in the `.ci` directory'
+          commit-message: "\U0001F916 Update one or more manifest files in the `.ci` directory"
+          title: "\U0001F916 Update one or more manifest files in the `.ci` directory"
           body: ''
           labels: |
             CI

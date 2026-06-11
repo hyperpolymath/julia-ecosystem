@@ -2,14 +2,13 @@ name: Author Approval Label
 on:
   issue_comment:
     types: [created]
-
 jobs:
   label:
     permissions:
-        # We need `write` permissions on `pull-requests` in order to be able to
-        # add/remove labels from PRs. As far as we can tell, there is no narrower
-        # permission that we can use.
-        pull-requests: write
+      # We need `write` permissions on `pull-requests` in order to be able to
+      # add/remove labels from PRs. As far as we can tell, there is no narrower
+      # permission that we can use.
+      pull-requests: write
     runs-on: ubuntu-latest
     # Run on comments that are satisfy all of the following:
     # 1) on PRs, not issues,

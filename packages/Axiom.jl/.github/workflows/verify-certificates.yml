@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
 name: Verify Proof Certificates
-
 on:
   pull_request:
     paths:
@@ -18,36 +17,27 @@ on:
       - 'src/verification/**'
       - '.github/workflows/verify-certificates.yml'
   workflow_dispatch:
-
 permissions: read-all
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   verify-certificates:
     name: Verify proof artifacts and integrity
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - name: Setup Julia
         uses: julia-actions/setup-julia@5c9647d97b78a5debe5164e9eec09d653d29bd71 # v2
         with:
           version: '1.10'
-
       - name: Cache Julia dependencies
         uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
-
       - name: Instantiate / Build / Precompile
         run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build(); Pkg.precompile()'
-
       - name: Run certificate integrity tests
         run: julia --project=. test/ci/certificate_integrity.jl
-
       - name: Verify repository proof certificates and build report
         run: |
           mkdir -p reports
@@ -130,7 +120,6 @@ jobs:
               exit(1)
             end
           '
-
       - name: Upload verification report artifacts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

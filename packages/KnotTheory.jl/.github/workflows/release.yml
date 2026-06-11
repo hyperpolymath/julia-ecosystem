@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
 name: Release
-
 on:
   push:
     tags:
@@ -10,11 +9,9 @@ on:
       version:
         description: 'Version to release (e.g., v0.1.0)'
         required: true
-
 permissions:
   contents: write
   id-token: write
-
 jobs:
   build:
     name: Build Package
@@ -23,43 +20,33 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         julia-version: ['1.10']
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - uses: julia-actions/setup-julia@4c0cb0fce8556fdb04a90347310e5db8b1f98fb9 # v2
         with:
           version: ${{ matrix.julia-version }}
-
       - uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
-
       - name: Build and test
         run: |
           julia --project -e 'using Pkg; Pkg.build(); Pkg.test()'
-
       - name: Package artifacts
         run: |
           mkdir -p dist
           tar -czf dist/KnotTheory.jl-${{ matrix.os }}.tar.gz src/ Project.toml README.* LICENSE
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: package-${{ matrix.os }}
           path: dist/
-
   sbom:
     name: Generate SBOM
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - uses: julia-actions/setup-julia@4c0cb0fce8556fdb04a90347310e5db8b1f98fb9 # v2
         with:
           version: '1.10'
-
       - name: Generate SBOM
         run: |
           julia --project -e '
@@ -89,33 +76,27 @@ jobs:
               JSON.print(f, sbom, 2)
             end
           '
-
       - name: Upload SBOM
         uses: actions/upload-artifact@v4
         with:
           name: sbom
           path: sbom.json
-
   release:
     name: Create Release
     runs-on: ubuntu-latest
     needs: [build, sbom]
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts/
-
       - name: Prepare release
         run: |
           mkdir -p release
           find release-artifacts -type f -exec cp {} release/ \;
           cd release
           sha256sum * > checksums.txt
-
       - name: Extract version
         id: version
         run: |
@@ -124,7 +105,6 @@ jobs:
           else
             echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           fi
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2
         with:

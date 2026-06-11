@@ -8,11 +8,9 @@ on:
   pull_request:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
     types: [opened, reopened, labeled, synchronize]
-
 # Make sure that the `GITHUB_TOKEN` only has read-only permissions
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
 permissions: read-all
-
 # We have two jobs:
 # 1. AutoMerge_staging-regular:
 #    This includes all PR runs except PR labels.

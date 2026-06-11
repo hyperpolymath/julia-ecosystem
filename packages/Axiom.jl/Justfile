@@ -74,3 +74,6 @@ status:
     @echo ""
     @echo "Zig backend:"
     @test -f zig/zig-out/lib/libaxiom_zig.so && echo "  Built" || echo "  Not built (run: just build-zig)"
+
+secret-scan-trufflehog:
+    @command -v trufflehog >/dev/null && trufflehog filesystem . --only-verified || true

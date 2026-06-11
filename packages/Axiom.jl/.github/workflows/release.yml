@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
 name: Release
-
 on:
   push:
     tags:
@@ -10,9 +9,7 @@ on:
       version:
         description: 'Version to release (e.g., v0.1.0)'
         required: true
-
 permissions: read-all
-
 jobs:
   # ============================================================================
   # Release Readiness Gates (Compatibility + Smoke)
@@ -24,22 +21,16 @@ jobs:
       fail-fast: false
       matrix:
         julia-version: ['1.10', '1.11']
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - uses: julia-actions/setup-julia@5c9647d97b78a5debe5164e9eec09d653d29bd71 # v2
         with:
           version: ${{ matrix.julia-version }}
-
       - uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
-
       - name: Instantiate / Build / Precompile / Test
         run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build(); Pkg.precompile(); Pkg.test()'
-
       - name: Runtime smoke (CPU)
         run: julia --project=. test/ci/runtime_smoke.jl
-
   # ============================================================================
   # Build Julia Package
   # ============================================================================
@@ -51,34 +42,26 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         julia-version: ['1.10']
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - uses: julia-actions/setup-julia@5c9647d97b78a5debe5164e9eec09d653d29bd71 # v2
         with:
           version: ${{ matrix.julia-version }}
-
       - uses: julia-actions/cache@e8472695fb3c2028b1118dc399c8440ff497d409 # v2
-
       - name: Instantiate / Build / Precompile / Test
         run: |
           julia --project -e 'using Pkg; Pkg.instantiate(); Pkg.build(); Pkg.precompile(); Pkg.test()'
-
       - name: Runtime smoke (CPU)
         run: julia --project=. test/ci/runtime_smoke.jl
-
       - name: Package artifacts
         run: |
           mkdir -p dist
           tar -czf dist/Axiom.jl-${{ matrix.os }}.tar.gz src/ Project.toml README.adoc LICENSE
-
       - name: Upload Julia artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: julia-${{ matrix.os }}
           path: dist/
-
   # ============================================================================
   # Build Rust Backend
   # ============================================================================
@@ -99,16 +82,13 @@ jobs:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             artifact_name: axiom_core.dll
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@6d9817901c499d6b02debbb57edb38d33daa680b # stable
         with:
           toolchain: stable
           targets: ${{ matrix.target }}
-
       - name: Cache Cargo
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
@@ -117,22 +97,18 @@ jobs:
             ~/.cargo/git
             rust/target
           key: ${{ runner.os }}-cargo-release-${{ hashFiles('rust/Cargo.lock') }}
-
       - name: Build release
         working-directory: rust
         run: cargo build --release --target ${{ matrix.target }}
-
       - name: Package Rust artifacts
         run: |
           mkdir -p dist
           cp rust/target/${{ matrix.target }}/release/${{ matrix.artifact_name }} dist/
-
       - name: Upload Rust artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rust-${{ matrix.os }}
           path: dist/
-
   # ============================================================================
   # Generate SBOMs
   # ============================================================================
@@ -140,10 +116,8 @@ jobs:
     name: Generate Software Bill of Materials
     runs-on: ubuntu-latest
     needs: [build-julia, build-rust]
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - name: Generate Julia SBOM
         run: |
           julia --project -e '
@@ -179,13 +153,11 @@ jobs:
               JSON.print(f, sbom, 2)
             end
           '
-
       - name: Generate Rust SBOM
         working-directory: rust
         run: |
           cargo install cargo-sbom
           cargo sbom > ../sbom-rust.json
-
       - name: Upload SBOMs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -193,7 +165,6 @@ jobs:
           path: |
             sbom-julia.json
             sbom-rust.json
-
   # ============================================================================
   # Create GitHub Release
   # ============================================================================
@@ -203,25 +174,20 @@ jobs:
     needs: [build-julia, build-rust, generate-sbom]
     permissions:
       contents: write
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - name: Download all artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           path: release-artifacts/
-
       - name: Prepare release assets
         run: |
           mkdir -p release
           find release-artifacts -type f -exec cp {} release/ \;
-
       - name: Generate checksums
         working-directory: release
         run: |
           sha256sum * > checksums.txt
-
       - name: Extract version
         id: version
         run: |
@@ -230,7 +196,6 @@ jobs:
           else
             echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           fi
-
       - name: Create release notes
         run: |
           cat > release-notes.md << 'EOF'
@@ -286,7 +251,6 @@ jobs:
 
           **Full Changelog**: https://github.com/hyperpolymath/Axiom.jl/compare/previous...${{ steps.version.outputs.version }}
           EOF
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2
         with:
@@ -296,7 +260,6 @@ jobs:
           files: release/*
           draft: false
           prerelease: false
-
   # ============================================================================
   # SLSA Provenance
   # ============================================================================
@@ -311,7 +274,6 @@ jobs:
     with:
       base64-subjects: "${{ needs.create-release.outputs.hashes }}"
       upload-assets: true
-
   # ============================================================================
   # Publish to Registries
   # ============================================================================
@@ -319,14 +281,11 @@ jobs:
     name: Publish to Julia General Registry
     runs-on: ubuntu-latest
     needs: [provenance]
-
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
       - uses: julia-actions/setup-julia@5c9647d97b78a5debe5164e9eec09d653d29bd71 # v2
         with:
           version: '1.10'
-
       - name: Register with Julia General
         run: |
           # Trigger JuliaRegistrator

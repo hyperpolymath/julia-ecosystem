@@ -45,3 +45,6 @@ example:
 # Start Julia REPL with Skein loaded
 repl:
     julia --project=. -e 'using Skein; println("Skein.jl loaded")' -i
+
+secret-scan-trufflehog:
+    @command -v trufflehog >/dev/null && trufflehog filesystem . --only-verified || true

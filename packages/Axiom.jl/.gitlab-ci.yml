@@ -10,15 +10,12 @@ stages:
   - test
   - security
   - deploy
-
 variables:
   JULIA_NUM_THREADS: "2"
   RUST_BACKTRACE: "1"
-
 # =============================================================================
 # Validation Stage
 # =============================================================================
-
 rsr-compliance:
   stage: validate
   image: alpine:latest
@@ -38,7 +35,6 @@ rsr-compliance:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 lint:
   stage: validate
   image: rust:latest
@@ -47,11 +43,9 @@ lint:
     - cd rust && cargo clippy -- -D warnings
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-
 # =============================================================================
 # Build Stage
 # =============================================================================
-
 build-rust:
   stage: build
   image: rust:latest
@@ -65,7 +59,6 @@ build-rust:
     key: rust-$CI_COMMIT_REF_SLUG
     paths:
       - rust/target/
-
 build-zig:
   stage: build
   image: alpine:latest
@@ -79,11 +72,9 @@ build-zig:
     paths:
       - zig/zig-out/lib/libaxiom_zig.*
     expire_in: 1 week
-
 # =============================================================================
 # Test Stage
 # =============================================================================
-
 test-julia:
   stage: test
   image: julia:1.10
@@ -93,7 +84,6 @@ test-julia:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 test-rust:
   stage: test
   image: rust:latest
@@ -102,7 +92,6 @@ test-rust:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 test-zig:
   stage: test
   image: alpine:latest
@@ -115,11 +104,9 @@ test-zig:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 # =============================================================================
 # Security Stage
 # =============================================================================
-
 security-audit:
   stage: security
   image: rust:latest
@@ -131,7 +118,6 @@ security-audit:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
-
 dependency-scan:
   stage: security
   image:
@@ -142,32 +128,23 @@ dependency-scan:
   allow_failure: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 # =============================================================================
 # Deploy Stage
 # =============================================================================
-
 pages:
   stage: deploy
   image: julia:1.10
   script:
-    - julia --project=docs -e '
-        using Pkg
-        Pkg.develop(PackageSpec(path=pwd()))
-        Pkg.instantiate()
-        include("docs/make.jl")
-      '
+    - julia --project=docs -e ' using Pkg Pkg.develop(PackageSpec(path=pwd())) Pkg.instantiate() include("docs/make.jl") '
     - mv docs/build public
   artifacts:
     paths:
       - public
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-
 # =============================================================================
 # Scheduled Jobs
 # =============================================================================
-
 weekly-security:
   stage: security
   image: rust:latest
@@ -178,3 +155,8 @@ weekly-security:
     - cd rust && cargo deny check
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
+trufflehog:
+  stage: security
+  image: trufflesecurity/trufflehog:latest
+  script:
+    - trufflehog git file://. --only-verified --fail

@@ -3,7 +3,7 @@
 :toc: macro
 :toclevels: 2
 
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0]
 image:https://img.shields.io/badge/Julia-1.10+-9558B2?logo=julia[Julia]
 
 *{{summary}}*

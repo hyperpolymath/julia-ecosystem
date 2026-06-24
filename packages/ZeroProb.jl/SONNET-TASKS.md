@@ -189,7 +189,7 @@ The visualization module `using Plots` at the top of `visualization.jl`, but Plo
 **What to do:**
 Create `test/test_visualization.jl`:
 ```julia
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-License-Identifier: CC-BY-SA-4.0
 
 using Plots
 
@@ -343,7 +343,7 @@ These are leftover RSR template files. A Julia probability library should have J
    - BettingEdgeCase expected value computation
 
 Both files must have:
-- `# SPDX-License-Identifier: MPL-2.0` header
+- `# SPDX-License-Identifier: CC-BY-SA-4.0` header
 - `# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`
 - Comments explaining each step
 - Must be runnable: `julia --project=.. examples/basic_usage.jl`
@@ -361,11 +361,11 @@ Both should run without error and produce output.
 ## TASK 8: Fix AGPL license headers in template files
 
 **Files:**
-- `/var$REPOS_DIR/ZeroProb.jl/.gitignore` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var$REPOS_DIR/ZeroProb.jl/.gitattributes` (line 1: `# SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/build.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/src/main.zig` (line 6: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
-- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/test/integration_test.zig` (line 2: `// SPDX-License-Identifier: AGPL-3.0-or-later`)
+- `/var$REPOS_DIR/ZeroProb.jl/.gitignore` (line 1: `# SPDX-License-Identifier: CC-BY-SA-4.0`)
+- `/var$REPOS_DIR/ZeroProb.jl/.gitattributes` (line 1: `# SPDX-License-Identifier: CC-BY-SA-4.0`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/build.zig` (line 2: `// SPDX-License-Identifier: CC-BY-SA-4.0`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/src/main.zig` (line 6: `// SPDX-License-Identifier: CC-BY-SA-4.0`)
+- `/var$REPOS_DIR/ZeroProb.jl/ffi/zig/test/integration_test.zig` (line 2: `// SPDX-License-Identifier: CC-BY-SA-4.0`)
 - `/var$REPOS_DIR/ZeroProb.jl/docs/CITATIONS.adoc` (line 13: `license = {AGPL-3.0-or-later}`)
 - `/var$REPOS_DIR/ZeroProb.jl/RSR_OUTLINE.adoc` (lines 72, 160 mention AGPL)
 

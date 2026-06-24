@@ -243,7 +243,7 @@ grep -c 'coming soon' /var$REPOS_DIR/HackenbushGames.jl/docs/src/index.md && ech
 
 **Problem:** These are RSR template boilerplate files for a ReScript web project. They have
 nothing to do with a Julia Hackenbush game theory library. `SafeDOMExample.res` line 1 also
-has `SPDX-License-Identifier: AGPL-3.0-or-later` (wrong license).
+has `SPDX-License-Identifier: CC-BY-SA-4.0` (wrong license).
 
 **What to do:**
 1. Delete `examples/SafeDOMExample.res`
@@ -254,7 +254,7 @@ has `SPDX-License-Identifier: AGPL-3.0-or-later` (wrong license).
    - Graph sum
    - Canonical game form
    - GraphViz and ASCII output
-4. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` to the new file.
+4. Add SPDX header `# SPDX-License-Identifier: CC-BY-SA-4.0` to the new file.
 
 **Verification:**
 ```bash
@@ -300,7 +300,7 @@ test -f /var$REPOS_DIR/HackenbushGames.jl/ROADMAP.md && echo "PASS: real roadmap
 **Problem:** All 7 files are unmodified RSR template boilerplate with `{{PROJECT}}` and
 `{{project}}` placeholders throughout (hundreds of occurrences). They define generic
 `Handle`, `Result`, `ExampleStruct` types that have nothing to do with Hackenbush.
-The Zig files have `SPDX-License-Identifier: AGPL-3.0-or-later` (wrong license).
+The Zig files have `SPDX-License-Identifier: CC-BY-SA-4.0` (wrong license).
 This is a pure Julia library with zero FFI needs.
 
 **What to do:**
@@ -445,7 +445,7 @@ test -f /var$REPOS_DIR/HackenbushGames.jl/README.md && echo "PASS" || echo "FAIL
 **Problem:** This is a generic RSR standard description file not specific to this project.
 It references `RSR-template-repo`, `139 repos`, `justfile`, `guix.scm`, `STATE.scm` in
 root (violates SCM path rules), and includes a `Cookbook generation` section. None of this
-is specific to HackenbushGames.jl. Line 212 says `SPDX-License-Identifier: MPL-2.0-or-later` (doubled suffix).
+is specific to HackenbushGames.jl. Line 212 says `SPDX-License-Identifier: CC-BY-SA-4.0` (doubled suffix).
 
 **What to do:**
 1. Either delete `RSR_OUTLINE.adoc` (it is RSR framework docs, not project docs),

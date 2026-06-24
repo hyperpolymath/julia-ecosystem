@@ -2,7 +2,7 @@
 
 [![Project Topology](https://img.shields.io/badge/Project-Topology-9558B2)](TOPOLOGY.md)
 [![Completion Status](https://img.shields.io/badge/Completion-100%25-green)](TOPOLOGY.md)
-[![License](https://img.shields.io/badge/License-PMPL--1.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 
 
 

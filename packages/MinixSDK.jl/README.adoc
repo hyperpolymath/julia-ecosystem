@@ -1,10 +1,10 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 = MinixSDK.jl
 :toc: macro
 
 image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
 image:https://img.shields.io/badge/Completion-15%25-red[15%,link="TOPOLOGY.md"]
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0]
 image:https://img.shields.io/badge/Target-MINIX_3-red.svg[Target: MINIX 3]
 
 *Bringing Julia Logic to the World's Most Reliable Microkernel.*

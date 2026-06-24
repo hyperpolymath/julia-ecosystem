@@ -5,7 +5,7 @@
 [![Project Topology](https://img.shields.io/badge/Project-Topology-9558B2)](TOPOLOGY.md)
 [![Completion Status](https://img.shields.io/badge/Completion-100%25-green)](TOPOLOGY.md)
 
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
 [![Tests: Passing](https://img.shields.io/badge/tests-422%20passing-brightgreen.svg)]()
 
 ## Overview

@@ -114,7 +114,7 @@ which violates the license policy (should be MPL-2.0 or at least not AGPL).
    satisfiability (can run without a solver by showing the generated SMT-LIB2
    script output).
 4. Create `examples/incremental.jl` showing push/pop usage (after TASK 1).
-5. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` to all new files.
+5. Add SPDX header `# SPDX-License-Identifier: CC-BY-SA-4.0` to all new files.
 
 **Verification:**
 ```bash

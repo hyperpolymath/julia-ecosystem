@@ -44,7 +44,7 @@ causing errors. There are 6 orphan blocks:
 Also: duplicate SPDX header on lines 1-2 and 4-5.
 
 **What to do:**
-1. Delete line 4 (`# SPDX-License-Identifier: MPL-2.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`) -- these are duplicates of lines 1-2.
+1. Delete line 4 (`# SPDX-License-Identifier: CC-BY-SA-4.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`) -- these are duplicates of lines 1-2.
 2. Delete lines 101-119 (orphan `demographic_parity` body after the real function's `end` on line 100).
 3. Delete lines 201-238 (orphan `equalized_odds` body after the real function's `end` on line 200).
 4. Delete lines 313-335 (orphan `equal_opportunity` body after the real function's `end` on line 312).
@@ -114,7 +114,7 @@ println("TASK 2 PASSED")
 **Problem:** Duplicate SPDX header on lines 1-2 and 4-5.
 
 **What to do:**
-1. Delete line 4 (`# SPDX-License-Identifier: MPL-2.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`).
+1. Delete line 4 (`# SPDX-License-Identifier: CC-BY-SA-4.0`) and line 5 (`# Copyright (c) 2026 Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>`).
 
 **Verification:**
 ```julia
@@ -172,7 +172,7 @@ copy-paste artifacts from the RSR template or another project.
    - Using `maximize` to compute value scores
    - Using `pareto_frontier` for multi-objective optimization
    - Using `weighted_score` for aggregation
-4. The example file must use `# SPDX-License-Identifier: MPL-2.0` header.
+4. The example file must use `# SPDX-License-Identifier: CC-BY-SA-4.0` header.
 5. The example must actually run: `julia --project=. examples/basic_usage.jl`
 
 **Verification:**

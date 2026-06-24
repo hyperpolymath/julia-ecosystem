@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 = LowLevel.jl
 :toc: macro
 :toclevels: 3
@@ -6,7 +6,7 @@
 
 image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
 image:https://img.shields.io/badge/Completion-85%25-green[85%,link="TOPOLOGY.md"]
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0]
 image:https://img.shields.io/badge/Status-Peak_System-red.svg[Peak System]
 
 *The Definitive Bare-Metal & Coprocessor Foundation for Julia.*

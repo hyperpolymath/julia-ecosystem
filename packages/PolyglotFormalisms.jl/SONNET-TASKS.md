@@ -68,11 +68,11 @@ AGPL-3.0 is the OLD license and must NEVER be used.
 
 **Action:** In each file, replace:
 ```
-SPDX-License-Identifier: AGPL-3.0-or-later
+SPDX-License-Identifier: CC-BY-SA-4.0
 ```
 with:
 ```
-SPDX-License-Identifier: MPL-2.0
+SPDX-License-Identifier: CC-BY-SA-4.0
 ```
 
 **Verification:**
@@ -153,7 +153,7 @@ shadowing Base functions `map`, `filter`, `foldl`, `in`.
 
 Each function MUST have:
 - Full docstring in the same style as `src/arithmetic.jl` (interface signature, behavioral semantics, mathematical properties, examples, edge cases)
-- SPDX header: `# SPDX-License-Identifier: MPL-2.0`
+- SPDX header: `# SPDX-License-Identifier: CC-BY-SA-4.0`
 - Implementation using Julia standard library (`Base.map`, `Base.filter`, `Base.foldl`, `Base.in`)
 
 **Also uncomment in `src/PolyglotFormalisms.jl` line 60:**

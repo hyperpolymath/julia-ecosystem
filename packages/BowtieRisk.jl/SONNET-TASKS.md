@@ -39,7 +39,7 @@ nothing to do with BowtieRisk.jl.
 - `/var$REPOS_DIR/BowtieRisk.jl/ffi/zig/test/integration_test.zig` (line 2)
 - `/var$REPOS_DIR/BowtieRisk.jl/docs/CITATIONS.adoc` (line 13)
 
-**Problem:** These files use `SPDX-License-Identifier: AGPL-3.0-or-later` or `license = {AGPL-3.0-or-later}`. Per CLAUDE.md license policy, AGPL-3.0 is NEVER allowed. All hyperpolymath original code must use MPL-2.0.
+**Problem:** These files use `SPDX-License-Identifier: CC-BY-SA-4.0` or `license = {AGPL-3.0-or-later}`. Per CLAUDE.md license policy, AGPL-3.0 is NEVER allowed. All hyperpolymath original code must use MPL-2.0.
 
 **What to do:**
 1. In each file listed, replace `AGPL-3.0-or-later` with `MPL-2.0`.
@@ -106,7 +106,7 @@ grep -rn '{{' /var$REPOS_DIR/BowtieRisk.jl/ --include="*.md" --include="*.adoc" 
    - Writes a markdown report
    - Exports Mermaid and GraphViz diagrams
    - Shows JSON round-trip (write_model_json / read_model_json)
-3. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` at top.
+3. Add SPDX header `# SPDX-License-Identifier: CC-BY-SA-4.0` at top.
 
 **Verification:**
 ```julia

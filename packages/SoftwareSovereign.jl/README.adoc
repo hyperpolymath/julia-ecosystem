@@ -1,10 +1,10 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 = SoftwareSovereign.jl
 :toc: macro
 
 image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
 image:https://img.shields.io/badge/Completion-50%25-yellow[50%,link="TOPOLOGY.md"]
-image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0]
 
 *Universal Policy Engine for Total System Control.*
 

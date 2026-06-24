@@ -99,7 +99,7 @@ grep -c "MPL-2.0" STATE.scm META.scm ECOSYSTEM.scm AGENTIC.scm NEUROSYM.scm PLAY
 - `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/build.zig` (line 2)
 - `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (line 2)
 
-**Problem:** All three Zig files have `SPDX-License-Identifier: AGPL-3.0-or-later`.
+**Problem:** All three Zig files have `SPDX-License-Identifier: CC-BY-SA-4.0`.
 Must be `MPL-2.0`.
 
 **What to do:**
@@ -281,7 +281,7 @@ irrelevant.
    the README.md Quick Start section as a guide.
 4. Create `examples/historical_analysis.jl` demonstrating phase detection, instability events,
    and conflict intensity with synthetic data.
-5. Add `# SPDX-License-Identifier: MPL-2.0` as the first line of each new file.
+5. Add `# SPDX-License-Identifier: CC-BY-SA-4.0` as the first line of each new file.
 
 **Verification:**
 ```bash
@@ -356,7 +356,7 @@ placeholders. The actual Julia code is at v0.1.0 with all core features implemen
 
 **What to do:**
 1. Replace the entire file with a roadmap specific to Cliodynamics.jl.
-2. Add `// SPDX-License-Identifier: MPL-2.0` as line 1 (already present).
+2. Add `// SPDX-License-Identifier: CC-BY-SA-4.0` as line 1 (already present).
 3. Mark v0.1.0 milestones as complete:
    - Core population dynamics models
    - Elite dynamics analysis

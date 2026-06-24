@@ -376,7 +376,7 @@ grep -c "Jewell" docs/CITATIONS.adoc
 **What to do:**
 1. Delete both files.
 2. Create a new `examples/growth_decomposition.jl` example file that demonstrates the core Cliometrics.jl workflow (loading data, calculating growth rates, decomposing growth, convergence analysis).
-3. Add SPDX header `# SPDX-License-Identifier: MPL-2.0` and author line.
+3. Add SPDX header `# SPDX-License-Identifier: CC-BY-SA-4.0` and author line.
 4. The example should be runnable (use synthetic data since we have no bundled CSV files).
 
 **Verification:**

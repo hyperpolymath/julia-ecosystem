@@ -192,7 +192,7 @@ println("PASS: index.md updated with real content")
 - `/var$REPOS_DIR/Exnovation.jl/examples/SafeDOMExample.res` (line 1)
 - `/var$REPOS_DIR/Exnovation.jl/docs/CITATIONS.adoc` (line 13)
 
-**Problem:** Five files use `SPDX-License-Identifier: AGPL-3.0-or-later`. Per
+**Problem:** Five files use `SPDX-License-Identifier: CC-BY-SA-4.0`. Per
 CLAUDE.md license policy: "NEVER use AGPL-3.0 (old license, replaced by MPL-2.0)".
 The `docs/CITATIONS.adoc` also says `license = {AGPL-3.0-or-later}` in the BibTeX block.
 

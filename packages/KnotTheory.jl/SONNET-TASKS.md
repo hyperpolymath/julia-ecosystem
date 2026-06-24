@@ -354,7 +354,7 @@ do with knot theory:
 3. Create `examples/basic_usage.jl` with actual knot theory examples:
 
 ```julia
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-License-Identifier: CC-BY-SA-4.0
 # Basic usage examples for KnotTheory.jl
 
 using KnotTheory

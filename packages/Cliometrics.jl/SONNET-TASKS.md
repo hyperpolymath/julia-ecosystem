@@ -4,7 +4,7 @@
 > **Purpose:** Unambiguous instructions for Sonnet to complete all stubs, TODOs, and placeholder code.
 > **Honest completion before this file:** 35%
 
-The Julia source code (`src/Cliometrics.jl`) has 7 implemented functions out of 11 exported symbols. Four exported functions have NO implementation at all: `interpolate_missing_years`, `quantify_institutions`, `counterfactual_scenario`, and `estimate_treatment_effect`. The README claims features (sigma-convergence, outlier detection, cross-country alignment, long-run trend analysis) that have zero code behind them. The entire RSR template layer (Idris2 ABI, Zig FFI, contractiles, SCM files) is uncustomized boilerplate with `{{PROJECT}}` placeholders throughout. The SCM directory is misspelled (`.machines_readable/6scm/` instead of `.machine_readable/`). Multiple files still use AGPL-3.0-or-later instead of MPL-2.0.
+The Julia source code (`src/Cliometrics.jl`) has 7 implemented functions out of 11 exported symbols. Four exported functions have NO implementation at all: `interpolate_missing_years`, `quantify_institutions`, `counterfactual_scenario`, and `estimate_treatment_effect`. The README claims features (sigma-convergence, outlier detection, cross-country alignment, long-run trend analysis) that have zero code behind them. The entire RSR template layer (Idris2 ABI, Zig FFI, contractiles, SCM files) is uncustomized boilerplate with `JULIA_ECOSYSTEM` placeholders throughout. The SCM directory is misspelled (`.machines_readable/6scm/` instead of `.machine_readable/`). Multiple files still use AGPL-3.0-or-later instead of MPL-2.0.
 
 ---
 
@@ -229,7 +229,7 @@ cd /var$REPOS_DIR/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm" --incl
 
 ---
 
-## TASK 7: Replace `{{PROJECT}}` / `{{REPO}}` / `{{OWNER}}` / `{{FORGE}}` template placeholders (HIGH)
+## TASK 7: Replace `JULIA_ECOSYSTEM` / `julia-ecosystem` / `hyperpolymath` / `github.com` template placeholders (HIGH)
 
 **Files:**
 - `/var$REPOS_DIR/Cliometrics.jl/src/abi/Types.idr` (lines 6, 7, 11)
@@ -238,26 +238,26 @@ cd /var$REPOS_DIR/Cliometrics.jl && grep -rn "AGPL-3.0" --include="*.scm" --incl
 - `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/build.zig` (lines 1, 12, 23, 35, 36, 82)
 - `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/src/main.zig` (lines 1, 12, and all `{{project}}_` function names)
 - `/var$REPOS_DIR/Cliometrics.jl/ffi/zig/test/integration_test.zig` (line 1 and all `{{project}}_` references)
-- `/var$REPOS_DIR/Cliometrics.jl/ABI-FFI-README.md` (all `{{PROJECT}}` and `{{project}}` occurrences)
+- `/var$REPOS_DIR/Cliometrics.jl/ABI-FFI-README.md` (all `JULIA_ECOSYSTEM` and `{{project}}` occurrences)
 - `/var$REPOS_DIR/Cliometrics.jl/CODE_OF_CONDUCT.md` (lines 9, 10, 313)
 - `/var$REPOS_DIR/Cliometrics.jl/CONTRIBUTING.md` (lines 2, 3, 9, 10, 20, 89-92)
 - `/var$REPOS_DIR/Cliometrics.jl/SECURITY.md` (lines 9, 10, 43, 206, 325, 374, 386, 387)
 - `/var$REPOS_DIR/Cliometrics.jl/0-AI-MANIFEST.a2ml` (line 7, 56)
 
-**Problem:** The entire RSR template layer was never customized. Every `{{PROJECT}}`, `{{project}}`, `{{OWNER}}`, `{{REPO}}`, and `{{FORGE}}` placeholder is still present, making the Idris2 ABI, Zig FFI, and community files non-functional.
+**Problem:** The entire RSR template layer was never customized. Every `JULIA_ECOSYSTEM`, `{{project}}`, `hyperpolymath`, `julia-ecosystem`, and `github.com` placeholder is still present, making the Idris2 ABI, Zig FFI, and community files non-functional.
 
 **What to do:**
-1. Replace `{{PROJECT}}` with `Cliometrics` (capitalized, for module/display names).
+1. Replace `JULIA_ECOSYSTEM` with `Cliometrics` (capitalized, for module/display names).
 2. Replace `{{project}}` with `cliometrics` (lowercase, for C symbols and file names).
-3. Replace `{{OWNER}}` with `hyperpolymath`.
-4. Replace `{{REPO}}` with `Cliometrics.jl`.
-5. Replace `{{FORGE}}` with `github.com`.
+3. Replace `hyperpolymath` with `hyperpolymath`.
+4. Replace `julia-ecosystem` with `Cliometrics.jl`.
+5. Replace `github.com` with `github.com`.
 6. Replace `[YOUR-REPO-NAME]` with `Cliometrics.jl` in `0-AI-MANIFEST.a2ml`.
 7. Replace `{{SECURITY_EMAIL}}` with `jonathan.jewell@open.ac.uk` in SECURITY.md if present.
 
 **Verification:**
 ```bash
-cd /var$REPOS_DIR/Cliometrics.jl && grep -rn '{{PROJECT}}\|{{project}}\|{{OWNER}}\|{{REPO}}\|{{FORGE}}\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
+cd /var$REPOS_DIR/Cliometrics.jl && grep -rn 'JULIA_ECOSYSTEM\|{{project}}\|hyperpolymath\|julia-ecosystem\|github.com\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
 # Should return zero lines
 ```
 
@@ -572,7 +572,7 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 grep -rn "AGPL-3.0" . --include="*.scm" --include="*.zig" --include="*.res" --include="*.adoc" --include="*.jl" | grep -v ".git/" | grep -v "SONNET-TASKS"
 
 # 3. No template placeholders remain
-grep -rn '{{PROJECT}}\|{{project}}\|{{OWNER}}\|{{REPO}}\|{{FORGE}}\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
+grep -rn 'JULIA_ECOSYSTEM\|{{project}}\|hyperpolymath\|julia-ecosystem\|github.com\|\[YOUR-REPO-NAME\]' . --include="*.idr" --include="*.zig" --include="*.md" --include="*.a2ml" --include="*.adoc" | grep -v ".git/" | grep -v "SONNET-TASKS"
 
 # 4. No PLMP typos remain
 grep -rn "PLMP" . --include="*" | grep -v ".git/" | grep -v "SONNET-TASKS"

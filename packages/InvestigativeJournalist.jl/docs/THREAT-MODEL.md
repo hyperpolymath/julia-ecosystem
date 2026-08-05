@@ -1,16 +1,16 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-<!-- Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}> -->
+<!-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk> -->
 
-# Threat Model: {{PROJECT_NAME}}
+# Threat Model: Overview
 
 ## Document Info
 
 | Field         | Value                          |
 |---------------|--------------------------------|
-| Project       | {{PROJECT_NAME}}               |
+| Project       | Overview               |
 | Version       | 1.0                            |
-| Last Reviewed | {{DATE}}                       |
-| Author        | {{AUTHOR}}                     |
+| Last Reviewed | 2026-08-05                       |
+| Author        | Jonathan D.A. Jewell                     |
 | Methodology   | STRIDE                         |
 
 ## Scope
@@ -33,7 +33,7 @@
 
 ## System Overview
 
-Brief description of {{PROJECT_NAME}} and its architecture.
+Brief description of Overview and its architecture.
 
 > See [TOPOLOGY.md](../TOPOLOGY.md) for the full architecture diagram and completion dashboard.
 

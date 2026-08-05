@@ -247,7 +247,7 @@ gcc -o example example.c -l{{project}} -L./zig-out/lib
 ### From Idris2
 
 ```idris
-import {{PROJECT}}.ABI.Foreign
+import JULIA_ECOSYSTEM.ABI.Foreign
 
 main : IO ()
 main = do

@@ -5,14 +5,14 @@
 TEMPLATE INSTRUCTIONS (delete this block before publishing)
 ============================================================================
 Replace all {{PLACEHOLDER}} values with your information:
-  {{PROJECT_NAME}}     - Your project name
+  Overview     - Your project name
   hyperpolymath            - GitHub username or org (e.g., hyperpolymath)
   Cliometrics.jl             - Repository name
   jonathan.jewell@open.ac.uk   - Security contact email
   {{PGP_FINGERPRINT}}  - Your PGP key fingerprint (40 chars, no spaces)
   {{PGP_KEY_URL}}      - URL to your public PGP key
   {{WEBSITE}}          - Your website/domain
-  {{CURRENT_YEAR}}     - Current year for copyright
+  2026     - Current year for copyright
 
 Optional: Remove sections that don't apply (e.g., PGP if you don't use it)
 ============================================================================
@@ -348,7 +348,7 @@ To stay informed about security updates:
 
 ## Security Best Practices
 
-When using {{PROJECT_NAME}}, we recommend:
+When using Overview, we recommend:
 
 ### General
 
@@ -399,8 +399,8 @@ This security policy may be updated from time to time. Significant changes will 
 
 ---
 
-*Thank you for helping keep {{PROJECT_NAME}} and its users safe.* 🛡️
+*Thank you for helping keep Overview and its users safe.* 🛡️
 
 ---
 
-<sub>Last updated: {{CURRENT_YEAR}} · Policy version: 1.0.0</sub>
+<sub>Last updated: 2026 · Policy version: 1.0.0</sub>

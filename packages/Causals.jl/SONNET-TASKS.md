@@ -18,7 +18,7 @@ The README claims "production-ready" and "complete with comprehensive test cover
 - Both example files have severe API mismatches and will not run
 - No tests exist for DoCalculus, Counterfactuals, matching, stratification, or doubly_robust
 - 6 of 7 docs pages referenced in `docs/make.jl` do not exist
-- The ABI/FFI Idris2/Zig files are unmodified templates with `{{PROJECT}}` placeholders
+- The ABI/FFI Idris2/Zig files are unmodified templates with `JULIA_ECOSYSTEM` placeholders
 - The `examples/` directory contains two unrelated non-Julia files (SafeDOMExample.res, web-project-deno.json) that should not be there
 
 ---

@@ -1,6 +1,6 @@
 {{~ Aditionally delete this line and fill out the template below ~}}
 
-# {{PROJECT}} ABI/FFI Documentation
+# JULIA_ECOSYSTEM ABI/FFI Documentation
 
 ## Overview
 
@@ -247,7 +247,7 @@ gcc -o example example.c -l{{project}} -L./zig-out/lib
 ### From Idris2
 
 ```idris
-import {{PROJECT}}.ABI.Foreign
+import JULIA_ECOSYSTEM.ABI.Foreign
 
 main : IO ()
 main = do
@@ -380,6 +380,6 @@ When modifying the ABI/FFI:
 
 - [Idris2 Documentation](https://idris2.readthedocs.io)
 - [Zig Documentation](https://ziglang.org/documentation/master/)
-- [Rhodium Standard Repositories](https://github.com/{{OWNER}}/rhodium-standard-repositories)
+- [Rhodium Standard Repositories](https://github.com/hyperpolymath/rhodium-standard-repositories)
 - [FFI Migration Guide](../ffi-migration-guide.md)
 - [ABI Migration Guide](../abi-migration-guide.md)

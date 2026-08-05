@@ -17,7 +17,7 @@ arrays or identity values.
 
 There is also a module load crash: two `__init__()` functions compete, three declared
 extensions have no source files, the advanced hardware module is never included but
-tests reference it, and template placeholders `{{PROJECT}}` are never replaced in 13 files.
+tests reference it, and template placeholders `JULIA_ECOSYSTEM` are never replaced in 13 files.
 
 ---
 
@@ -574,9 +574,9 @@ println("TASK 10 PASS")
 
 ## TASK 11: Replace Template Placeholders in ABI/FFI Files
 
-**Files (13 files with `{{PROJECT}}` or `{{project}}` placeholders):**
-- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Types.idr` (3 occurrences: `{{PROJECT}}.ABI.Types`, etc.)
-- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Layout.idr` (2 occurrences: `{{PROJECT}}.ABI.Layout`, imports)
+**Files (13 files with `JULIA_ECOSYSTEM` or `{{project}}` placeholders):**
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Types.idr` (3 occurrences: `JULIA_ECOSYSTEM.ABI.Types`, etc.)
+- `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Layout.idr` (2 occurrences: `JULIA_ECOSYSTEM.ABI.Layout`, imports)
 - `/var$REPOS_DIR/ProvenCrypto.jl/src/abi/Foreign.idr` (14 occurrences: module name, all `%foreign` declarations)
 - `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/build.zig` (6 occurrences: library name, header, benchmark)
 - `/var$REPOS_DIR/ProvenCrypto.jl/ffi/zig/src/main.zig` (19 occurrences: all export functions)
@@ -591,11 +591,11 @@ Idris modules will not compile, the Zig code will not build, and the workflows r
 a nonexistent project name.
 
 **What to do:**
-1. Replace `{{PROJECT}}` with `ProvenCrypto` (capitalized, for module names and titles).
+1. Replace `JULIA_ECOSYSTEM` with `ProvenCrypto` (capitalized, for module names and titles).
 2. Replace `{{project}}` with `provencrypto` (lowercase, for library names and C symbols).
-3. Replace `{{OWNER}}` with `hyperpolymath`.
-4. Replace `{{FORGE}}` with `github.com`.
-5. Replace `{{REPO}}` with `ProvenCrypto.jl`.
+3. Replace `hyperpolymath` with `hyperpolymath`.
+4. Replace `github.com` with `github.com`.
+5. Replace `julia-ecosystem` with `ProvenCrypto.jl`.
 
 **Verification:**
 ```bash

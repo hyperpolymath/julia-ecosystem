@@ -11,7 +11,7 @@ macro. The tests are meaningful and would pass given an installed solver.
 However: 4 exported symbols have no implementation (`push!`, `pop!`, `get_model`,
 `from_smtlib`), the docs reference features that do not exist (`solver_options`,
 named assertions, `unsat_core`), the ABI/FFI layer is unmodified RSR template
-boilerplate with `{{PROJECT}}` placeholders everywhere, every RSR community file
+boilerplate with `JULIA_ECOSYSTEM` placeholders everywhere, every RSR community file
 still has `{{PLACEHOLDER}}` tokens, there is no `.machine_readable/` directory,
 no `.editorconfig`, no `.gitignore`, no `.bot_directives/`, the CodeQL workflow
 scans for Rust (not Julia), the examples directory contains ReScript and Deno
@@ -227,15 +227,15 @@ println("TASK 4 PASSED")
 ## TASK 5: Replace All {{PLACEHOLDER}} Tokens in RSR Files
 
 **Files:**
-- `/var$REPOS_DIR/SMTLib.jl/SECURITY.md` ({{OWNER}}, {{REPO}}, {{PROJECT_NAME}}, etc.)
-- `/var$REPOS_DIR/SMTLib.jl/CONTRIBUTING.md` ({{FORGE}}, {{OWNER}}, {{REPO}})
-- `/var$REPOS_DIR/SMTLib.jl/CODE_OF_CONDUCT.md` ({{OWNER}}, {{REPO}}, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/SECURITY.md` (hyperpolymath, julia-ecosystem, Overview, etc.)
+- `/var$REPOS_DIR/SMTLib.jl/CONTRIBUTING.md` (github.com, hyperpolymath, julia-ecosystem)
+- `/var$REPOS_DIR/SMTLib.jl/CODE_OF_CONDUCT.md` (hyperpolymath, julia-ecosystem, etc.)
 - `/var$REPOS_DIR/SMTLib.jl/docs/CITATIONS.adoc` (wrong project name, AGPL license ref)
 - `/var$REPOS_DIR/SMTLib.jl/ROADMAP.adoc` (says "YOUR Template Repo Roadmap")
 - `/var$REPOS_DIR/SMTLib.jl/ABI-FFI-README.md` (line 1: "delete this line")
 
 **Problem:**
-Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
+Dozens of `hyperpolymath`, `julia-ecosystem`, `github.com`, `Overview`,
 `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`, etc. remain unreplaced.
 `ROADMAP.adoc` line 2 says "YOUR Template Repo Roadmap." `CITATIONS.adoc` cites
 "rsr-template-repo" with AGPL license. The ABI-FFI-README.md line 1 still says
@@ -243,16 +243,16 @@ Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
 
 **What to do:**
 1. In SECURITY.md:
-   - `{{PROJECT_NAME}}` -> `SMTLib.jl`
-   - `{{OWNER}}` -> `hyperpolymath`
-   - `{{REPO}}` -> `SMTLib.jl`
+   - `Overview` -> `SMTLib.jl`
+   - `hyperpolymath` -> `hyperpolymath`
+   - `julia-ecosystem` -> `SMTLib.jl`
    - `{{SECURITY_EMAIL}}` -> `jonathan.jewell@open.ac.uk`
    - Remove the template instruction comment block (lines 3-19).
    - Remove PGP sections if not applicable.
 2. In CONTRIBUTING.md:
-   - `{{FORGE}}` -> `github.com`
-   - `{{OWNER}}` -> `hyperpolymath`
-   - `{{REPO}}` -> `SMTLib.jl`
+   - `github.com` -> `github.com`
+   - `hyperpolymath` -> `hyperpolymath`
+   - `julia-ecosystem` -> `SMTLib.jl`
 3. In CODE_OF_CONDUCT.md:
    - Same replacements as above.
    - Remove template instruction block.
@@ -265,7 +265,7 @@ Dozens of `{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{PROJECT_NAME}}`,
    - Add real milestones reflecting the actual state of the project.
 6. In ABI-FFI-README.md:
    - Delete line 1 (`{{~ Aditionally delete this line...}}`).
-   - Replace `{{PROJECT}}` with `SMTLib` and `{{project}}` with `smtlib`.
+   - Replace `JULIA_ECOSYSTEM` with `SMTLib` and `{{project}}` with `smtlib`.
    - Replace `{{LICENSE}}` with `MPL-2.0`.
 
 **Verification:**
@@ -274,7 +274,7 @@ cd /var$REPOS_DIR/SMTLib.jl
 grep -rn '{{' --include='*.md' --include='*.adoc' . | grep -v '.git/' | grep -v 'contractiles/' | grep -v 'ABI-FFI' | head -5
 # Should return NO matches (excluding contractile templates which are allowed)
 echo "---"
-grep -c '{{PROJECT}}' ABI-FFI-README.md
+grep -c 'JULIA_ECOSYSTEM' ABI-FFI-README.md
 # Should return 0
 echo "---"
 head -1 ROADMAP.adoc | grep -v 'YOUR'
@@ -284,7 +284,7 @@ echo "TASK 5 PASSED (if all above are empty/0)"
 
 ---
 
-## TASK 6: Replace All {{PROJECT}} Placeholders in ABI/FFI Files
+## TASK 6: Replace All JULIA_ECOSYSTEM Placeholders in ABI/FFI Files
 
 **Files:**
 - `/var$REPOS_DIR/SMTLib.jl/src/abi/Types.idr` (lines 6, 11)
@@ -295,14 +295,14 @@ echo "TASK 5 PASSED (if all above are empty/0)"
 - `/var$REPOS_DIR/SMTLib.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, etc.)
 
 **Problem:**
-Every ABI and FFI file is the raw RSR template with `{{PROJECT}}` and
+Every ABI and FFI file is the raw RSR template with `JULIA_ECOSYSTEM` and
 `{{project}}` placeholders. None of these files will compile. Additionally,
 the SPDX headers in the Zig files say `AGPL-3.0-or-later` instead of
 `MPL-2.0`.
 
 **What to do:**
-1. In all `.idr` files: replace `{{PROJECT}}` with `SMTLib`.
-2. In all `.zig` files: replace `{{PROJECT}}` with `SMTLib` and `{{project}}`
+1. In all `.idr` files: replace `JULIA_ECOSYSTEM` with `SMTLib`.
+2. In all `.zig` files: replace `JULIA_ECOSYSTEM` with `SMTLib` and `{{project}}`
    with `smtlib`.
 3. In all `.zig` files: change SPDX from `AGPL-3.0-or-later` to
    `MPL-2.0`.
@@ -314,7 +314,7 @@ the SPDX headers in the Zig files say `AGPL-3.0-or-later` instead of
 **Verification:**
 ```bash
 cd /var$REPOS_DIR/SMTLib.jl
-grep -rn '{{PROJECT}}\|{{project}}' src/abi/ ffi/ | head -5
+grep -rn 'JULIA_ECOSYSTEM\|{{project}}' src/abi/ ffi/ | head -5
 # Should return 0 matches
 grep -rn 'AGPL' src/abi/ ffi/ | head -5
 # Should return 0 matches

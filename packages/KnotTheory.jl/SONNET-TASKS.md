@@ -194,39 +194,39 @@ cd /var$REPOS_DIR/KnotTheory.jl && \
 
 ## TASK 5: Replace all unreplaced `{{PLACEHOLDER}}` template markers (HIGH)
 
-**Problem:** Ten files still contain unreplaced `{{PROJECT}}`, `{{project}}`,
-`{{OWNER}}`, `{{REPO}}`, `{{FORGE}}`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`,
-`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{CURRENT_YEAR}}`, `{{PROJECT_NAME}}`,
-`{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{MAIN_BRANCH}}`,
+**Problem:** Ten files still contain unreplaced `JULIA_ECOSYSTEM`, `{{project}}`,
+`hyperpolymath`, `julia-ecosystem`, `github.com`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`,
+`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `2026`, `Overview`,
+`j.d.a.jewell@open.ac.uk`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `main`,
 and `{{LICENSE}}` markers from the RSR template. These files are:
 
-1. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/build.zig` -- `{{PROJECT}}`, `{{project}}`
-2. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/src/main.zig` -- `{{PROJECT}}`, `{{project}}`
-3. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/test/integration_test.zig` -- `{{PROJECT}}`, `{{project}}`
-4. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Types.idr` -- `{{PROJECT}}`
-5. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Layout.idr` -- `{{PROJECT}}`
-6. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Foreign.idr` -- `{{PROJECT}}`, `{{project}}`
-7. `/var$REPOS_DIR/KnotTheory.jl/ABI-FFI-README.md` -- `{{PROJECT}}`, `{{project}}`, `{{LICENSE}}`
-8. `/var$REPOS_DIR/KnotTheory.jl/SECURITY.md` -- `{{OWNER}}`, `{{REPO}}`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`, `{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{CURRENT_YEAR}}`, `{{PROJECT_NAME}}`
-9. `/var$REPOS_DIR/KnotTheory.jl/CODE_OF_CONDUCT.md` -- `{{PROJECT_NAME}}`, `{{OWNER}}`, `{{REPO}}`, `{{CONDUCT_EMAIL}}`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{CURRENT_YEAR}}`, `{{FORGE}}`
-10. `/var$REPOS_DIR/KnotTheory.jl/CONTRIBUTING.md` -- `{{FORGE}}`, `{{OWNER}}`, `{{REPO}}`, `{{MAIN_BRANCH}}`
+1. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/build.zig` -- `JULIA_ECOSYSTEM`, `{{project}}`
+2. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/src/main.zig` -- `JULIA_ECOSYSTEM`, `{{project}}`
+3. `/var$REPOS_DIR/KnotTheory.jl/ffi/zig/test/integration_test.zig` -- `JULIA_ECOSYSTEM`, `{{project}}`
+4. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Types.idr` -- `JULIA_ECOSYSTEM`
+5. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Layout.idr` -- `JULIA_ECOSYSTEM`
+6. `/var$REPOS_DIR/KnotTheory.jl/src/abi/Foreign.idr` -- `JULIA_ECOSYSTEM`, `{{project}}`
+7. `/var$REPOS_DIR/KnotTheory.jl/ABI-FFI-README.md` -- `JULIA_ECOSYSTEM`, `{{project}}`, `{{LICENSE}}`
+8. `/var$REPOS_DIR/KnotTheory.jl/SECURITY.md` -- `hyperpolymath`, `julia-ecosystem`, `{{SECURITY_EMAIL}}`, `{{PGP_FINGERPRINT}}`, `{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `2026`, `Overview`
+9. `/var$REPOS_DIR/KnotTheory.jl/CODE_OF_CONDUCT.md` -- `Overview`, `hyperpolymath`, `julia-ecosystem`, `j.d.a.jewell@open.ac.uk`, `{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `2026`, `github.com`
+10. `/var$REPOS_DIR/KnotTheory.jl/CONTRIBUTING.md` -- `github.com`, `hyperpolymath`, `julia-ecosystem`, `main`
 
 **Fix:** Replace with these values:
-- `{{PROJECT}}` -> `KnotTheory`
+- `JULIA_ECOSYSTEM` -> `KnotTheory`
 - `{{project}}` -> `knottheory`
-- `{{OWNER}}` -> `hyperpolymath`
-- `{{REPO}}` -> `KnotTheory.jl`
-- `{{FORGE}}` -> `github.com`
+- `hyperpolymath` -> `hyperpolymath`
+- `julia-ecosystem` -> `KnotTheory.jl`
+- `github.com` -> `github.com`
 - `{{SECURITY_EMAIL}}` -> `jonathan.jewell@open.ac.uk`
 - `{{PGP_FINGERPRINT}}` -> (remove the PGP section or leave a note to fill in)
 - `{{PGP_KEY_URL}}` -> (remove the PGP section or leave a note to fill in)
 - `{{WEBSITE}}` -> `https://github.com/hyperpolymath`
-- `{{CURRENT_YEAR}}` -> `2026`
-- `{{PROJECT_NAME}}` -> `KnotTheory.jl`
-- `{{CONDUCT_EMAIL}}` -> `jonathan.jewell@open.ac.uk`
+- `2026` -> `2026`
+- `Overview` -> `KnotTheory.jl`
+- `j.d.a.jewell@open.ac.uk` -> `jonathan.jewell@open.ac.uk`
 - `{{CONDUCT_TEAM}}` -> `KnotTheory.jl Maintainers`
 - `{{RESPONSE_TIME}}` -> `48 hours`
-- `{{MAIN_BRANCH}}` -> `main`
+- `main` -> `main`
 - `{{LICENSE}}` -> `MPL-2.0`
 
 Also delete the HTML comment blocks that say "TEMPLATE INSTRUCTIONS (delete this block before publishing)" from SECURITY.md (lines 3-19) and CODE_OF_CONDUCT.md (lines 3-21).

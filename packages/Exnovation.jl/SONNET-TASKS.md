@@ -9,7 +9,7 @@ The Julia core library (`src/Exnovation.jl`) is genuinely complete: 14 exported 
 29+ assertions. However, the repo is littered with uncustomized RSR template files,
 wrong license headers, a missing documentation page, a missing `.machine_readable/`
 directory, a version mismatch, and a `debiasing_actions` gap. The ABI/FFI scaffolding
-(Idris2 + Zig) is entirely boilerplate with `{{PROJECT}}` placeholders -- these template
+(Idris2 + Zig) is entirely boilerplate with `JULIA_ECOSYSTEM` placeholders -- these template
 files add no value for a pure-Julia package.
 
 ---
@@ -223,7 +223,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: no AGPL-3.0 references remain"; else ech
 - `/var$REPOS_DIR/Exnovation.jl/ABI-FFI-README.md`
 
 **Problem:** Exnovation.jl is a pure-Julia package. It has no C FFI, no Zig build, and no
-Idris2 ABI. All 7 files above contain raw `{{PROJECT}}` / `{{project}}` template
+Idris2 ABI. All 7 files above contain raw `JULIA_ECOSYSTEM` / `{{project}}` template
 placeholders that have never been customized. They are non-functional boilerplate from
 `rsr-template-repo` and will confuse users.
 
@@ -242,7 +242,7 @@ cd /var$REPOS_DIR/Exnovation.jl
 if [ -d "src/abi" ]; then echo "FAIL: src/abi/ still exists"; exit 1; fi
 if [ -d "ffi" ]; then echo "FAIL: ffi/ still exists"; exit 1; fi
 if [ -f "ABI-FFI-README.md" ]; then echo "FAIL: ABI-FFI-README.md still exists"; exit 1; fi
-count=$(grep -r '{{PROJECT}}\|{{project}}' --include="*.idr" --include="*.zig" --include="*.md" . 2>/dev/null | wc -l)
+count=$(grep -r 'JULIA_ECOSYSTEM\|{{project}}' --include="*.idr" --include="*.zig" --include="*.md" . 2>/dev/null | wc -l)
 if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"; else echo "FAIL: $count template placeholders found"; exit 1; fi
 ```
 
@@ -257,37 +257,37 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
 - `/var$REPOS_DIR/Exnovation.jl/ROADMAP.adoc`
 - `/var$REPOS_DIR/Exnovation.jl/RSR_OUTLINE.adoc`
 
-**Problem:** These files are raw RSR template copies with `{{FORGE}}`, `{{OWNER}}`,
-`{{REPO}}`, `{{PROJECT_NAME}}`, `{{SECURITY_EMAIL}}`, `{{CONDUCT_EMAIL}}`,
-`{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{CURRENT_YEAR}}`, `{{PGP_FINGERPRINT}}`,
-`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{MAIN_BRANCH}}` placeholders.
+**Problem:** These files are raw RSR template copies with `github.com`, `hyperpolymath`,
+`julia-ecosystem`, `Overview`, `{{SECURITY_EMAIL}}`, `j.d.a.jewell@open.ac.uk`,
+`{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `2026`, `{{PGP_FINGERPRINT}}`,
+`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `main` placeholders.
 
 `ROADMAP.adoc` is also a generic template that conflicts with the real `ROADMAP.md`.
 
 **What to do:**
 1. In `CONTRIBUTING.md`, replace:
-   - `{{FORGE}}` with `github.com`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
-   - `{{MAIN_BRANCH}}` with `main`
+   - `github.com` with `github.com`
+   - `hyperpolymath` with `hyperpolymath`
+   - `julia-ecosystem` with `Exnovation.jl`
+   - `main` with `main`
 2. In `CODE_OF_CONDUCT.md`, replace:
-   - `{{PROJECT_NAME}}` with `Exnovation.jl`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
-   - `{{CONDUCT_EMAIL}}` with `jonathan.jewell@open.ac.uk`
+   - `Overview` with `Exnovation.jl`
+   - `hyperpolymath` with `hyperpolymath`
+   - `julia-ecosystem` with `Exnovation.jl`
+   - `j.d.a.jewell@open.ac.uk` with `jonathan.jewell@open.ac.uk`
    - `{{CONDUCT_TEAM}}` with `Exnovation.jl Maintainers`
    - `{{RESPONSE_TIME}}` with `72 hours`
-   - `{{CURRENT_YEAR}}` with `2026`
-   - `{{FORGE}}` with `github.com`
+   - `2026` with `2026`
+   - `github.com` with `github.com`
 3. In `SECURITY.md`, replace:
-   - `{{PROJECT_NAME}}` with `Exnovation.jl`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
+   - `Overview` with `Exnovation.jl`
+   - `hyperpolymath` with `hyperpolymath`
+   - `julia-ecosystem` with `Exnovation.jl`
    - `{{SECURITY_EMAIL}}` with `jonathan.jewell@open.ac.uk`
    - `{{PGP_FINGERPRINT}}` with `(not yet configured)`
    - `{{PGP_KEY_URL}}` with `(not yet configured)`
    - `{{WEBSITE}}` with `https://github.com/hyperpolymath/Exnovation.jl`
-   - `{{CURRENT_YEAR}}` with `2026`
+   - `2026` with `2026`
 4. Delete `ROADMAP.adoc` (the real roadmap is `ROADMAP.md`).
 5. In `RSR_OUTLINE.adoc`, replace the title on line 1 from `= RSR Template Repository`
    to `= Exnovation.jl RSR Outline`. Replace the SPDX identifier on line 212 from

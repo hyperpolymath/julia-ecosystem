@@ -423,12 +423,12 @@ cd /var$REPOS_DIR/Cliodynamics.jl
 - `/var$REPOS_DIR/Cliodynamics.jl/src/abi/Layout.idr` (line 8)
 - `/var$REPOS_DIR/Cliodynamics.jl/src/abi/Foreign.idr` (lines 9, 23, 35, 49, 77, 98, 125, 152, 164, 185, 211)
 
-**Problem:** Every Idris2 file has `{{PROJECT}}` and `{{project}}` placeholders throughout.
-Module names are `{{PROJECT}}.ABI.Types`, etc. FFI declarations reference `lib{{project}}`.
+**Problem:** Every Idris2 file has `JULIA_ECOSYSTEM` and `{{project}}` placeholders throughout.
+Module names are `JULIA_ECOSYSTEM.ABI.Types`, etc. FFI declarations reference `lib{{project}}`.
 These files will not compile.
 
 **What to do:**
-1. In all three `.idr` files, replace `{{PROJECT}}` with `Cliodynamics` (uppercase for module names).
+1. In all three `.idr` files, replace `JULIA_ECOSYSTEM` with `Cliodynamics` (uppercase for module names).
 2. Replace `{{project}}` with `cliodynamics` (lowercase for library names and function prefixes).
 3. In `Types.idr`: Replace `ExampleStruct` with a cliodynamics-relevant struct, e.g.,
    `SimulationResult` with fields `time : Double`, `population : Double`, `elites : Double`.
@@ -439,7 +439,7 @@ These files will not compile.
 **Verification:**
 ```bash
 cd /var$REPOS_DIR/Cliodynamics.jl
-! grep -r "{{PROJECT}}" src/abi/ && \
+! grep -r "JULIA_ECOSYSTEM" src/abi/ && \
 ! grep -r "{{project}}" src/abi/ && \
 grep -q "Cliodynamics" src/abi/Types.idr && \
 grep -q "Cliodynamics" src/abi/Layout.idr && \
@@ -456,13 +456,13 @@ echo "PASS" || echo "FAIL"
 - `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/build.zig` (lines 1, 12, 34, 37)
 - `/var$REPOS_DIR/Cliodynamics.jl/ffi/zig/test/integration_test.zig` (lines 1, 10-17, 24-25, 31-32, 34, 39, 48-49, 51, 56, 65-66, 68-69, 75, 84, 96-97, 99, 110, 118, 129-130, 131, 138-139, 143, 145-146, 149, 158-159, 168, 174)
 
-**Problem:** Every Zig file has `{{project}}` and `{{PROJECT}}` template placeholders.
+**Problem:** Every Zig file has `{{project}}` and `JULIA_ECOSYSTEM` template placeholders.
 Function names like `{{project}}_init()`, library name `"{{project}}"`, etc. These files
 will not compile.
 
 **What to do:**
 1. In all three `.zig` files, replace `{{project}}` with `cliodynamics` (lowercase).
-2. Replace `{{PROJECT}}` with `Cliodynamics` (where used as display name).
+2. Replace `JULIA_ECOSYSTEM` with `Cliodynamics` (where used as display name).
 3. In `build.zig` line 34: The header reference `include/{{project}}.h` should become
    `include/cliodynamics.h`. Note: this header file does not exist yet -- that is acceptable
    for template infrastructure.
@@ -471,7 +471,7 @@ will not compile.
 ```bash
 cd /var$REPOS_DIR/Cliodynamics.jl
 ! grep -r "{{project}}" ffi/ && \
-! grep -r "{{PROJECT}}" ffi/ && \
+! grep -r "JULIA_ECOSYSTEM" ffi/ && \
 grep -q "cliodynamics" ffi/zig/src/main.zig && \
 grep -q "cliodynamics" ffi/zig/build.zig && \
 grep -q "cliodynamics" ffi/zig/test/integration_test.zig && \
@@ -593,7 +593,7 @@ grep -r "AGPL" .machine_readable/ ffi/ src/abi/ && echo "FAIL" || echo "OK"
 
 echo ""
 echo "=== 3. No template placeholders ==="
-grep -r "{{project}}\|{{PROJECT}}\|\[YOUR-REPO-NAME\]\|\[TODO\]" \
+grep -r "{{project}}\|JULIA_ECOSYSTEM\|\[YOUR-REPO-NAME\]\|\[TODO\]" \
   .machine_readable/ src/abi/ ffi/ 0-AI-MANIFEST.a2ml ROADMAP.adoc && echo "FAIL" || echo "OK"
 
 echo ""

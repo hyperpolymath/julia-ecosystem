@@ -88,25 +88,25 @@ grep -rn "MPL-2.0" ffi/ examples/
 
 ## TASK 3: Substitute ABI/FFI template placeholders (HIGH)
 
-All three Idris2 ABI files and all three Zig FFI files contain unsubstituted `{{PROJECT}}`
+All three Idris2 ABI files and all three Zig FFI files contain unsubstituted `JULIA_ECOSYSTEM`
 and `{{project}}` placeholders from rsr-template-repo. These files cannot compile.
 
-**Files with `{{PROJECT}}` or `{{project}}` placeholders:**
-1. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Types.idr` — line 11 (`{{PROJECT}}.ABI.Types`)
-2. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Layout.idr` — lines 8, 10 (`{{PROJECT}}.ABI.Layout`, `{{PROJECT}}.ABI.Types`)
+**Files with `JULIA_ECOSYSTEM` or `{{project}}` placeholders:**
+1. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Types.idr` — line 11 (`JULIA_ECOSYSTEM.ABI.Types`)
+2. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Layout.idr` — lines 8, 10 (`JULIA_ECOSYSTEM.ABI.Layout`, `JULIA_ECOSYSTEM.ABI.Types`)
 3. `/var$REPOS_DIR/PolyglotFormalisms.jl/src/abi/Foreign.idr` — lines 9, 11, 12, 23, 35, 49, 72, 77, 98, 125, 152, 164, 185, 211 (many instances)
 4. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/src/main.zig` — lines 1, 12, 54, 73, 89, 113, 135, 148, 184, 198, 203, 215, 246, 256, 263, 267, 271
 5. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/build.zig` — lines 1, 13, 23, 34, 82
 6. `/var$REPOS_DIR/PolyglotFormalisms.jl/ffi/zig/test/integration_test.zig` — lines 1, 10-17, 24, 25, 31, 32, 34, 39, 48, 49, 51, 56, etc.
 
 **Action:** In all six files, perform global find-and-replace:
-- `{{PROJECT}}` -> `PolyglotFormalisms`
+- `JULIA_ECOSYSTEM` -> `PolyglotFormalisms`
 - `{{project}}` -> `polyglot_formalisms`
 
 **Verification:**
 ```bash
 cd /var$REPOS_DIR/PolyglotFormalisms.jl
-grep -rn '{{PROJECT}}\|{{project}}' src/abi/ ffi/
+grep -rn 'JULIA_ECOSYSTEM\|{{project}}' src/abi/ ffi/
 # Expected: no output (zero matches)
 grep -c "PolyglotFormalisms" src/abi/Types.idr
 # Expected: at least 1
@@ -511,7 +511,7 @@ println("All 6 modules loaded successfully")
 '
 
 # 3. No template placeholders remain
-grep -rn '{{PROJECT}}\|{{project}}\|{{PLACEHOLDER}}\|{{REPO}}\|{{OWNER}}\|{{FORGE}}' \
+grep -rn 'JULIA_ECOSYSTEM\|{{project}}\|{{PLACEHOLDER}}\|julia-ecosystem\|hyperpolymath\|github.com' \
   src/ ffi/ test/ examples/
 # Expected: no output
 

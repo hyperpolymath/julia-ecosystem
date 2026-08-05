@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: MPL-2.0
+# gitleaks configuration for julia-ecosystem.
+#
+# TWO SYNTAX TRAPS, both silent (no error, no effect) in the pinned gitleaks:
+#   1. Must be `[allowlist]` (singular). `[[allowlists]]` is ignored.
+#   2. `regexes = [...]` is ignored — only `paths` is honoured. A shape-based
+#      rule matching the UUID itself was tried first and suppressed nothing,
+#      so the exclusions below are file-scoped by necessity, not by choice.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = """
+All findings here are public identifiers, not credentials.
+
+registries/ is a VENDORED COPY of the Julia General registry
+(https://github.com/JuliaRegistries/General.git). Its Package.toml and
+Versions.toml files hold package UUIDs and git tree hashes — high-entropy hex
+strings a generic detector cannot distinguish from API keys. 641 of this
+repository's 645 findings are that directory.
+
+Project.toml and Manifest.toml are Julia DEPENDENCY MANIFESTS: by format they
+contain package names, UUIDs and versions, nothing else. The remaining 4
+findings are entries such as AxisKeys = "94b1ba4f-4ee9-5380-92f1-94cde586c3c5",
+which is a public package id.
+"""
+paths = [
+  '''^registries/''',
+  '''(^|/)Project\.toml$''',
+  '''(^|/)Manifest\.toml$''',
+]

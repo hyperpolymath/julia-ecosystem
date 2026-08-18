@@ -20,7 +20,7 @@ function run_design(::QuantDesign, p)
 end
 
 function run_design(::QualDesign, p)
-    println("Running QUALITATIVE design: Prioritizing Hermeneutics and InvestigativeJournalist... 🔍")
+    println("Running QUALITATIVE design: Prioritizing Hermeneutics and InvestigativeJournalism... 🔍")
 end
 
 function run_design(::MixedDesign, p)

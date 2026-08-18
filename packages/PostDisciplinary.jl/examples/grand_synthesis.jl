@@ -13,12 +13,12 @@ kid_learning = LinkedEntity(
 )
 
 union_drive = LinkedEntity(
-    uuid4(), :TradeUnionist, :site_north, :event, 
+    uuid4(), :TradeUnionism, :site_north, :event, 
     Dict(:employer => "TechCorp", :type => "Organizing Drive")
 )
 
 journalist_leak = LinkedEntity(
-    uuid4(), :InvestigativeJournalist, :claim_fraud, :claim, 
+    uuid4(), :InvestigativeJournalism, :claim_fraud, :claim, 
     Dict(:text => "TechCorp overvalued assets", :confidence => 0.95)
 )
 

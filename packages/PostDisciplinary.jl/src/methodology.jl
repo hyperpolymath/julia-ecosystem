@@ -21,7 +21,7 @@ Configures the PostDisciplinary orchestration layer based on the chosen strategy
 """
 function execute_strategy(s::MultiDisciplinary, p)
     println("Mode: MULTIDISCIPLINARY. Running disciplinary modules in parallel... 📊")
-    # Logic to trigger independent runs of Cliodynamics, InvestigativeJournalist, etc.
+    # Logic to trigger independent runs of Cliodynamics, InvestigativeJournalism, etc.
 end
 
 function execute_strategy(s::TransDisciplinary, p)

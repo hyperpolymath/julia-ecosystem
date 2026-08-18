@@ -117,18 +117,18 @@
 - **subdir**: packages/Hyperpolymath.jl
 - **description**: Meta-package aggregating the hyperpolymath Julia ecosystem. Imports and re-exports all domain packages spanning logic/verification, security/forensics, history/social science, organising/action, mathematics/play, orchestration/meta, and the metal layer.
 
-## 14. InvestigativeJournalist.jl
-- **name**: InvestigativeJournalist
+## 14. InvestigativeJournalism.jl
+- **name**: InvestigativeJournalism
 - **uuid**: 379a7c0a-3675-4b32-b948-cb4760c6e442
 - **version**: 0.1.0
-- **subdir**: packages/InvestigativeJournalist.jl
+- **subdir**: packages/InvestigativeJournalism.jl
 - **description**: Digital forensics and investigative analysis toolkit. Provides evidence chain management, claim tracking, source credibility scoring, timeline reconstruction, network analysis of actors, and structured output for investigative reporting workflows.
 
-## 15. JuliaForChildren (JuliaKids.jl)
+## 15. JuliaForChildren (JuliaForChildren.jl)
 - **name**: JuliaForChildren
 - **uuid**: c1c96f90-3ae4-433d-aa60-06e66792fdf1
 - **version**: 0.1.0
-- **subdir**: packages/JuliaKids.jl
+- **subdir**: packages/JuliaForChildren.jl
 - **description**: Educational Julia programming toolkit for children aged 7-14. Provides simplified interfaces for turtle graphics, Minecraft modding, KSP mission planning, game development, robotics, and collaborative coding with accessibility-first design and screen reader support.
 
 ## 16. JuliaPackageSpitter (JuliaPackage-Reuse-Audit.jl)
@@ -243,11 +243,11 @@
 - **subdir**: packages/SoftwareSovereign.jl
 - **description**: Software sovereignty and supply chain analysis. Provides dependency auditing, license compliance checking, SBOM generation, provenance verification, and sovereignty scoring for assessing digital autonomy and reducing vendor lock-in risk.
 
-## 32. TradeUnionist.jl
-- **name**: TradeUnionist
+## 32. TradeUnionism.jl
+- **name**: TradeUnionism
 - **uuid**: 28827ff7-c05d-49d1-8ea0-4ff47f2d6875
 - **version**: 0.1.0
-- **subdir**: packages/TradeUnionist.jl
+- **subdir**: packages/TradeUnionism.jl
 - **description**: Trade union organising and collective bargaining toolkit. Provides membership management, cost proposal modelling, geospatial branch mapping (haversine distance), campaign branding, ballot management, and collective agreement tracking.
 
 ## 33. ViableSystems.jl

@@ -20,7 +20,7 @@ julia-ecosystem/
 │   ├── Cliometrics.jl         # Historical measurement
 │   └── ... (dynamics libraries)
 ├── organizing/
-│   ├── TradeUnionist.jl       # Labor organizing toolkit
+│   ├── TradeUnionism.jl       # Labor organizing toolkit
 │   └── ... (organizing tools)
 ├── application/
 │   └── ... (domain-specific apps)

@@ -28,7 +28,7 @@ Modern problems—AI safety, climate collapse, societal breakdown—are "wicked 
 
 == Core Capabilities
 
-* **Integrated Research Graphs**: Link evidence from `InvestigativeJournalist.jl` with models from `Cliodynamics.jl`.
+* **Integrated Research Graphs**: Link evidence from `InvestigativeJournalism.jl` with models from `Cliodynamics.jl`.
 * **Cross-Theory Verification**: Verify a social value from `Axiology.jl` using a formal proof in `Axiom.jl`.
 * **Universal Ontology**: A common data schema for linking "Entities" (People, Events, Proofs, Claims) across all Hyperpolymath libraries.
 * **Orchestration Layer**: Execute complex, multi-library workflows (e.g., "Analyze historical instability, then find causal factors, then verify safety bounds").

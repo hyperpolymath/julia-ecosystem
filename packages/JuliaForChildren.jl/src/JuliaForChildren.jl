@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
 """
-    JuliaForChildren
+    JuliaKids
 
 Educational Julia programming toolkit for children aged 7-14. Provides
 simplified interfaces for drawing, robotics, Minecraft modding, KSP
@@ -15,7 +15,7 @@ mission planning, game development, and collaborative coding.
 
 # Example
 ```julia
-using JuliaForChildren
+using JuliaKids
 mission = create_mission("Draw a Star", difficulty=:beginner)
 ```
 """

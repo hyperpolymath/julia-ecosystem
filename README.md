@@ -48,8 +48,8 @@ to historical dynamics and labor organizing, this ecosystem provides the
 - <a href="packages/ProvenCrypto.jl" class="jl">ProvenCrypto</a>:
   Formally verified PQC and cryptographic protocols.
 
-- <a href="packages/InvestigativeJournalist.jl"
-  class="jl">InvestigativeJournalist</a>: High-intelligence forensics
+- <a href="packages/InvestigativeJournalism.jl"
+  class="jl">InvestigativeJournalism</a>: High-intelligence forensics
   and secure evidence lockers.
 
 ## 🏛️ History & Social Science
@@ -68,7 +68,7 @@ to historical dynamics and labor organizing, this ecosystem provides the
 
 ## ✊ Organizing & Action
 
-- <a href="packages/TradeUnionist.jl" class="jl">TradeUnionist</a>:
+- <a href="packages/TradeUnionism.jl" class="jl">TradeUnionism</a>:
   Data-driven labor organizing and spatial power mapping.
 
 - <a href="packages/PRComms.jl" class="jl">PRComms</a>: High-integrity
@@ -82,7 +82,7 @@ to historical dynamics and labor organizing, this ecosystem provides the
 
 ## 🎨 Mathematics & Play
 
-- <a href="packages/JuliaKids.jl" class="jl">JuliaKids</a>: Joyful
+- <a href="packages/JuliaForChildren.jl" class="jl">JuliaForChildren</a>: Joyful
   visual coding for children with Minecraft/KSP interop.
 
 - <a href="packages/KnotTheory.jl" class="jl">KnotTheory</a>:

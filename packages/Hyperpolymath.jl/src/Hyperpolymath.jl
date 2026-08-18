@@ -29,7 +29,7 @@ using PolyglotFormalisms
 
 # --- 2. Security & Forensics ---
 using ProvenCrypto
-using InvestigativeJournalist
+using InvestigativeJournalism
 
 # --- 3. History & Social Science ---
 using Cliodynamics
@@ -38,13 +38,13 @@ using Causals
 using ViableSystems
 
 # --- 4. Organizing & Action ---
-using TradeUnionist
+using TradeUnionism
 using PRComms
 using Exnovation
 using BowtieRisk
 
 # --- 5. Mathematics & Play ---
-using JuliaKids
+using JuliaForChildren
 using KnotTheory
 using Skein
 using HackenbushGames
@@ -67,10 +67,10 @@ using FirmwareAudit
 
 # Re-export everything
 export Axiom, Axiology, SMTLib, ZeroProb, PolyglotFormalisms
-export ProvenCrypto, InvestigativeJournalist
+export ProvenCrypto, InvestigativeJournalism
 export Cliodynamics, Cliometrics, Causals, ViableSystems
-export TradeUnionist, PRComms, Exnovation, BowtieRisk
-export JuliaKids, KnotTheory, Skein, HackenbushGames, Cladistics
+export TradeUnionism, PRComms, Exnovation, BowtieRisk
+export JuliaForChildren, KnotTheory, Skein, HackenbushGames, Cladistics
 export PostDisciplinary, JuliaPackageSpitter, MacroPower, ShellIntegration, MinixSDK
 export LowLevel, SiliconCore, AcceleratorGate, QuantumCircuit, HardwareResilience, FirmwareAudit
 

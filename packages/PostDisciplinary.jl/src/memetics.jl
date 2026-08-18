@@ -13,7 +13,7 @@ export Meme, Replicator, mutate, calculate_fitness
 struct Meme
     id::UUID
     content::String
-    origin_library::Symbol # Link to InvestigativeJournalist, Cliodynamics, etc.
+    origin_library::Symbol # Link to InvestigativeJournalism, Cliodynamics, etc.
     variants::Vector{UUID}
 end
 

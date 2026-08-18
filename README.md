@@ -82,7 +82,7 @@ to historical dynamics and labor organizing, this ecosystem provides the
 
 ## 🎨 Mathematics & Play
 
-- <a href="packages/JuliaKids.jl" class="jl">JuliaKids</a>: Joyful
+- <a href="packages/JuliaForChildren.jl" class="jl">JuliaForChildren</a>: Joyful
   visual coding for children with Minecraft/KSP interop.
 
 - <a href="packages/KnotTheory.jl" class="jl">KnotTheory</a>:

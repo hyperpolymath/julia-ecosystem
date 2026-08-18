@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0
-= InvestigativeJournalist.jl
+= InvestigativeJournalism.jl
 :toc: macro
 :toclevels: 2
 :icons: font
@@ -17,7 +17,7 @@ toc::[]
 
 == Overview
 
-InvestigativeJournalist.jl is a Julia toolkit for managing the end-to-end investigative reporting workflow. It provides high-integrity structures for ingesting diverse sources, extracting verifiable claims, and building a corroboration matrix that minimizes editorial and legal risk.
+InvestigativeJournalism.jl is a Julia toolkit for managing the end-to-end investigative reporting workflow. It provides high-integrity structures for ingesting diverse sources, extracting verifiable claims, and building a corroboration matrix that minimizes editorial and legal risk.
 
 == Core Capabilities
 
@@ -31,7 +31,7 @@ InvestigativeJournalist.jl is a Julia toolkit for managing the end-to-end invest
 
 [source,julia]
 ----
-using InvestigativeJournalist
+using InvestigativeJournalism
 
 # Ingest a source document
 doc = ingest_source("docs/leaked_contract.pdf")

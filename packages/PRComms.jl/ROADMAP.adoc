@@ -37,7 +37,7 @@
 
 === Verified Communications
 * [ ] **Axiomatic Content Invariants**: Formally prove that variants contain required proof points.
-* [ ] **Fact-Checking Integration**: Link with `InvestigativeJournalist.jl`.
+* [ ] **Fact-Checking Integration**: Link with `InvestigativeJournalism.jl`.
 
 === Reputation Dynamics
 * [ ] **Reputation Causal Models**: Causal links between PR interventions and market sentiment.

@@ -34,8 +34,8 @@ To provide a seamless computational environment where high-level research across
 * Causal attribution of historical policy interventions in `Causals.jl`.
 
 === ✊ Power & Organizing Track
-* Full spatial "Power Maps" for global labor organizations in `TradeUnionist.jl`.
-* Verified, tamper-proof whistleblower "Drops" in `InvestigativeJournalist.jl`.
+* Full spatial "Power Maps" for global labor organizations in `TradeUnionism.jl`.
+* Verified, tamper-proof whistleblower "Drops" in `InvestigativeJournalism.jl`.
 
 '''
 _Synthesis is not the end, but the beginning of a higher order of knowledge._

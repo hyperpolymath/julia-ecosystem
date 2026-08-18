@@ -28,9 +28,9 @@ If you only need specific disciplinary modules, you do **not** need to install t
 [source,julia]
 ----
 using Pkg
-# Example: Only install Causals and InvestigativeJournalist
+# Example: Only install Causals and InvestigativeJournalism
 Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/Causals.jl")
-Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/InvestigativeJournalist.jl")
+Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/InvestigativeJournalism.jl")
 ----
 
 == Usage
@@ -40,9 +40,9 @@ Pkg.add(url="https://github.com/your-org/julia-ecosystem.git", subdir="packages/
 using Hyperpolymath
 
 # Now you can use EVERYTHING:
-# - InvestigativeJournalist for forensics
+# - InvestigativeJournalism for forensics
 # - Causals for inference
-# - JuliaKids for teaching
+# - JuliaForChildren for teaching
 # - LowLevel for assembly optimization
 # - PostDisciplinary to link them all together
 
@@ -53,8 +53,8 @@ p = PostDisciplinary.ResearchProject("The Everything Project")
 This metapackage re-exports:
 
 * link:packages/Axiom.jl[Axiom.jl], link:packages/Axiology.jl[Axiology.jl], link:packages/SMTLib.jl[SMTLib.jl], link:packages/ZeroProb.jl[ZeroProb.jl], link:packages/PolyglotFormalisms.jl[PolyglotFormalisms.jl]
-* link:packages/ProvenCrypto.jl[ProvenCrypto.jl], link:packages/InvestigativeJournalist.jl[InvestigativeJournalist.jl]
+* link:packages/ProvenCrypto.jl[ProvenCrypto.jl], link:packages/InvestigativeJournalism.jl[InvestigativeJournalism.jl]
 * link:packages/Cliodynamics.jl[Cliodynamics.jl], link:packages/Cliometrics.jl[Cliometrics.jl], link:packages/Causals.jl[Causals.jl]
-* link:packages/TradeUnionist.jl[TradeUnionist.jl], link:packages/PRComms.jl[PRComms.jl], link:packages/Exnovation.jl[Exnovation.jl], link:packages/BowtieRisk.jl[BowtieRisk.jl]
-* link:packages/JuliaKids.jl[JuliaKids.jl], link:packages/KnotTheory.jl[KnotTheory.jl], link:packages/Skein.jl[Skein.jl], link:packages/HackenbushGames.jl[HackenbushGames.jl], link:packages/Cladistics.jl[Cladistics.jl]
+* link:packages/TradeUnionism.jl[TradeUnionism.jl], link:packages/PRComms.jl[PRComms.jl], link:packages/Exnovation.jl[Exnovation.jl], link:packages/BowtieRisk.jl[BowtieRisk.jl]
+* link:packages/JuliaForChildren.jl[JuliaForChildren.jl], link:packages/KnotTheory.jl[KnotTheory.jl], link:packages/Skein.jl[Skein.jl], link:packages/HackenbushGames.jl[HackenbushGames.jl], link:packages/Cladistics.jl[Cladistics.jl]
 * link:packages/PostDisciplinary.jl[PostDisciplinary.jl], link:packages/JuliaPackage-Reuse-Audit.jl[JuliaPackageSpitter.jl], link:packages/MacroPower.jl[MacroPower.jl], link:packages/ShellIntegration.jl[ShellIntegration.jl], link:packages/MinixSDK.jl[MinixSDK.jl], link:packages/LowLevel.jl[LowLevel.jl]

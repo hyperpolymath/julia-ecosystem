@@ -33,6 +33,6 @@ The monorepo holds 34 Julia packages spanning logic/verification, security, soci
 | `packages/LowLevel.jl/`
 | Hardware/metal layer (SiliconCore, AcceleratorGate, QuantumCircuit, etc.) exists
 
-| `packages/TradeUnionist.jl/`
+| `packages/TradeUnionism.jl/`
 | Labor organizing package backs the "organizing" claim
 |===

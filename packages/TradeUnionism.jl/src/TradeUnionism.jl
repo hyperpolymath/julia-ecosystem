@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 """
-    TradeUnionist
+    TradeUnionism
 
 Trade union analytics, membership tracking, and labour economics toolkit. Covers
 worksite registration, member management, organiser conversations, grievance
@@ -15,13 +15,13 @@ handling, collective bargaining analysis, spatial mapping, and union density met
 
 # Example
 ```julia
-using TradeUnionist
+using TradeUnionism
 site = register_worksite("Factory A", 500)
 metrics = UnionMetrics(site)
 calc_density(metrics)
 ```
 """
-module TradeUnionist
+module TradeUnionism
 
 include("types.jl")
 include("organizing.jl")
@@ -59,4 +59,4 @@ export UnionEvent, StrikeVote, Rally, TownHall, CommitteeMeeting, create_event_t
 export build_union_press_release, generate_member_alert
 export UnionLeaderProfile, make_leader_card
 
-end # module TradeUnionist
+end # module TradeUnionism

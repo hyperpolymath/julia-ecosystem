@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0
-= TradeUnionist.jl Roadmap
+= TradeUnionism.jl Roadmap
 
 == v0.1.0 - Organizing Core (Current)
 * [x] Core data models (`Worksite`, `MemberRecord`, `GrievanceCase`).

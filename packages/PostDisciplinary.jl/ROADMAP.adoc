@@ -25,7 +25,7 @@
 * [x] **Impact & Utilisation Tracker**: Tools to measure knowledge transfer and strategic influence.
 * [x] **Research Templates**: Pre-configured skeletons for Wicked Problems, Structural Forensics, and Action Research.
 * [ ] "Bridge Theories": Formal logic for mapping terms between disciplines.
-* [ ] Automated "Literature Synthesis" from `InvestigativeJournalist.jl` records.
+* [ ] Automated "Literature Synthesis" from `InvestigativeJournalism.jl` records.
 * [ ] Conflict resolution between disciplinary models.
 
 == v1.0.0 - Universal Research OS

@@ -48,8 +48,8 @@ to historical dynamics and labor organizing, this ecosystem provides the
 - <a href="packages/ProvenCrypto.jl" class="jl">ProvenCrypto</a>:
   Formally verified PQC and cryptographic protocols.
 
-- <a href="packages/InvestigativeJournalist.jl"
-  class="jl">InvestigativeJournalist</a>: High-intelligence forensics
+- <a href="packages/InvestigativeJournalism.jl"
+  class="jl">InvestigativeJournalism</a>: High-intelligence forensics
   and secure evidence lockers.
 
 ## 🏛️ History & Social Science
@@ -68,7 +68,7 @@ to historical dynamics and labor organizing, this ecosystem provides the
 
 ## ✊ Organizing & Action
 
-- <a href="packages/TradeUnionist.jl" class="jl">TradeUnionist</a>:
+- <a href="packages/TradeUnionism.jl" class="jl">TradeUnionism</a>:
   Data-driven labor organizing and spatial power mapping.
 
 - <a href="packages/PRComms.jl" class="jl">PRComms</a>: High-integrity

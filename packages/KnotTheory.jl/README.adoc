@@ -1,143 +1,230 @@
-= KnotTheory.jl
-:toc: macro
+== KnotTheory.jl
 
-**Julia Toolkit for Knot Theory**
-_Planar diagrams, invariants, and import/export helpers for knot theorists and mathematicians._
+link:TOPOLOGY.md[image:https://img.shields.io/badge/Project-Topology-9558B2[Project
+Topology]]
+link:TOPOLOGY.md[image:https://img.shields.io/badge/Completion-95%25-green[Completion
+Status]]
+link:LICENSE[image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License]]
 
-toc::[]
-
-== What is KnotTheory.jl?
-
-KnotTheory.jl is a **Julia toolkit** designed for:
-- **Planar diagram manipulation** – Create, visualize, and transform knot diagrams.
-- **Invariant computation** – Calculate polynomial invariants (Jones, Alexander, HOMFLY-PT, etc.).
-- **Import/export helpers** – Seamlessly exchange data with other knot theory software (e.g., SnapPy, KnotAtlas).
-- **Formal verification** – Ensure correctness of knot transformations and invariants.
-
-[source,julia]
-----
-using KnotTheory
-
-# Define a trefoil knot
-trefoil = Knot([1, -2, 3, -1, 2, -3])
-
-# Compute the Jones polynomial
-jones_poly = jones_polynomial(trefoil)
-
-# Visualize the knot
-plot(trefoil)
-----
-
-== Features
-
-=== Planar Diagram Tools
-- **Knot and link diagrams** – Create and manipulate planar projections.
-- **Reidemeister moves** – Apply moves programmatically and verify equivalence.
-- **Crossing information** – Track over/under crossings and writhe.
-
-[source,julia]
-----
-# Apply a Reidemeister I move
-new_knot = reidemeister1(trefoil, crossing=1)
-
-# Check if two knots are equivalent
-are_equivalent(trefoil, new_knot)
-----
-
-=== Invariant Calculation
-- **Jones polynomial** – Compute with normalization options.
-- **Alexander polynomial** – Support for both single-variable and multivariable versions.
-- **Khovanov homology** – Categorification of the Jones polynomial.
-
-[source,julia]
-----
-# Compute the Alexander polynomial
-alexander_poly = alexander_polynomial(trefoil)
-
-# Khovanov homology
-khovanov = khovanov_homology(trefoil)
-----
-
-=== Import/Export
-- **SnapPy integration** – Import/export knots and links.
-- **PD code support** – Read/write planar diagram codes.
-- **KnotAtlas compatibility** – Fetch and work with KnotAtlas data.
-
-[source,julia]
-----
-# Import from SnapPy
-knot = import_snappy("3_1")
-
-# Export to PD code
-pd_code = export_pd(trefoil)
-----
-
-== Quick Start
+A comprehensive Julia toolkit for computational knot theory: planar
+diagram data structures, classical invariants, polynomial invariants,
+Seifert theory, Reidemeister simplification, braid word interop, and
+import/export helpers.
 
 === Installation
+
+==== From Julia REPL
+
 [source,julia]
 ----
 using Pkg
 Pkg.add("KnotTheory")
 ----
 
-=== Hello World
+==== From Git (Development)
+
+[source,julia]
+----
+using Pkg
+Pkg.add(url="https://github.com/hyperpolymath/KnotTheory.jl")
+----
+
+=== Quick Start
+
 [source,julia]
 ----
 using KnotTheory
 
-# Create a figure-eight knot
-figure_eight = Knot([1, -2, 3, -4, 2, -1, 4, -3])
-
-# Compute its Jones polynomial
-jones_poly = jones_polynomial(figure_eight)
-
-# Plot the knot
-plot(figure_eight)
+k = trefoil()
+println(crossing_number(k))       # 3
+println(alexander_polynomial(k))   # t^-1 - 1 + t
+println(jones_polynomial(k))       # -t^-4 + t^-3 + t^-1
 ----
 
-== Why KnotTheory.jl?
+=== Features
 
-=== The Problem
-Knot theory research often involves:
-- Manual diagram manipulation
-- Error-prone invariant calculations
-- Incompatible file formats between tools
+* *Planar diagram model* with oriented crossings and multi-component
+links.
+* *Code representations*: PD code, DT/Dowker code, JSON serialization.
+* *Classical invariants*: crossing number, writhe, linking number,
+signature, determinant.
+* *Polynomial invariants*: Alexander, Jones, Conway, and HOMFLY-PT.
+* *Seifert theory*: Seifert circles, Seifert matrix, braid index
+estimate.
+* *Reidemeister simplification*: R1, R2, R3 moves and combined
+simplifier.
+* *Braid word interop*: convert between planar diagrams and braid words
+(TANGLE compatibility).
+* *Knot table*: built-in catalogue with named knots up to standard
+tables.
+* *Graph conversion*: Graphs.jl integration via `+to_graph+`.
+* *Polynomial helpers*: Polynomials.jl conversion via `+to_polynomial+`.
+* *Optional plotting*: CairoMakie-based diagram rendering via package
+extension.
 
-=== The Solution
-KnotTheory.jl provides:
-- **Automated diagram manipulation** – Reduce manual errors.
-- **Verified invariants** – Trust your calculations.
-- **Interoperability** – Work with existing tools and datasets.
+=== API Reference
 
-| Task                | Traditional Tools | KnotTheory.jl          |
-|---------------------|-------------------|-----------------------|
-| Diagram manipulation| Manual            | Programmatic          |
-| Invariant calculation| Error-prone       | Verified              |
-| Data exchange       | Cumbersome        | Seamless              |
+==== Types
 
-== Project Structure
-[source]
+[cols=",",options="header",]
+|===
+|Type |Description
+|`+EdgeOrientation+` |Enum for edge direction (`+Over+`, `+Under+`)
+|`+Crossing+` |Single crossing with strand indices and orientation
+|`+PlanarDiagram+` |Full planar diagram with crossings and components
+|`+DTCode+` |Dowker-Thistlethwaite code representation
+|`+Knot+` |Named knot wrapper (e.g. `+trefoil()+`)
+|`+Link+` |Named link wrapper for multi-component objects
+|===
+
+==== Constructors
+
+[width="100%",cols="44%,56%",options="header",]
+|===
+|Function |Description
+|`+unknot()+` |The unknot (zero crossings)
+|`+trefoil()+` |Trefoil knot (3_1)
+|`+figure_eight()+` |Figure-eight knot (4_1)
+|`+cinquefoil()+` |Cinquefoil knot (5_1)
+|`+knot_table(name)+` |Look up knot by standard name
+|`+lookup_knot(property, value)+` |Search knot table by invariant value
+|===
+
+==== Classical Invariants
+
+[cols=",",options="header",]
+|===
+|Function |Description
+|`+crossing_number(k)+` |Minimum crossing number
+|`+writhe(pd)+` |Sum of crossing signs
+|`+linking_number(pd)+` |Linking number for two-component links
+|`+signature(k)+` |Knot signature (from Seifert matrix)
+|`+determinant(k)+` |Knot determinant (\|det(V + V^T)\|)
+|===
+
+==== Polynomial Invariants
+
+[width="100%",cols="44%,56%",options="header",]
+|===
+|Function |Description
+|`+alexander_polynomial(k)+` |Alexander polynomial via Seifert matrix
+
+|`+jones_polynomial(k)+` |Jones polynomial via skein relation
+
+|`+conway_polynomial(k)+` |Conway polynomial (substitution from
+Alexander)
+
+|`+homfly_polynomial(k)+` |HOMFLY-PT two-variable polynomial
+|===
+
+==== Seifert Theory
+
+[width="100%",cols="44%,56%",options="header",]
+|===
+|Function |Description
+|`+seifert_circles(pd)+` |Seifert circle decomposition
+
+|`+seifert_circles_with_map(pd)+` |Seifert circles with strand-to-circle
+mapping
+
+|`+seifert_matrix(pd)+` |Seifert matrix computation
+
+|`+braid_index_estimate(pd)+` |Lower bound on braid index from Seifert
+circles
+|===
+
+==== Codes & Serialization
+
+[cols=",",options="header",]
+|===
+|Function |Description
+|`+pdcode(k)+` |Planar diagram code (list of crossing tuples)
+|`+dtcode(k)+` |Dowker-Thistlethwaite code
+|`+to_dowker(pd)+` |Convert planar diagram to Dowker notation
+|`+write_knot_json(file, k)+` |Serialize knot data to JSON
+|`+read_knot_json(file)+` |Deserialize knot data from JSON
+|===
+
+==== Simplification
+
+[cols=",",options="header",]
+|===
+|Function |Description
+|`+simplify_pd(pd)+` |Apply all Reidemeister moves until stable
+|`+r1_simplify(pd)+` |Reidemeister I: remove kinks
+|`+r2_simplify(pd)+` |Reidemeister II: cancel opposing crossings
+|`+r3_simplify(pd)+` |Reidemeister III: triangle move
+|===
+
+==== Braid Words (TANGLE Interop)
+
+[cols=",",options="header",]
+|===
+|Function |Description
+|`+from_braid_word(word)+` |Construct planar diagram from braid word
+|`+to_braid_word(pd)+` |Convert planar diagram to braid word
+|===
+
+==== Utilities
+
+[cols=",",options="header",]
+|===
+|Function |Description
+|`+to_graph(pd)+` |Convert to Graphs.jl graph structure
+|`+to_polynomial(expr)+` |Convert to Polynomials.jl polynomial
+|`+plot_pd(pd)+` |Render diagram (requires CairoMakie extension)
+|===
+
+=== Development
+
+[source,bash]
 ----
-KnotTheory.jl/
-├── src/
-│   ├── diagrams/      # Planar diagram tools
-│   ├── invariants/    # Polynomial and homology calculations
-│   ├── io/            # Import/export functionality
-│   └── KnotTheory.jl  # Main module
-├── test/              # Test suite
-├── examples/          # Example scripts
-└── docs/              # Documentation
+julia --project=. -e 'using Pkg; Pkg.instantiate()'
+julia --project=. -e 'using Pkg; Pkg.test()'
 ----
 
-== Roadmap
-- ✅ **v0.1** – Core diagram and invariant tools
-- ❏ **v0.2** – Advanced homology and categorification
-- ❏ **v0.3** – Integration with SnapPy and KnotAtlas
-- ❏ **v1.0** – Full verification suite
+285 tests across 25 test sets covering all exported functions, invariant
+consistency, and known values from knot tables.
 
-== Acknowledgments
-KnotTheory.jl builds on the work of:
-- *KnotAtlas* for knot data
-- *SnapPy* for 3D visualization
-- *Julia* for high-performance numerical computing
+=== Docs & Tutorials
+
+* `+docs/README.md+` for documentation drafts.
+* `+tutorials/intro.ipynb+` for a minimal notebook scaffold.
+
+=== References & Bibliography
+
+==== Textbooks
+
+* Adams, C.C. _The Knot Book: An Elementary Introduction to the
+Mathematical Theory of Knots_. American Mathematical Society, 2004. —
+Accessible introduction to knot theory.
+* Lickorish, W.B.R. _An Introduction to Knot Theory_. Graduate Texts in
+Mathematics 175, Springer, 1997. — Graduate-level treatment of knot
+invariants.
+* Rolfsen, D. _Knots and Links_. AMS Chelsea Publishing, 1976/2003. —
+Classic reference for knot tables and enumeration.
+* Murasugi, K. _Knot Theory and Its Applications_. Birkhauser, 1996. —
+Applied knot theory with connections to biology and chemistry.
+* Kauffman, L.H. _Knots and Physics_. 3rd ed., World Scientific, 2001. —
+Jones polynomial, bracket polynomial, and physical applications.
+* Cromwell, P.R. _Knots and Links_. Cambridge University Press, 2004. —
+Modern computational approach to knot theory.
+
+==== Key Papers
+
+* Fox, R.H. "`Free differential calculus. I: Derivation in the free
+group ring.`" _Annals of Mathematics_ 57(3), 1953, pp. 547-560. — Fox
+calculus underlying Alexander polynomial computation.
+* Freyd, P., Yetter, D., Hoste, J., Lickorish, W.B.R., Millett, K., &
+Ocneanu, A. "`A new polynomial invariant of knots and links.`" _Bulletin
+of the AMS_ 12(2), 1985, pp. 239-246. — HOMFLY-PT polynomial.
+* Seifert, H. "`Uber das Geschlecht von Knoten.`" _Mathematische
+Annalen_ 110, 1935, pp. 571-592. — Seifert surfaces and matrix
+construction.
+* Jones, V.F.R. "`A polynomial invariant for knots via von Neumann
+algebras.`" _Bulletin of the AMS_ 12(1), 1985, pp. 103-111. — Jones
+polynomial.
+
+=== License
+
+Palimpsest-MPL License v1.0 (MPL-2.0) – see LICENSE.

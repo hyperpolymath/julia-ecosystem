@@ -1,0 +1,56 @@
+== API Reference
+
+Complete API documentation for HackenbushGames.jl.
+
+=== Types
+
+[source,@docs]
+----
+EdgeColor
+Edge
+HackenbushGraph
+GameForm
+----
+
+=== Color Constants
+
+[source,@docs]
+----
+Blue
+Red
+Green
+----
+
+=== Graph Operations
+
+[source,@docs]
+----
+prune_disconnected
+cut_edge
+moves
+game_sum
+----
+
+=== Dyadic Rational Values
+
+[source,@docs]
+----
+simplest_dyadic_between
+stalk_value
+----
+
+=== Nimber Operations
+
+[source,@docs]
+----
+mex
+nim_sum
+green_stalk_nimber
+green_grundy
+----
+
+=== Index
+
+[source,@index]
+----
+----

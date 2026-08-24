@@ -1,0 +1,809 @@
+%A2ML
+- suppression:
+    file: 'Axiom.jl/ext/AxiomPyTorchExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Axiom.jl/benchmark/pytorch_bench.py'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'KnotTheory.jl/ext/KnotTheoryTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/npu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/crypto.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/fpga.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/tpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/qpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/src/coprocessors/math.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'PolyglotFormalisms.jl/ext/PolyglotFormalismsPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/coprocessors/npu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/coprocessors/vpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/coprocessors/tpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/coprocessors/dsp.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/src/coprocessors/math.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'SMTLib.jl/ext/SMTLibROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/src/HackenbushGames.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'HackenbushGames.jl/ext/HackenbushGamesPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'BowtieRisk.jl/ext/BowtieRiskMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'ZeroProb.jl/ext/ZeroProbDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'Causals.jl/ext/CausalsMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Axiom.jl/ext/AxiomPyTorchExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Axiom.jl/benchmark/pytorch_bench.py'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/KnotTheory.jl/ext/KnotTheoryTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/npu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/crypto.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/fpga.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/tpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/qpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/src/coprocessors/math.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/PolyglotFormalisms.jl/ext/PolyglotFormalismsPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/coprocessors/npu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/coprocessors/vpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/coprocessors/tpu.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/coprocessors/dsp.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/src/coprocessors/math.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/SMTLib.jl/ext/SMTLibROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/src/HackenbushGames.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/HackenbushGames.jl/ext/HackenbushGamesPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/AcceleratorGate.jl/src/AcceleratorGate.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/BowtieRisk.jl/ext/BowtieRiskMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/ZeroProb.jl/ext/ZeroProbDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Skein.jl/ext/SkeinMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/src/backends/abstract.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsVPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsCryptoExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsROCmExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsDSPExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsPPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsTPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsCUDAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsNPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsFPGAExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsQPUExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsMathExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'
+- suppression:
+    file: 'packages/Causals.jl/ext/CausalsMetalExt.jl'
+    rule: 'DynamicCodeExecution'
+    justification: 'Automated estate triage: reviewed as safe within its architectural boundary (e.g. local tooling, bounded reads, expected metaprogramming).'

@@ -1,0 +1,79 @@
+== API Reference
+
+=== Types
+
+[source,@docs]
+----
+MalthusianParams
+DemographicStructuralParams
+StateCapacityParams
+SecularCyclePhase
+InstabilityEvent
+----
+
+=== Models
+
+[source,@docs]
+----
+malthusian_model
+demographic_structural_model
+state_capacity_model
+collective_action_problem
+----
+
+=== Indicators
+
+[source,@docs]
+----
+elite_overproduction_index
+political_stress_indicator
+instability_probability
+conflict_intensity
+crisis_threshold
+instability_events
+population_pressure
+carrying_capacity_estimate
+----
+
+=== Secular Cycles
+
+[source,@docs]
+----
+secular_cycle_analysis
+detect_cycle_phases
+----
+
+=== Model Fitting
+
+[source,@docs]
+----
+fit_malthusian
+fit_demographic_structural
+estimate_parameters
+----
+
+=== Data Integration
+
+[source,@docs]
+----
+load_seshat_csv
+prepare_seshat_data
+----
+
+=== Utilities
+
+[source,@docs]
+----
+moving_average
+detrend
+normalize_timeseries
+----
+
+=== Spatial Models
+
+[source,@docs]
+----
+spatial_instability_diffusion
+territorial_competition_model
+frontier_formation_index
+----

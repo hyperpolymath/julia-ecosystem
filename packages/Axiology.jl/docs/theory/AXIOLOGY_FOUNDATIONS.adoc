@@ -1,0 +1,320 @@
+== Axiology: Theoretical Foundations
+
+=== Etymology and Cross-Linguistic Analysis
+
+==== Ancient Greek Origins
+
+*Axiology* derives from two Ancient Greek roots: - *ἀξία* (_axiā_) -
+"`value, worth`" (from ἄξιος _axios_ - "`worthy`") - *-λογία* (_-logia_)
+- "`study of, discourse`" (from λόγος _logos_)
+
+The term was coined in *1902* by French philosopher *Paul Lapie* and
+independently by *Eduard von Hartmann* (German: _Axiologie_) to describe
+the systematic philosophical study of value.
+
+==== Cross-Linguistic Terminology
+
+[cols=",,",options="header",]
+|===
+|Language |Term |Literal Meaning
+|*Greek* |Αξιολογία (_Axiología_) |Value-study (original)
+|*Latin* |_Scientia valoris_ |Science of value
+|*German* |_Axiologie_ / _Wertlehre_ |Value-theory
+|*French* |_Axiologie_ / _Théorie de la valeur_ |Value-theory
+|*Russian* |Аксиология (_Aksiologiya_) |Axiology
+|*Japanese* |価値論 (_Kachironnot_) |Value-theory
+|*Chinese* |价值论 (_Jiàzhílùn_) |Value-theory
+|*Arabic* |علم القيم (_’Ilm al-Qiyam_) |Science of values
+|*Sanskrit* |मूल्य-विज्ञान (_Mūlya-vijñāna_) |Value-knowledge
+|===
+
+'''''
+
+=== Historical Development
+
+==== Ancient Antecedents (Before "`Axiology`")
+
+===== Greek Philosophy (5th-3rd century BCE)
+
+*Socrates* (470-399 BCE): - Questioned conventional values ("`What is
+the good?`") - Introduced value-inquiry as central to philosophy -
+_"`The unexamined life is not worth living`"_ - value of self-knowledge
+
+*Plato* (428-348 BCE): - _Theory of Forms_: Absolute values (Good,
+Beautiful, Just) exist independently - _Republic_: Hierarchy of values
+(wisdom > courage > temperance > justice) - _Form of the Good_ -
+ultimate value, source of all other values
+
+*Aristotle* (384-322 BCE): - _Nicomachean Ethics_: Virtue as excellence
+(_aretē_) - *Intrinsic vs. Instrumental Value*: Distinction between ends
+and means - _Eudaimonia_ (flourishing) as highest human value
+
+===== Medieval Philosophy (4th-14th century CE)
+
+*Augustine of Hippo* (354-430 CE): - Christian values hierarchy: God
+(highest) → soul → body → material goods - _De Doctrina Christiana_:
+Things to be "`used`" (_uti_) vs. "`enjoyed`" (_frui_)
+
+*Thomas Aquinas* (1225-1274): - Natural Law theory: Universal values
+grounded in human nature - Hierarchy of goods: Divine → intellectual →
+physical
+
+===== Early Modern (16th-18th century)
+
+*David Hume* (1711-1776): - Is-Ought Problem: Can’t derive value
+judgments from factual statements - Sentiment theory of value: Values
+grounded in human sentiments
+
+*Immanuel Kant* (1724-1804): - *Categorical Imperative*: Persons have
+absolute value (ends-in-themselves) - Moral worth independent of
+consequences - Foundation for deontological ethics
+
+'''''
+
+==== Formal Axiology (1900-Present)
+
+===== Founding Era (1900-1920)
+
+*Eduard von Hartmann* (1842-1906): - _Grundriss der Axiologie_ (1909) -
+Systematized value theory as distinct philosophical discipline
+
+*Paul Lapie* (1869-1927): - _Logique de la volonté_ (1902) - Coined
+"`axiologie`" independently
+
+*Alexius Meinong* (1853-1920): - _Zur Grundlegung der allgemeinen
+Werttheorie_ (1923) - Value as objective property of objects -
+Value-feelings (_Wertgefühle_) vs. value-properties
+
+===== Phenomenological Axiology (1913-1928)
+
+*Max Scheler* (1874-1928): - _Der Formalismus in der Ethik_ (1913-1916)
+- Values as _a priori_ intuited essences - *Hierarchy of Values* (low →
+high): 1. Pleasant/unpleasant (sensory) 2. Noble/vulgar (vital) 3.
+Spiritual values (intellectual, aesthetic, legal) 4. Holy/unholy
+(religious) - Values known through emotional intuition (_Wertfühlen_)
+
+*Nicolai Hartmann* (1882-1950): - _Ethik_ (1926) - Objective value
+realism: Values exist independently of subjects - Strength vs. Height:
+Strong values (e.g., justice) vs. high values (e.g., love)
+
+===== Formal Axiology (1967-Present)
+
+*Robert S. Hartman* (1910-1973): - _The Structure of Value_ (1967) -
+*Mathematical axiology*: Value as degree of concept-fulfillment - Three
+dimensions of value: 1. *Systemic* (_S_): Conceptual perfection
+(mathematics, logic) 2. *Extrinsic* (_E_): Practical utility (tools,
+instruments) 3. *Intrinsic* (_I_): Unique worth (persons, art,
+experiences) - Axiomatic value theory (18 axioms)
+
+'''''
+
+=== Contemporary Schools
+
+==== Value Realism
+
+*Position*: Values exist objectively, independent of human minds
+
+*Representatives*: - *G.E. Moore* (1873-1958): "`Good`" as non-natural
+property - *Nicolai Hartmann*: Values as ideal essences - *David Brink*:
+Moral realism, values as objective features
+
+*Arguments*: - Convergence: Cultures converge on basic values (e.g.,
+harm is bad) - Moral phenomenology: Values _seem_ objective - Best
+explanation: Objectivity explains disagreement (we’re all trying to
+discover truth)
+
+==== Value Subjectivism
+
+*Position*: Values are projections of human preferences/emotions
+
+*Representatives*: - *David Hume*: Sentimentalism - *A.J. Ayer*:
+Emotivism - value statements are expressions of emotion - *Simon
+Blackburn*: Quasi-realism
+
+*Arguments*: - Metaphysical parsimony: No need for strange "`value
+properties`" - Diversity: Radical value disagreements across cultures -
+Motivation: Values necessarily motivate → must be grounded in desires
+
+==== Value Constructivism
+
+*Position*: Values are constructed through social/rational procedures
+
+*Representatives*: - *John Rawls*: Justice as fair agreement behind
+"`veil of ignorance`" - *Christine Korsgaard*: Kantian constructivism -
+*Jürgen Habermas*: Discourse ethics
+
+*Arguments*: - Objectivity without metaphysics: Intersubjective
+agreement - Respect for autonomy: Values we give ourselves - Democratic
+legitimacy: Values emerge from dialogue
+
+'''''
+
+=== Axiology in Economics
+
+==== Classical Economics (18th-19th century)
+
+*Adam Smith* (1723-1790): - _The Wealth of Nations_ (1776) -
+*Diamond-Water Paradox*: Diamonds (less useful) more valuable than water
+- Use-value vs. exchange-value distinction
+
+*David Ricardo* (1772-1823): - Labor theory of value: Value derives from
+labor input
+
+*Karl Marx* (1818-1883): - _Das Kapital_ (1867) - Exchange-value
+vs. use-value - Critique: Capitalism treats labor as commodity
+
+==== Marginalist Revolution (1870s)
+
+*William Stanley Jevons*, *Carl Menger*, *Léon Walras*: - *Marginal
+utility theory*: Value = utility of last unit consumed - Solved
+diamond-water paradox: Water’s marginal utility is low (abundant)
+
+==== Welfare Economics (1900-Present)
+
+*Vilfredo Pareto* (1848-1923): - *Pareto efficiency*: No one can be made
+better off without someone worse off - Foundation for modern welfare
+analysis
+
+*John Hicks* & *Nicholas Kaldor* (1939): - *Kaldor-Hicks criterion*:
+Compensation principle for policy evaluation
+
+*Amartya Sen* (1933-Present): - Nobel Prize 1998 - _Collective Choice
+and Social Welfare_ (1970) - *Capability approach*: Value = capabilities
+(freedoms) not just utility - Critique of utilitarianism: Ignores
+distribution, adaptive preferences
+
+'''''
+
+=== Axiology in Computer Science & AI
+
+==== Decision Theory
+
+*John von Neumann* & *Oskar Morgenstern* (1944): - _Theory of Games and
+Economic Behavior_ - *Expected utility theory*: Rational choice under
+uncertainty - Axioms: Completeness, transitivity, continuity,
+independence
+
+==== Preference Learning
+
+*Machine learning of value functions*: - Inverse reinforcement learning
+(Ng & Russell, 2000) - Learning from human feedback (RLHF) - Preference
+elicitation algorithms
+
+==== AI Alignment & Value Loading
+
+*Stuart Russell* (2019): - _Human Compatible: AI and the Problem of
+Control_ - *Value alignment problem*: How to ensure AI optimizes human
+values - Uncertainty about human values → provably beneficial AI
+
+*Nick Bostrom* (2014): - _Superintelligence_ - *Instrumental
+convergence*: AIs converge on instrumental goals regardless of terminal
+values - Paperclip maximizer thought experiment
+
+'''''
+
+=== Formal Representations
+
+==== Preference Relations
+
+Given set latexmath:[X] of alternatives, preference relation
+latexmath:[\succsim] ("`at least as good as`"):
+
+*Properties*: - *Completeness*:
+latexmath:[\forall x,y \in X: x \succsim y \lor y \succsim x] -
+*Transitivity*:
+latexmath:[x \succsim y \land y \succsim z \Rightarrow x \succsim z] -
+*Reflexivity*: latexmath:[x \succsim x]
+
+*Strict preference*:
+latexmath:[x \succ y \iff x \succsim y \land \neg(y \succsim x)]
+
+*Indifference*:
+latexmath:[x \sim y \iff x \succsim y \land y \succsim x]
+
+==== Utility Functions
+
+*Representation theorem* (Debreu, 1954): If latexmath:[\succsim] is
+complete, transitive, continuous, then latexmath:[\exists] utility
+function latexmath:[u: X \to \mathbb{R}] such that:
+
+[latexmath]
+++++
+x \succsim y \iff u(x) \geq u(y)
+++++
+
+*Ordinal utility*: Only order matters, not magnitude
+
+*Cardinal utility*: Magnitude differences are meaningful
+
+==== Social Welfare Functions
+
+*Aggregation*: latexmath:[n] individuals, utilities
+latexmath:[u_1, \ldots, u_n]
+
+*Utilitarian* (Bentham):
+
+[latexmath]
+++++
+W = \sum_{i=1}^n u_i
+++++
+
+*Rawlsian* (maximin):
+
+[latexmath]
+++++
+W = \min_i u_i
+++++
+
+*Weighted sum*:
+
+[latexmath]
+++++
+W = \sum_{i=1}^n w_i u_i, \quad \sum_i w_i = 1
+++++
+
+*Nash* (product):
+
+[latexmath]
+++++
+W = \prod_{i=1}^n u_i
+++++
+
+'''''
+
+=== Connections to This Library
+
+This implementation operationalizes:
+
+[arabic]
+. *Classical axiology* → Type system (Fairness, Welfare, etc.)
+. *Formal axiology* → Measurable value functions
+. *Welfare economics* → Social welfare functions
+. *AI alignment* → Verification of value satisfaction
+. *Multi-criteria decision* → Pareto frontier analysis
+
+'''''
+
+=== References
+
+==== Primary Sources
+
+* Aristotle. (350 BCE). _Nicomachean Ethics_.
+* Kant, I. (1785). _Groundwork of the Metaphysics of Morals_.
+* Scheler, M. (1916). _Formalism in Ethics and Non-Formal Ethics of
+Values_.
+* Hartman, R.S. (1967). _The Structure of Value_.
+
+==== Contemporary
+
+* Sen, A. (1970). _Collective Choice and Social Welfare_.
+* Rawls, J. (1971). _A Theory of Justice_.
+* Bostrom, N. (2014). _Superintelligence_.
+* Russell, S. (2019). _Human Compatible_.
+
+==== Technical
+
+* von Neumann, J., & Morgenstern, O. (1944). _Theory of Games and
+Economic Behavior_.
+* Arrow, K. (1951). _Social Choice and Individual Values_.
+* Ng, A.Y., & Russell, S. (2000). "`Algorithms for Inverse Reinforcement
+Learning`".

@@ -1,0 +1,106 @@
+https://www.bestpractices.dev/en/projects/new?repo_url=https://github.com/hyperpolymath/julia-ecosystem[image:https://img.shields.io/badge/OpenSSF-Best_Practices-green?logo=opensourcesecurity[OpenSSF
+Best Practices]]
+https://www.mozilla.org/MPL/2.0/[image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License:
+MPL-2.0]] image:Julia
+
+*A unified framework for post-disciplinary research, organizing, and
+verified computing.*
+
+[[toc]]
+
+== Overview
+
+This is the central monorepo for the *Hyperpolymath Julia Ecosystem*. It
+consolidates 20+ specialized libraries into a single, cohesive research
+and development environment. From formal logic and cryptography to
+historical dynamics and labor organizing, this ecosystem provides the
+"`Post-Disciplinary Glue`" to tackle complex global challenges.
+
+== Repository Map
+
+=== 🧠 Logic & Verification
+
+* Axiom: Provably correct machine learning and formal verification.
+* SMTLib: Julia interface for SMT solvers (Z3, CVC5).
+* PolyglotFormalisms: Formally verified cross-language common library.
+* ZeroProb: Reasoning about measure-zero events and black swans.
+
+=== 🛡️ Security & Forensics
+
+* ProvenCrypto: Formally verified PQC and cryptographic protocols.
+* InvestigativeJournalism: High-intelligence forensics and secure
+evidence lockers.
+
+=== 🏛️ History & Social Science
+
+* Cliodynamics: Mathematical modeling of historical dynamics (DST).
+* Cliometrics: Quantitative economic history and convergence analysis.
+* Axiology: Formal value theory and ethical alignment for ML.
+* ViableSystems: Organizational cybernetics (VSM) and Soft Systems
+Methodology (SSM).
+
+=== ✊ Organizing & Action
+
+* TradeUnionism: Data-driven labor organizing and spatial power mapping.
+* PRComms: High-integrity strategic communications and crisis
+management.
+* Exnovation: Systematic phase-out of legacy practices and structures.
+* BowtieRisk: Structured hazard analysis and barrier modeling.
+
+=== 🎨 Mathematics & Play
+
+* JuliaForChildren: Joyful visual coding for children with Minecraft/KSP
+interop.
+* KnotTheory: Computational knot theory and invariants.
+* Skein: Persistence layer for knot-theoretic data.
+* HackenbushGames: Combinatorial game theory toolkit.
+* Cladistics: Phylogenetic analysis and evolutionary relationships.
+
+=== ⚙️ Orchestration & Meta
+
+* PostDisciplinary: The universal graph linking all disciplinary
+modules.
+* JuliaPackageSpitter: Automated scaffolding for new ecosystem
+libraries.
+* MacroPower: Low-code automation and workflow engine.
+* ShellIntegration: Unified shell interface (PowerShell & Valence).
+* MinixSDK: Research foundation for Julia-to-MINIX 3 microkernel
+development.
+* SoftwareSovereign: Universal software policy engine and license-aware
+discovery.
+
+=== 🔌 The Metal Layer (Subdivided LowLevel)
+
+* LowLevel: The meta-orchestrator for high-integrity hardware control.
+* SiliconCore: Multi-arch Assembly, CPUID, and manual memory arenas.
+* AcceleratorGate: GPU, NPU, and TPU driver dispatch.
+* QuantumCircuit: QPU abstraction and reversible computing.
+* HardwareResilience: Self-healing, diagnostics, and fault-recovery.
+* FirmwareAudit: BIOS, UEFI, ACPI, and RAID telemetry.
+
+== Development in the Monorepo
+
+To work on a specific package within this repo:
+
+[source,bash]
+----
+# Example: Testing PRComms.jl
+cd packages/PRComms.jl
+julia --project=. -e 'using Pkg; Pkg.test()'
+----
+
+=== Registration
+
+When registering these packages, use the `+subdir+` argument:
+`+@JuliaRegistrator+` `+register+`
+`+subdirectory=packages/PackageName.jl+`
+
+== License
+
+All packages in this ecosystem are licensed under the
+*Palimpsest-MPL-1.0 License* (MPL-2.0). See the LICENSE file in the root
+and in each package subdirectory for details.
+
+'''''
+
+_Synthesis is the ultimate discipline._

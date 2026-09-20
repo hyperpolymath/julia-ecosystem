@@ -35,12 +35,6 @@ jobs:
       - name: Process coverage
         if: matrix.julia-version == '1.10' && matrix.os == 'ubuntu-latest'
         uses: julia-actions/julia-processcoverage@03114f09f119417c3242a9fb6e0b722676aedf38 # v1
-      - name: Upload coverage
-        if: matrix.julia-version == '1.10' && matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4
-        with:
-          files: lcov.info
-          token: ${{ secrets.CODECOV_TOKEN }}
   julia-nightly:
     name: Julia nightly - ubuntu
     runs-on: ubuntu-latest

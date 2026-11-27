@@ -37,12 +37,6 @@ task = "go-task"
 description = "Install pinned JS dev tools (Prettier) from bun.lock"
 run = "bun install --frozen-lockfile"
 
-[tasks.build]
-run = "cargo build --release"
-
-[tasks.test]
-run = "cargo test"
-
 [tasks.lint]
 depends = ["setup"]
 run = 'bunx --no-install --bun prettier --check --no-error-on-unmatched-pattern "**/*.{js,mjs,cjs,json,md}"'

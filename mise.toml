@@ -1,12 +1,9 @@
 [tools]
 # Language runtimes
-rust = "latest"
 zig = "latest"
 bun = "1.4"
 
 # Package managers
-pnpm = "latest"
-cargo = "latest"
 go-task = "latest"
 
 # Formatting & Linting
